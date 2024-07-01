@@ -1,0 +1,176 @@
+paths:
+  /user/register-user:
+    post:
+      summary: Register a user
+      description: route to register a new user
+      tags:
+        - User endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/user"
+      responses:
+        "200":
+          description: La cuenta fue registrada correctamente. Por favor activa tu email para entrar!
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/registerResponse"
+  /user/login:
+    post:
+      summary: login with a user
+      description: login with a user previously registered
+      tags:
+        - User endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/login"
+      responses:
+        "200":
+          description: You are successfully logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/registerResponse"
+  /user/validate-email:
+    post:
+      summary: validates a user's account 
+      description: sends a validation email to the user, to activate the account.
+      tags:
+        - User endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/validate-email"
+      responses:
+        "200":
+          description: Your email was successfully validated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/registerResponse"
+  /user/recover-password:
+    post:
+      summary: recover a user's password
+      description: 
+      tags:
+        - User endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/recover-password"
+      responses:
+        "200":
+          description: OTP sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/recover-passwordResponse"
+  /user/modify-password:
+    post:
+      summary: modify password 
+      description: 
+      tags:
+        - User endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/modify-password"
+      responses:
+        "200":
+          description: Password modified
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/modify-passwordResponse"
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        idNumber:
+          type: string
+        idType:
+          type: integer
+        name:
+          type: string
+        lastname:
+          type: string
+        password:
+          type: string
+        role:
+          type: integer
+        cellphone:
+          type: string
+        email:
+          type: string
+        nationality:
+          type: integer
+
+    validate-email:
+      type: object
+      properties:
+        userId:
+          type: string
+
+    login:
+      type: object
+      properties:
+        email:
+          type: mgabriela9401@gmail.com
+        password:
+          type: Pass123
+
+    recover-password:
+      type: object
+      properties:
+        email:
+          type: string
+
+    modify-password:
+      type: object
+      properties:
+        userEmail:
+          type: string
+        temporaryCode:
+          type: string
+        userPassword:
+          type: string
+
+    registerResponse:
+      type: object
+      properties:
+        msg:
+          type: string
+          description: Reply message.
+        id:
+          type: string
+          description: New user ID.
+      
+    recover-passwordResponse:
+      type: object
+      properties:
+        msg: 
+          type: string
+          description: Se ha enviado un correo para recuperar la contraseña
+        id: 
+          type: string
+          description: user id
+
+    errorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message

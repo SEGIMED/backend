@@ -1,0 +1,86 @@
+import ChatModel from "../models/Chat.js";
+import MessageModel from "../models/Message.js";
+import { createMessage } from "./methodsMessages.js";
+
+export async function getAllChatsWithPopulate() {
+  try {
+    const chats = await ChatModel.find({}).populate({
+      path: "messages",
+      populate: {
+        path: "sender target",
+        select: "-notify",
+      },
+    });
+
+    // console.log(chats);
+    if (chats && chats.length) return chats;
+    throw new Error("No chats found");
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export async function getChatWithPopulate(userId, targetId) {
+  try {
+    const findChat = await ChatModel.findOne({
+      users: { $all: [userId, targetId] },
+    })
+      .populate({
+        path: "messages",
+        populate: { path: "sender target", select: "-notify" },
+      })
+      .exec();
+    if (findChat) return findChat;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export async function createChatMongoDb(data, cb) {
+  // Crear una nueva instancia de Chat
+  console.log('este es el chat cuando entra a la funcion',data)
+  try {
+    let chat;
+    if (data._id === "temporal") {
+      chat = new ChatModel({
+        users: data.users,
+        messages: [],
+      });
+    } else {
+      chat = await ChatModel.findOne({ _id: data._id });
+    }
+
+    // Agregar los mensajes
+    await Promise.all(
+      data.unseenMessages.map(async (message) => {
+        if (message._id.startsWith("Message-")) {
+          const newMessage = new MessageModel({
+            sender: message.sender._id,
+            target: message.target._id,
+            text: message.text,
+            state: message.state,
+            date: message.date,
+          });
+          await newMessage.save();
+          console.log("se ha creado este mensaje", newMessage);
+          chat.addMessage(newMessage._id);
+        }
+      })
+    );
+
+    // Guardar el chat en la base de datos
+    await chat.save();
+
+    // Llamar al callback con el chat guardado
+    const chatWithPopulate = await getChatWithPopulate(
+      chat.users[0],
+      chat.users[1]
+    );
+    console.log("valor del chat en la db", chatWithPopulate);
+    cb(chatWithPopulate);
+  } catch (error) {
+    console.log(error.message);
+  }
+}

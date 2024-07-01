@@ -1,0 +1,198 @@
+paths:
+  /patient:
+    post:
+      summary: Create a patient
+      description: route to create a new patient
+      tags:
+        - Patient endpoints
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+          description: Custom header from loggin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/user"
+      responses:
+        "201":
+          description: El usuario fue creado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/registerResponse"
+
+  /patient/{id}:
+    get:
+      summary: Brings a patient
+      description: It brings the properties name, lastname, DNI, idNumber
+      tags:
+        - Patient endpoints
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: The ID of the patient to retrieve
+        - in: header
+          name: token
+          required: true
+          type: string
+          description: Custom header from loggin
+      requestBody:
+        required: false
+      responses:
+        "200":
+          description: 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/patientResponse"
+    put:
+      summary: Edit patient
+      description: Edit a patient data
+      tags:
+        - Patient endpoints
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: The ID of the patient to upload
+        - in: header
+          name: token
+          required: true
+          type: string
+          description: JWT obtained from login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/user"
+      responses:
+        "200":
+          description: Patient updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/patientResponse"
+    delete:
+      summary: Delete patient
+      description: ¡DELETE THE PATIENT FROM THE DB FOREVER!
+      tags:
+        - Patient endpoints
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: The ID of the patient to retrieve
+        - in: header
+          name: token
+          required: true
+          type: string
+          description: Custom header from loggin
+      responses:
+        "200":
+          description: Patient updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/patientResponse"   
+  /patients: 
+    get:
+      summary: Bring a list of all patients
+      description: It brings the properties name, lastname, DNI, idNumber
+      tags:
+        - Patient endpoints
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+          description: Custom header from loggin
+      requestBody:
+        required: false
+      responses:
+        "200":
+          description: 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/patientResponse"
+  /patientsfilter:
+    get:
+      summary: Filter patients
+      description: Filter patients for 
+      tags:
+        - Patient endpoints
+      parameters:
+        - in: header
+          name: token
+          required: true
+          type: string
+          description: Custom header from loggin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/filter-Patients"
+
+
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        idNumber:
+          type: string
+        idType:
+          type: integer
+        name:
+          type: string
+        lastname:
+          type: string
+        password:
+          type: string
+        role:
+          type: integer
+        cellphone:
+          type: string
+        email:
+          type: string
+        nationality:
+          type: integer
+
+    filter-Patients:
+      type: object
+      properties:
+        filters: 
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: stirng
+              value:
+                type: string
+      
+    patientResponse:
+      type: object
+      properties:
+        msg:
+          type: string
+          description: Reply message.
+        id:
+          type: string
+          description: New user ID.
+    errorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
