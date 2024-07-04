@@ -11,7 +11,7 @@ const getAllPhysiciansHandler = async () => {
     try {
         const allPhysicians = await User.findAll(
             {
-                attributes: ['id', 'name', 'lastname', "email", "cellphone", "avatar"],
+                attributes: ['id', 'name', 'lastname', "email", "cellphone"],
                 include: [
                     {
                         model: PhysicianSpecialty,

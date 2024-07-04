@@ -5,7 +5,7 @@ import {
     CatRole,
     User as UserSQL,
   } from "../../databaseConfig.js";
-import { mapUser } from "../../mapper/user/userMapper.js";
+import { mapUser,mapUserMongoDB } from "../../mapper/user/userMapper.js";
 
 export async function getUserWithPopulate(userId) {
   try {
@@ -61,7 +61,7 @@ export async function getUserSQL(userId) {
       ],
     });
     if (!getUser) throw new Error("Id del usuario no encontrada en la base de datos.");
-    const mappedUser = mapUser(getUser.dataValues);
+    const mappedUser = mapUserMongoDB(getUser.dataValues);
 
     return mappedUser;
   } catch (error) {
@@ -89,4 +89,17 @@ export async function createUserMongoDB(data, mapper=false){
         console.log(error)
         return null
     }
+}
+
+export async function findOneUpdateById(userId){
+    const dataUserSql = await getUserSQL(userId);
+    //update data.
+    await UserMongoDb.updateOne(
+        { userId: dataUserSql.userId },
+        { $set: { ...dataUserSql } },
+        { upsert: true }
+    );
+
+
+    return await getUserWithPopulate(userId)
 }

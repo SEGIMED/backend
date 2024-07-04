@@ -5,6 +5,7 @@ import {
   getAllUsersWithPopulate,
   createUserMongoDB,
   getUserSQL,
+  findOneUpdateById
 } from "../../../dbmethods/methodsUser.js";
 
 class ListUser {
@@ -73,6 +74,7 @@ class ListUser {
       return findUser;
     } catch (error) {
       console.log(error);
+      return null
     }
   }
 
@@ -86,6 +88,22 @@ class ListUser {
       return null;
     }
   }
+
+  async updateDataUser(userId){
+    try {
+      const newDataUser = await findOneUpdateById(userId);
+      console.log('datos de newDataUser', newDataUser);
+      const userLocal = this.addUser(newDataUser);
+      
+      if(userLocal) return userLocal
+      throw new Error("Error: internal error or data user invalid");
+    } catch (error) {
+      console.log(error.message);
+      return error
+    }
+  }
 }
+
+
 
 export default new ListUser();

@@ -1,5 +1,6 @@
 import {User, UserCurrentLocation} from "../../databaseConfig.js";
 import { loadImage } from "../../utils/cloudinary/cloudinary.js";
+import listUser from "../../realtime_server/webchat/classes/user/listUser.js";
 
 const regexPositiveNumbers = /^[1-9][0-9]*$/;
 const patchPatientHandler = async (patchPatientBody) => {
@@ -54,6 +55,9 @@ const patchPatientHandler = async (patchPatientBody) => {
       verified: patchPatientBody.verified ? patchPatientBody.verified : patient.verified,
       geolocation: patchPatientBody.geolocation ? patchPatientBody.geolocation : patient.geolocation
     });
+
+    //update data user in mongoDb
+    await listUser.updateDataUser(patient.id);
 
     return {
       patient: patient,

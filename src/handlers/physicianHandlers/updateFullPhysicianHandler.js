@@ -2,6 +2,7 @@ import { User, PhysicianAttendancePlace, PhysicianMedicalRegistry, PhysicianSpec
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import { sequelize } from "../../databaseConfig.js";
 import { loadImage } from "../../utils/cloudinary/cloudinary.js";
+import listUser from "../../realtime_server/webchat/classes/user/listUser.js";
 
 const updateFullPhysicianData = async (body) => {
     try {
@@ -100,6 +101,11 @@ const updateFullPhysicianData = async (body) => {
                 },
                 { where: { user: body.userId } },)
         }
+
+
+        //update userData in MongoDb
+        await listUser.updateDataUser(body.userId);
+        
         return {
             user: user,
             city: user.currentLocation.city,
