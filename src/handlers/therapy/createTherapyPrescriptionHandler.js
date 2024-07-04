@@ -1,4 +1,4 @@
-import {TherapyPrescription} from "../../databaseConfig.js";
+import { TherapyPrescription } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import moment from "moment-timezone";
 import contextService from "request-context";
@@ -8,9 +8,9 @@ const createTherapyPrescriptionHandler = async (body) => {
     const {
         patientId,
         therapyId,
-        description,
-        quantity,
-        medicalEvent
+        descriptionTherapy,
+        quantityTherapy,
+        medicalEventId
     } = body;
 
     try {
@@ -18,11 +18,11 @@ const createTherapyPrescriptionHandler = async (body) => {
             {
                 patient: patientId,
                 therapy: therapyId,
-                description,
-                quantity,
+                description: descriptionTherapy,
+                quantity: quantityTherapy,
                 prescribedPhysician: contextService.get('request:user').userId,
                 timestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-                medicalEvent
+                medicalEvent: medicalEventId
             }
         )
         return newTherapy

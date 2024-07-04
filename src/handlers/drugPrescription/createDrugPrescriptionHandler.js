@@ -1,4 +1,4 @@
-import {DrugPrescription} from "../../databaseConfig.js";
+import { DrugPrescription } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import contextService from "request-context";
 import moment from "moment-timezone";
@@ -9,20 +9,20 @@ const createDrugPrescriptionHandler = async (body) => {
         patientId,
         drugId,
         prescribedDose,
-        quantity,
+        quantityDrug,
         medicalEventId
     } = body;
 
     try {
         const newPrescription = await DrugPrescription.create(
             {
-                patient : patientId,
-                prescribedPhysician : contextService.get('request:user').userId,
-                prescriptionTimestamp : moment().format("YYYY-MM-DD HH:mm:ss z"),
-                drug : drugId ,
+                patient: patientId,
+                prescribedPhysician: contextService.get('request:user').userId,
+                prescriptionTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
+                drug: drugId,
                 prescribedDose,
-                quantity,
-                medicalEvent : medicalEventId
+                quantity: quantityDrug,
+                medicalEvent: medicalEventId
             }
         )
         return newPrescription

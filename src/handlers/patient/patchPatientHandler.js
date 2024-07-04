@@ -61,7 +61,7 @@ const patchPatientHandler = async (patchPatientBody) => {
       country: patchPatientBody.country
     };
   } catch (error) {
-    throw new Error("Error updating patient: " + error.message);
+    throw new Error("Error actualizando información del paciente: " + error.message);
   }
 
 };
