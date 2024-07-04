@@ -38,7 +38,7 @@ const model = (sequelize) => {
       field: 'pain_type'
     },
     painAreas:{
-      type:DataTypes.ARRAY[DataTypes.STRING],
+      type:DataTypes.JSONB,
       allowNull: true,
       field:'pain_areas' //
     },
