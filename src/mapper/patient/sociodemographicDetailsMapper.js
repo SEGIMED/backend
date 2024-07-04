@@ -8,7 +8,7 @@ export const mapSociodemographicDetails = (sociodemographicDetails) => {
         address: sociodemographicDetails.address || null,
         healthCarePlan: sociodemographicDetails.catHealthCarePlan ? sociodemographicDetails.catHealthCarePlan.name : null,
         emergencyContactPhone: sociodemographicDetails.emergencyContactPhone || null,
-        healthCareNumber: sociodemographicDetails.healthCareNumber||null,
+        healthCareNumber: sociodemographicDetails.healthCareNumber || null,
         isAlive: sociodemographicDetails.dateOfDeathReport === null
     };
 };

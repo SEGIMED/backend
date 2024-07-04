@@ -29,7 +29,7 @@ import {
 import segimedAPIError from "../../error/SegimedAPIError.js";
 import { mapPatient } from "../../mapper/patient/patientMapper.js";
 import catHeartFailureClassification from "../../models/CatHeartFailureClassification.js";
-import {Op} from "sequelize";
+import { Op } from "sequelize";
 
 
 const getPatientDetailsHandler = async (id) => {
@@ -132,10 +132,10 @@ const getPatientDetailsHandler = async (id) => {
                     {
                         model: Backgrounds,
                         as: 'backgrounds',
-                            order: [
-                                ['timestamp', 'DESC']
-                            ],
-                        limit:1
+                        order: [
+                            ['timestamp', 'DESC']
+                        ],
+                        limit: 1
                     },
                     {
                         model: VitalSignDetails,

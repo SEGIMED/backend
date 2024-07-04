@@ -1,10 +1,10 @@
-import {mapPainMap} from "../painMap/painMapMapper.js";
-import {mapPhysicalExamination} from "../patient/physicalExaminationMapper.js";
-import {mapPatientDiagnostic} from "../patient/patientDiagnosticMapper.js";
-import {mapDrugPrescription} from "../patient/drugPrescriptionMapper.js";
-import {mapProcedurePrescription} from "../patient/procedurePrescriptionMapper.js";
-import {mapAnthropometricDetail} from "../patient/anthropometricDetailsMapper.js";
-import {mapVitalSign} from "../patient/vitalSignsMapper.js";
+import { mapPainMap } from "../painMap/painMapMapper.js";
+import { mapPhysicalExamination } from "../patient/physicalExaminationMapper.js";
+import { mapPatientDiagnostic } from "../patient/patientDiagnosticMapper.js";
+import { mapDrugPrescription } from "../patient/drugPrescriptionMapper.js";
+import { mapProcedurePrescription } from "../patient/procedurePrescriptionMapper.js";
+import { mapAnthropometricDetail } from "../patient/anthropometricDetailsMapper.js";
+import { mapVitalSign } from "../patient/vitalSignsMapper.js";
 
 export const mapMedicalEvent = (medicalEvent) => {
     return {
@@ -13,6 +13,7 @@ export const mapMedicalEvent = (medicalEvent) => {
 
         //motivo de consulta
         chiefComplaint: medicalEvent.chiefComplaint,
+        status: medicalEvent.appSch.schedulingStatus,
 
         // grupo HTP hipertensión pulmonar
         patientHpGroups: medicalEvent.appSch.patientUser.userHpGroups.map(hpGroup => {
@@ -31,15 +32,15 @@ export const mapMedicalEvent = (medicalEvent) => {
         physician: {
             id: medicalEvent.appSch.physicianThatAttend.id,
             name: medicalEvent.appSch.physicianThatAttend.name,
-            lastname: medicalEvent.appSch.physicianThatAttend.lastname
+            lastname: medicalEvent.appSch.physicianThatAttend.lastname,
+            avatar: medicalEvent.appSch.physicianThatAttend.avatar
         },
         // Sitio de atención
         attendancePlace: medicalEvent.appSch.attendancePlace ? {
             googleMapsLink: medicalEvent.appSch.attendancePlace.googleMapsLink,
             addressDetails: medicalEvent.appSch.attendancePlace.addressDetails,
             alias: medicalEvent.appSch.attendancePlace.alias
-        } : null ,
-
+        } : null,
 
         //Evoluciones
         physicianComments: medicalEvent.physicianComments,
@@ -50,13 +51,13 @@ export const mapMedicalEvent = (medicalEvent) => {
         reviewOfSystems: medicalEvent.reviewOfSystems, // 3.sintomas o revision por sistemas
 
         //detalles antropometricos
-        anthropometricDetails : medicalEvent.appSch.patientUser.patientAnthDet.map(anthDetail => mapAnthropometricDetail(anthDetail)),
+        anthropometricDetails: medicalEvent.appSch.patientUser.patientAnthDet.map(anthDetail => mapAnthropometricDetail(anthDetail)),
         //signos vitales
-        vitalSigns: medicalEvent.vitalSignDetailsMedicalEvent.concat(medicalEvent.appSch.vitalSignDetailsScheduling).map(vitalSign=> mapVitalSign(vitalSign)),
+        vitalSigns: medicalEvent.vitalSignDetailsMedicalEvent.concat(medicalEvent.appSch.vitalSignDetailsScheduling).map(vitalSign => mapVitalSign(vitalSign)),
 
 
         ///AUTOEVALUACIONES - mapa del dolor
-        painMap:  medicalEvent.patientPainMaps.concat(medicalEvent.appSch.patientPainMaps).map( painMap => mapPainMap(painMap)),
+        painMap: medicalEvent.patientPainMaps.concat(medicalEvent.appSch.patientPainMaps).map(painMap => mapPainMap(painMap)),
 
         //EXAMEN FÍSICO
         physicalExaminations: medicalEvent.patientPhysicalExaminations.map(physicalExam => mapPhysicalExamination(physicalExam)),
@@ -81,7 +82,7 @@ export const mapMedicalEvent = (medicalEvent) => {
         treatmentPlan: medicalEvent.pendingDiagnosticTest,
 
         //Tratamiento no faqrmacológico
-        medicalIndications: medicalEvent.medicalIndications.map(medicalIndication =>{
+        medicalIndications: medicalEvent.medicalIndications.map(medicalIndication => {
             return {
                 description: medicalIndication.description,
                 timestamp: medicalIndication.timestamp

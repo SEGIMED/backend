@@ -19,7 +19,7 @@ export const mapPatient = (patient) => {
         vitalSigns: patient.patientVitalSignDetails ? getLatestVitalSignsMeasures(patient.patientVitalSignDetails.map(vitalSign => mapVitalSign(vitalSign))) : null,
         sociodemographicDetails: patient.socDemDet ? mapSociodemographicDetails(patient.socDemDet) : null,
         //patientMedicalBackgrounds: patient.patientMedicalBackgrounds ? patient.patientMedicalBackgrounds.map(background => mapPatientMedicalBackground(background)) : null,
-        backgrounds: patient.backgrounds.length > 0 ?  patient.backgrounds[0] : null,
+        backgrounds: patient.backgrounds.length > 0 ? patient.backgrounds[0] : null,
         patientPulmonaryHypertensionGroups: patient.userHpGroups ? patient.userHpGroups.map(hpGroup => {
             return {
                 group: hpGroup.catHpGroup.name,
