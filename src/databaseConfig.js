@@ -89,7 +89,6 @@ import BackgroundsModel from "./models/Backgrounds.js";
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 
 const { DB_USER, DB_PASSWORD, DB_HOST, DATABASE_TRANSACTIONS_CLS_NAMESPACE } = process.env;
-console.log(DB_USER, DATABASE_TRANSACTIONS_CLS_NAMESPACE)
 const clsDBTransactionsNamespace = cls.createNamespace(DATABASE_TRANSACTIONS_CLS_NAMESPACE);
 Sequelize.useCLS(clsDBTransactionsNamespace);
 
