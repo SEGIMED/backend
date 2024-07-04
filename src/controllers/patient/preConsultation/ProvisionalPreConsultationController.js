@@ -11,7 +11,7 @@ const createPreConsultationController = async (req,res) =>{
         const physicalExamination= await createPatientPainMapHandler(req.body)
         return res.status(200).json({preConsultation, vitalSigns, physicalExamination});
     } catch (error) {
-        throw new SegimedAPIError(error, 500) 
+        throw new SegimedAPIError('Hubo un error durante el proceso de actualización',error, 500) 
     }
 }
 

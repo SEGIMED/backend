@@ -1,3 +1,4 @@
+import SegimedAPIError from "../../error/SegimedAPIError.js";
 import contextService from "request-context";
 import moment from "moment-timezone";
 import {PatientPainMap} from "../../databaseConfig.js";

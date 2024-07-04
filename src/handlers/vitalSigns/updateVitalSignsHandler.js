@@ -19,7 +19,7 @@ const updateVitalSignsHandler = async (body) => {
         )
         return vitalSign[1]
     } catch (error) {
-        throw new SegimedAPIError('Hubo un error durante el proceso.', 500)
+        throw new SegimedAPIError('Hubo un error durante el proceso de actualización.', 500)
     }
 };
 
