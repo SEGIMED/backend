@@ -9,7 +9,11 @@ import {mapProcedurePrescription} from "../patient/procedurePrescriptionMapper.j
 
 
 export const mapMedicalEventDetail = (medicalEvent) => {
-   
+
+    const painMapArray = (medicalEvent?.patientPainMaps ?? [])
+    .concat(medicalEvent?.appSch?.patientPainMaps ?? [])
+    .map(painMap => mapPainMap(painMap));
+
     return {
         medicalEventId: medicalEvent?.id ?? null,
 
@@ -50,7 +54,7 @@ export const mapMedicalEventDetail = (medicalEvent) => {
         vitalSigns: (medicalEvent?.vitalSignDetailsMedicalEvent ?? []).concat(medicalEvent?.appSch?.vitalSignDetailsScheduling ?? []).map(vitalSign => mapVitalSign(vitalSign)),
 
         /// autoevaluacion
-        painMap: (medicalEvent?.patientPainMaps ?? []).concat(medicalEvent?.appSch?.patientPainMaps ?? []).map(painMap => mapPainMap(painMap)),
+        painMap: painMapArray[0],
 
         //examen fisico
         physicalExaminations: medicalEvent?.patientPhysicalExaminations?.map(physicalExam => mapPhysicalExamination(physicalExam)) ?? [],
@@ -78,6 +82,7 @@ export const mapMedicalEventDetail = (medicalEvent) => {
 
         //Tratamiento no farmacológico
         medicalIndications: medicalEvent?.medicalIndications?.map(medicalIndication => {
+
             return {
                 description: medicalIndication?.description ?? null,
                 timestamp: medicalIndication?.timestamp ?? null

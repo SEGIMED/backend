@@ -1,5 +1,5 @@
 export const mapPainMap = (painMap) => {
-
+    
     return {
         isTakingAnalgesic: painMap.isTakingAnalgesic,
         doesAnalgesicWorks: painMap.doesAnalgesicWorks,
