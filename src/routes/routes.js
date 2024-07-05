@@ -104,7 +104,7 @@ import updateBackgroundsController from "../controllers/backgrounds/updatebackgr
 import createAlarmEventController from "../controllers/alarmEvent/createAlarmEventController.js"
 import getAllAlarmsForPatientController from "../controllers/alarmEvent/getAllAlarmsForPatientController.js"
 import patchAlarmEventController from "../controllers/alarmEvent/patchAlarmEventController.js"
-import createPreConsultationController from "../controllers/patient/preConsultation/ProvisionalPreConsultationController.js"
+import createPreConsultationController from"../controllers/patient/preConsultation/ProvisionalPreConsultationController.js"
 import getAllProvisionaPreConsultationPatientController from "../controllers/patient/preConsultation/getAllProvisionaPreConsultationPatientController.js"
 import patchProvisionalPreConsultationController from "../controllers/patient/preConsultation/patchProvisionalPreConsultationController.js"
 
@@ -156,7 +156,7 @@ patientRouter
 patientRouter.route("/patch-patient").patch(patchPatientController)
 
 patientRouter.route("/patient-details").get(getPatientDetailsController);
-patientRouter.route("/patient-diagnostic").post(createPatientDiagnosticController); //ACA
+patientRouter.route("/patient-diagnostic").post(createPatientDiagnosticController);
 patientRouter.route("/patient-update-diagnostic").patch(updatePatientDiagnosticController);
 patientRouter.route("/patient-physical-examination").post(createPatientPhysicalExaminationController);
 patientRouter.route("/patient-physical-examination").patch(updatePatientPhysicalExaminationController);
@@ -303,12 +303,12 @@ diagnosticTestRouter.route("/diagnostic-test/create-diagnostic-test").post(creat
 diagnosticTestRouter.route("/diagnostic-test/update-diagnostic-test").patch(patchDiagnosticTestController)
 
 //* Drug Prescription
-drugPrescriptionRouter.route("/drug-prescription/create-drug-prescription").post(createDrugPrescriptionController) // SIMPLIFICADA EN /patient-diagnostic
+drugPrescriptionRouter.route("/drug-prescription/create-drug-prescription").post(createDrugPrescriptionController)
 drugPrescriptionRouter.route("/drug-prescription/update-drug-prescription").patch(updateDrugPrescriptionController)
 
 
 //* medical Procedure Prescription
-procedurePrescriptionRouter.route("/procedure/create-procedure-prescription").post(createMedicalProcedurePrescriptionController) // SIMPLIFICADA EN /patient-diagnostic
+procedurePrescriptionRouter.route("/procedure/create-procedure-prescription").post(createMedicalProcedurePrescriptionController)
 procedurePrescriptionRouter.route("/procedure/update-procedure-prescription").patch(updateMedicalProcedurePrescriptionController)
 
 
@@ -317,11 +317,11 @@ medicalReferralRouter.route("/referral/create-medical-referral").post(createMedi
 medicalReferralRouter.route("/referral/update-medical-referral").patch(updateMedicalReferralController)
 
 //* Therapy Prescription
-therapyPrescriptionRouter.route("/therapy/create-therapy-prescription").post(createTherapyPrescriptionController) // SIMPLIFICADA EN /patient-diagnostic
+therapyPrescriptionRouter.route("/therapy/create-therapy-prescription").post(createTherapyPrescriptionController)
 therapyPrescriptionRouter.route("/therapy/update-therapy-prescription").patch(updateTherapyPrescriptionController)
 
 // *Medical Indications
-medicalIndicationsRouter.route("/medical-indications/new-indication").post(createMedicalIndicationsController) // SIMPLIFICADA EN /patient-diagnostic
+medicalIndicationsRouter.route("/medical-indications/new-indication").post(createMedicalIndicationsController)
 
 //* Alarm
 alarmRouter.route("/alarm")

@@ -3,16 +3,13 @@ import contextService from "request-context";
 import moment from "moment-timezone";
 import {PatientPainMap} from "../../databaseConfig.js";
 
-
 const createPatientPainMapHandler = async (body) => {
-    const {
-        painRecordsToCreate
-    } = body;
 
+    mapPainRecord(body)
     try {
-        const mappedPainRecordsToCreate = painRecordsToCreate.map(painRecord => mapPainRecord(painRecord))
-        const newPainRecords = await PatientPainMap.bulkCreate(
-            mappedPainRecordsToCreate
+        
+        const newPainRecords = await PatientPainMap.create(
+            
         )
         return newPainRecords
     } catch (error) {
@@ -20,20 +17,19 @@ const createPatientPainMapHandler = async (body) => {
     }
 };
 
-function mapPainRecord(painRecord){
+function mapPainRecord(body){
     return {
-        painDuration: painRecord.painDurationId,
-        painScale: painRecord.painScaleId,
-        painType: painRecord.painTypeId,
-        painArea: painRecord.painAreaId,
-        painFrequency: painRecord.painFrequencyId,
-        painNotes: painRecord.painNotes,
-        isTakingAnalgesic: painRecord.isTakingAnalgesic,
-        doesAnalgesicWorks: painRecord.doesAnalgesicWorks,
-        isWorstPainEver: painRecord.isWorstPainEver,
-        painOwner: painRecord.painOwnerId,
-        scheduling: painRecord.schedulingId,
-        medicalEvent: painRecord.medicalEventId,
+        painDuration: body.painDurationId,
+        painScale: body.painScaleId,
+        painType: body.painTypeId,
+        painAreas: body.painAreas,
+        painFrequency: body.painFrequencyId,
+        isTakingAnalgesic: body.isTakingAnalgesic,
+        doesAnalgesicWorks: body.doesAnalgesicWorks,
+        isWorstPainEver: body.isWorstPainEver,
+        painOwner: body.painOwnerId,
+        scheduling: body.schedulingId,
+        medicalEvent: body.medicalEventId,
         timestamp : moment().format("YYYY-MM-DD HH:mm:ss z"),
         painRecorder : contextService.get('request:user').userId
     }
