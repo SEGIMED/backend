@@ -7,11 +7,11 @@ const createPreConsultationController = async (req,res) =>{
     try {
 
         const preConsultation = await createPreConsultationHandler(req.body)
-        const vitalSigns = await createVitalSignsHandler(req.body)//It receives an array of vital signs
-        const physicalExamination= await createPatientPainMapHandler(req.body)
-        return res.status(200).json({preConsultation, vitalSigns, physicalExamination});
+        const vitalSigns = await createVitalSignsHandler(req.body.vitalSignsToCreate)//It receives an array of vital signs
+        const physicalExamination= await createPatientPainMapHandler(req.body.painRecordsToCreate[0])
+        return res.status(200).json({preConsultation,vitalSigns, physicalExamination});
     } catch (error) {
-        throw new SegimedAPIError('Hubo un error durante el proceso de actualización',error, 500) 
+        throw new SegimedAPIError('Hubo un error durante el proceso de creación',error, 500) 
     }
 }
 

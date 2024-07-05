@@ -5,11 +5,11 @@ import {PatientPainMap} from "../../databaseConfig.js";
 
 const createPatientPainMapHandler = async (body) => {
 
-    mapPainRecord(body)
+    const patientPainMapping= mapPainRecord(body)
     try {
         
         const newPainRecords = await PatientPainMap.create(
-            
+            patientPainMapping
         )
         return newPainRecords
     } catch (error) {
