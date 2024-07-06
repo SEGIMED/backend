@@ -1,6 +1,6 @@
 import models from "../../databaseConfig.js";
 
-const getPatientsHandler = async ({ limit, page, filter }) => {
+const getPatientsHandler = async ({ limit, page }) => {
   try {
     //Type of role selection
     const queryOptions = {
