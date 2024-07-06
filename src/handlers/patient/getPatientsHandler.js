@@ -1,32 +1,35 @@
 import models from "../../databaseConfig.js";
 
-const getPatientsHandler = async ({ limit, page }) => {
+const getPatientsHandler = async ({ limit, page, filter }) => {
   try {
-    //check if pagination was asked
+    //Type of role selection
+    const queryOptions = {
+      where: {
+        role: 3,
+      },
+      attributes: {
+        exclude: ["password", "cellphone", "email"],
+      },
+    };
+
     if (!limit || !page) {
-      const getPatients = await models.User.findAll({
-        where: {
-          role: 3,
-        },
-        attributes: {
-          exclude: ["password", "cellphone", "email"],
-        },
-      });
+      // Without pagination
+      const getPatients = await models.User.findAll(queryOptions);
       return getPatients;
     } else {
-      //Pagination logic
+      // Pagination Logic
       const offset = (page - 1) * limit;
-      const { count, rows: patients } = await models.User.findAndCountAll({
-        limit,
-        offset,
-      });
+      queryOptions.limit = limit;
+      queryOptions.offset = offset;
+
+      const { count, rows: patients } = await models.User.findAndCountAll(queryOptions);
       const totalPages = Math.ceil(count / limit);
 
       return {
         totalItems: count,
-        totalPages,
+        totalPages: totalPages,
         currentPage: page,
-        patients,
+        patients: patients,
       };
     }
   } catch (error) {
