@@ -2,7 +2,6 @@ import getPatientsHandler from "../../handlers/patient/getPatientsHandler.js";
 
 const getPatientsController = async (req, res) => {
   const { limit, page, filter } = req.query;
-  console.log(limit, page);
   try {
     const users = await getPatientsHandler({ limit, page, filter });
     return res.status(200).json(users);

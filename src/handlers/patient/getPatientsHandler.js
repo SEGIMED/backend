@@ -2,6 +2,7 @@ import models from "../../databaseConfig.js";
 
 const getPatientsHandler = async ({ limit, page, filter }) => {
   try {
+    //check if pagination was asked
     if (!limit || !page) {
       const getPatients = await models.User.findAll({
         where: {
@@ -13,6 +14,7 @@ const getPatientsHandler = async ({ limit, page, filter }) => {
       });
       return getPatients;
     } else {
+      //Pagination logic
       const offset = (page - 1) * limit;
       const { count, rows: patients } = await models.User.findAndCountAll({
         limit,
