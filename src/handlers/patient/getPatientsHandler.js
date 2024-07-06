@@ -1,6 +1,6 @@
 import models from "../../databaseConfig.js";
 
-const getPatientsHandler = async ({ limit, page, filter }) => {
+const getPatientsHandler = async ({ limit, page }) => {
   try {
     //check if pagination was asked
     if (!limit || !page) {
