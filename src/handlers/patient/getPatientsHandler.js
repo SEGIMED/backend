@@ -12,7 +12,7 @@ const getPatientsHandler = async ({ limit, page }) => {
       },
     };
 
-    if (!limit || !page) {
+    if (!limit && !page) {
       // Without pagination
       const getPatients = await models.User.findAll(queryOptions);
       return getPatients;
