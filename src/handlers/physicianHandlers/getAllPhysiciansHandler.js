@@ -5,6 +5,7 @@ import models, {
   PhysicianSpecialty,
   User,
 } from "../../databaseConfig.js";
+import paginationUsersHandler from "../Pagination/paginationUsersHandler.js";
 
 const getAllPhysiciansHandler = async ({ page, limit }) => {
   try {
@@ -40,22 +41,8 @@ const getAllPhysiciansHandler = async ({ page, limit }) => {
       const allPhysicians = await User.findAll(queryOptions);
       return allPhysicians;
     } else {
-      //Pagination logic
-      const offset = (page - 1) * limit;
-      queryOptions.limit = limit;
-      queryOptions.offset = offset;
-
-      const { count, rows: physicians } = await models.User.findAndCountAll(
-        queryOptions
-      );
-      const totalPages = Math.ceil(count / limit);
-
-      return {
-        totalItems: count,
-        totalPages: totalPages,
-        currentPage: page,
-        physicians: physicians,
-      };
+      //Pagination Logic
+      return paginationUsersHandler();
     }
   } catch (error) {
     throw new Error("Error loading physicians: " + error.message);
