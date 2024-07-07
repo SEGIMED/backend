@@ -1,4 +1,5 @@
 import models from "../../databaseConfig.js";
+import paginationUsersHandler from "../Pagination/paginationUsersHandler.js";
 
 const getPatientsHandler = async ({ limit, page }) => {
   try {
@@ -18,19 +19,7 @@ const getPatientsHandler = async ({ limit, page }) => {
       return getPatients;
     } else {
       // Pagination Logic
-      const offset = (page - 1) * limit;
-      queryOptions.limit = limit;
-      queryOptions.offset = offset;
-
-      const { count, rows: patients } = await models.User.findAndCountAll(queryOptions);
-      const totalPages = Math.ceil(count / limit);
-
-      return {
-        totalItems: count,
-        totalPages: totalPages,
-        currentPage: page,
-        patients: patients,
-      };
+      return paginationUsersHandler({ page, limit, queryOptions });
     }
   } catch (error) {
     throw new Error("Error loading patients: " + error.message);

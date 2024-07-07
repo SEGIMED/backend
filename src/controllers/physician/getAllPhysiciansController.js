@@ -2,6 +2,7 @@ import getAllPhysiciansHandler from "../../handlers/physicianHandlers/getAllPhys
 
 const getAllPhysiciansController = async (req, res) => {
   const { page, limit } = req.query;
+
   try {
     const allPhysicians = await getAllPhysiciansHandler({ page, limit });
     res.status(200).json(allPhysicians);

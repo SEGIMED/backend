@@ -1,16 +1,15 @@
-import models from "../../databaseConfig";
+import models from "../../databaseConfig.js";
 
 const paginationUsersHandler = async ({ page, limit, queryOptions }) => {
-  
-    limit = parseInt(limit);
-    page = parseInt(page);
+  limit = parseInt(limit);
+  page = parseInt(page);
 
-    try {
+  try {
     const offset = (page - 1) * limit;
     queryOptions.limit = limit;
     queryOptions.offset = offset;
 
-    const { count, row: user } = await models.User.findAndCountAll(
+    const { count, rows: user } = await models.User.findAndCountAll(
       queryOptions
     );
     const totalPages = Math.ceil(count / limit);

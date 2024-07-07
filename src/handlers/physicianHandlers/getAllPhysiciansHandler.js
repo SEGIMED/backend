@@ -42,7 +42,7 @@ const getAllPhysiciansHandler = async ({ page, limit }) => {
       return allPhysicians;
     } else {
       //Pagination Logic
-      return paginationUsersHandler();
+      return paginationUsersHandler({ page, limit, queryOptions });
     }
   } catch (error) {
     throw new Error("Error loading physicians: " + error.message);
