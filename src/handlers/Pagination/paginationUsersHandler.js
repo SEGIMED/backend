@@ -1,10 +1,17 @@
 import models from "../../databaseConfig.js";
 
 const paginationUsersHandler = async ({ page, limit, queryOptions }) => {
-  limit = parseInt(limit);
-  page = parseInt(page);
-
   try {
+    if ((limit && isNaN(parseInt(limit))) || (page && isNaN(parseInt(page)))) {
+      throw new Error("Limit and page must be valid numbers");
+    }
+    if (!limit || !page) {
+      throw new Error("Limit and page are needed");
+    }
+
+    limit = parseInt(limit);
+    page = parseInt(page);
+
     const offset = (page - 1) * limit;
     queryOptions.limit = limit;
     queryOptions.offset = offset;
@@ -15,7 +22,7 @@ const paginationUsersHandler = async ({ page, limit, queryOptions }) => {
     const totalPages = Math.ceil(count / limit);
 
     return {
-      totalItems: count,
+      totalUsers: count,
       totalPages: totalPages,
       currentPage: page,
       user: user,
