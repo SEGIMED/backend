@@ -6,6 +6,7 @@ import {mapDiagnosticTest} from "../patient/diagnosticTestMapper.js";
 import {mapPatientDiagnostic} from "../patient/patientDiagnosticMapper.js";
 import {mapDrugPrescription} from "../patient/drugPrescriptionMapper.js";
 import {mapProcedurePrescription} from "../patient/procedurePrescriptionMapper.js";
+import { SociodemographicDetails } from "../../databaseConfig.js";
 
 
 export const mapMedicalEventDetail = (medicalEvent) => {
@@ -13,7 +14,6 @@ export const mapMedicalEventDetail = (medicalEvent) => {
     const painMapArray = (medicalEvent?.patientPainMaps ?? [])
     .concat(medicalEvent?.appSch?.patientPainMaps ?? [])
     .map(painMap => mapPainMap(painMap));
-
     return {
         medicalEventId: medicalEvent?.id ?? null,
 
@@ -27,6 +27,7 @@ export const mapMedicalEventDetail = (medicalEvent) => {
             nationality: medicalEvent?.appSch?.patientUser?.nationality ?? null,
             currentLocation: medicalEvent?.appSch?.patientUser?.currentLocation ?? null,
             geolocation: medicalEvent?.appSch?.patientUser?.geolocation ?? null,
+            genre:medicalEvent?.appSch?.patientUser?.socDemDet.catGenre??null
         },
 
         // grupo HTP
