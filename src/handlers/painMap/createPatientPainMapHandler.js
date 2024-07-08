@@ -19,6 +19,7 @@ const createPatientPainMapHandler = async (body) => {
 
 function mapPainRecord(body){
     return {
+        isTherePain:body.isTherePain,
         painDuration: body.painDurationId,
         painScale: body.painScaleId,
         painType: body.painTypeId,
