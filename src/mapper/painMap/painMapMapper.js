@@ -27,6 +27,7 @@ const mapPainArea = (painAreas)=>{
         painNotes: painAreaMap.painNotes
     }
     })
+
     return painAreasMaped
 }
 
@@ -120,3 +121,4 @@ const painAreaNameMap = (painArea)=>{
         painAreaSpanish:"Cuello"
     }}
 }
+
