@@ -1,14 +1,16 @@
-import models from '../../databaseConfig.js';
+import models from "../../databaseConfig.js";
+import paginationUsersHandler from "../Pagination/paginationUsersHandler.js";;
 import { mapPatients } from '../../mapper/patient/patientMapper.js';
 
-const getPatientsHandler = async () => {
+const getPatientsHandler = async ({ limit, page }) => {
   try {
-    const getPatients = await models.User.findAll({
-      where: {
-        role: 3
+    //Type of role selection
+    const queryOptions = {
+      where:  {
+        role:  3,
       },
       attributes: {
-        exclude: ['password', 'cellphone', 'email']
+        exclude: ["password", "cellphone", "email"],
       },
       include: [
         {
@@ -21,8 +23,16 @@ const getPatientsHandler = async () => {
           }
         }
       ]
-    });
-    return mapPatients(getPatients);
+    };
+
+    if (!limit && !page) {
+      // Without pagination
+      const getPatients = await models.User.findAll(queryOptions);
+      return  mapPatients(getPatients);
+    } else {
+      // Pagination Logic
+      return paginationUsersHandler({ page, limit, queryOptions });
+    }
   } catch (error) {
     throw new Error("Error loading patients: " + error.message);
   }
