@@ -5,14 +5,14 @@ import { mapPatientMedicalBackground } from "./patientMedicalBackgroundMapper.js
 
 export const mapPatient = (patient) => {
     return {
-        userId: patient.id,
-        name: patient.name,
-        lastname: patient.lastname,
-        geolocation: patient.geolocation,
-        cellphone: patient.cellphone,
-        currentLocationCity: patient.currentLocationUser?.city || null,
-        currentLocationCountry: patient.currentLocationUser?.country || null,
-        lastLogin: patient.lastLogin,
+        userId: patient?.id,
+        name: patient?.name,
+        lastname: patient?.lastname,
+        geolocation: patient?.geolocation,
+        cellphone: patient?.cellphone,
+        currentLocationCity: patient?.currentLocationUser?.city || null,
+        currentLocationCountry: patient?.currentLocationUser?.country || null,
+        lastLogin: patient?.lastLogin,
         anthropometricDetails: patient.patientAnthDet ? getLatestAnthropometricMeasures(patient.patientAnthDet.map(anthDetail => mapAnthropometricDetail(anthDetail))) : [],
         vitalSigns: patient.patientVitalSignDetails ? getLatestVitalSignsMeasures(patient.patientVitalSignDetails.map(vitalSign => mapVitalSign(vitalSign))) : [],
         sociodemographicDetails: patient.socDemDet ? mapSociodemographicDetails(patient.socDemDet) : null,
@@ -75,3 +75,15 @@ function getLatestVitalSignsMeasures(vitalSignsArray) {
     });
     return Array.from(measuresMap.values());
 }
+
+
+
+export const mapPatients = (patients) => {
+    return patients.map(patient => ({
+      ...patient.toJSON(),
+      patientPulmonaryHypertensionRisks: patient.patientPulmonaryHypertensionRisks.length > 0 ? {
+        risk: patient.patientPulmonaryHypertensionRisks[0].catHpRisk?.name || null,
+        timestamp: patient.patientPulmonaryHypertensionRisks[0].registerTimestamp
+      } : null
+    }));
+  }
