@@ -4,7 +4,7 @@ import createPhysicianFavoritePatientHandler from "../../handlers/physicianHandl
 const createPhysicianFavoritePatientController = async (req, res) => {
     try {
         const fav = await createPhysicianFavoritePatientHandler(req.body);
-        return res.status(200).json(fav);
+        return res.status(201).json(fav);
 
     } catch (error) {
         return res.status(500).json({error: error.message});
