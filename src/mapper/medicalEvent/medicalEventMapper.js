@@ -7,6 +7,11 @@ import { mapAnthropometricDetail } from "../patient/anthropometricDetailsMapper.
 import { mapVitalSign } from "../patient/vitalSignsMapper.js";
 
 export const mapMedicalEvent = (medicalEvent) => {
+
+    const painMapArray = (medicalEvent?.patientPainMaps ?? [])
+        .concat(medicalEvent?.appSch?.patientPainMaps ?? [])
+        .map(painMap => mapPainMap(painMap));
+
     return {
         medicalEventId: medicalEvent.id,
         timestamp: medicalEvent.appSch.actualStartTimestamp,
@@ -57,7 +62,7 @@ export const mapMedicalEvent = (medicalEvent) => {
 
 
         ///AUTOEVALUACIONES - mapa del dolor
-        painMap: medicalEvent.patientPainMaps.concat(medicalEvent.appSch.patientPainMaps).map(painMap => mapPainMap(painMap)),
+        painMap: painMapArray[0],
 
         //EXAMEN FÍSICO
         physicalExaminations: medicalEvent.patientPhysicalExaminations.map(physicalExam => mapPhysicalExamination(physicalExam)),
