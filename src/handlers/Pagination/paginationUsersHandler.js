@@ -1,4 +1,5 @@
 import models from "../../databaseConfig.js";
+import { mapPatients } from "../../mapper/patient/patientMapper.js";
 
 const paginationUsersHandler = async ({ page, limit, queryOptions }) => {
   try {
@@ -19,13 +20,14 @@ const paginationUsersHandler = async ({ page, limit, queryOptions }) => {
     const { count, rows: user } = await models.User.findAndCountAll(
       queryOptions
     );
+    
     const totalPages = Math.ceil(count / limit);
 
     return {
       totalUsers: count,
       totalPages: totalPages,
       currentPage: page,
-      user: user,
+      user: mapPatients(user),
     };
   } catch (error) {
     throw new Error("Error loading pagination: " + error.message);
