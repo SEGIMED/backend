@@ -7,7 +7,6 @@ const createPhysicianFavoritePatientHandler = async (body) => {
         physicianId,
         patientId,
     } = body;
-    console.log("LOG", body, patientId, physicianId);
     try {
         const newFav = await PhysicianFavoritePatient.create(
             {
@@ -17,7 +16,6 @@ const createPhysicianFavoritePatientHandler = async (body) => {
         )
         return newFav
     } catch (error) {
-        console.error(error);
         throw new SegimedAPIError('Hubo un error durante el proceso agregar favorito.', 500)
     }
 };
