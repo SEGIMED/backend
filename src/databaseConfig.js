@@ -527,10 +527,6 @@ User.hasMany(PatientReview, { as: "physicianPatientReview", foreignKey: "physici
 PatientReview.belongsTo(User, { as: "physicianPhysicianPatientReview", foreignKey: "physicianId" })
 User.hasMany(PatientReview, { as: "patientReview", foreignKey: "patientId" })
 PatientReview.belongsTo(User, { as: "patient", foreignKey: "patientId" })
-
-//TODO create AlarmEvent model
-// AlarmEvent.belongsToMany(CatPainAreas,{ through: 'AlarmEventPainAreas', foreignKey: 'alarmEventId', otherKey: 'painAreaId' })
-// CatPainAreas.belongsToMany(AlarmEvents, { through: 'AlarmEventPainAreas', foreignKey: 'painAreaId', otherKey: 'alarmEventId' });
 User.hasMany(LoginRecord, { as: "loginRecord", foreignKey: "id" })
 PatientCardiovascularRisk.belongsTo(CatCardiovascularRisk, { as: "catCvRisk", foreignKey: "risk" });
 PatientHeartFailureClassification.belongsTo(CatHeartFailureClassification, { as: "CatHeartFailureClass", foreignKey: "heartFailureClassification" });
@@ -551,8 +547,8 @@ PatientPulmonaryHypertensionRisk.belongsTo(User, { as: "physicianUser", foreignK
 User.hasMany(PatientPulmonaryHypertensionRisk, { as: "physicianPatientPulmonaryHypertensionRisks", foreignKey: "physician" });
 PatientPainMap.belongsTo(AppointmentScheduling, { as: "schedulingAppointmentScheduling", foreignKey: "scheduling" });
 AppointmentScheduling.hasMany(PatientPainMap, { as: "patientPainMaps", foreignKey: "scheduling" });
-PatientPainMap.belongsTo(CatPainAreas, { as: "catPainArea", foreignKey: "painArea" });
-CatPainAreas.hasMany(PatientPainMap, { as: "patientPainMaps", foreignKey: "painArea" });
+// PatientPainMap.belongsTo(CatPainAreas, { as: "catPainArea", foreignKey: "painArea" });
+// CatPainAreas.hasMany(PatientPainMap, { as: "patientPainMaps", foreignKey: "painArea" });
 PatientPainMap.belongsTo(CatPainDuration, { as: "catPainDuration", foreignKey: "painDuration" });
 CatPainDuration.hasMany(PatientPainMap, { as: "patientPainMaps", foreignKey: "painDuration" });
 PatientPainMap.belongsTo(CatPainFrequency, { as: "catPainFrequency", foreignKey: "painFrequency" });

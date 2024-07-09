@@ -9,85 +9,82 @@ import {mapProcedurePrescription} from "../patient/procedurePrescriptionMapper.j
 
 
 export const mapMedicalEventDetail = (medicalEvent) => {
+   
     return {
-        medicalEventId: medicalEvent.id,
+        medicalEventId: medicalEvent?.id ?? null,
 
         // Datos del paciente
         patient: {
-            id: medicalEvent.appSch.patientUser.id,
-            name: medicalEvent.appSch.patientUser.name,
-            lastname: medicalEvent.appSch.patientUser.lastname,
-            cellphone: medicalEvent.appSch.patientUser.cellphone,
-            email: medicalEvent.appSch.patientUser.email,
-            nationality: medicalEvent.appSch.patientUser.nationality,
-            currentLocation: medicalEvent.appSch.patientUser.currentLocation,
-            geolocation: medicalEvent.appSch.patientUser.geolocation,
+            id: medicalEvent?.appSch?.patientUser?.id ?? null,
+            name: medicalEvent?.appSch?.patientUser?.name ?? null,
+            lastname: medicalEvent?.appSch?.patientUser?.lastname ?? null,
+            cellphone: medicalEvent?.appSch?.patientUser?.cellphone ?? null,
+            email: medicalEvent?.appSch?.patientUser?.email ?? null,
+            nationality: medicalEvent?.appSch?.patientUser?.nationality ?? null,
+            currentLocation: medicalEvent?.appSch?.patientUser?.currentLocation ?? null,
+            geolocation: medicalEvent?.appSch?.patientUser?.geolocation ?? null,
         },
 
         // grupo HTP
-        patientHpGroups: medicalEvent.appSch.patientUser.userHpGroups.map(hpGroup => {
+        patientHpGroups: medicalEvent?.appSch?.patientUser?.userHpGroups?.map(hpGroup => {
             return {
-                group: hpGroup.catHpGroup.name,
-                timestamp: hpGroup.timestamp
+                group: hpGroup?.catHpGroup?.name ?? null,
+                timestamp: hpGroup?.timestamp ?? null
             }
-        }),
+        }) ?? [],
 
         // Antecedentes como texto
-        backgrounds: medicalEvent.appSch.patientUser.backgrounds.concat(medicalEvent.background).filter(background => background !== null),
+        backgrounds: (medicalEvent?.appSch?.patientUser?.backgrounds ?? []).concat(medicalEvent?.background ?? []).filter(background => background !== null),
 
         //motivo de consulta
-        chiefComplaint: medicalEvent.chiefComplaint,
+        chiefComplaint: medicalEvent?.chiefComplaint ?? null,
         /// enfermedad actual
-        historyOfPresentIllness: medicalEvent.historyOfPresentIllness,
+        historyOfPresentIllness: medicalEvent?.historyOfPresentIllness ?? null,
         // sintomas o revision por sistemas
-        reviewOfSystems: medicalEvent.reviewOfSystems,
+        reviewOfSystems: medicalEvent?.reviewOfSystems ?? null,
 
         //detalles antropometricos
-        anthropometricDetails : medicalEvent.appSch.patientUser.patientAnthDet.map(anthDetail => mapAnthropometricDetail(anthDetail)),
+        anthropometricDetails: medicalEvent?.appSch?.patientUser?.patientAnthDet?.map(anthDetail => mapAnthropometricDetail(anthDetail)) ?? [],
 
         //signos vitales
-        vitalSigns: medicalEvent.vitalSignDetailsMedicalEvent.concat(medicalEvent.appSch.vitalSignDetailsScheduling).map(vitalSign=> mapVitalSign(vitalSign)),
+        vitalSigns: (medicalEvent?.vitalSignDetailsMedicalEvent ?? []).concat(medicalEvent?.appSch?.vitalSignDetailsScheduling ?? []).map(vitalSign => mapVitalSign(vitalSign)),
 
-        ///autoevaluacion
-        painMap: medicalEvent.patientPainMaps.concat(medicalEvent.appSch.patientPainMaps).map( painMap => mapPainMap(painMap)),
+        /// autoevaluacion
+        painMap: (medicalEvent?.patientPainMaps ?? []).concat(medicalEvent?.appSch?.patientPainMaps ?? []).map(painMap => mapPainMap(painMap)),
 
         //examen fisico
-        physicalExaminations: medicalEvent.patientPhysicalExaminations.map(physicalExam => mapPhysicalExamination(physicalExam)),
+        physicalExaminations: medicalEvent?.patientPhysicalExaminations?.map(physicalExam => mapPhysicalExamination(physicalExam)) ?? [],
 
         //Estudios diagnosticos
-        diagnosticTests: medicalEvent.diagnosticTests.concat(medicalEvent.appSch.schDiagnosticTests).map(diagnosticTest => mapDiagnosticTest(diagnosticTest)),
+        diagnosticTests: (medicalEvent?.diagnosticTests ?? []).concat(medicalEvent?.appSch?.schDiagnosticTests ?? []).map(diagnosticTest => mapDiagnosticTest(diagnosticTest)),
 
         // examenes pendientes
-        pendingDiagnosticTest: medicalEvent.pendingDiagnosticTest,
+        pendingDiagnosticTest: medicalEvent?.pendingDiagnosticTest ?? null,
 
         //evoluciones
-        physicianComments: medicalEvent.physicianComments,
+        physicianComments: medicalEvent?.physicianComments ?? null,
 
         //Diagnosticos
-        diagnostics: medicalEvent.patientDiagnostics.map(diagnostic => mapPatientDiagnostic(diagnostic)),
+        diagnostics: medicalEvent?.patientDiagnostics?.map(diagnostic => mapPatientDiagnostic(diagnostic)) ?? [],
 
         // Medicamentos recetados
-        drugPrescriptions: medicalEvent.drugPrescriptions.map(drugPrescription => mapDrugPrescription(drugPrescription)),
-
-        // Examenes de laboratorio prescritos
-        // prescribedDiagnosticTests: medicalEvent
+        drugPrescriptions: medicalEvent?.drugPrescriptions?.map(drugPrescription => mapDrugPrescription(drugPrescription)) ?? [],
 
         // Procedimientos recetados
-        medicalProcedures: medicalEvent.procedurePrescriptions.map(procedurePrescription => mapProcedurePrescription(procedurePrescription)),
+        medicalProcedures: medicalEvent?.procedurePrescriptions?.map(procedurePrescription => mapProcedurePrescription(procedurePrescription)) ?? [],
 
         //plan de tratamiento
-        treatmentPlan: medicalEvent.pendingDiagnosticTest,
+        treatmentPlan: medicalEvent?.pendingDiagnosticTest ?? null,
 
-        //Tratamiento no faqrmacológico
-        medicalIndications: medicalEvent.medicalIndications.map(medicalIndication =>{
+        //Tratamiento no farmacológico
+        medicalIndications: medicalEvent?.medicalIndications?.map(medicalIndication => {
             return {
-                description: medicalIndication.description,
-                timestamp: medicalIndication.timestamp
+                description: medicalIndication?.description ?? null,
+                timestamp: medicalIndication?.timestamp ?? null
             }
-        }),
+        }) ?? [],
 
         //Pauta de alarma
-        alarmPattern: medicalEvent.alarmPattern
-
+        alarmPattern: medicalEvent?.alarmPattern ?? null
     }
 }
