@@ -67,6 +67,9 @@ import createPhysicianAttendancePlaceController
   from "../controllers/physician/createPhysicianAttendancePlaceController.js";
 import createPhysicianSpecialtyController from "../controllers/physician/createPhysicianSpecialtyController.js";
 import updatePhysicianSpecialtyController from "../controllers/physician/updatePhysicianSpecialtyController.js";
+import createPhysicianFavoritePatientController from "../controllers/physician/createPhysicianFavoritePatientController.js";
+import deletePhysicianFavoritePatientController from "../controllers/physician/deletePhysicianFavoritePatientController.js";
+import getPhysicianFavoritePatientController from "../controllers/physician/getPhysicianFavoritePatientController.js";
 import createMedicalIndicationsController
   from "../controllers/medicalIndications/createMedicalIndicationsController.js";
 import createPatientReviewController from "../controllers/patient/reviewPatient/createPatientReviewController.js";
@@ -237,6 +240,9 @@ physicianRouter.patch(
 physicianRouter.post("/create-physician-specialty", createPhysicianSpecialtyController);
 physicianRouter.patch("/update-physician-specialty", updatePhysicianSpecialtyController);
 
+physicianRouter.post("/create-physician-favorite-patient", createPhysicianFavoritePatientController); //agrega un paciente favorito un medico
+physicianRouter.delete("/delete-physician-favorite-patient", deletePhysicianFavoritePatientController); //agrega un paciente favorito un medico
+physicianRouter.get("/get-physician-favorite-patient", getPhysicianFavoritePatientController); //muestra los pacientes favoritos de un medico
 
 // physicianRouter.post("/create-physician-expertise-level",createPhysicianExpertiseLevelController)
 

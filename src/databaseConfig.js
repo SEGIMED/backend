@@ -78,7 +78,7 @@ import UserCurrentLocationModel from "./models/UserCurrentLocation.js"
 import AlarmEventModel from "./models/AlarmEvent.js"
 import ProvisionalPreConsultationModel from "./models/ProvisionalPreConsultation.js"
 import BackgroundsModel from "./models/Backgrounds.js";
-
+import PhysicianFavoritePatientModel from './models/PhysicianFavoritePatient.js';
 
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
@@ -186,7 +186,7 @@ BackgroundsModel(sequelize)
 UserCurrentLocationModel(sequelize)
 AlarmEventModel(sequelize)
 ProvisionalPreConsultationModel(sequelize)
-
+PhysicianFavoritePatientModel(sequelize);
 
 export const {
     DiagnosticTest,
@@ -265,7 +265,8 @@ export const {
     UserCurrentLocation,
     AlarmEvent,
     ProvisionalPreConsultation,
-    Backgrounds
+    Backgrounds,
+    PhysicianFavoritePatient
 
 } = sequelize.models;
 
@@ -596,7 +597,12 @@ Backgrounds.belongsTo(MedicalEvent, { as: "medicalEventMedicalBackgrounds", fore
 MedicalEvent.hasOne(Backgrounds, { as: "background", foreignKey: "medicalEvent"});
 Backgrounds.belongsTo(User, { as: "patientUser", foreignKey: "patient"});
 User.hasMany(Backgrounds, { as: "backgrounds", foreignKey: "patient"});
-
+// // User.hasMany(PhysicianFavoritePatient, { as: "PhysicianFavoritePatient", foreignKey: 'favorite_patient', sourceKey: 'id', });
+// // PhysicianDetails.hasMany(PhysicianFavoritePatient, { foreignKey: 'physician_detail', sourceKey: 'id', });
+// // PhysicianFavoritePatient.belongsTo(User, {foreignKey: 'favorite_patient', targetKey: 'id', });
+// // PhysicianFavoritePatient.belongsTo(PhysicianDetails, { foreignKey: 'physician_detail', targetKey: 'id', });
+// Favorite.belongsToMany(User, { through: 'user_favorite' });
+// User.belongsToMany(Favorite , { through: 'user_favorite' });
 
 const models = {
     AnthropometricDetails,
@@ -674,7 +680,8 @@ const models = {
     PatientSurgicalRisk,
     AlarmEvent,
     ProvisionalPreConsultation,
-    Backgrounds
+    Backgrounds,
+    PhysicianFavoritePatient
 };
 
 export default models
