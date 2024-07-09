@@ -593,12 +593,8 @@ Backgrounds.belongsTo(MedicalEvent, { as: "medicalEventMedicalBackgrounds", fore
 MedicalEvent.hasOne(Backgrounds, { as: "background", foreignKey: "medicalEvent"});
 Backgrounds.belongsTo(User, { as: "patientUser", foreignKey: "patient"});
 User.hasMany(Backgrounds, { as: "backgrounds", foreignKey: "patient"});
-// // User.hasMany(PhysicianFavoritePatient, { as: "PhysicianFavoritePatient", foreignKey: 'favorite_patient', sourceKey: 'id', });
-// // PhysicianDetails.hasMany(PhysicianFavoritePatient, { foreignKey: 'physician_detail', sourceKey: 'id', });
-// // PhysicianFavoritePatient.belongsTo(User, {foreignKey: 'favorite_patient', targetKey: 'id', });
-// // PhysicianFavoritePatient.belongsTo(PhysicianDetails, { foreignKey: 'physician_detail', targetKey: 'id', });
-// Favorite.belongsToMany(User, { through: 'user_favorite' });
-// User.belongsToMany(Favorite , { through: 'user_favorite' });
+PhysicianFavoritePatient.belongsTo(User, { foreignKey: 'favoritePatient', as: 'patient' });
+PhysicianFavoritePatient.belongsTo(User, { foreignKey: 'physicianId', as: 'physician' });
 
 const models = {
     AnthropometricDetails,

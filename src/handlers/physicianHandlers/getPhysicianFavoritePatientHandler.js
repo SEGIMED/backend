@@ -1,4 +1,4 @@
-import { PhysicianFavoritePatient } from "../../databaseConfig.js";
+import { PhysicianFavoritePatient, User } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 
 const getPhysicianFavoritePatientHandler = async (physicianId) => {
@@ -7,6 +7,13 @@ const getPhysicianFavoritePatientHandler = async (physicianId) => {
             where: {
                 physicianId: physicianId,
             },
+            include: [
+                {
+                    model: User,
+                    as: 'patient',
+                    attributes: ['id', 'name','lastname'] 
+                }
+            ]
         });
         return favoritePatients;
     } catch (error) {
