@@ -4,7 +4,8 @@ import updateVitalSignsHandler from "../../handlers/vitalSigns/updateVitalSignsH
 const updateVitalSignsController = async (req, res) => {
     try {
         const updateVitalSigns = req.body;
-        const vitalSign = await updateVitalSignsHandler(updateVitalSigns);
+  
+        const vitalSign = await updateVitalSignsHandler(updateVitalSigns.vitalSignsToUpdate);
         return res.status(200).json(vitalSign);
 
     } catch (error) {
