@@ -110,6 +110,7 @@ import patchAlarmEventController from "../controllers/alarmEvent/patchAlarmEvent
 import createPreConsultationController from"../controllers/patient/preConsultation/ProvisionalPreConsultationController.js"
 import getAllProvisionaPreConsultationPatientController from "../controllers/patient/preConsultation/getAllProvisionaPreConsultationPatientController.js"
 import patchProvisionalPreConsultationController from "../controllers/patient/preConsultation/patchProvisionalPreConsultationController.js"
+import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js"
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -192,6 +193,7 @@ patientRouter.route("/patient-update-hp-group").patch(updatePatientHpGroupContro
 
 //*pain map (mapa del dolor)
 patientRouter.route("/patient-new-pain-map").post(createPatientPainMapController)
+patientRouter.route("/patient-update-pain-map").patch(patchPatientPainMapController)
 
 
 
@@ -348,7 +350,6 @@ preConsultationRouter.route("/get-all-pateint-preconsultation").get(getAllProvis
 preConsultationRouter.route("/update-pre-consultation").patch(patchProvisionalPreConsultationController)
 
 //* Statistical center
-
 statisticsRouter.get("/statistics-genre", getGenderDistributionController)
 statisticsRouter.get("/statistics-patient-activity", getPatientActivityDistributionController)
 

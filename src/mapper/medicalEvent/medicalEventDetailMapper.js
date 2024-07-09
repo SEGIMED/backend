@@ -6,10 +6,14 @@ import {mapDiagnosticTest} from "../patient/diagnosticTestMapper.js";
 import {mapPatientDiagnostic} from "../patient/patientDiagnosticMapper.js";
 import {mapDrugPrescription} from "../patient/drugPrescriptionMapper.js";
 import {mapProcedurePrescription} from "../patient/procedurePrescriptionMapper.js";
+import { SociodemographicDetails } from "../../databaseConfig.js";
 
 
 export const mapMedicalEventDetail = (medicalEvent) => {
-   
+
+    const painMapArray = (medicalEvent?.patientPainMaps ?? [])
+    .concat(medicalEvent?.appSch?.patientPainMaps ?? [])
+    .map(painMap => mapPainMap(painMap));
     return {
         medicalEventId: medicalEvent?.id ?? null,
 
@@ -23,6 +27,7 @@ export const mapMedicalEventDetail = (medicalEvent) => {
             nationality: medicalEvent?.appSch?.patientUser?.nationality ?? null,
             currentLocation: medicalEvent?.appSch?.patientUser?.currentLocation ?? null,
             geolocation: medicalEvent?.appSch?.patientUser?.geolocation ?? null,
+            genre:medicalEvent?.appSch?.patientUser?.socDemDet.catGenre??null
         },
 
         // grupo HTP
@@ -50,7 +55,7 @@ export const mapMedicalEventDetail = (medicalEvent) => {
         vitalSigns: (medicalEvent?.vitalSignDetailsMedicalEvent ?? []).concat(medicalEvent?.appSch?.vitalSignDetailsScheduling ?? []).map(vitalSign => mapVitalSign(vitalSign)),
 
         /// autoevaluacion
-        painMap: (medicalEvent?.patientPainMaps ?? []).concat(medicalEvent?.appSch?.patientPainMaps ?? []).map(painMap => mapPainMap(painMap)),
+        painMap: painMapArray[0],
 
         //examen fisico
         physicalExaminations: medicalEvent?.patientPhysicalExaminations?.map(physicalExam => mapPhysicalExamination(physicalExam)) ?? [],
@@ -78,6 +83,7 @@ export const mapMedicalEventDetail = (medicalEvent) => {
 
         //Tratamiento no farmacológico
         medicalIndications: medicalEvent?.medicalIndications?.map(medicalIndication => {
+
             return {
                 description: medicalIndication?.description ?? null,
                 timestamp: medicalIndication?.timestamp ?? null

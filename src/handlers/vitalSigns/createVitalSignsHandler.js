@@ -4,14 +4,13 @@ import moment from "moment-timezone";
 import contextService from "request-context";
 
 
-const newVitalSignHandler = async (body) => {
-    const {vitalSignsToCreate} = body;
-
+const newVitalSignHandler = async (vitalSignsToCreate) => {
+    
     const mappedVitalSignsToCreate = vitalSignsToCreate.map(vitalSign => {
         return {
             patient: vitalSign.patientId,
             measure: vitalSign.measure,
-            measureSource: contextService.get('request:user').userId,
+            measureSource: vitalSign.patientId,
             measureType: vitalSign.measureType,
             measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
             scheduling: vitalSign.schedulingId,
