@@ -78,7 +78,7 @@ import UserCurrentLocationModel from "./models/UserCurrentLocation.js"
 import AlarmEventModel from "./models/AlarmEvent.js"
 import ProvisionalPreConsultationModel from "./models/ProvisionalPreConsultation.js"
 import BackgroundsModel from "./models/Backgrounds.js";
-import "dotenv/config"
+import DoctorScheduleModel from "./models/DoctorSchedule.js";
 
 
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
@@ -187,6 +187,8 @@ BackgroundsModel(sequelize)
 UserCurrentLocationModel(sequelize)
 AlarmEventModel(sequelize)
 ProvisionalPreConsultationModel(sequelize)
+DoctorScheduleModel(sequelize)
+
 
 
 export const {
@@ -266,7 +268,8 @@ export const {
     UserCurrentLocation,
     AlarmEvent,
     ProvisionalPreConsultation,
-    Backgrounds
+    Backgrounds,
+    DoctorSchedule, // Doctor-attention
 
 } = sequelize.models;
 
@@ -597,7 +600,7 @@ Backgrounds.belongsTo(MedicalEvent, { as: "medicalEventMedicalBackgrounds", fore
 MedicalEvent.hasOne(Backgrounds, { as: "background", foreignKey: "medicalEvent"});
 Backgrounds.belongsTo(User, { as: "patientUser", foreignKey: "patient"});
 User.hasMany(Backgrounds, { as: "backgrounds", foreignKey: "patient"});
-
+User.hasOne(DoctorSchedule, { as: "doctorSchedule", foreignKey: "doctor_id"})
 
 const models = {
     AnthropometricDetails,
@@ -675,7 +678,8 @@ const models = {
     PatientSurgicalRisk,
     AlarmEvent,
     ProvisionalPreConsultation,
-    Backgrounds
+    Backgrounds,
+    DoctorSchedule
 };
 
 export default models
