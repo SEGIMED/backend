@@ -78,6 +78,7 @@ import UserCurrentLocationModel from "./models/UserCurrentLocation.js"
 import AlarmEventModel from "./models/AlarmEvent.js"
 import ProvisionalPreConsultationModel from "./models/ProvisionalPreConsultation.js"
 import BackgroundsModel from "./models/Backgrounds.js";
+import "dotenv/config"
 
 
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
