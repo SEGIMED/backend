@@ -426,9 +426,7 @@ statisticsRouter.get(
 );
 
 //* create schedule
-createScheduleRouter.post("/create_schedule", (req, res) => {
-  console.log("hola munod")
-})
+createScheduleRouter.post("/create_schedule", createSchedule)
 
 export {
   getPatientsRouter,

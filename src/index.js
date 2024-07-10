@@ -10,14 +10,13 @@ const server = http.createServer(app);
 
 const port = app.get("port");
 
-server.listen(5000, () => {
+server.listen(port, () => {
  console.log(`Server listening on port ${port}`);
 });
 
 
 //initial websocket server
 initialWebSocket(server);
-
 //Reminder appointment
 // cron.schedule('0 18 * * *', () => {
 //     console.log('running a task every minute');

@@ -19,23 +19,33 @@ const model = (sequelize) => {
         },
             onUpdate: "CASCADE",
         },
-        Date: {
+        date: {
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW,
         },
         start_time: {
-            type: DataTypes.TIME,
+            type: DataTypes.DATE,
             allowNull: false,
         },
         end_time: {
-            type: DataTypes.TIME,
+            type: DataTypes.DATE,
             allowNull: false,
-        }
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: DataTypes.NOW,
+    },
+        updatedAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: DataTypes.NOW,
+    }
     }, {
         tableName: "doctor_schedule",
         schema: "public",
-        timesTamps: false
+        timesTamps: true
     })
 }
 
