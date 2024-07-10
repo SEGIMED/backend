@@ -1,15 +1,11 @@
-import { DoctorSchedule } from "../../databaseConfig.js";
+import getScheduleByIdHandler from "../../handlers/managementSchedule/getScheduleByIdHandler";
+
 
 const getScheduleById = async (req, res) => {
     const { id } = req.params;
-    console.log(id)
     try {
-        const data = await DoctorSchedule.findAll({
-            where: {
-                doctor_id: id
-            }
-        })
-        res.status(200).send(data);
+        const response = await getScheduleByIdHandler(id);
+        res.status(200).send(response);
     } catch (error) {
         res.status(404).json({ msj: error.message })
     }
