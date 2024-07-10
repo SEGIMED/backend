@@ -15,6 +15,7 @@ const excludedJWTPaths = [
     "/api/doc/swagger-ui-standalone-preset.js",
     "/api/doc/swagger-ui-bundle.js",
     "/api/doc/swagger-ui.css",
+    "/api/create_schedule"
 ]
 
 export const validateJWT = (req, res, next) => {
