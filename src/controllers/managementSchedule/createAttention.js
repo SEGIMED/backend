@@ -2,12 +2,13 @@ import { DoctorSchedule, User } from "../../databaseConfig.js";
 import moment from "moment";
 
 const createSchedule = async (req, res) => {
-    const { openAtt, closeAtt, id } = req.body;
+    const { idUser } = req.params
+    const { openAtt, closeAtt } = req.body;
     try {
          // luego realizamos la operacion de registro
-         console.log(id)
+         console.log(idUser)
         await DoctorSchedule.create({
-            doctor_id: id,
+            doctor_id: idUser,
             start_time: moment(openAtt, "HH:mm:ss").format("HH:mm:ss"),
             end_time: moment(closeAtt, "HH:mm:ss").format("HH:mm:ss"),
         })

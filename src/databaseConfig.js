@@ -600,7 +600,8 @@ Backgrounds.belongsTo(MedicalEvent, { as: "medicalEventMedicalBackgrounds", fore
 MedicalEvent.hasOne(Backgrounds, { as: "background", foreignKey: "medicalEvent"});
 Backgrounds.belongsTo(User, { as: "patientUser", foreignKey: "patient"});
 User.hasMany(Backgrounds, { as: "backgrounds", foreignKey: "patient"});
-User.hasOne(DoctorSchedule, { as: "doctorSchedule", foreignKey: "doctor_id"})
+User.hasMany(DoctorSchedule, { foreignKey: "doctor_id"});
+DoctorSchedule.belongsTo(User, { foreignKey: "doctor_id"});
 
 const models = {
     AnthropometricDetails,

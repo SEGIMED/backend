@@ -13,8 +13,9 @@ const model = (sequelize) => {
         doctor_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            unique: true,
             references: {
-                model: "User", // foreinkey
+                model: "user", // foreinkey
                 key: "id" // clave de relacion
         },
             onUpdate: "CASCADE",

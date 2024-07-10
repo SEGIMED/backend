@@ -92,6 +92,10 @@ import createPreConsultationController from "../controllers/patient/preConsultat
 import getAllProvisionaPreConsultationPatientController from "../controllers/patient/preConsultation/getAllProvisionaPreConsultationPatientController.js";
 import patchProvisionalPreConsultationController from "../controllers/patient/preConsultation/patchProvisionalPreConsultationController.js";
 import createSchedule from "../controllers/managementSchedule/createAttention.js";
+import getAllSchedules from "../controllers/managementSchedule/getAllSchedule.js";
+import getScheduleById from "../controllers/managementSchedule/getScheduleId.js";
+import updateSchedule from "../controllers/managementSchedule/updateSchedule.js";
+import deleteSchedule from "../controllers/managementSchedule/deleteSchedule.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -426,7 +430,11 @@ statisticsRouter.get(
 );
 
 //* create schedule
-createScheduleRouter.post("/create_schedule", createSchedule)
+createScheduleRouter.post("/create_schedule/:idUser", createSchedule);
+createScheduleRouter.get("/getAllSchedule", getAllSchedules);
+createScheduleRouter.get("/getSchedule/:id", getScheduleById);
+createScheduleRouter.patch("/updateSchedule/:id", updateSchedule)
+createScheduleRouter.delete("/deleteSchedule/:id", deleteSchedule)
 
 export {
   getPatientsRouter,
