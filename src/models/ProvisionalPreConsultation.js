@@ -157,12 +157,12 @@ const model = (sequelize) => {
         },
       },
       laboratoryResults: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+        type: DataTypes.STRING,
         allowNull: true,
         field: "laboratory_results",
       },
       laboratoryResultsDescription: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+        type: DataTypes.STRING,
         allowNull: true,
         field: "laboratory_results_description",
       },
@@ -218,7 +218,7 @@ const model = (sequelize) => {
         field: "left_heart_catheterization",
       },
       otherStudies: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+        type: DataTypes.STRING,
         allowNull: true,
         field: "other_studies",
       },
