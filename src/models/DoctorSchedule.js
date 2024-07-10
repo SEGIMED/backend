@@ -5,10 +5,10 @@ const DataTypes = sequelize.DataTypes;
 const model = (sequelize) => {
     sequelize.define("DoctorSchedule", {
         id: {
-            autoIncrement: true,
             type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey: true,
-            allowNull: false
+            allowNull: true
         }, 
         doctor_id: {
             type: DataTypes.INTEGER,
@@ -21,31 +21,21 @@ const model = (sequelize) => {
         },
         date: {
             type: DataTypes.DATE,
-            allowNull: false,
+            allowNull: true,
             defaultValue: DataTypes.NOW,
         },
         start_time: {
-            type: DataTypes.DATE,
+            type: DataTypes.TIME,
             allowNull: false,
         },
         end_time: {
-            type: DataTypes.DATE,
+            type: DataTypes.TIME,
             allowNull: false,
         },
-        createdAt: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            defaultValue: DataTypes.NOW,
-    },
-        updatedAt: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            defaultValue: DataTypes.NOW,
-    }
     }, {
         tableName: "doctor_schedule",
         schema: "public",
-        timesTamps: true
+        timesTamps: false
     })
 }
 

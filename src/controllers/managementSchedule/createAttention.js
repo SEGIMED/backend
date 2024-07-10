@@ -2,16 +2,14 @@ import { DoctorSchedule, User } from "../../databaseConfig.js";
 import moment from "moment";
 
 const createSchedule = async (req, res) => {
-    const { openAtt, closeAtt } = req.body;
+    const { openAtt, closeAtt, id } = req.body;
     try {
-        // nos traemos al usuario
-         const doctor_id = await User.findByPk(13);
-         
          // luego realizamos la operacion de registro
+         console.log(id)
         await DoctorSchedule.create({
-            doctor_id,
-            start_time: moment(openAtt, "HH:mm").format("HH:mm"),
-            end_time: moment(closeAtt, "HH:mm").format("HH:mm"),
+            doctor_id: id,
+            start_time: moment(openAtt, "HH:mm:ss").format("HH:mm:ss"),
+            end_time: moment(closeAtt, "HH:mm:ss").format("HH:mm:ss"),
         })
         res.status(200).json({ message: "Registro con exito"})
     } catch (error) {
