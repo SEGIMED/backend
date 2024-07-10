@@ -6,7 +6,6 @@ const createSchedule = async (req, res) => {
     const { openAtt, closeAtt } = req.body;
     try {
          // luego realizamos la operacion de registro
-         console.log(idUser)
         await DoctorSchedule.create({
             doctor_id: idUser,
             start_time: moment(openAtt, "HH:mm:ss").format("HH:mm:ss"),
