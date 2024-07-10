@@ -32,7 +32,7 @@ const getAllProvisionaPreConsultationHandler = async(patientId)=>{
 
         return allPreConsultations
     } catch (error) {
-        throw new segimedAPIError("Error al cargar los detalles de la preocnsulta ", 500);
+        throw new segimedAPIError("Error al cargar los detalles de la preconsulta ", 500);
     }
 }
 
