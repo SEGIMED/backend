@@ -5,8 +5,8 @@ const DataTypes = sequelize.DataTypes;
 const model = (sequelize) => {
     sequelize.define("DoctorSchedule", {
         id: {
-            type: DataTypes.INTEGER,
             autoIncrement: true,
+            type: DataTypes.INTEGER,
             primaryKey: true,
             allowNull: false
         }, 
@@ -22,6 +22,7 @@ const model = (sequelize) => {
         Date: {
             type: DataTypes.DATE,
             allowNull: false,
+            defaultValue: DataTypes.NOW,
         },
         start_time: {
             type: DataTypes.TIME,

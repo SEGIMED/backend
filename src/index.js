@@ -10,7 +10,7 @@ const server = http.createServer(app);
 
 const port = app.get("port");
 
-server.listen(port, () => {
+server.listen(5000, () => {
  console.log(`Server listening on port ${port}`);
 });
 

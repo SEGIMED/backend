@@ -91,6 +91,7 @@ import patchAlarmEventController from "../controllers/alarmEvent/patchAlarmEvent
 import createPreConsultationController from "../controllers/patient/preConsultation/ProvisionalPreConsultationController.js";
 import getAllProvisionaPreConsultationPatientController from "../controllers/patient/preConsultation/getAllProvisionaPreConsultationPatientController.js";
 import patchProvisionalPreConsultationController from "../controllers/patient/preConsultation/patchProvisionalPreConsultationController.js";
+import createSchedule from "../controllers/managementSchedule/createAttention.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -115,6 +116,7 @@ const sociodemographicDetailsRouter = Router();
 const backgroundsRouter = Router();
 const alarmRouter = Router();
 const preConsultationRouter = Router();
+const createScheduleRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -127,7 +129,7 @@ userRouter.route("/user/:id").get(getUserController);
 userRouter
   .route("/user/update-user-info")
   .patch(updateUserInformationController);
-userRouter.route("/user/create-attention").post();
+
 
 //* Patient
 patientRouter.route("/patient").post(postPatientController);
@@ -423,6 +425,11 @@ statisticsRouter.get(
   getPatientActivityDistributionController
 );
 
+//* create schedule
+createScheduleRouter.post("/create_schedule", (req, res) => {
+  console.log("hola munod")
+})
+
 export {
   getPatientsRouter,
   patientRouter,
@@ -447,4 +454,5 @@ export {
   alarmRouter,
   preConsultationRouter,
   backgroundsRouter,
+  createScheduleRouter,
 };
