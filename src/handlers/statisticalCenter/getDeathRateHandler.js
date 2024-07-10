@@ -29,7 +29,6 @@ const getDeathRateHandler = async (from, to) => {
                 },
             },
         });// cuento los muertos historicos hasta la fecha FROM
-        console.log("regi, histor",registredInDateCount, historyDeathCount);
         return { from, to, dead: deathCounter, alive: (registredInDateCount - historyDeathCount) };
     } catch (error) {
         throw new SegimedAPIError("Error al cargar las estadísticas de mortalidad: ", 500);
