@@ -1,7 +1,8 @@
 import { ProvisionalPreConsultation } from "../../../databaseConfig.js";
+import { loadImage } from "../../../utils/cloudinary/cloudinary.js";
 
 const createPreConsultationHandler= async (body)=>{
-    const{
+    let{
         patient,
         appointmentSchedule,
         lackOfAir,
@@ -28,8 +29,8 @@ const createPreConsultationHandler= async (body)=>{
         abnormalGlycemia,
         lastAbnormalGlycemia,
         physicalExamination,
-        laboratoryResults,//array strings
-        laboratoryResultsDescription,//array  strings
+        laboratoryResults,
+        laboratoryResultsDescription, 
         electrocardiogram,
         electrocardiogramDescription,
         rxThorax,
@@ -41,12 +42,19 @@ const createPreConsultationHandler= async (body)=>{
         ccg,
         resonance,
         leftHeartCatheterization,
-        otherStudies,//array  strings
+        otherStudies,
         pendingStudies,
         consultationReason,
         importantSymptoms,
-        currentMedications,//array  strings
+        currentMedications,
     }=body
+
+    if(tomographies){
+        tomographies = JSON.parse(tomographies)
+        const Imagen = await loadImage(patient, tomographies)
+        tomographies = Imagen?.url;
+      }
+
     try {
         
         const PreConsultation= await ProvisionalPreConsultation.create({
@@ -76,8 +84,8 @@ const createPreConsultationHandler= async (body)=>{
         abnormalGlycemia,
         lastAbnormalGlycemia,
         physicalExamination,
-        laboratoryResults,//array strings
-        laboratoryResultsDescription,//array  strings
+        laboratoryResults,
+        laboratoryResultsDescription,
         electrocardiogram,
         electrocardiogramDescription,
         rxThorax,
@@ -89,11 +97,11 @@ const createPreConsultationHandler= async (body)=>{
         ccg,
         resonance,
         leftHeartCatheterization,
-        otherStudies,//array  strings
+        otherStudies,
         pendingStudies,
         consultationReason,
         importantSymptoms, 
-        currentMedications,//array  strings
+        currentMedications,
     })
     return PreConsultation
         

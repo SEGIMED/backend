@@ -7,10 +7,6 @@ const {
     API_CLOUDINARY_SECRET,
     API_CLOUDINARY_CLOUDNAME
      } = process.env
-
-     console.log(API_CLOUDINARY_KEY,
-        API_CLOUDINARY_SECRET,
-        API_CLOUDINARY_CLOUDNAME)
      
          // Configuration
          cloudinary.config({ 
