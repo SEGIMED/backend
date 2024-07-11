@@ -98,7 +98,7 @@ const createPreConsultationHandler= async (body)=>{
     return PreConsultation
         
     } catch (error) {
-        throw new Error("THubo un error al crear la preconsulta: " + error.message);
+        throw new Error("Hubo un error al crear la preconsulta: " + error.message);
     }
 }
 

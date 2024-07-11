@@ -41,6 +41,7 @@ import createPatientDiagnosticController from "../controllers/patient/createPati
 import patchDiagnosticTestController from "../controllers/diagnosticTest/patchDiagnosticTestController.js";
 import getGenderDistributionController from "../controllers/statisticalCenter/getGenderDistributionController.js";
 import getPatientActivityDistributionController from "../controllers/statisticalCenter/getPatientActivityDistributionController.js"
+import getDeathRateController from "../controllers/statisticalCenter/getDeathRateController.js";
 import createDrugPrescriptionController from "../controllers/drugPrescription/createDrugPrescriptionController.js";
 import createMedicalProcedurePrescriptionController
   from "../controllers/medicalProcedurePrescription/createMedicalProcedurePrescriptionController.js";
@@ -67,6 +68,9 @@ import createPhysicianAttendancePlaceController
   from "../controllers/physician/createPhysicianAttendancePlaceController.js";
 import createPhysicianSpecialtyController from "../controllers/physician/createPhysicianSpecialtyController.js";
 import updatePhysicianSpecialtyController from "../controllers/physician/updatePhysicianSpecialtyController.js";
+import createPhysicianFavoritePatientController from "../controllers/physician/createPhysicianFavoritePatientController.js";
+import deletePhysicianFavoritePatientController from "../controllers/physician/deletePhysicianFavoritePatientController.js";
+import getPhysicianFavoritePatientController from "../controllers/physician/getPhysicianFavoritePatientController.js";
 import createMedicalIndicationsController
   from "../controllers/medicalIndications/createMedicalIndicationsController.js";
 import createPatientReviewController from "../controllers/patient/reviewPatient/createPatientReviewController.js";
@@ -107,6 +111,7 @@ import patchAlarmEventController from "../controllers/alarmEvent/patchAlarmEvent
 import createPreConsultationController from"../controllers/patient/preConsultation/ProvisionalPreConsultationController.js"
 import getAllProvisionaPreConsultationPatientController from "../controllers/patient/preConsultation/getAllProvisionaPreConsultationPatientController.js"
 import patchProvisionalPreConsultationController from "../controllers/patient/preConsultation/patchProvisionalPreConsultationController.js"
+import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js"
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -189,6 +194,7 @@ patientRouter.route("/patient-update-hp-group").patch(updatePatientHpGroupContro
 
 //*pain map (mapa del dolor)
 patientRouter.route("/patient-new-pain-map").post(createPatientPainMapController)
+patientRouter.route("/patient-update-pain-map").patch(patchPatientPainMapController)
 
 
 
@@ -237,6 +243,9 @@ physicianRouter.patch(
 physicianRouter.post("/create-physician-specialty", createPhysicianSpecialtyController);
 physicianRouter.patch("/update-physician-specialty", updatePhysicianSpecialtyController);
 
+physicianRouter.post("/create-physician-favorite-patient", createPhysicianFavoritePatientController); //agrega un paciente favorito un medico
+physicianRouter.delete("/delete-physician-favorite-patient", deletePhysicianFavoritePatientController); //agrega un paciente favorito un medico
+physicianRouter.get("/get-physician-favorite-patient", getPhysicianFavoritePatientController); //muestra los pacientes favoritos de un medico
 
 // physicianRouter.post("/create-physician-expertise-level",createPhysicianExpertiseLevelController)
 
@@ -342,10 +351,9 @@ preConsultationRouter.route("/get-all-pateint-preconsultation").get(getAllProvis
 preConsultationRouter.route("/update-pre-consultation").patch(patchProvisionalPreConsultationController)
 
 //* Statistical center
-
 statisticsRouter.get("/statistics-genre", getGenderDistributionController)
 statisticsRouter.get("/statistics-patient-activity", getPatientActivityDistributionController)
-
+statisticsRouter.get("/statistics-death-rate", getDeathRateController)
 export {
   getPatientsRouter,
   patientRouter,
