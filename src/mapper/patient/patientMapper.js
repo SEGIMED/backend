@@ -80,10 +80,10 @@ function getLatestVitalSignsMeasures(vitalSignsArray) {
 
 export const mapPatients = (patients) => {
     return patients.map(patient => ({
-      ...patient.toJSON(),
-      patientPulmonaryHypertensionRisks: patient.patientPulmonaryHypertensionRisks.length > 0 ? {
-        risk: patient.patientPulmonaryHypertensionRisks[0].catHpRisk?.name || null,
-        timestamp: patient.patientPulmonaryHypertensionRisks[0].registerTimestamp
-      } : null
+        ...patient.toJSON(),
+        patientPulmonaryHypertensionRisks: patient.patientPulmonaryHypertensionRisks?.length > 0 ? {
+            risk: patient.patientPulmonaryHypertensionRisks[0].catHpRisk?.name || null,
+            timestamp: patient.patientPulmonaryHypertensionRisks[0].registerTimestamp
+        } : null
     }));
-  }
+}

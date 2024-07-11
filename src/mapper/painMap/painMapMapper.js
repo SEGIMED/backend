@@ -165,6 +165,6 @@ const painAreaNameMap = (painArea) => {
         return {
             painAreaEnglish: "neck",
             painAreaSpanish: "Cuello"
-        }
-    }
+        }
+    }
 }
