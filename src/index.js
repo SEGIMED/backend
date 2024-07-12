@@ -23,4 +23,10 @@ initialWebSocket(server);
 //     scheduleReminderEmails();
 //   });
 
+<<<<<<< HEAD
 export { app, server };
+=======
+export {
+    app, server
+}
+>>>>>>> e1f57df553fa7f938f9cd14536a8c21c278fdbf3
