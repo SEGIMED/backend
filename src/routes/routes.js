@@ -41,6 +41,7 @@ import createPatientDiagnosticController from "../controllers/patient/createPati
 import patchDiagnosticTestController from "../controllers/diagnosticTest/patchDiagnosticTestController.js";
 import getGenderDistributionController from "../controllers/statisticalCenter/getGenderDistributionController.js";
 import getPatientActivityDistributionController from "../controllers/statisticalCenter/getPatientActivityDistributionController.js"
+import getDeathRateController from "../controllers/statisticalCenter/getDeathRateController.js";
 import createDrugPrescriptionController from "../controllers/drugPrescription/createDrugPrescriptionController.js";
 import createMedicalProcedurePrescriptionController
   from "../controllers/medicalProcedurePrescription/createMedicalProcedurePrescriptionController.js";
@@ -352,7 +353,7 @@ preConsultationRouter.route("/update-pre-consultation").patch(patchProvisionalPr
 //* Statistical center
 statisticsRouter.get("/statistics-genre", getGenderDistributionController)
 statisticsRouter.get("/statistics-patient-activity", getPatientActivityDistributionController)
-
+statisticsRouter.get("/statistics-death-rate", getDeathRateController)
 export {
   getPatientsRouter,
   patientRouter,

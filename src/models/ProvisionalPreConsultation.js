@@ -32,7 +32,7 @@ const model = (sequelize) => {
       },
       lackOfAir: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
         field: "lack_of_air",
       },
       lackOfAirAsAlways: {
@@ -52,12 +52,12 @@ const model = (sequelize) => {
       },
       chestPainAtRest: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
         field: "chest_pain_at_rest",
       },
       chestPainOnExertion: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
         field: "chest_pain_on_exertion",
       },
       chestPainOnExertionAmount: {
@@ -67,7 +67,7 @@ const model = (sequelize) => {
       },
       edemaPresence: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
         field: "edema_presence",
       },
       edemaPresenceDescription: {
@@ -77,11 +77,11 @@ const model = (sequelize) => {
       },
       feelings: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       healthChanges: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
         field: "health_changes",
       },
       healthChangesDescription: {
@@ -91,17 +91,17 @@ const model = (sequelize) => {
       },
       healthWorsened: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         field: "health_worsened",
       },
       bodyPain: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
         field: "body_pain",
       },
       mentalHealthAffected: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
         field: "mental_health_affected",
       },
       mentalHealthAffectedDescription: {
@@ -111,7 +111,7 @@ const model = (sequelize) => {
       },
       energyStatus: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         field: "energy_status",
         validate: {
           max: 10,
@@ -120,26 +120,26 @@ const model = (sequelize) => {
       },
       feed: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       hydrationStatus: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         field: "hydration_status",
       },
       urineStatus: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         field: "urine_status",
       },
       exerciseStatus: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         field: "exercise_status",
       },
       abnormalGlycemia: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
         field: "abnormal_glycemia",
       },
       lastAbnormalGlycemia: {
@@ -149,7 +149,7 @@ const model = (sequelize) => {
       },
       physicalExamination: {
         type: DataTypes.BIGINT,
-        allowNull: false,
+        allowNull: true,
         field: "physical_examination",
         references: {
           model: "patient_pain_map",
@@ -229,12 +229,12 @@ const model = (sequelize) => {
       },
       consultationReason: {
         type: DataTypes.STRING(500),
-        allowNull: false,
+        allowNull: true,
         field: "consultation_reason",
       },
       importantSymptoms: {
         type: DataTypes.STRING(500),
-        allowNull: false,
+        allowNull: true,
         field: "important_symptoms",
       },
       currentMedications: {
