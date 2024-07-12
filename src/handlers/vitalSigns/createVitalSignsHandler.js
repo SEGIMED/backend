@@ -4,7 +4,7 @@ import moment from "moment-timezone";
 import contextService from "request-context";
 
 const newVitalSignHandler = async (body) => {
-  const { vitalSignsToCreate } = body;
+  const { vitalSignsToCreate, patient, appointmentSchedule } = body;
 
   //Validation: Filter duplicates
 
@@ -21,15 +21,16 @@ const newVitalSignHandler = async (body) => {
   //Creation of filtered VS
   const mappedVitalSignsToCreate = uniqueVitalSignsToCreate.map((vitalSign) => {
     return {
-      patient: vitalSign.patientId,
+      patient: patient,
       measure: vitalSign.measure,
       measureSource: contextService.get("request:user").userId,
       measureType: vitalSign.measureType,
       measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-      scheduling: vitalSign.schedulingId,
+      scheduling: appointmentSchedule,
       medicalEvent: vitalSign.medicalEventId,
     };
   });
+  console.log(mappedVitalSignsToCreate);
 
   try {
     const createdVitalSigns = await VitalSignDetails.bulkCreate(

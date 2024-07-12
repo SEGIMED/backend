@@ -9,16 +9,14 @@ const createPreConsultationController = async (req, res) => {
         // if (validate === false) throw new Error("Area de dolor duplicada")
 
         const preConsultation = await createPreConsultationHandler(req.body);
-        // const vitalSigns = await createVitalSignsHandler(
-        //     req.body.vitalSignsToCreate
-        // ); //It receives an array of vital signs
-        // const physicalExamination = await createPatientPainMapHandler(
-        //     req.body.painRecordsToCreate[0]
-        // );
+        const vitalSigns = await createVitalSignsHandler(req.body); //It receives an array of vital signs
+        /* const physicalExamination = await createPatientPainMapHandler(
+            req.body.painRecordsToCreate[0]
+        ); */
 
         return res
             .status(201)
-            .json({ preConsultation, /* vitalSigns, physicalExamination */ });
+            .json({ preConsultation, vitalSigns, /* physicalExamination */ });
     } catch (error) {
         return res.status(500).json({ "Hubo un error durante el proceso de creación: ": error.message })
     }
