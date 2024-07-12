@@ -4,21 +4,21 @@ import patchPatientPainMapHandler from "../../../handlers/painMap/patchPatientPa
 import SegimedAPIError from "../../../error/SegimedAPIError.js";
 
 const patchProvisionalPreConsultationController = async (req, res) => {
-  console.log(req)
+
   try {
-    let { vitalSignsToUpdate } = req.body;
     const updatedPreconsultation = await patchProvisionalPreConsultationHandler(
       req.body
     );
-    const updatedVitalSigns = await updateVitalSignsHandler(vitalSignsToUpdate);
-     const updatedPainRecords = await patchPatientPainMapHandler(
-          painRecordsToUpdate[0]
-        );
-        
-      return res.status(200).json({ updatedPreconsultation, updatedVitalSigns, updatedPainRecords });
+    console.log("lluegeu")
+    const updatedVitalSigns = await updateVitalSignsHandler(req.body);
+    const updatedPainRecords = await patchPatientPainMapHandler(req.body);
+
+    return res
+      .status(200)
+      .json({ updatedPreconsultation, updatedVitalSigns, updatedPainRecords });
   } catch (error) {
     throw new SegimedAPIError(
-      "Hubo un error durante el proceso de actualización.",
+      "Hubo un error durante el proceso de actualizaciónads.",
       error,
       500
     );
