@@ -1,5 +1,5 @@
-import SegimedAPIError from "../../../error/SegimedAPIError.js";
 import { PatientPainMap } from "../../databaseConfig.js";
+import SegimedAPIError from "../../error/SegimedAPIError.js";
 
 const patchPatientPainMapHandler = async (body)=> {
 
