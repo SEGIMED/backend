@@ -64,7 +64,7 @@ const createPreConsultationHandler = async (body) => {
     { key: 'laboratoryResults', value: laboratoryResults },
   ];
 
-  const holi = await Promise.all(studies.map(async studio => {
+  await Promise.all(studies.map(async studio => {
     if (studio.value) {
       // let parsetStudy = JSON.parse(studio.value);
       const file = await loadFile(studio.value);
@@ -72,7 +72,7 @@ const createPreConsultationHandler = async (body) => {
       return { key: studio.key, value: file };
     }
   }));
-  console.log('chaoooooooooooOOOOOOOOOOOOOO', holi);
+
 
   try {
     const PreConsultation = await ProvisionalPreConsultation.create({
