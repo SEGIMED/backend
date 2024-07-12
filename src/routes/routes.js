@@ -431,16 +431,7 @@ statisticsRouter.get(
 
 //* create schedule
 createScheduleRouter.post("/create_schedule/:idUser", createSchedule);
-<<<<<<< HEAD
-createScheduleRouter.get("/test", (req, res) => {
-  res.status(200).send("hola mundo");
-});
 createScheduleRouter.get("/getAllSchedule", getAllSchedules);
-=======
-createScheduleRouter.get("/getAllSchedule", (req, res) => {
-  res.send("hola");
-});
->>>>>>> e1f57df553fa7f938f9cd14536a8c21c278fdbf3
 createScheduleRouter.get("/getSchedule/:id", getScheduleById);
 createScheduleRouter.patch("/updateSchedule/:id", updateSchedule)
 createScheduleRouter.delete("/deleteSchedule/:id", deleteSchedule)

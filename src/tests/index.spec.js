@@ -2,7 +2,7 @@ import request from "supertest";
 import { server } from "../index.js";
 import app from "../app.js"
 import mongoose from "mongoose";
-const { DB_CHAT } = process.env;
+const { DB_CHAT, TOKEN } = process.env;
 
 
 beforeAll(async () => {
@@ -17,33 +17,16 @@ afterAll(async () => {
   await mongoose.disconnect();
 });
 
-describe("Protected Route Tests", () => {
-  const { TOKEN } = process.env; // Token;
-
-  afterAll((done) => {
-    server.close(done)
-  });
+describe("Protected Route Tests", (done) => {
 
   test("should return 200 for authorized request", async () => {
     const response = await request(app)
-      .get("/api/getAllSchedule")
+      .get("/getAllSchedule")
       .set("token", `${TOKEN}`)
       .expect(200);
 
     // Verifica la respuesta
-    expect(response.statusCode).toBe(200);
-  });
-
-  // test('should shoud return 200 for route login', async (done) => {
-  //   const response = await request(app)
-  //   .post("/user/login")
-  //   .expect(200)
-  //   .end((err, res) => {
-  //     if (err) {
-  //       return done(err)
-  //     }
-  //     return done();
-  //   })
-  //   expect(response.status).toBe(200);
-  // })
+    expect(response.statusCode).toBe(200)
+    done();
+  })
 });
