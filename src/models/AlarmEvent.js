@@ -49,6 +49,12 @@ const model = (sequelize) => {
         allowNull: false,
         defaultValue: false,
       },
+      solvedDate: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: null,
+        field: "solved_date",
+      },
     },
     {
       tableName: "alarm_event",
