@@ -80,8 +80,14 @@ const model = (sequelize) => {
         dateOfDeathReport: {
             type: DataTypes.DATE,
             allowNull:true,
-            defaultValue: DataTypes.NOW,
+            defaultValue: null,
             field: "date_of_death_report",
+        },
+        registrationDate: {
+            type: DataTypes.DATE,
+            allowNull:false,
+            defaultValue: DataTypes.NOW,
+            field: "registration_date",
         }
     }, {
         tableName: 'sociodemographic_details',
