@@ -101,12 +101,6 @@ import getAllSchedules from "../controllers/managementSchedule/getAllSchedule.js
 import getScheduleById from "../controllers/managementSchedule/getScheduleId.js";
 import updateSchedule from "../controllers/managementSchedule/updateSchedule.js";
 import deleteSchedule from "../controllers/managementSchedule/deleteSchedule.js";
-import createAlarmEventController from "../controllers/alarmEvent/createAlarmEventController.js"
-import getAllAlarmsForPatientController from "../controllers/alarmEvent/getAllAlarmsForPatientController.js"
-import patchAlarmEventController from "../controllers/alarmEvent/patchAlarmEventController.js"
-import createPreConsultationController from"../controllers/patient/preConsultation/ProvisionalPreConsultationController.js"
-import getAllProvisionaPreConsultationPatientController from "../controllers/patient/preConsultation/getAllProvisionaPreConsultationPatientController.js"
-import patchProvisionalPreConsultationController from "../controllers/patient/preConsultation/patchProvisionalPreConsultationController.js"
 import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js"
 
 const patientRouter = Router();
