@@ -22,3 +22,7 @@ initialWebSocket(server);
 //     console.log('running a task every minute');
 //     scheduleReminderEmails();
 //   });
+
+export {
+    app, server
+}

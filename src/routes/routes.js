@@ -431,7 +431,9 @@ statisticsRouter.get(
 
 //* create schedule
 createScheduleRouter.post("/create_schedule/:idUser", createSchedule);
-createScheduleRouter.get("/getAllSchedule", getAllSchedules);
+createScheduleRouter.get("/getAllSchedule", (req, res) => {
+  res.send("hola");
+});
 createScheduleRouter.get("/getSchedule/:id", getScheduleById);
 createScheduleRouter.patch("/updateSchedule/:id", updateSchedule)
 createScheduleRouter.delete("/deleteSchedule/:id", deleteSchedule)
