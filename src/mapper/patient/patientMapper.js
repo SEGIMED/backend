@@ -4,7 +4,7 @@ import { mapSociodemographicDetails } from "./sociodemographicDetailsMapper.js";
 import { mapPatientMedicalBackground } from "./patientMedicalBackgroundMapper.js";
 
 export const mapPatient = (patient) => {
-    console.log(patient.avatar)
+  
     return {
         userId: patient?.id,
         name: patient?.name,
