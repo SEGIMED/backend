@@ -3,6 +3,7 @@ import getDeathRateHandler from "../../handlers/statisticalCenter/getDeathRateHa
 import getGenderDistributionHandler from '../../handlers/statisticalCenter/getGenderDistributionHandler.js';
 import getPatientActivityDistributionHandler from '../../handlers/statisticalCenter/getPatientActivityDistributionHandler.js';
 import getAlarmEventsStatisticsHandler from '../../handlers/statisticalCenter/getAlarmEventsStatisticsHandler.js';
+import getAgeRangesHandler from '../../handlers/statisticalCenter/getAgeRangesHandler.js';
 
 const getGeneralStatisticsController = async (req, res) => {
     try {
@@ -25,8 +26,17 @@ const getGeneralStatisticsController = async (req, res) => {
         const patientActivityDistribution = await getPatientActivityDistributionHandler();
         const alarmEventsStatistics = await getAlarmEventsStatisticsHandler("0001-01-01", actual_year.to);
         const last24hsAlarmStatistics = await getAlarmEventsStatisticsHandler(last24hs.from, last24hs.to);
-        const statistics = {alarmEventsStatistics, last24hsAlarmStatistics, yearDeathRateStatistics, monthDeathRateStatistics, genderStatistics, patientActivityDistribution};
+        const ageRanges = await getAgeRangesHandler();
 
+        const statistics = {
+            ageRanges, 
+            alarmEventsStatistics, 
+            last24hsAlarmStatistics, 
+            yearDeathRateStatistics, 
+            monthDeathRateStatistics, 
+            genderStatistics, 
+            patientActivityDistribution
+        };
         return res.status(200).json(statistics);
     } catch (error) {
         return res.status(500).json({ error: error.message });
