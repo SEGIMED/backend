@@ -4,12 +4,10 @@ import moment from "moment-timezone";
 import contextService from "request-context";
 
 const newVitalSignHandler = async (body) => {
-  const { vitalSignsToCreate } = body;
-
   //Validation: Filter duplicates
 
   const seenMeasureTypes = new Set();
-  const uniqueVitalSignsToCreate = vitalSignsToCreate.filter(vitalSign => {
+  const uniqueVitalSignsToCreate = body.filter((vitalSign) => {
     if (seenMeasureTypes.has(vitalSign.measureType)) {
       return false;
     } else {
