@@ -61,17 +61,18 @@ const createPreConsultationHandler = async (body) => {
     { key: 'resonance', value: resonance },
     { key: 'leftHeartCatheterization', value: leftHeartCatheterization },
     { key: 'otherStudies', value: otherStudies },
-    { key: 'pendingStudies', value: pendingStudies },
     { key: 'laboratoryResults', value: laboratoryResults },
   ];
 
-  for (let i = 0; i < studies.length; i++) {
-    if (studies[i].value) {
-      let parsedStudy = JSON.parse(studies[i].value);
-      const file = await loadFile(parsedStudy);
-      body[studies[i].key] = file?.url;
+  const holi = await Promise.all(studies.map(async studio => {
+    if (studio.value) {
+      // let parsetStudy = JSON.parse(studio.value);
+      const file = await loadFile(studio.value);
+      // body[studio.key] = file?.url;
+      return { key: studio.key, value: file };
     }
-  }
+  }));
+  console.log('chaoooooooooooOOOOOOOOOOOOOO', holi);
 
   try {
     const PreConsultation = await ProvisionalPreConsultation.create({
@@ -115,7 +116,7 @@ const createPreConsultationHandler = async (body) => {
       resonance: body.resonance,
       leftHeartCatheterization: body.leftHeartCatheterization,
       otherStudies: body.otherStudies,
-      pendingStudies: body.pendingStudies,
+      pendingStudies: pendingStudies,
       consultationReason,
       importantSymptoms,
       currentMedications,
