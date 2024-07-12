@@ -37,15 +37,12 @@ const model = (sequelize) => {
       },
       field: 'pain_type'
     },
-    painArea: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'cat_pain_areas',
-        key: 'id'
-      },
-      field: 'pain_area'
+    painAreas:{
+      type:DataTypes.JSONB,
+      allowNull: true,
+      field:'pain_areas' //
     },
+
     painFrequency: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -55,11 +52,7 @@ const model = (sequelize) => {
       },
       field: 'pain_frequency'
     },
-    painNotes: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-      field: 'pain_notes'
-    },
+
     isTakingAnalgesic: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -113,6 +106,12 @@ const model = (sequelize) => {
         key: 'id'
       },
       field: 'medical_event'
+    },
+    isTherePain:{
+      type: DataTypes.BOOLEAN,
+      allowNull:false,
+      field:'is_there_pain',
+      default:true
     }
   }, {
     sequelize,

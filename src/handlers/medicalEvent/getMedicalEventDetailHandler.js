@@ -169,10 +169,6 @@ const getMedicalEventDetailHandler = async (medicalEventId) => {
                                         as: 'catPainDuration'
                                     },
                                     {
-                                        model: CatPainAreas,
-                                        as: 'catPainArea'
-                                    },
-                                    {
                                         model: CatPainType,
                                         as: 'catPainType'
                                     },
@@ -209,10 +205,10 @@ const getMedicalEventDetailHandler = async (medicalEventId) => {
                                 model: CatPainDuration,
                                 as: 'catPainDuration'
                             },
-                            {
-                                model: CatPainAreas,
-                                as: 'catPainArea'
-                            },
+                            // {
+                            //     model: CatPainAreas,
+                            //     as: 'catPainArea'
+                            // },
                             {
                                 model: CatPainType,
                                 as: 'catPainType'

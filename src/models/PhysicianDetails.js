@@ -38,11 +38,6 @@ const model = (sequelize) => {
             },
             field: 'expertise_level'
         },
-        favoritePatients: {
-            type: DataTypes.ARRAY(DataTypes.NUMBER),
-            allowNull: true,
-            field:'favorite_patients'
-        }
     }, {
         tableName: 'physician_details',
         schema: 'public',
