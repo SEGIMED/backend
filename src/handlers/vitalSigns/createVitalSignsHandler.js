@@ -5,7 +5,9 @@ import contextService from "request-context";
 
 const newVitalSignHandler = async (body) => {
   //Validation: Filter duplicates
-
+ if(Array.isArray(body.vitalSignsToCreate)){
+  body = body.vitalSignsToCreate
+ }
   const seenMeasureTypes = new Set();
   const uniqueVitalSignsToCreate = body.filter((vitalSign) => {
     if (seenMeasureTypes.has(vitalSign.measureType)) {
