@@ -1,17 +1,17 @@
-import { Client} from "pg";
+import pg from "pg";
 const { TOKEN, URL_API, DB_USER, DB_PASSWORD,  DB_HOST, DB_NAME, } = process.env;
 
 describe("Postgres DataBase Connection", () => {
   let client
-  beforeAll(() => {
-    client = new Client({
-      user: DB_USER,
-      host: DB_HOST,
-      database: DB_NAME,
-      password: DB_PASSWORD,
-      port: 5000,
+  beforeAll( async () => {
+    client = new pg.Client({
+      user: "postgres",
+      host: "localhost",
+      database: "gabriel",
+      password: "",
+      port: 5432,
     })
-    client.connect()
+    await client.connect()
    }); // Establecer conexión
     test('should connect to the test database successfully', async () => { 
       

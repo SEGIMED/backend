@@ -4,6 +4,19 @@ const { TOKEN, URL_API } = process.env;
 
 describe("Protected Route Tests", () => {
 
+    test('should return 200 for authorized request Login', async () => {
+      const userData = {
+        email: "mgabriela9401@gmail.com",
+        password: "Pass123@",
+        idNumber: "678911234"
+      };
+      const response = await request(app)
+      .post(`${URL_API}/user/login`)
+      .send(userData)
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toBeInstanceOf(Object);
+    }, 10000)
+
     test("should return 200 for authorized request", async () => {
       const response = await request(app)
         .get(`${URL_API}/getAllSchedule`)
