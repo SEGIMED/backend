@@ -1,11 +1,15 @@
-export default {
-  testMatch: [
-    "**/__tests__/**/*.[jt]s?(x)",
-    "**/?(*.)+(spec|test).[tj]s?(x)"
-  ],
-  testPathIgnorePatterns: [
-    "/node_modules/"
-  ],
+/** @type {import('jest').Config} */
+const config = {
+  forceExit: true,
+  testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[tj]s?(x)"],
+  testPathIgnorePatterns: ["/node_modules/"],
   setupFiles: ["<rootDir>/jest.setup.js"],
-  transform: {},
+  transform: {
+    "^.+\\.[tj]sx?$": "babel-jest",
+  },
+  testEnvironment: "node",
+  verbose: true,
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
 };
+
+export default config;
