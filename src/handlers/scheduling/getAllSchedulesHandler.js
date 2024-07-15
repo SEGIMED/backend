@@ -1,5 +1,7 @@
 import { AppointmentScheduling, User, PatientPulmonaryHypertensionRisk, CatPulmonaryArterialHypertensionRisk } from "../../databaseConfig.js";
 
+import { mapPatient, mapPatientsSchedule } from "../../mapper/patient/patientMapper.js";
+
 const getAllSchedulesHandler = async (patientId, physicianId, id) => {
     try {
         const filters = {}
@@ -19,6 +21,17 @@ const getAllSchedulesHandler = async (patientId, physicianId, id) => {
                     model: User,
                     as: 'patientUser',
                     attributes: ['name', 'lastname', 'avatar'],
+                    include: [
+                        {
+                            model: PatientPulmonaryHypertensionRisk,
+                            as: 'patientPulmonaryHypertensionRisks',
+                            include: {
+                                model: CatPulmonaryArterialHypertensionRisk,
+                                as: 'catHpRisk',
+                                attributes: ['name']
+                            }
+                        },
+                    ]
                 },
                     
                 {
@@ -28,7 +41,8 @@ const getAllSchedulesHandler = async (patientId, physicianId, id) => {
                 }
             ],
         })
-        return schedules
+        return mapPatientsSchedule(schedules) 
+        // return schedules
 
     } catch (error) {
         throw new Error("Error loading schedules: " + error.message);

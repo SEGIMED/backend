@@ -1,8 +1,9 @@
-import models from "../../databaseConfig";
+
+import { LoginRecord } from "../../databaseConfig";
 
 export const getAllLoginRecords = async () => {
     try {
-        const loginRecords = await models.LoginRecord.findAll();
+        const loginRecords = await LoginRecord.findAll();
         return loginRecords;
     } catch (error) {
         throw new Error("Error loading Login Records: " + error.message);
