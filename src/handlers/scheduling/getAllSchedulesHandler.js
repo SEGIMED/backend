@@ -1,4 +1,4 @@
-import { AppointmentScheduling, User } from "../../databaseConfig.js";
+import { AppointmentScheduling, User, PatientPulmonaryHypertensionRisk, CatPulmonaryArterialHypertensionRisk } from "../../databaseConfig.js";
 
 const getAllSchedulesHandler = async (patientId, physicianId, id) => {
     try {
@@ -20,6 +20,7 @@ const getAllSchedulesHandler = async (patientId, physicianId, id) => {
                     as: 'patientUser',
                     attributes: ['name', 'lastname', 'avatar'],
                 },
+                    
                 {
                     model: User,
                     as: 'physicianThatAttend',
