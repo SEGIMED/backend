@@ -40,7 +40,7 @@ import createPatientDiagnosticController from "../controllers/patient/createPati
 import patchDiagnosticTestController from "../controllers/diagnosticTest/patchDiagnosticTestController.js";
 import getGenderDistributionController from "../controllers/statisticalCenter/getGenderDistributionController.js";
 import getPatientActivityDistributionController from "../controllers/statisticalCenter/getPatientActivityDistributionController.js"
-import getDeathRateController from "../controllers/statisticalCenter/getDeathRateController.js";
+import getGeneralStatisticsController from "../controllers/statisticalCenter/getGeneralStatisticsController.js";
 import createDrugPrescriptionController from "../controllers/drugPrescription/createDrugPrescriptionController.js";
 import createMedicalProcedurePrescriptionController from "../controllers/medicalProcedurePrescription/createMedicalProcedurePrescriptionController.js";
 import createMedicalReferralController from "../controllers/medicalReferral/createMedicalReferralController.js";
@@ -420,7 +420,7 @@ createScheduleRouter.delete("/deleteSchedule/:id", deleteSchedule)
 
 statisticsRouter.get("/statistics-genre", getGenderDistributionController)
 statisticsRouter.get("/statistics-patient-activity", getPatientActivityDistributionController)
-statisticsRouter.get("/statistics-death-rate", getDeathRateController)
+statisticsRouter.get("/statistics-general", getGeneralStatisticsController )
 export {
   getPatientsRouter,
   patientRouter,
