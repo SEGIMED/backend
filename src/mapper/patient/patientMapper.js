@@ -89,3 +89,19 @@ export const mapPatients = (patients) => {
         } : null
     }));
 }
+
+export const mapPatientsSchedule = (patients) => {
+    return patients.map(patient => ({
+        ...patient.toJSON(),
+        patientUser: {
+            name: patient.patientUser?.name || null,
+            lastname: patient.patientUser?.lastname || null,
+            avatar: patient.patientUser?.avatar || null,
+            patientPulmonaryHypertensionRisks: patient.patientUser?.patientPulmonaryHypertensionRisks?.length > 0 ? {
+                risk: patient.patientUser.patientPulmonaryHypertensionRisks[0].catHpRisk?.name || null,
+                timestamp: patient.patientUser.patientPulmonaryHypertensionRisks[0].registerTimestamp
+            } : null,
+        }
+    }));
+}
+

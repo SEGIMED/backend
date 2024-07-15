@@ -276,6 +276,8 @@ export const {
 
 } = sequelize.models;
 
+
+
 DiagnosticTest.belongsTo(AppointmentScheduling, { as: "scheduling_appointment_scheduling", foreignKey: "scheduling" });
 AppointmentScheduling.hasMany(DiagnosticTest, { as: "schDiagnosticTests", foreignKey: "scheduling" });
 MedicalEvent.belongsTo(AppointmentScheduling, { as: "appSch", foreignKey: "scheduling" });

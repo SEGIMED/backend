@@ -6,8 +6,9 @@ import models, {
   User,
 } from "../../databaseConfig.js";
 import paginationUsersHandler from "../Pagination/paginationUsersHandler.js";
+import { Op } from "sequelize";
 
-const getAllPhysiciansHandler = async ({ page, limit }) => {
+const getAllPhysiciansHandler = async ({ page, limit, name, lastname }) => {
   try {
     //Specifications for the role selected
     const queryOptions = {
@@ -35,7 +36,20 @@ const getAllPhysiciansHandler = async ({ page, limit }) => {
           },
         },
       ],
+      where: {},
     };
+
+    if (name) {
+      queryOptions.where.name = {
+        [Op.iLike]: `%${name}%`, 
+      };
+    }
+    if (lastname) {
+      queryOptions.where.lastname = {
+        [Op.iLike]: `%${lastname}%`, 
+      };
+    }
+
     if (!limit && !page) {
       //Without pagination
       const allPhysicians = await User.findAll(queryOptions);
