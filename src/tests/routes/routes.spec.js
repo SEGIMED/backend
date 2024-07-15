@@ -1,6 +1,7 @@
 import request from "supertest";
 import app from "../../app.js";
 const { TOKEN, URL_API } = process.env;
+import { jest } from "@jest/globals";
 
 describe("Protected Route Tests", () => {
   describe("POST / request", () => {
