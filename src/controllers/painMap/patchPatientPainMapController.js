@@ -1,7 +1,7 @@
-
+import patchPatientPainMapHandler from "../../handlers/painMap/patchPatientPainMapHandler.js"
 const patchPatientPainMapController = async (req, res) => {
     try {
-        // const newPainMap = await patchPatientPainMapHandler(req.body);
+        const newPainMap = await patchPatientPainMapHandler(req.body);
         return res.status(200).json(newPainMap);
 
     } catch (error) {

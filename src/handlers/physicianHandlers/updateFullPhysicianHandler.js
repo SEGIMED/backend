@@ -7,8 +7,7 @@ const updateFullPhysicianData = async (body) => {
     try {
         let ImagenAvatar = null;
 
-        if (body.avatarDoc) {
-            console.log(body.avatarDoc);
+        if (body.avatarDoc) {;
             const avatarr = JSON.parse(body.avatarDoc);
             ImagenAvatar = await loadImage(body.userId, avatarr);
         }
