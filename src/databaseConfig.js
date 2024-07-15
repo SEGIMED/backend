@@ -78,6 +78,8 @@ import UserCurrentLocationModel from "./models/UserCurrentLocation.js"
 import AlarmEventModel from "./models/AlarmEvent.js"
 import ProvisionalPreConsultationModel from "./models/ProvisionalPreConsultation.js"
 import BackgroundsModel from "./models/Backgrounds.js";
+import DoctorScheduleModel from "./models/DoctorSchedule.js";
+
 import PhysicianFavoritePatientModel from './models/PhysicianFavoritePatient.js';
 
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
@@ -186,6 +188,9 @@ BackgroundsModel(sequelize)
 UserCurrentLocationModel(sequelize)
 AlarmEventModel(sequelize)
 ProvisionalPreConsultationModel(sequelize)
+DoctorScheduleModel(sequelize)
+
+
 PhysicianFavoritePatientModel(sequelize);
 
 export const {
@@ -266,6 +271,7 @@ export const {
     AlarmEvent,
     ProvisionalPreConsultation,
     Backgrounds,
+    DoctorSchedule, // Doctor-attention
     PhysicianFavoritePatient
 
 } = sequelize.models;
@@ -595,6 +601,8 @@ Backgrounds.belongsTo(MedicalEvent, { as: "medicalEventMedicalBackgrounds", fore
 MedicalEvent.hasOne(Backgrounds, { as: "background", foreignKey: "medicalEvent"});
 Backgrounds.belongsTo(User, { as: "patientUser", foreignKey: "patient"});
 User.hasMany(Backgrounds, { as: "backgrounds", foreignKey: "patient"});
+User.hasMany(DoctorSchedule, { foreignKey: "doctor_id"});
+DoctorSchedule.belongsTo(User, { foreignKey: "doctor_id"});
 PhysicianFavoritePatient.belongsTo(User, { foreignKey: 'favoritePatient', as: 'patient' });
 PhysicianFavoritePatient.belongsTo(User, { foreignKey: 'physicianId', as: 'physician' });
 
@@ -675,6 +683,7 @@ const models = {
     AlarmEvent,
     ProvisionalPreConsultation,
     Backgrounds,
+    DoctorSchedule,
     PhysicianFavoritePatient
 };
 
