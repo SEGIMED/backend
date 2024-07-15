@@ -1,13 +1,13 @@
 import models from "../../databaseConfig.js";
-import paginationUsersHandler from "../Pagination/paginationUsersHandler.js";;
+import paginationUsersHandler from "../Pagination/paginationUsersHandler.js";
 import { mapPatients } from '../../mapper/patient/patientMapper.js';
+import { Op } from "sequelize";
 
-const getPatientsHandler = async ({ limit, page }) => {
+const getPatientsHandler = async ({ name, lastname, idNumber, limit, page }) => {
   try {
-    //Type of role selection
     const queryOptions = {
-      where:  {
-        role:  3,
+      where: {
+        role: 3,
       },
       attributes: {
         exclude: ["password", "cellphone", "email"],
@@ -19,18 +19,34 @@ const getPatientsHandler = async ({ limit, page }) => {
           include: {
             model: models.CatPulmonaryArterialHypertensionRisk,
             as: 'catHpRisk',
-            attributes: ['name']
-          }
-        }
-      ]
+            attributes: ['name'],
+          },
+        },
+      ],
     };
 
+    // Agregar filtros de búsqueda
+    if (name) {
+      queryOptions.where.name = {
+        [Op.iLike]: `%${name}%`, // Cambia aquí
+      };
+    }
+    if (lastname) {
+      queryOptions.where.lastname = {
+        [Op.iLike]: `%${lastname}%`, // Cambia aquí
+      };
+    }
+    if (idNumber) {
+      queryOptions.where.idNumber = {
+        [Op.eq]: idNumber, // Cambia aquí
+      };
+    }
+    // Sin paginación
     if (!limit && !page) {
-      // Without pagination
       const getPatients = await models.User.findAll(queryOptions);
-      return  mapPatients(getPatients);
+      return mapPatients(getPatients);
     } else {
-      // Pagination Logic
+      // Lógica de paginación
       return paginationUsersHandler({ page, limit, queryOptions });
     }
   } catch (error) {
@@ -39,3 +55,4 @@ const getPatientsHandler = async ({ limit, page }) => {
 };
 
 export default getPatientsHandler;
+
