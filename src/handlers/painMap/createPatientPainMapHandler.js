@@ -5,7 +5,7 @@ import { PatientPainMap } from "../../databaseConfig.js";
 
 const createPatientPainMapHandler = async (body) => {
   const patientPainMapping = mapPainRecord(body);
-  console.log('HOLAAAAAA', patientPainMapping);
+  // console.log('HOLAAAAAA', patientPainMapping);
   try {
     const newPainRecords = await PatientPainMap.create(patientPainMapping);
     return newPainRecords;
