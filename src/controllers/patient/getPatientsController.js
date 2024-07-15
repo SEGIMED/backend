@@ -1,9 +1,9 @@
 import getPatientsHandler from "../../handlers/patient/getPatientsHandler.js";
 
 const getPatientsController = async (req, res) => {
-  const { limit, page } = req.query;
+  const { limit, page, name, lastname, idNumber } = req.query;
   try {
-    const users = await getPatientsHandler({ limit, page });
+    const users = await getPatientsHandler({ limit, page, name, lastname, idNumber });
     return res.status(200).json(users);
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -11,3 +11,4 @@ const getPatientsController = async (req, res) => {
 };
 
 export default getPatientsController;
+
