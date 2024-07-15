@@ -15,7 +15,6 @@ const createPatientPainMapHandler = async (painRecord) => {
     const newPainRecords = await PatientPainMap.create(patientPainMapping);
     return newPainRecords;
   } catch (error) {
-    console.log(error);
     throw new SegimedAPIError(
       "Hubo un error durante el proceso de creación.",
       500
