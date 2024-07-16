@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-  /** @type {import('jest').Config} */
-const config = {
-  verbose: true,
-  setupFiles: ["<rootDir>/jest.setup.js"],
-  transform: {},
-  forceExit: true,
-};
-export default config;
-=======
 /** @type {import('jest').Config} */
 const config = {
   forceExit: true,
@@ -22,4 +12,3 @@ const config = {
 };
 
 export default config;
->>>>>>> 0171158104f409d1f7bcd2bbe68f23274c171083
