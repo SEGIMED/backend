@@ -7,7 +7,7 @@ describe("Postgres DataBase Connection", () => {
     client = new pg.Client({
       user: "postgres",
       host: "localhost",
-      database: "gabriel",
+      database: "postgres",
       password: "",
       port: 5432,
     })
