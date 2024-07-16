@@ -18,7 +18,6 @@ const patchPatientPainMapHandler = async (body) => {
         const update = await PatientPainMap.findByPk(body.patientPainMapId);
         return update;
     } catch (error) {
-        console.log(error)
         throw new SegimedAPIError('Hubo un error durante el proceso de actualización: ', 500);
     }
 };
