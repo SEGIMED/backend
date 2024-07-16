@@ -19,7 +19,6 @@ describe("Protected Route Tests", () => {
   });
 
   describe("GET / request", () => {
-
     test("should return 200 for authorized request to /user/getAllUsers", async () => {
       const response = await request(app)
         .get(`${URL_API}/user/getAllUsers`)
@@ -28,16 +27,19 @@ describe("Protected Route Tests", () => {
       // Verifica la respuesta
       expect(response.statusCode).toBe(200);
     });
-    
+
     test("should return 200 for authorized request to /patient-details", async () => {
+      const id = "3";
       const response = await request(app)
         .get(`${URL_API}/patient-details`)
         .set("token", `${TOKEN}`)
+        .query({ id: id })
         .expect(200);
+      console.log(response.query);
       // Verifica la respuesta
       expect(response.statusCode).toBe(200);
     });
-    
+
     test("should return 200 for authorized request to /patients", async () => {
       const response = await request(app)
         .get(`${URL_API}/patients`)
@@ -46,7 +48,7 @@ describe("Protected Route Tests", () => {
       // Verifica la respuesta
       expect(response.statusCode).toBe(200);
     });
-    
+
     test("should return 200 for authorized request to /patientsfilter", async () => {
       const response = await request(app)
         .get(`${URL_API}/patientsfilter`)
@@ -55,7 +57,7 @@ describe("Protected Route Tests", () => {
       // Verifica la respuesta
       expect(response.statusCode).toBe(200);
     });
-    
+
     test("should return 200 for authorized request to /physician-info", async () => {
       const response = await request(app)
         .get(`${URL_API}/physician-info`)
@@ -64,7 +66,7 @@ describe("Protected Route Tests", () => {
       // Verifica la respuesta
       expect(response.statusCode).toBe(200);
     });
-    
+
     test("should return 200 for authorized request to /all-physicians", async () => {
       const response = await request(app)
         .get(`${URL_API}/all-physicians`)
@@ -73,7 +75,7 @@ describe("Protected Route Tests", () => {
       // Verifica la respuesta
       expect(response.statusCode).toBe(200);
     });
-    
+
     test("should return 200 for authorized request to /find-physician-like-name", async () => {
       const response = await request(app)
         .get(`${URL_API}/find-physician-like-name`)
@@ -82,7 +84,7 @@ describe("Protected Route Tests", () => {
       // Verifica la respuesta
       expect(response.statusCode).toBe(200);
     });
-    
+
     test("should return 200 for authorized request to /find-physicians-by-specialty-id", async () => {
       const response = await request(app)
         .get(`${URL_API}/find-physicians-by-specialty-id`)
@@ -91,7 +93,96 @@ describe("Protected Route Tests", () => {
       // Verifica la respuesta
       expect(response.statusCode).toBe(200);
     });
-    
+
+    test("should return 200 for authorized request to /find-physicians-by-specialty-id", async () => {
+      const response = await request(app)
+        .get(`${URL_API}/find-physicians-by-specialty-id`)
+        .set("token", `${TOKEN}`)
+        .expect(200);
+      // Verifica la respuesta
+      expect(response.statusCode).toBe(200);
+    });
+
+    test("should return 200 for authorized request to /get-physician-favorite-patient", async () => {
+      const response = await request(app)
+        .get(`${URL_API}/get-physician-favorite-patient`)
+        .set("token", `${TOKEN}`)
+        .expect(200);
+      // Verifica la respuesta
+      expect(response.statusCode).toBe(200);
+    });
+
+    test("should return 200 for authorized request to /physician-review/:physicianId", async () => {
+      const response = await request(app)
+        .get(`${URL_API}/physician-review/1`) // Reemplaza '1' con un ID válido para la prueba
+        .set("token", `${TOKEN}`)
+        .expect(200);
+      // Verifica la respuesta
+      expect(response.statusCode).toBe(200);
+    });
+
+    test("should return 200 for authorized request to /physicians-review-made-by-patient/:patientId", async () => {
+      const response = await request(app)
+        .get(`${URL_API}/physicians-review-made-by-patient/1`) // Reemplaza '1' con un ID válido para la prueba
+        .set("token", `${TOKEN}`)
+        .expect(200);
+      // Verifica la respuesta
+      expect(response.statusCode).toBe(200);
+    });
+
+    test("should return 200 for authorized request to /catalog/get-catalog", async () => {
+      const response = await request(app)
+        .get(`${URL_API}/catalog/get-catalog`)
+        .set("token", `${TOKEN}`)
+        .expect(200);
+      // Verifica la respuesta
+      expect(response.statusCode).toBe(200);
+    });
+
+    test("should return 200 for authorized request to /requestUserContact", async () => {
+      const response = await request(app)
+        .get(`${URL_API}/requestUserContact`)
+        .set("token", `${TOKEN}`)
+        .expect(200);
+      // Verifica la respuesta
+      expect(response.statusCode).toBe(200);
+    });
+
+    test("should return 200 for authorized request to /requestUserContact/:id", async () => {
+      const response = await request(app)
+        .get(`${URL_API}/requestUserContact/1`) // Reemplaza '1' con un ID válido para la prueba
+        .set("token", `${TOKEN}`)
+        .expect(200);
+      // Verifica la respuesta
+      expect(response.statusCode).toBe(200);
+    });
+
+    test("should return 200 for authorized request to /schedules", async () => {
+      const response = await request(app)
+        .get(`${URL_API}/schedules`)
+        .set("token", `${TOKEN}`)
+        .expect(200);
+      // Verifica la respuesta
+      expect(response.statusCode).toBe(200);
+    });
+
+    test("should return 200 for authorized request to /medical-event/get-medical-event-history", async () => {
+      const response = await request(app)
+        .get(`${URL_API}/medical-event/get-medical-event-history`)
+        .set("token", `${TOKEN}`)
+        .expect(200);
+      // Verifica la respuesta
+      expect(response.statusCode).toBe(200);
+    });
+
+    test("should return 200 for authorized request to /medical-event/get-medical-event-detail", async () => {
+      const response = await request(app)
+        .get(`${URL_API}/medical-event/get-medical-event-detail`)
+        .set("token", `${TOKEN}`)
+        .expect(200);
+      // Verifica la respuesta
+      expect(response.statusCode).toBe(200);
+    });
 
     test("should return 200 for authorized request", async () => {
       const response = await request(app)

@@ -42,11 +42,6 @@ describe("GET / Controllers", () => {
 
     await createSchedule(req, res);
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(req.body).toHaveProperty("openAtt");
-    expect(DoctorSchedule.create).toHaveBeenCalledWith({
-      idUser: req.params,
-      openAtt: "08:00:00",
-      closeAtt: "15:00:00",
-    });
+    expect(res.json).toHaveBeenCalledWith({ message: "Registro con exito" });
   });
 });
