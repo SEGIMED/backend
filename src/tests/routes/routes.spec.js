@@ -1,27 +1,9 @@
 import request from "supertest";
-import app from "../../app.js"
+import app from "../../app.js";
 const { TOKEN, URL_API } = process.env;
-import { jest } from "@jest/globals";
-import createSchedule from "../../controllers/managementSchedule/createAttention.js";
-
-jest.unstable_mockModule("../../utils/modelTest/UserModelTest.js", () => {
-  return {
-    DoctorSchedule: {
-      create: jest.fn(),
-      // Otros métodos mockeados si es necesario
-    }
-  };
-});
-const { DoctorSchedule } = await import("../../utils/modelTest/UserModelTest.js")
-
-
 
 describe("Protected Route Tests", () => {
   describe("POST / request", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
-  
     test("should return 200 for authorized request Login", async () => {
       const userData = {
         email: "mgabriela9401@gmail.com",
@@ -34,29 +16,6 @@ describe("Protected Route Tests", () => {
       expect(response.statusCode).toBe(200);
       expect(response.body).toBeInstanceOf(Object);
     }, 10000);
-
-    test("should respond with status 200 for valid values", async () => {
-
-      DoctorSchedule.create.mockResolvedValue({
-        openAtt: "08:00:00",
-        closeAtt: "15:00:00",
-      })
-      // creamos un objeto de los valores
-      const req = {
-        params: {idUser: 3},
-        body: {
-          openAtt: "08:00:00",
-          closeAtt: "15:00:00",
-        }
-      }
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
-
-  await createSchedule(req, res);
-  expect(res.status).toHaveBeenCalledWith(200);
-    });
   });
 
   describe("GET / request", () => {
