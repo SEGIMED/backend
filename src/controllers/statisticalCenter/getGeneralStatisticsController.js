@@ -4,6 +4,8 @@ import getGenderDistributionHandler from '../../handlers/statisticalCenter/getGe
 import getPatientActivityDistributionHandler from '../../handlers/statisticalCenter/getPatientActivityDistributionHandler.js';
 import getAlarmEventsStatisticsHandler from '../../handlers/statisticalCenter/getAlarmEventsStatisticsHandler.js';
 import getAgeRangesHandler from '../../handlers/statisticalCenter/getAgeRangesHandler.js';
+import getRatePulmonaryHypertensionRiskHandler from '../../handlers/statisticalCenter/getRatePulmonaryHypertensionRiskHandler.js';
+import getRateESC2022RiskHandler from '../../handlers/statisticalCenter/getRateESC2022RiskHandler.js';
 
 const getGeneralStatisticsController = async (req, res) => {
     try {
@@ -27,6 +29,13 @@ const getGeneralStatisticsController = async (req, res) => {
         const alarmEventsStatistics = await getAlarmEventsStatisticsHandler("0001-01-01", actual_year.to);
         const last24hsAlarmStatistics = await getAlarmEventsStatisticsHandler(last24hs.from, last24hs.to);
         const ageRanges = await getAgeRangesHandler();
+        const ratePulmonaryHypertensionRisk = await getRatePulmonaryHypertensionRiskHandler();
+        const rateESC2022Risk = await getRateESC2022RiskHandler();
+        // const claseFuncional = 
+        // const centrosDeAtencion =
+        // const distribucionGeografica =
+        // const pastientesHospitalizados =
+        
 
         const statistics = {
             ageRanges, 
@@ -35,8 +44,11 @@ const getGeneralStatisticsController = async (req, res) => {
             yearDeathRateStatistics, 
             monthDeathRateStatistics, 
             genderStatistics, 
-            patientActivityDistribution
+            patientActivityDistribution,
+            ratePulmonaryHypertensionRisk,
+            rateESC2022Risk,
         };
+        
         return res.status(200).json(statistics);
     } catch (error) {
         return res.status(500).json({ error: error.message });
