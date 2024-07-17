@@ -90,6 +90,7 @@ const model = (sequelize) => {
         defaultValue: DataTypes.NOW,
         field: "registration_date",
       },
+      //nuevas propiedades agregadas
       hipertPulm: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
@@ -111,7 +112,7 @@ const model = (sequelize) => {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: false,
-        field: "has_tech_use_difficulty"
+        field: "has_tech_use_difficulty",
       },
       needsCellphoneAssistance: {
         type: DataTypes.BOOLEAN,
