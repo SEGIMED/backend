@@ -30,7 +30,6 @@ const newVitalSignHandler = async (body) => {
       medicalEvent: vitalSign.medicalEventId,
     };
   });
-  console.log(mappedVitalSignsToCreate);
 
   try {
     const createdVitalSigns = await VitalSignDetails.bulkCreate(

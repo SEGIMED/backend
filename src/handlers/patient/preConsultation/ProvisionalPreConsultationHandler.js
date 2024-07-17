@@ -6,7 +6,7 @@ const createPreConsultationHandler = async (body) => {
     patient,
     appointmentSchedule,
     lackOfAir,
-    lackOfAirAsAlways,
+    // lackOfAirAsAlways,
     lackOfAirIncremented,
     lackOfAirClasification,
     chestPainAtRest,
@@ -28,7 +28,7 @@ const createPreConsultationHandler = async (body) => {
     exerciseStatus,
     abnormalGlycemia,
     lastAbnormalGlycemia,
-    physicalExamination,
+    // physicalExamination,
     laboratoryResults,
     laboratoryResultsDescription,
     electrocardiogram,
@@ -49,27 +49,27 @@ const createPreConsultationHandler = async (body) => {
     currentMedications,
   } = body;
 
-  let studies = [
-    { key: 'electrocardiogram', value: electrocardiogram },
-    { key: 'rxThorax', value: rxThorax },
-    { key: 'echocardiogram', value: echocardiogram },
-    { key: 'walkTest', value: walkTest },
-    { key: 'respiratoryFunctional', value: respiratoryFunctional },
-    { key: 'tomographies', value: tomographies },
-    { key: 'rightHeartCatheterization', value: rightHeartCatheterization },
-    { key: 'ccg', value: ccg },
-    { key: 'resonance', value: resonance },
-    { key: 'leftHeartCatheterization', value: leftHeartCatheterization },
-    { key: 'otherStudies', value: otherStudies },
-    { key: 'laboratoryResults', value: laboratoryResults },
-  ];
+  let studies = {
+    electrocardiogram,
+    rxThorax,
+    echocardiogram,
+    walkTest,
+    respiratoryFunctional,
+    tomographies,
+    rightHeartCatheterization,
+    ccg,
+    resonance,
+    leftHeartCatheterization,
+    otherStudies,
+    laboratoryResults,
+  };
 
-  await Promise.all(studies.map(async studio => {
-    if (studio.value) {
-      // let parsetStudy = JSON.parse(studio.value);
-      const file = await loadFile(studio.value);
-      // body[studio.key] = file?.url;
-      return { key: studio.key, value: file };
+  await Promise.all(Object.keys(studies).map(async studio => {
+    if (studies[studio]) {
+      // let parsetStudy = JSON.parse(studies[studio]);
+      const file = await loadFile(studies[studio]);
+      studies = { ...studies, [studio]: file?.url }
+      return;
     }
   }));
 
@@ -78,7 +78,7 @@ const createPreConsultationHandler = async (body) => {
       patient,
       appointmentSchedule,
       lackOfAir,
-      lackOfAirAsAlways,
+      // lackOfAirAsAlways,
       lackOfAirIncremented,
       lackOfAirClasification,
       chestPainAtRest,
@@ -100,21 +100,21 @@ const createPreConsultationHandler = async (body) => {
       exerciseStatus,
       abnormalGlycemia,
       lastAbnormalGlycemia,
-      physicalExamination,
-      laboratoryResults: body.laboratoryResults,
+      // physicalExamination,
+      laboratoryResults: studies.laboratoryResults,
       laboratoryResultsDescription,
-      electrocardiogram: body.electrocardiogram,
+      electrocardiogram: studies.electrocardiogram,
       electrocardiogramDescription,
-      rxThorax: body.rxThorax,
-      echocardiogram: body.echocardiogram,
-      walkTest: body.walkTest,
-      respiratoryFunctional: body.respiratoryFunctional,
-      tomographies: body.tomographies,
-      rightHeartCatheterization: body.rightHeartCatheterization,
-      ccg: body.ccg,
-      resonance: body.resonance,
-      leftHeartCatheterization: body.leftHeartCatheterization,
-      otherStudies: body.otherStudies,
+      rxThorax: studies.rxThorax,
+      echocardiogram: studies.echocardiogram,
+      walkTest: studies.walkTest,
+      respiratoryFunctional: studies.respiratoryFunctional,
+      tomographies: studies.tomographies,
+      rightHeartCatheterization: studies.rightHeartCatheterization,
+      ccg: studies.ccg,
+      resonance: studies.resonance,
+      leftHeartCatheterization: studies.leftHeartCatheterization,
+      otherStudies: studies.otherStudies,
       pendingStudies: pendingStudies,
       consultationReason,
       importantSymptoms,
