@@ -3,7 +3,7 @@ import paginationUsersHandler from "../Pagination/paginationUsersHandler.js";
 import { mapPatients } from '../../mapper/patient/patientMapper.js';
 import { Op } from "sequelize";
 
-const getPatientsHandler = async ({ name, lastname, idNumber, limit, page }) => {
+const getPatientsHandler = async ({ limit, page, name }) => {
   try {
     const queryOptions = {
       where: {
@@ -27,20 +27,16 @@ const getPatientsHandler = async ({ name, lastname, idNumber, limit, page }) => 
 
     // Agregar filtros de búsqueda
     if (name) {
-      queryOptions.where.name = {
-        [Op.iLike]: `%${name}%`, // Cambia aquí
-      };
+      const searchTerms = name.split(' ').filter(term => term.trim() !== '');
+      queryOptions.where[Op.or] = searchTerms.map(term => ({
+        [Op.or]: [
+          { name: { [Op.iLike]: `%${term}%` } },
+          { lastname: { [Op.iLike]: `%${term}%` } },
+          { idNumber: { [Op.iLike]: `%${term}%` } }
+        ]
+      }));
     }
-    if (lastname) {
-      queryOptions.where.lastname = {
-        [Op.iLike]: `%${lastname}%`, // Cambia aquí
-      };
-    }
-    if (idNumber) {
-      queryOptions.where.idNumber = {
-        [Op.eq]: idNumber, // Cambia aquí
-      };
-    }
+
     // Sin paginación
     if (!limit && !page) {
       const getPatients = await models.User.findAll(queryOptions);
@@ -55,4 +51,3 @@ const getPatientsHandler = async ({ name, lastname, idNumber, limit, page }) => 
 };
 
 export default getPatientsHandler;
-
