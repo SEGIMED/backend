@@ -1,9 +1,12 @@
 import {VitalSignDetails} from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 
-const updateVitalSignsHandler = async (updateVitalSigns) => {
-
+const updateVitalSignsHandler = async (body) => {
+    const {updateVitalSigns} = body
     try {
+        if(!updateVitalSigns || !Array.isArray(updateVitalSigns) || updateVitalSigns.length === 0){
+            return 
+        }
         const updatedVitalSigns = await Promise.all(updateVitalSigns.map(async (vitalSign) => {
             const [affectedCount, updatedVitalSign] = await VitalSignDetails.update(
                 {
