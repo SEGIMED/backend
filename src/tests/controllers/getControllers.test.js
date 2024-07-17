@@ -20,9 +20,8 @@ describe("GET / Controllers", () => {
   test("should mock DoctorSchedule.create method", () => {
     expect(jest.isMockFunction(DoctorSchedule.create)).toBe(true);
   });
-
-  test("should respond with status 200 for valid values", async () => {
-    DoctorSchedule.create.mockResolvedValue({
+    test("should respond with status 200 for valid values", async () => {
+    DoctorSchedule.({
       doctor_id: 3,
       openAtt: "08:00:00",
       closeAtt: "15:00:00",

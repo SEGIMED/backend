@@ -1,3 +1,5 @@
 import { sequelize } from "../../databaseConfig";
 
-export const { DoctorSchedule } = sequelize.models;
+const { DoctorSchedule } = sequelize.models;
+
+export default DoctorSchedule;
