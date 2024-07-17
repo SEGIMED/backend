@@ -4,9 +4,9 @@ import moment from "moment-timezone";
 import { PatientPainMap } from "../../databaseConfig.js";
 import validateDuplicatePainArea from "../../validations/validateDuplicatePainArea.js";
 
-const createPatientPainMapHandler = async (painRecord) => {
-  const patientPainMapping = mapPainRecord(painRecord);
-
+const createPatientPainMapHandler = async (body) => {
+  const patientPainMapping = mapPainRecord(body);
+  // console.log('HOLAAAAAA', patientPainMapping);
   try {
     // Validate if the pain area is duplicated
     const validate = validateDuplicatePainArea(painRecord);
