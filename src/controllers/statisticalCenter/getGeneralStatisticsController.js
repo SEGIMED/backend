@@ -6,6 +6,7 @@ import getAlarmEventsStatisticsHandler from '../../handlers/statisticalCenter/ge
 import getAgeRangesHandler from '../../handlers/statisticalCenter/getAgeRangesHandler.js';
 import getRatePulmonaryHypertensionRiskHandler from '../../handlers/statisticalCenter/getRatePulmonaryHypertensionRiskHandler.js';
 import getRateESC2022RiskHandler from '../../handlers/statisticalCenter/getRateESC2022RiskHandler.js';
+import getRateHeartFailurHandler from '../../handlers/statisticalCenter/getRateHeartFailurHandler.js';
 
 const getGeneralStatisticsController = async (req, res) => {
     try {
@@ -31,13 +32,16 @@ const getGeneralStatisticsController = async (req, res) => {
         const ageRanges = await getAgeRangesHandler();
         const ratePulmonaryHypertensionRisk = await getRatePulmonaryHypertensionRiskHandler();
         const rateESC2022Risk = await getRateESC2022RiskHandler();
-        // const claseFuncional = 
+        const claseFuncional = await getRateHeartFailurHandler();
+        
+        // estadisticas que faltan definir
         // const centrosDeAtencion =
         // const distribucionGeografica =
         // const pastientesHospitalizados =
-        
+        // const perfiles completados =
 
         const statistics = {
+            claseFuncional,
             ageRanges, 
             alarmEventsStatistics, 
             last24hsAlarmStatistics, 

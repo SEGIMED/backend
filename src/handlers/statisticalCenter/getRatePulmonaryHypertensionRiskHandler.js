@@ -17,13 +17,16 @@ const getRatePulmonaryHypertensionRiskHandler = async () => {
             group: ['pulmonaryHypertensionRisk', 'catHpRisk.id']
         });
 
-        // Mapeo los datos
-        const result = statistics.map(stat => ({
-            risk: stat.pulmonaryHypertensionRisk,
-            patientCount: stat.get('patientCount'),
-            riskName: stat.catHpRisk.name,
-            riskDescription: stat.catHpRisk.description
-        }));
+        const result = statistics.reduce((acc, stat) => {
+            const riskData = {
+                patientCount: stat.get('patientCount'),
+                riskName: stat.catHpRisk.name,
+                riskDescription: stat.catHpRisk.description
+            };
+
+            acc[`risk_${stat.pulmonaryHypertensionRisk}`] = riskData;
+            return acc;
+        }, {});
 
         return result;
     } catch (error) {

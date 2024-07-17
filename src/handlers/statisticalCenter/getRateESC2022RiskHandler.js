@@ -18,14 +18,19 @@ const getRateESC2022RiskHandler = async () => {
         });
 
         // Mapeo los datos
-        const result = statistics.map(stat => ({
-            risk: stat.risk,
-            patientCount: stat.get('patientCount'),
-            riskName: stat.catCvRisk.name,
-            riskDescription: stat.catCvRisk.description
-        }));
+        const result = statistics.reduce((acc, stat) => {
+            const riskData = {
+                patientCount: stat.get('patientCount'),
+                riskName: stat.catCvRisk.name,
+                riskDescription: stat.catCvRisk.description
+            };
+
+            acc[`risk_${stat.risk}`] = riskData;
+            return acc;
+        }, {});
 
         return result;
+        
     } catch (error) {
         throw new SegimedAPIError("Error al cargar las estadísticas de riesgo: " + error.message, 500);
     }
