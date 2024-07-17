@@ -6,10 +6,9 @@ import validateDuplicatePainArea from "../../validations/validateDuplicatePainAr
 
 const createPatientPainMapHandler = async (body) => {
   const patientPainMapping = mapPainRecord(body);
-  // console.log('HOLAAAAAA', patientPainMapping);
   try {
     // Validate if the pain area is duplicated
-    const validate = validateDuplicatePainArea(painRecord);
+    const validate = validateDuplicatePainArea(body);
     if (validate === false) throw new Error("Area de dolor duplicada");
     // Create the new pain record
     const newPainRecords = await PatientPainMap.create(patientPainMapping);
@@ -34,6 +33,7 @@ function mapPainRecord(body) {
     doesAnalgesicWorks: body.doesAnalgesicWorks,
     isWorstPainEver: body.isWorstPainEver,
     painOwner: body.painOwnerId,
+    painRecorder: body.painRecorder,
     scheduling: body.schedulingId,
     medicalEvent: body.medicalEventId,
     timestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),

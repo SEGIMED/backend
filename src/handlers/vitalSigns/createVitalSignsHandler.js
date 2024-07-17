@@ -7,11 +7,9 @@ const newVitalSignHandler = async (body) => {
   const { vitalSignsToCreate, patient, appointmentSchedule } = body;
 
   //Validation: Filter duplicates
-  if (Array.isArray(body.vitalSignsToCreate)) {
-    body = body.vitalSignsToCreate
-  }
+
   const seenMeasureTypes = new Set();
-  const uniqueVitalSignsToCreate = body.filter((vitalSign) => {
+  const uniqueVitalSignsToCreate = vitalSignsToCreate.filter(vitalSign => {
     if (seenMeasureTypes.has(vitalSign.measureType)) {
       return false;
     } else {
