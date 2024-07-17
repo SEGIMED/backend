@@ -8,7 +8,7 @@ import models, {
 import paginationUsersHandler from "../Pagination/paginationUsersHandler.js";
 import { Op } from "sequelize";
 
-const getAllPhysiciansHandler = async ({ page, limit, name, lastname }) => {
+const getAllPhysiciansHandler = async ({ page, limit, name }) => {
   try {
     //Specifications for the role selected
     const queryOptions = {
@@ -40,14 +40,14 @@ const getAllPhysiciansHandler = async ({ page, limit, name, lastname }) => {
     };
 
     if (name) {
-      queryOptions.where.name = {
-        [Op.iLike]: `%${name}%`, 
-      };
-    }
-    if (lastname) {
-      queryOptions.where.lastname = {
-        [Op.iLike]: `%${lastname}%`, 
-      };
+      const searchTerms = name.split(' ').filter(term => term.trim() !== '');
+      queryOptions.where[Op.or] = searchTerms.map(term => ({
+        [Op.or]: [
+          { name: { [Op.iLike]: `%${term}%` } },
+          { lastname: { [Op.iLike]: `%${term}%` } },
+
+        ]
+      }));
     }
 
     if (!limit && !page) {
