@@ -1,12 +1,11 @@
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import { PatientPainMap } from "../../databaseConfig.js";
 import moment from "moment";
-import contextService from "request-context";
 
 const patchPatientPainMapHandler = async (body) => {
+    body= body.painRecordsToCreate[0]
     try {
         const patientPainMapping = await mapPainRecord(body);
-
         const updatedPainRecord = await PatientPainMap.update(
             patientPainMapping ,
             {
