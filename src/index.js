@@ -4,7 +4,6 @@ import initialWebSocket from './realtime_server/websocket.js';
 import app from './app.js';
 import scheduleReminderEmails from './utils/emailReminders/appointmentReminder.js'
 import http from 'http';
-
 //create server
 const server = http.createServer(app);
 
