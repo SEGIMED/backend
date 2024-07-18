@@ -249,13 +249,13 @@ const model = (sequelize) => {
       timestamps: false,
       indexes: [
         {
-            name: "provisonal_pre_consultation_id_pk",
-            unique: true,
-            fields: [
-                {name: "id"},
-            ]
+          name: "provisonal_pre_consultation_id_pk",
+          unique: true,
+          fields: [
+            { name: "id" },
+          ]
         },
-    ]
+      ]
     }
   );
 };
