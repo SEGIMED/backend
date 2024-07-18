@@ -318,7 +318,6 @@ const getMedicalEventDetailHandler = async (medicalEventId) => {
       medicalEventDetail.appSch.patientUser.patientAnthDet
     );
     mapMedicalEvent.anthropometricDetails = vitalSigns;
-    console.log(vitalSigns);
     return mapMedicalEvent;
   } catch (error) {
     throw new Error("Error loading physician: " + error.message);
