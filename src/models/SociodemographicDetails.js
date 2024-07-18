@@ -90,6 +90,45 @@ const model = (sequelize) => {
         defaultValue: DataTypes.NOW,
         field: "registration_date",
       },
+      //nuevas propiedades agregadas
+      hipertPulm: {
+        //hipertensión pulmonar
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: null,
+        field: "hipert_pulm",
+      },
+      centerAttention: {
+        //centro de atención
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        field: "center_attention",
+        references: {
+          model: "cat_center_attention",
+          key: "id",
+        },
+      },
+      liveAlone: {
+        //vive solo
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+        field: "live_alone",
+      },
+      hasTechUseDifficulty: {
+        //dificultad en el uso de tecnología
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+        field: "has_tech_use_difficulty",
+      },
+      needsCellphoneAssistance: {
+        //necesita asistencia de celular
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+        field: "needs_cell_phone_assistance",
+      },
     },
     {
       tableName: "sociodemographic_details",
