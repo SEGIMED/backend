@@ -8,8 +8,8 @@ const createPatientPainMapHandler = async (body) => {
   const patientPainMapping = mapPainRecord(body);
   try {
     // Validate if the pain area is duplicated
-    const validate = validateDuplicatePainArea(body);
-    if (validate === false) throw new Error("Area de dolor duplicada");
+    /* const validate = validateDuplicatePainArea(body);
+    if (validate === false) throw new Error("Area de dolor duplicada"); */
     // Create the new pain record
     const newPainRecords = await PatientPainMap.create(patientPainMapping);
     return newPainRecords;
@@ -33,7 +33,6 @@ function mapPainRecord(body) {
     doesAnalgesicWorks: body.doesAnalgesicWorks,
     isWorstPainEver: body.isWorstPainEver,
     painOwner: body.painOwnerId,
-    painRecorder: body.painRecorder,
     scheduling: body.schedulingId,
     medicalEvent: body.medicalEventId,
     timestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
