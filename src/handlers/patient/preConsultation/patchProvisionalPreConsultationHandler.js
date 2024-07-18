@@ -51,8 +51,7 @@ const patchProvisionalPreConsultationHandler = async(body)=>{
         if (!existingPreconsultation) {
             throw new Error("No se encontró esta preconsulta");
         }
-
-        const preconsultationUpdated= await ProvisionalPreConsultation.update({
+        await ProvisionalPreConsultation.update({
             lackOfAir: lackOfAir !== undefined ? lackOfAir : existingPreconsultation.lackOfAir,
             lackOfAirAsAlways: lackOfAirAsAlways !== undefined ? lackOfAirAsAlways : existingPreconsultation.lackOfAirAsAlways,
             lackOfAirIncremented: lackOfAirIncremented !== undefined ? lackOfAirIncremented : existingPreconsultation.lackOfAirIncremented,
@@ -97,7 +96,6 @@ const patchProvisionalPreConsultationHandler = async(body)=>{
             currentMedications: currentMedications !== undefined ? currentMedications : existingPreconsultation.currentMedications,
         },
         {where:{id:preconsultationId}})
-        
         return await ProvisionalPreConsultation.findOne({ where: { id: preconsultationId } })
     } catch (error) {
         throw new Error("Error actualizando la preconsulta: " + error.message);
