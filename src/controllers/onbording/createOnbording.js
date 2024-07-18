@@ -1,4 +1,4 @@
-import createOnbordingHandler from "../../handlers/onbording/createOnbordingHandler";
+import createOnbordingHandler from "../../handlers/onbording/createOnbordingHandler.js";
 
 const createOnbording = async (req, res) => {
   try {
