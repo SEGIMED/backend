@@ -10,7 +10,7 @@ export const consultationVitalSignsMapper = async (vitalSignDetails) => {
     const vitalSignTypeMapped = vitalSignsMeasureTypesList.map(
       (vitalSignType) => {
         const vitalSignDetail = vitalSignDetails.find(
-          (detail) => detail.vitalSignMeasureType.name === vitalSignType.name
+          (detail) => detail.vitalSignMeasureType?.name === vitalSignType.name || detail.anthMeasType?.name === vitalSignType.name
         );
 
         if (vitalSignDetail) {
@@ -19,7 +19,7 @@ export const consultationVitalSignsMapper = async (vitalSignDetails) => {
             measureType: vitalSignType.name,
             measure: vitalSignDetail.measure,
             measUnit: vitalSignType.measUnit.name,
-            measureTimestamp: vitalSignDetail.measureTimestamp,
+            measureTimestamp: vitalSignDetail.measureTimestamp ? vitalSignDetail.measureTimestamp : vitalSignDetail.measureDate,
             measureSource: vitalSignDetail.measureSource,
             scheduling: vitalSignDetail.scheduling,
             medicalEvent: vitalSignDetail.medicalEvent,
