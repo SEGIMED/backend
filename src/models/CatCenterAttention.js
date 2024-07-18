@@ -52,3 +52,5 @@ const model = (sequelize) => {
     }
   );
 };
+
+export default model;

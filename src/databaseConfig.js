@@ -79,7 +79,7 @@ import AlarmEventModel from "./models/AlarmEvent.js"
 import ProvisionalPreConsultationModel from "./models/ProvisionalPreConsultation.js"
 import BackgroundsModel from "./models/Backgrounds.js";
 import DoctorScheduleModel from "./models/DoctorSchedule.js";
-
+import CatCenterAttetionModel from "./models/CatCenterAttention.js";
 import PhysicianFavoritePatientModel from './models/PhysicianFavoritePatient.js';
 
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
@@ -188,9 +188,8 @@ BackgroundsModel(sequelize)
 UserCurrentLocationModel(sequelize)
 AlarmEventModel(sequelize)
 ProvisionalPreConsultationModel(sequelize)
-DoctorScheduleModel(sequelize)
-
-
+DoctorScheduleModel(sequelize);
+CatCenterAttetionModel(sequelize);
 PhysicianFavoritePatientModel(sequelize);
 
 export const {
@@ -272,7 +271,8 @@ export const {
     ProvisionalPreConsultation,
     Backgrounds,
     DoctorSchedule, // Doctor-attention
-    PhysicianFavoritePatient
+    PhysicianFavoritePatient,
+    CatCenterAttention,
 
 } = sequelize.models;
 
@@ -605,6 +605,10 @@ User.hasMany(DoctorSchedule, { foreignKey: "doctor_id"});
 DoctorSchedule.belongsTo(User, { foreignKey: "doctor_id"});
 PhysicianFavoritePatient.belongsTo(User, { foreignKey: 'favoritePatient', as: 'patient' });
 PhysicianFavoritePatient.belongsTo(User, { foreignKey: 'physicianId', as: 'physician' });
+
+// Center Attention
+SociodemographicDetails.belongsTo(CatCenterAttention, { as: "catCenterAttention", foreignKey: "centerAttention" });
+CatCenterAttention.hasMany(SociodemographicDetails, { as: "sociodemographicDetails", foreignKey: "centerAttention" });
 
 const models = {
     AnthropometricDetails,
