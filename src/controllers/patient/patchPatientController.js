@@ -1,7 +1,7 @@
 import { loadImage } from "../../utils/cloudinary/cloudinary.js";
 import patchPatientHandler from "../../handlers/patient/patchPatientHandler.js";
 
-const patchPatientController = async (req, res, name,lastname,cellphone,email,city,country,avatar,patientId,verified, geolocation) => {
+const patchPatientController = async (req, res, name,lastname,cellphone,email,city,country,avatar,patientId,verified, geolocation,treatingPhysician) => {
     try {
         
   
@@ -45,6 +45,9 @@ const patchPatientController = async (req, res, name,lastname,cellphone,email,ci
         }
         if(country){
             updates.country=country
+        }
+        if(treatingPhysician){
+            updates.treatingPhysician=treatingPhysician
         }
 
         const patientUpdated = await patchPatientHandler(updates);
