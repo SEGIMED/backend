@@ -9,7 +9,7 @@ export const createOnbordingHandler = async (body) => {
     hasTechUseDifficulty,
     needsCellphoneAssistance,
   } = body;
-  await SociodemographicDetails.update(
+  const data = await SociodemographicDetails.update(
     {
       hipertPulm,
       centerAttention,
@@ -23,4 +23,6 @@ export const createOnbordingHandler = async (body) => {
       },
     }
   );
+  return data;
 };
+export default createOnbordingHandler;
