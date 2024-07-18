@@ -9,17 +9,23 @@ const schemaNotify = new Schema({
     },
     sender: {
         type: Types.ObjectId,
-        ref:"User"
+        ref:"User",
+        default: null
     },
     target:{
         type: Types.ObjectId,
         ref:"User"
     },
-    state: Boolean,
-    date: Date
+    state: {
+        type: Boolean,
+        default: false 
+    },
+    date:{ 
+        type:Date,
+        default: Date.now}
 });
 
-schemaNotify.methods.markAsSeen = function() {
+schemaNotify.methods.markAsSeen = function() { //If the status is true, then the notification has been viewed.
     this.state = true;
     return this.save();
 };
