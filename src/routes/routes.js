@@ -465,7 +465,7 @@ statisticsRouter.get(
 statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 
 //* Onbording
-onbordingRouter.post("/onbording", createOnbording);
+onbordingRouter.patch("/onbording", createOnbording);
 
 export {
   getPatientsRouter,
