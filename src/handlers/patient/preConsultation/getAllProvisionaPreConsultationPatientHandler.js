@@ -3,8 +3,6 @@ import segimedAPIError from "../../../error/SegimedAPIError.js";
 
 const getAllProvisionaPreConsultationHandler = async (patientId) => {
   try {
-    const vitalSignsMeasureTypesList =
-      await models.CatVitalSignMeasureType.findAll();
     const allPreConsultations = await models.ProvisionalPreConsultation.findAll(
       {
         where: {
@@ -90,7 +88,6 @@ const getAllProvisionaPreConsultationHandler = async (patientId) => {
         ],
       }
     );
-
     return allPreConsultations;
   } catch (error) {
     throw new segimedAPIError(
