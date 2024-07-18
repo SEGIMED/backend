@@ -93,6 +93,8 @@ const getPreConsultationByScheduleIdHandler = async (scheduleId) => {
           throw new SegimedAPIError("No se encontraron preconsultas para el ID de programación proporcionado.", 404);
         }
     
+        //! No está agregando los datos al objeto principal por eso lo mando en uno aparte
+        //! Realmente no puedo identificar el error
         const preConsultation = preConsultations[0];
         const vitalSignDetails = preConsultation.ProvisionalPreConsultationSchedule.vitalSignDetailsScheduling;
        
