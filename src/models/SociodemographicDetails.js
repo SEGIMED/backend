@@ -90,36 +90,6 @@ const model = (sequelize) => {
         defaultValue: DataTypes.NOW,
         field: "registration_date",
       },
-      //nuevas propiedades agregadas
-      hipertPulm: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-        defaultValue: null,
-        field: "hipert_pulm",
-      },
-      centerAttention: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        field: "center_attention",
-      },
-      liveAlone: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-        defaultValue: false,
-        field: "live_alone",
-      },
-      hasTechUseDifficulty: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-        defaultValue: false,
-        field: "has_tech_use_difficulty",
-      },
-      needsCellphoneAssistance: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-        defaultValue: false,
-        field: "needs_cell_phone_assistance",
-      },
     },
     {
       tableName: "sociodemographic_details",
