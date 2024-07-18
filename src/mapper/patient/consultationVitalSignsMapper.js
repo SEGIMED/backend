@@ -41,6 +41,6 @@ export const consultationVitalSignsMapper = async (vitalSignDetails) => {
 
     return vitalSignTypeMapped;
   } catch (error) {
-    console.log(error);
+    throw new Error(error)
   }
 };

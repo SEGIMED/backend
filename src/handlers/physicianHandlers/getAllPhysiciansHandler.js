@@ -69,7 +69,6 @@ const getAllPhysiciansHandler = async ({ page, limit, name }) => {
         limit,
         queryOptions,
       });
-      console.log(paginatedResult.user);
       paginatedResult.user = paginatedResult.user.map(
         transformPhysicianDataPagination
       );
