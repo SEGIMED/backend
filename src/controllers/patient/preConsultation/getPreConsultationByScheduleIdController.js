@@ -3,7 +3,6 @@ import getPreConsultationByScheduleIdHandler from "../../../handlers/patient/pre
 const getPreConsultationByScheduleIdController = async (req, res) => {
   try {
     const { scheduleId } = req.query;
-    console.log(scheduleId);
     const preConsultation = await getPreConsultationByScheduleIdHandler(
       scheduleId
     );
