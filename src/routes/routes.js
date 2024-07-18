@@ -39,7 +39,7 @@ import createDiagnosticTestController from "../controllers/diagnosticTest/create
 import createPatientDiagnosticController from "../controllers/patient/createPatientDiagnosticController.js";
 import patchDiagnosticTestController from "../controllers/diagnosticTest/patchDiagnosticTestController.js";
 import getGenderDistributionController from "../controllers/statisticalCenter/getGenderDistributionController.js";
-import getPatientActivityDistributionController from "../controllers/statisticalCenter/getPatientActivityDistributionController.js"
+import getPatientActivityDistributionController from "../controllers/statisticalCenter/getPatientActivityDistributionController.js";
 import getGeneralStatisticsController from "../controllers/statisticalCenter/getGeneralStatisticsController.js";
 import createDrugPrescriptionController from "../controllers/drugPrescription/createDrugPrescriptionController.js";
 import createMedicalProcedurePrescriptionController from "../controllers/medicalProcedurePrescription/createMedicalProcedurePrescriptionController.js";
@@ -62,8 +62,7 @@ import updatePhysicianSpecialtyController from "../controllers/physician/updateP
 import createPhysicianFavoritePatientController from "../controllers/physician/createPhysicianFavoritePatientController.js";
 import deletePhysicianFavoritePatientController from "../controllers/physician/deletePhysicianFavoritePatientController.js";
 import getPhysicianFavoritePatientController from "../controllers/physician/getPhysicianFavoritePatientController.js";
-import createMedicalIndicationsController
-  from "../controllers/medicalIndications/createMedicalIndicationsController.js";
+import createMedicalIndicationsController from "../controllers/medicalIndications/createMedicalIndicationsController.js";
 import createPatientReviewController from "../controllers/patient/reviewPatient/createPatientReviewController.js";
 import getAllReviewsForPatientController from "../controllers/patient/reviewPatient/getAllReviewsForPatientController.js";
 import getAllReviewsMadeByPhysicianController from "../controllers/patient/reviewPatient/getAllReviewsMadeByPhysicianController.js";
@@ -103,6 +102,7 @@ import updateSchedule from "../controllers/managementSchedule/updateSchedule.js"
 import deleteSchedule from "../controllers/managementSchedule/deleteSchedule.js";
 import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js"
 import getPreConsultationByScheduleIdController from "../controllers/patient/preConsultation/getPreConsultationByScheduleIdController.js";
+import createOnbording from "../controllers/onbording/createOnbording.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -128,6 +128,7 @@ const backgroundsRouter = Router();
 const alarmRouter = Router();
 const preConsultationRouter = Router();
 const createScheduleRouter = Router();
+const onbordingRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -141,7 +142,6 @@ userRouter
   .route("/user/update-user-info")
   .patch(updateUserInformationController);
 
-
 //* Patient
 patientRouter.route("/patient").post(postPatientController);
 
@@ -153,11 +153,19 @@ patientRouter
 patientRouter.route("/patch-patient").patch(patchPatientController);
 
 patientRouter.route("/patient-details").get(getPatientDetailsController);
-patientRouter.route("/patient-diagnostic").post(createPatientDiagnosticController);
-patientRouter.route("/patient-update-diagnostic").patch(updatePatientDiagnosticController);
-patientRouter.route("/patient-physical-examination").post(createPatientPhysicalExaminationController);
-patientRouter.route("/patient-physical-examination").patch(updatePatientPhysicalExaminationController);
-patientRouter.route("/update-full-patient").patch(updateFullPatientController)
+patientRouter
+  .route("/patient-diagnostic")
+  .post(createPatientDiagnosticController);
+patientRouter
+  .route("/patient-update-diagnostic")
+  .patch(updatePatientDiagnosticController);
+patientRouter
+  .route("/patient-physical-examination")
+  .post(createPatientPhysicalExaminationController);
+patientRouter
+  .route("/patient-physical-examination")
+  .patch(updatePatientPhysicalExaminationController);
+patientRouter.route("/update-full-patient").patch(updateFullPatientController);
 
 //* cardiovascular risk
 patientRouter
@@ -198,8 +206,12 @@ patientRouter
   .patch(updatePatientHpGroupController);
 
 //*pain map (mapa del dolor)
-patientRouter.route("/patient-new-pain-map").post(createPatientPainMapController)
-patientRouter.route("/patient-update-pain-map").patch(patchPatientPainMapController)
+patientRouter
+  .route("/patient-new-pain-map")
+  .post(createPatientPainMapController);
+patientRouter
+  .route("/patient-update-pain-map")
+  .patch(patchPatientPainMapController);
 
 patientRouter
   .route("/patient-review/:patientId")
@@ -249,12 +261,27 @@ physicianRouter.patch(
   updatePhysicianAttendancePlaceController
 );
 
-physicianRouter.post("/create-physician-specialty", createPhysicianSpecialtyController);
-physicianRouter.patch("/update-physician-specialty", updatePhysicianSpecialtyController);
+physicianRouter.post(
+  "/create-physician-specialty",
+  createPhysicianSpecialtyController
+);
+physicianRouter.patch(
+  "/update-physician-specialty",
+  updatePhysicianSpecialtyController
+);
 
-physicianRouter.post("/create-physician-favorite-patient", createPhysicianFavoritePatientController); //agrega un paciente favorito un medico
-physicianRouter.delete("/delete-physician-favorite-patient", deletePhysicianFavoritePatientController); //agrega un paciente favorito un medico
-physicianRouter.get("/get-physician-favorite-patient", getPhysicianFavoritePatientController); //muestra los pacientes favoritos de un medico
+physicianRouter.post(
+  "/create-physician-favorite-patient",
+  createPhysicianFavoritePatientController
+); //agrega un paciente favorito un medico
+physicianRouter.delete(
+  "/delete-physician-favorite-patient",
+  deletePhysicianFavoritePatientController
+); //agrega un paciente favorito un medico
+physicianRouter.get(
+  "/get-physician-favorite-patient",
+  getPhysicianFavoritePatientController
+); //muestra los pacientes favoritos de un medico
 
 // physicianRouter.post("/create-physician-expertise-level",createPhysicianExpertiseLevelController)
 
@@ -358,14 +385,20 @@ diagnosticTestRouter
   .patch(patchDiagnosticTestController);
 
 //* Drug Prescription
-drugPrescriptionRouter.route("/drug-prescription/create-drug-prescription").post(createDrugPrescriptionController)
-drugPrescriptionRouter.route("/drug-prescription/update-drug-prescription").patch(updateDrugPrescriptionController)
-
+drugPrescriptionRouter
+  .route("/drug-prescription/create-drug-prescription")
+  .post(createDrugPrescriptionController);
+drugPrescriptionRouter
+  .route("/drug-prescription/update-drug-prescription")
+  .patch(updateDrugPrescriptionController);
 
 //* medical Procedure Prescription
-procedurePrescriptionRouter.route("/procedure/create-procedure-prescription").post(createMedicalProcedurePrescriptionController)
-procedurePrescriptionRouter.route("/procedure/update-procedure-prescription").patch(updateMedicalProcedurePrescriptionController)
-
+procedurePrescriptionRouter
+  .route("/procedure/create-procedure-prescription")
+  .post(createMedicalProcedurePrescriptionController);
+procedurePrescriptionRouter
+  .route("/procedure/update-procedure-prescription")
+  .patch(updateMedicalProcedurePrescriptionController);
 
 //* Medical Referral
 medicalReferralRouter
@@ -376,11 +409,17 @@ medicalReferralRouter
   .patch(updateMedicalReferralController);
 
 //* Therapy Prescription
-therapyPrescriptionRouter.route("/therapy/create-therapy-prescription").post(createTherapyPrescriptionController)
-therapyPrescriptionRouter.route("/therapy/update-therapy-prescription").patch(updateTherapyPrescriptionController)
+therapyPrescriptionRouter
+  .route("/therapy/create-therapy-prescription")
+  .post(createTherapyPrescriptionController);
+therapyPrescriptionRouter
+  .route("/therapy/update-therapy-prescription")
+  .patch(updateTherapyPrescriptionController);
 
 // *Medical Indications
-medicalIndicationsRouter.route("/medical-indications/new-indication").post(createMedicalIndicationsController)
+medicalIndicationsRouter
+  .route("/medical-indications/new-indication")
+  .post(createMedicalIndicationsController);
 
 //* Alarm
 alarmRouter.route("/alarm").post(createAlarmEventController);
@@ -419,12 +458,19 @@ statisticsRouter.get(
 createScheduleRouter.post("/create_schedule/:idUser", createSchedule);
 createScheduleRouter.get("/getAllSchedule", getAllSchedules);
 createScheduleRouter.get("/getSchedule/:id", getScheduleById);
-createScheduleRouter.patch("/updateSchedule/:id", updateSchedule)
-createScheduleRouter.delete("/deleteSchedule/:id", deleteSchedule)
+createScheduleRouter.patch("/updateSchedule/:id", updateSchedule);
+createScheduleRouter.delete("/deleteSchedule/:id", deleteSchedule);
 
-statisticsRouter.get("/statistics-genre", getGenderDistributionController)
-statisticsRouter.get("/statistics-patient-activity", getPatientActivityDistributionController)
-statisticsRouter.get("/statistics-general", getGeneralStatisticsController )
+statisticsRouter.get("/statistics-genre", getGenderDistributionController);
+statisticsRouter.get(
+  "/statistics-patient-activity",
+  getPatientActivityDistributionController
+);
+statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
+
+//* Onbording
+onbordingRouter.post("/onbording", createOnbording);
+
 export {
   getPatientsRouter,
   patientRouter,
@@ -450,4 +496,5 @@ export {
   preConsultationRouter,
   backgroundsRouter,
   createScheduleRouter,
+  onbordingRouter,
 };
