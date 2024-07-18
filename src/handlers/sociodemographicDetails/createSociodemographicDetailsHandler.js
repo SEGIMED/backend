@@ -14,11 +14,6 @@ const createSociodemographicDetailHandler = async (body) => {
     healthCareNumber,
     emergencyContactPhone,
     dateOfDeathReport,
-    hipertPulm,
-    centerAttention,
-    liveAlone,
-    hasTechUseDifficulty,
-    needsCellphoneAssistance,
   } = body;
 
   try {
@@ -34,11 +29,6 @@ const createSociodemographicDetailHandler = async (body) => {
       healthCareNumber,
       emergencyContactPhone,
       dateOfDeathReport,
-      hipertPulm,
-      centerAttention,
-      liveAlone,
-      hasTechUseDifficulty,
-      needsCellphoneAssistance,
     });
     return newSociodemographicDetail;
   } catch (error) {

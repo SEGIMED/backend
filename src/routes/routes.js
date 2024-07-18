@@ -39,7 +39,7 @@ import createDiagnosticTestController from "../controllers/diagnosticTest/create
 import createPatientDiagnosticController from "../controllers/patient/createPatientDiagnosticController.js";
 import patchDiagnosticTestController from "../controllers/diagnosticTest/patchDiagnosticTestController.js";
 import getGenderDistributionController from "../controllers/statisticalCenter/getGenderDistributionController.js";
-import getPatientActivityDistributionController from "../controllers/statisticalCenter/getPatientActivityDistributionController.js"
+import getPatientActivityDistributionController from "../controllers/statisticalCenter/getPatientActivityDistributionController.js";
 import getGeneralStatisticsController from "../controllers/statisticalCenter/getGeneralStatisticsController.js";
 import createDrugPrescriptionController from "../controllers/drugPrescription/createDrugPrescriptionController.js";
 import createMedicalProcedurePrescriptionController from "../controllers/medicalProcedurePrescription/createMedicalProcedurePrescriptionController.js";
@@ -101,6 +101,7 @@ import getScheduleById from "../controllers/managementSchedule/getScheduleId.js"
 import updateSchedule from "../controllers/managementSchedule/updateSchedule.js";
 import deleteSchedule from "../controllers/managementSchedule/deleteSchedule.js";
 import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js";
+import createOnbording from "../controllers/onbording/createOnbording.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -126,6 +127,7 @@ const backgroundsRouter = Router();
 const alarmRouter = Router();
 const preConsultationRouter = Router();
 const createScheduleRouter = Router();
+const onbordingRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -455,9 +457,16 @@ createScheduleRouter.get("/getSchedule/:id", getScheduleById);
 createScheduleRouter.patch("/updateSchedule/:id", updateSchedule);
 createScheduleRouter.delete("/deleteSchedule/:id", deleteSchedule);
 
-statisticsRouter.get("/statistics-genre", getGenderDistributionController)
-statisticsRouter.get("/statistics-patient-activity", getPatientActivityDistributionController)
-statisticsRouter.get("/statistics-general", getGeneralStatisticsController )
+statisticsRouter.get("/statistics-genre", getGenderDistributionController);
+statisticsRouter.get(
+  "/statistics-patient-activity",
+  getPatientActivityDistributionController
+);
+statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
+
+//* Onbording
+onbordingRouter.post("/onbording", createOnbording);
+
 export {
   getPatientsRouter,
   patientRouter,
@@ -483,4 +492,5 @@ export {
   preConsultationRouter,
   backgroundsRouter,
   createScheduleRouter,
+  onbordingRouter,
 };

@@ -22,12 +22,6 @@ const updateSociodemographicDetailsHandler = async (
           emergencyContactPhone:
             patchSociodemographicBody.emergencyContactPhone,
           dateOfDeathReport: patchSociodemographicBody.dateOfDeathReport,
-          hiperPulm: patchSociodemographicBody.hiperPulm,
-          centerAttention: patchSociodemographicBody.centerAttention,
-          liveAlone: patchSociodemographicBody.liveAlone,
-          hasTechUseDifficulty: patchSociodemographicBody.hasTechUseDifficulty,
-          needsCellphoneAssistance:
-            patchSociodemographicBody.needsCellphoneAssistance,
         },
       });
 
@@ -43,12 +37,6 @@ const updateSociodemographicDetailsHandler = async (
         healthCarePlan: patchSociodemographicBody.healthCarePlanId,
         emergencyContactPhone: patchSociodemographicBody.emergencyContactPhone,
         dateOfDeathReport: patchSociodemographicBody.dateOfDeathReport,
-        hiperPulm: patchSociodemographicBody.hiperPulm,
-        centerAttention: patchSociodemographicBody.centerAttention,
-        liveAlone: patchSociodemographicBody.liveAlone,
-        hasTechUseDifficulty: patchSociodemographicBody.hasTechUseDifficulty,
-        needsCellphoneAssistance:
-          patchSociodemographicBody.needsCellphoneAssistance,
       });
     }
 
