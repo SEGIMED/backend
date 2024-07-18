@@ -688,7 +688,8 @@ const models = {
     ProvisionalPreConsultation,
     Backgrounds,
     DoctorSchedule,
-    PhysicianFavoritePatient
+    PhysicianFavoritePatient,
+    CatCenterAttention
 };
 
 export default models
