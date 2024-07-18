@@ -52,7 +52,8 @@ const patchPatientHandler = async (patchPatientBody) => {
       email: patchPatientBody.email ? patchPatientBody.email : patient.email,
       avatar: patchPatientBody.avatar ? patchPatientBody.avatar : patient.avatar,
       verified: patchPatientBody.verified ? patchPatientBody.verified : patient.verified,
-      geolocation: patchPatientBody.geolocation ? patchPatientBody.geolocation : patient.geolocation
+      geolocation: patchPatientBody.geolocation ? patchPatientBody.geolocation : patient.geolocation,
+      treatingPhysician: patchPatientBody.treatingPhysician? patchPatientBody.treatingPhysician: patient.treatingPhysician
     });
 
     return {

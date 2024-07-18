@@ -36,7 +36,7 @@ function mapPainRecord(body) {
     scheduling: body.schedulingId,
     medicalEvent: body.medicalEventId,
     timestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-    painRecorder: contextService.get("request:user").userId,
+    painRecorder: body.painOwnerId,
   };
 }
 
