@@ -1,28 +1,37 @@
-import { SociodemographicDetails } from "../../databaseConfig";
+import { SociodemographicDetails } from "../../databaseConfig.js";
+import SegimedAPIError from "../../error/SegimedAPIError.js";
 
 export const createOnbordingHandler = async (body) => {
-  const {
-    userId,
-    hipertPulm,
-    centerAttention,
-    liveAlone,
-    hasTechUseDifficulty,
-    needsCellphoneAssistance,
-  } = body;
-  const data = await SociodemographicDetails.update(
-    {
+  try {
+    const {
+      userId,
       hipertPulm,
       centerAttention,
       liveAlone,
       hasTechUseDifficulty,
       needsCellphoneAssistance,
-    },
-    {
-      where: {
-        patient: userId,
+    } = body;
+    const data = await SociodemographicDetails.update(
+      {
+        hipertPulm,
+        centerAttention,
+        liveAlone,
+        hasTechUseDifficulty,
+        needsCellphoneAssistance,
       },
-    }
-  );
-  return data;
+      {
+        where: {
+          patient: userId,
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    throw new SegimedAPIError(
+      "Error en la operacion de registro: ",
+      error,
+      500
+    );
+  }
 };
 export default createOnbordingHandler;
