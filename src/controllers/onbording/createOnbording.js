@@ -1,6 +1,6 @@
 import createOnbordingHandler from "../../handlers/onbording/createOnbordingHandler.js";
 
-const createOnbording = async (req, res) => {
+const createOnbordingController = async (req, res) => {
   try {
     const newOnbording = req.body;
     const onbording = await createOnbordingHandler(newOnbording);
@@ -9,4 +9,4 @@ const createOnbording = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
-export default createOnbording;
+export default createOnbordingController;

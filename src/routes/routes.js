@@ -102,7 +102,7 @@ import updateSchedule from "../controllers/managementSchedule/updateSchedule.js"
 import deleteSchedule from "../controllers/managementSchedule/deleteSchedule.js";
 import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js"
 import getPreConsultationByScheduleIdController from "../controllers/patient/preConsultation/getPreConsultationByScheduleIdController.js";
-import createOnbording from "../controllers/onbording/createOnbording.js";
+import createOnbordingController from "../controllers/onbording/createOnbording.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -469,7 +469,7 @@ statisticsRouter.get(
 statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 
 //* Onbording
-onbordingRouter.post("/onbording", createOnbording);
+onbordingRouter.patch("/onbording", createOnbordingController);
 
 export {
   getPatientsRouter,
