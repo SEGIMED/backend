@@ -1,7 +1,7 @@
 import { jest, describe, test, beforeEach, expect } from "@jest/globals";
 import createSchedule from "../../controllers/managementSchedule/createAttention.js";
 
-jest.unstable_mockModule("../../utils/modelTest/UserModelTest.js", () => {
+jest.unstable_mockModule("../../databaseConfig.js", () => {
   return {
     DoctorSchedule: {
       create: jest.fn(),
@@ -10,7 +10,7 @@ jest.unstable_mockModule("../../utils/modelTest/UserModelTest.js", () => {
   };
 });
 const { DoctorSchedule } = await import(
-  "../../utils/modelTest/UserModelTest.js"
+  "../../databaseConfig.js"
 );
 
 describe("GET / Controllers", () => {
@@ -21,7 +21,7 @@ describe("GET / Controllers", () => {
     expect(jest.isMockFunction(DoctorSchedule.create)).toBe(true);
   });
     test("should respond with status 200 for valid values", async () => {
-    DoctorSchedule.({
+    DoctorSchedule.create({
       doctor_id: 3,
       openAtt: "08:00:00",
       closeAtt: "15:00:00",

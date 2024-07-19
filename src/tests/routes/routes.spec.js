@@ -102,7 +102,7 @@ describe("Protected Route Tests", () => {
 
     test("should return 200 for authorized request to /get-physician-favorite-patient", async () => {
       const response = await request(app)
-        .get(`${URL_API}/get-physician-favorite-patient?physicianId=1`)
+        .get(`${URL_API}/get-physician-favorite-patient?physicianId=3&page=1&limit=10`) // Reemplaza '1' con un ID válido para la prueba
         .set("token", `${TOKEN}`)
         .expect(200);
       // Verifica la respuesta
@@ -175,7 +175,7 @@ describe("Protected Route Tests", () => {
     test("should return 200 for authorized request to /medical-event/get-medical-event-detail", async () => {
       const response = await request(app)
         .get(
-          `${URL_API}/medical-event/get-medical-event-detail?medicalEventId=2`
+          `${URL_API}/medical-event/get-medical-event-detail?medicalEventId=5`
         )
         .set("token", `${TOKEN}`)
         .expect(200);
