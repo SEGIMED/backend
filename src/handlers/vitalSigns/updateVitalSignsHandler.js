@@ -7,7 +7,6 @@ const updateVitalSignsHandler = async (body) => {
         if(!updateVitalSigns || !Array.isArray(updateVitalSigns) || updateVitalSigns.length === 0){
             return 
         }
-
         const updatedVitalSigns = await Promise.all(updateVitalSigns.map(async (vitalSign) => {
             const [affectedCount, updatedVitalSign] = await VitalSignDetails.update(
                 {

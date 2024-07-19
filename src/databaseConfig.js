@@ -603,8 +603,10 @@ Backgrounds.belongsTo(User, { as: "patientUser", foreignKey: "patient"});
 User.hasMany(Backgrounds, { as: "backgrounds", foreignKey: "patient"});
 User.hasMany(DoctorSchedule, { foreignKey: "doctor_id"});
 DoctorSchedule.belongsTo(User, { foreignKey: "doctor_id"});
-PhysicianFavoritePatient.belongsTo(User, { foreignKey: 'favoritePatient', as: 'patient' });
+PhysicianFavoritePatient.belongsTo(User, { foreignKey: 'favoritePatient', as: 'user' });
 PhysicianFavoritePatient.belongsTo(User, { foreignKey: 'physicianId', as: 'physician' });
+User.belongsTo(PhysicianDetails, { as: "treatingPhysicianId", foreignKey: 'treatingPhysician' });
+PhysicianDetails.hasMany(User, { as: "treatingPhysician", foreignKey: 'treatingPhysician' });
 
 const models = {
     AnthropometricDetails,

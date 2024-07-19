@@ -4,13 +4,12 @@ import moment from "moment-timezone";
 import { PatientPainMap } from "../../databaseConfig.js";
 import validateDuplicatePainArea from "../../validations/validateDuplicatePainArea.js";
 
-const createPatientPainMapHandler = async (painRecord) => {
-  const patientPainMapping = mapPainRecord(painRecord);
-
+const createPatientPainMapHandler = async (body) => {
+  const patientPainMapping = mapPainRecord(body);
   try {
     // Validate if the pain area is duplicated
-    const validate = validateDuplicatePainArea(painRecord);
-    if (validate === false) throw new Error("Area de dolor duplicada");
+    /* const validate = validateDuplicatePainArea(body);
+    if (validate === false) throw new Error("Area de dolor duplicada"); */
     // Create the new pain record
     const newPainRecords = await PatientPainMap.create(patientPainMapping);
     return newPainRecords;
@@ -37,7 +36,7 @@ function mapPainRecord(body) {
     scheduling: body.schedulingId,
     medicalEvent: body.medicalEventId,
     timestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-    painRecorder: contextService.get("request:user").userId,
+    painRecorder: body.painOwnerId,
   };
 }
 
