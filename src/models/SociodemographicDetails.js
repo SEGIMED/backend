@@ -23,12 +23,12 @@ const model = (sequelize) => {
       },
       birthDate: {
         type: DataTypes.DATEONLY,
-        allowNull: false,
+        allowNull: true,
         field: "birth_date",
       },
       genre: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "cat_genre",
           key: "id",
@@ -36,7 +36,7 @@ const model = (sequelize) => {
       },
       educationalLevel: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "cat_educational_level",
           key: "id",
@@ -62,6 +62,7 @@ const model = (sequelize) => {
       },
       healthCarePlan: {
         type: DataTypes.INTEGER,
+        allowNull: true,
         references: {
           model: "cat_health_care_plan",
           key: "id",

@@ -100,7 +100,8 @@ import getAllSchedules from "../controllers/managementSchedule/getAllSchedule.js
 import getScheduleById from "../controllers/managementSchedule/getScheduleId.js";
 import updateSchedule from "../controllers/managementSchedule/updateSchedule.js";
 import deleteSchedule from "../controllers/managementSchedule/deleteSchedule.js";
-import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js";
+import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js"
+import getPreConsultationByScheduleIdController from "../controllers/patient/preConsultation/getPreConsultationByScheduleIdController.js";
 import createOnbording from "../controllers/onbording/createOnbording.js";
 
 const patientRouter = Router();
@@ -438,6 +439,9 @@ preConsultationRouter
 preConsultationRouter
   .route("/get-all-pateint-preconsultation")
   .get(getAllProvisionaPreConsultationPatientController);
+preConsultationRouter
+  .route("/get-preconsultation")
+  .get(getPreConsultationByScheduleIdController)
 preConsultationRouter
   .route("/update-pre-consultation")
   .patch(patchProvisionalPreConsultationController);

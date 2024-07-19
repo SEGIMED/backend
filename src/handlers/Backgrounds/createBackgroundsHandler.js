@@ -12,30 +12,39 @@ const createBackgroundsHandler = async (body) => {
         familyBackground,
         pediatricBackground,
         pharmacologicalBackground,
-        vaccinationBackground,
         allergicBackground,
+        vaccinationBackground,
         medicalEventId
     } = body;
 
     try {
         const now = moment()
-        const newBackground = await Backgrounds.create(
+   
+        const [newBackground, createdBackground] = await Backgrounds.findOrCreate(
             {
-                patient: patientId,
+                where:{
+                    medicalEvent:medicalEventId
+                },
+                defaults:{
+                patient:patientId,
                 surgicalBackground,
                 pathologicBackground,
                 nonPathologicBackground,
                 familyBackground,
                 pediatricBackground,
                 pharmacologicalBackground,
-                vaccinationBackground,
                 allergicBackground,
-                timestamp: now.format("YYYY-MM-DD HH:mm:ss z"),
-                medicalEvent: medicalEventId
-
+                vaccinationBackground,
+                timestamp:now.format("YYYY-MM-DD HH:mm:ss z"),
+                medicalEvent:medicalEventId
+                }
             }
         )
-        return newBackground
+        if(createdBackground){
+            return newBackground
+        }else{
+            return (`Ya existe un registro de antecedentes para el evento médico con id ${medicalEventId}`);
+        }
     } catch (error) {
         throw new SegimedAPIError('Hubo un error durante el proceso de registro.', 500)
     }

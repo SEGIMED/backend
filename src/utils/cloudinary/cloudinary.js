@@ -34,7 +34,6 @@ export async function loadFile(url) {
   try {
     const uploadResult = await cloudinary.uploader.upload(
       url,
-      {},
       async function (error, result) {
         if (error) {
           console.log(error);

@@ -4,6 +4,7 @@ const createBackgroundsController = async (req, res) => {
     try {
         const newBackground = req.body;
         const background = await createBackgroundsHandler(newBackground);
+
         return res.status(200).json(background);
 
     } catch (error) {
