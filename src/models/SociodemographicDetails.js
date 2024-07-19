@@ -101,7 +101,7 @@ const model = (sequelize) => {
       },
       centerAttention: {
         //centro de atención
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: true,
         field: "center_attention",
         references: {
