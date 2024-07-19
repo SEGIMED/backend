@@ -611,6 +611,8 @@ PhysicianDetails.hasMany(User, { as: "treatingPhysician", foreignKey: 'treatingP
 // Center Attention
 SociodemographicDetails.belongsTo(CatCenterAttention, { as: "catCenterAttention", foreignKey: "centerAttention" });
 CatCenterAttention.hasMany(SociodemographicDetails, { as: "sociodemographicDetails", foreignKey: "centerAttention" });
+CatCenterAttention.belongsTo(CatCity, { as: "city", foreignKey: "city" });
+CatCity.hasMany(CatCenterAttention, { as: "catCenterAttentions", foreignKey: "city" });
 
 const models = {
     AnthropometricDetails,
