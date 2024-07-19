@@ -30,7 +30,7 @@ const model = (sequelize) => {
         allowNull: true,
       },
       city: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: true,
         references: {
           model: "cat_city",
