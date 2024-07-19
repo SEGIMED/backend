@@ -12,15 +12,21 @@ const countPriorities = (alarms) => {
     const priorityCounts = {
         Alta: 0,
         Media: 0,
-        Baja: 0
+        Baja: 0,
+        Activas: 0,
+        Inactivas: 0
     };
 
     alarms.forEach((alarm) => {
+        // Count for priorities
         if (!alarm.solved) {
             const highestPriority = getHighestPriority(
                 alarm.questionsPriority.map((p) => p.split(": ")[1])
             );
             priorityCounts[highestPriority] += 1;
+            priorityCounts.Activas += 1;
+        } else {
+            priorityCounts.Inactivas += 1;
         }
     });
 
@@ -106,4 +112,5 @@ const getAllAlarmsForPatientHandler = async (patientId) => {
 };
 
 export default getAllAlarmsForPatientHandler;
+
 
