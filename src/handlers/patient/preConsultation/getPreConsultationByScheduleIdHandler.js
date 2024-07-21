@@ -90,7 +90,7 @@ const getPreConsultationByScheduleIdHandler = async (scheduleId) => {
     if (preConsultations.length === 0) {
       throw new SegimedAPIError("No se encontraron preconsultas para el ID de programación proporcionado.", 404);
     }
-
+    
     const preConsultation = preConsultations[0].get({ plain: true }); //Era lo que faltaba
     const vitalSignDetails = preConsultation.ProvisionalPreConsultationSchedule.vitalSignDetailsScheduling;
 
