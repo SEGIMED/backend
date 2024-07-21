@@ -53,7 +53,6 @@ const updateOrCreateVitalSignsHandler = async (body) => {
 
     return updatedOrCreatedVitalSigns;
   } catch (error) {
-    console.log(error)
     throw new SegimedAPIError('Hubo un error durante el proceso de actualización o creación de signos vitales.', 500);
   }
 };
