@@ -42,7 +42,7 @@ const getAllSchedulesHandler = async (patientId, physicianId, id) => {
             ],
         })
         return mapPatientsSchedule(schedules) 
-        // return schedules
+       
 
     } catch (error) {
         throw new Error("Error loading schedules: " + error.message);
