@@ -3,7 +3,7 @@ import paginationUsersHandler from "../Pagination/paginationUsersHandler.js";
 import { mapPatients } from '../../mapper/patient/patientMapper.js';
 import { Op } from "sequelize";
 
-const getPatientsHandler = async ({ limit, page, name }) => {
+const getPatientsHandler = async ({ limit, page, name, risk }) => {
   try {
     const queryOptions = {
       where: {
@@ -16,10 +16,12 @@ const getPatientsHandler = async ({ limit, page, name }) => {
         {
           model: models.PatientPulmonaryHypertensionRisk,
           as: 'patientPulmonaryHypertensionRisks',
+          // required: risk,
           include: {
             model: models.CatPulmonaryArterialHypertensionRisk,
             as: 'catHpRisk',
             attributes: ['name'],
+            ...(risk ? { where: { name: { [Op.iLike]: `%${risk}%` } } } : {}), //filtro de riesgo, si quisiera hacerlo sin paginado, repetir queryopt y pasar propiedad
           },
         },
       ],
@@ -37,10 +39,15 @@ const getPatientsHandler = async ({ limit, page, name }) => {
       }));
     }
 
+    
+    
+
+
     // Sin paginación
     if (!limit && !page) {
       const getPatients = await models.User.findAll(queryOptions);
       return mapPatients(getPatients);
+      // return getPatients
     } else {
       // Lógica de paginación
       return paginationUsersHandler({ page, limit, queryOptions });
