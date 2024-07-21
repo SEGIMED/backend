@@ -13,7 +13,7 @@ const schemaNotify = new Schema({
         default: null
     },
     target:{
-        type: Types.ObjectId,
+        type:Number,
         ref:"User"
     },
     state: {

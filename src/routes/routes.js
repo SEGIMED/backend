@@ -103,6 +103,7 @@ import deleteSchedule from "../controllers/managementSchedule/deleteSchedule.js"
 import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js"
 import getPreConsultationByScheduleIdController from "../controllers/patient/preConsultation/getPreConsultationByScheduleIdController.js";
 import createOnbordingController from "../controllers/onbording/createOnbording.js";
+import getAllNotificationsPatienConttroller from "../controllers/notifications/getAllNotificationsPatienController.js"
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -129,6 +130,7 @@ const alarmRouter = Router();
 const preConsultationRouter = Router();
 const createScheduleRouter = Router();
 const onbordingRouter = Router();
+const getAllNotificationsPatienRouter = Router()
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -471,6 +473,9 @@ statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 //* Onbording
 onbordingRouter.patch("/onbording", createOnbordingController);
 
+//* Notifications 
+getAllNotificationsPatienRouter.get("/all-notifications-patient",getAllNotificationsPatienConttroller)
+
 export {
   getPatientsRouter,
   patientRouter,
@@ -497,4 +502,5 @@ export {
   backgroundsRouter,
   createScheduleRouter,
   onbordingRouter,
+  getAllNotificationsPatienRouter,
 };

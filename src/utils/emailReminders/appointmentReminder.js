@@ -18,11 +18,12 @@ const scheduleReminderEmails = async () => {
       scheduled_start_timestamp: {
         [Op.between]: [mananaInicio, mananaFinal],
       },
+      scheduling_status: 1, //scheduled status
     },
-    include: [{ model: User, as: "patient_user" }],
   });
 
-  for (const appointment of appointments) { //It sends a notification for every patient to email and web app.
+  for (const appointment of appointments) {
+    //It sends a notification for every patient to email
     const patient = await User.findByPk(appointment.patient);
     const patientEmail = patient.email;
     const appointmentStart = new Date(appointment.scheduledStartTimestamp);
@@ -32,21 +33,23 @@ const scheduleReminderEmails = async () => {
       <p>Fecha: ${appointmentStart.toLocaleDateString()}</p>
       <p>Hora: ${appointmentStart.toLocaleTimeString()}</p>
     `;
-    const newNotification = new Notify({//TODO TEST THIS
+    //TODO change as a  find or create
+    const newNotification = new Notify({
+      // It sends notification for every patient to web app
       content: {
-        message: 
-        `Este es un recordatorio para su próxima cita:` 
-        `Fecha: ${appointmentStart.toLocaleDateString()}`
-        `Hora: ${appointmentStart.toLocaleTimeString()}`,
+        message: `<p>Este es un recordatorio para su próxima cita:</p>
+         <p>Fecha: ${appointmentStart.toLocaleDateString()}</p>
+         <p>Hora: ${appointmentStart.toLocaleTimeString()}</p> `,
       },
       target: appointment.patient,
     });
     newNotification.save();
+
     try {
       await sendMail(patientEmail, appointmentBody, appointmentSubject);
-      console.log(
-        `Correo electrónico de recordatorio enviado a ${patientEmail} para la cita del ${appointmentStart}`
-      );
+      // console.log(
+      //   `Correo electrónico de recordatorio enviado a ${patientEmail} para la cita del ${appointmentStart}`
+      // );
     } catch (error) {
       console.error(
         `Error al enviar correo electrónico de recordatorio para la cita: ${error.message}`
