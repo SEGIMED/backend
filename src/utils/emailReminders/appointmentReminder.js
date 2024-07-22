@@ -45,11 +45,19 @@ const scheduleReminderEmails = async () => {
     });
     newNotification.save();
 
+    const newNotificationPhysician = new Notify({
+      // It sends notification for every physician to web app
+      content: {
+        message: `<p>Este es un recordatorio para su próxima cita por atender:</p>
+         <p>Fecha: ${appointmentStart.toLocaleDateString()}</p>
+         <p>Hora: ${appointmentStart.toLocaleTimeString()}</p> `,
+      },
+      target: appointment.physician,
+    });
+    newNotificationPhysician.save();
+
     try {
       await sendMail(patientEmail, appointmentBody, appointmentSubject);
-      // console.log(
-      //   `Correo electrónico de recordatorio enviado a ${patientEmail} para la cita del ${appointmentStart}`
-      // );
     } catch (error) {
       console.error(
         `Error al enviar correo electrónico de recordatorio para la cita: ${error.message}`

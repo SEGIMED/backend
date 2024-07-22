@@ -16,7 +16,7 @@ server.listen(port, () => {
 
 //initial websocket server
 initialWebSocket(server);
-// Reminder appointment: every day at 6PM for the next day
+// Reminder appointment: every day at 9AM for the next day
 //! Decomment in production to send notifications and email 
 // cron.schedule('0 9 * * *', () => {
 //     scheduleReminderEmails();
