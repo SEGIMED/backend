@@ -4,7 +4,8 @@ import getMedicalEventDetailHandler from "../../handlers/medicalEvent/getMedical
 const getMedicalEventDetailController = async (req, res) => {
     try {
         const medicalEventId = req.query.medicalEventId;
-        const MedicalEventDetail = await getMedicalEventDetailHandler(medicalEventId);
+        const scheduleId = req.query.scheduleId
+        const MedicalEventDetail = await getMedicalEventDetailHandler({medicalEventId,scheduleId});
         return res.status(200).json(MedicalEventDetail);
 
     } catch (error) {
