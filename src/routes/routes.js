@@ -103,6 +103,9 @@ import deleteSchedule from "../controllers/managementSchedule/deleteSchedule.js"
 import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js"
 import getPreConsultationByScheduleIdController from "../controllers/patient/preConsultation/getPreConsultationByScheduleIdController.js";
 import createOnbordingController from "../controllers/onbording/createOnbording.js";
+import { createCenterAttention } from "../controllers/catCenterAttention/createCenterAttention.js";
+import { getCenterAtt } from "../controllers/catCenterAttention/getCenterAtt.js";
+import { updateCenterAttention } from "../controllers/catCenterAttention/updateCenterAtt.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -129,6 +132,7 @@ const alarmRouter = Router();
 const preConsultationRouter = Router();
 const createScheduleRouter = Router();
 const onbordingRouter = Router();
+const createCenterAttRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -359,6 +363,8 @@ sociodemographicDetailsRouter
 sociodemographicDetailsRouter
   .route("/sociodemographic-details/update-sociodemographic-detail")
   .patch(updateSociodemographicDetailsController);
+  //* agregamos ruta para onbording
+  sociodemographicDetailsRouter.patch("/sociodemographic-details/update-sociodemographic-detail", createOnbordingController);
 
 //* Medical Backgrounds
 medicalBackgroundsRouter
@@ -470,6 +476,11 @@ statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 
 //* Onbording
 onbordingRouter.patch("/onbording", createOnbordingController);
+
+//* center of attention
+createCenterAttRouter.post("/create-center-attention", createCenterAttention);
+createCenterAttRouter.get("/get-center-attention", getCenterAtt);
+createCenterAttRouter.get("/get-center-attention/:id", updateCenterAttention);
 
 export {
   getPatientsRouter,
