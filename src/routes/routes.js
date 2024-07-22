@@ -466,7 +466,7 @@ statisticsRouter.get(
 );
 
 //* create schedule
-scheduleRouter.route("/scheduleDoctor/:id")
+scheduleRouter.route("/scheduleDoctor")
 .post(createSchedule)
 .get(getSchedule)
 .patch(updateSchedule)
@@ -484,7 +484,7 @@ statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 onbordingRouter.patch("/onbording", createOnbordingController);
 
 //* center of attention
-centerAttRouter.route("/center-attention/:id")
+centerAttRouter.route("/center-attention")
 .patch(updateCenterAttention)
 .get(getCenterAtt)
 .post(createCenterAttention);

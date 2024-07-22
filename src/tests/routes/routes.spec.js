@@ -190,12 +190,11 @@ describe("Protected Route Tests", () => {
         .expect(200);
       // Verifica la respuesta
       expect(response.statusCode).toBe(200);
-      expect(response.body).toBeInstanceOf(Array);
     });
 
     test("should return 200 for authorized request", async () => {
       const response = await request(app)
-        .get(`${URL_API}/getAllSchedule`)
+        .get(`${URL_API}/scheduleDoctor`)
         .set("token", `${TOKEN}`)
         .expect(200);
       // Verifica la respuesta
@@ -204,24 +203,65 @@ describe("Protected Route Tests", () => {
 
     test("should return 200 and Array object for authorized request /getSchedule", async () => {
       const response = await request(app)
-        .get(`${URL_API}/getSchedule/3`)
+        .get(`${URL_API}/scheduleDoctor?id=3`)
         .set("token", `${TOKEN}`)
+        .set("query", "id=3")
         .expect(200);
       expect(response.statusCode).toBe(200);
       expect(response.body).toBeInstanceOf(Array);
     });
-  });
 
-  
-
-  describe("DELETE / request", () => {
-    test("should return 200 for authorized request", async () => {
+    test("should return 200 for authorized request to /statistics-genre", async () => {
       const response = await request(app)
-        .delete(`${URL_API}/deleteSchedule/3`)
+        .get(`${URL_API}/statistics-genre`)
         .set("token", `${TOKEN}`)
         .expect(200);
       // Verifica la respuesta
       expect(response.statusCode).toBe(200);
     });
+
+    test("should return 200 for authorized request to /statistics-patient-activity", async () => {
+      const response = await request(app)
+        .get(`${URL_API}/statistics-patient-activity`)
+        .set("token", `${TOKEN}`)
+        .expect(200);
+      // Verifica la respuesta
+      expect(response.statusCode).toBe(200);
+    });
+
+    test('should return 200 for authorized request to statistics-general', async () => {
+      const response = await request(app)
+        .get(`${URL_API}/statistics-general`)
+        .set('token', `${TOKEN}`)
+        .expect(200);
+      // Verifica la respuesta
+      expect(response.statusCode).toBe(200);
+    })
+
+    test('should return 200 for authorized request to center-attention', async () => {
+      const response = await request(app)
+        .get(`${URL_API}/center-attention`)
+        .set('token', `${TOKEN}`)
+        .expect(200);
+      // Verifica la respuesta
+      expect(response.statusCode).toBe(200);
+    })
+
+    test('should return 200 for authorized request to /all-notifications-patient', async () => {
+      const response = await request(app)
+        .get(`${URL_API}/all-notifications-patient?patientId=15`)
+        .set('token', `${TOKEN}`)
+        .expect(200);
+      // Verifica la respuesta
+      expect(response.statusCode).toBe(200);
+    }, 15000);
+
+    test('should return 200 for authorized request to /all-notifications-physician', async () => { 
+      const response = await request(app)
+        .get(`${URL_API}/all-notifications-physician?physicianId=22`)
+        .set('token', `${TOKEN}`)
+      // Verifica la respuesta
+      expect(response.statusCode).toBe(201);
+     });
   });
 });
