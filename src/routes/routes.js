@@ -508,4 +508,5 @@ export {
   backgroundsRouter,
   createScheduleRouter,
   onbordingRouter,
+  createCenterAttRouter,
 };
