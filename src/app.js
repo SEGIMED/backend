@@ -35,6 +35,9 @@ import {
   backgroundsRouter,
   createScheduleRouter,
   onbordingRouter,
+  getAllNotificationsPatienRouter,
+  getAllNotificationsPhysicianRouter,
+  notificationsRouter,
 } from "./routes/routes.js";
 
 const corsOptions = {
@@ -94,6 +97,9 @@ app.use("/api", preConsultationRouter);
 app.use("/api", backgroundsRouter);
 app.use("/api", createScheduleRouter);
 app.use("/api", onbordingRouter);
+app.use("/api", getAllNotificationsPatienRouter)
+app.use("/api", getAllNotificationsPhysicianRouter)
+app.use("/api", notificationsRouter)
 
 app.use("/api/doc", swaggerUI.serve, swaggerUI.setup(swaggerOptions));
 
