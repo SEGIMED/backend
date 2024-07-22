@@ -1,6 +1,6 @@
 import getAllNotificationsPatientHandler from "../../handlers/notifications/getAllNotificationsPatientHandler.js"
 
-const getAllNotificationsPatientConttroller = async (req,res) => {
+const getAllNotificationsPatientController = async (req,res) => {
     try {
         const {patientId} = req.query
         const unseenNotifications = await getAllNotificationsPatientHandler(patientId)
@@ -10,4 +10,4 @@ const getAllNotificationsPatientConttroller = async (req,res) => {
     }
 }
 
-export default getAllNotificationsPatientConttroller
+export default getAllNotificationsPatientController

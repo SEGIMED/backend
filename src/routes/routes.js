@@ -103,7 +103,7 @@ import deleteSchedule from "../controllers/managementSchedule/deleteSchedule.js"
 import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js"
 import getPreConsultationByScheduleIdController from "../controllers/patient/preConsultation/getPreConsultationByScheduleIdController.js";
 import createOnbordingController from "../controllers/onbording/createOnbording.js";
-import getAllNotificationsPatienConttroller from "../controllers/notifications/getAllNotificationsPatienController.js"
+import getAllNotificationsPatienController from "../controllers/notifications/getAllNotificationsPatienController.js"
 import getAllNotificationsPhysicianController from "../controllers/notifications/getAllNotificationsPhysicianController.js"
 
 const patientRouter = Router();
@@ -476,7 +476,7 @@ statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 onbordingRouter.patch("/onbording", createOnbordingController);
 
 //* Notifications 
-getAllNotificationsPatienRouter.get("/all-notifications-patient",getAllNotificationsPatienConttroller)
+getAllNotificationsPatienRouter.get("/all-notifications-patient",getAllNotificationsPatienController)
 getAllNotificationsPhysicianRouter.get("/all-notifications-physician",getAllNotificationsPhysicianController)
 
 export {
