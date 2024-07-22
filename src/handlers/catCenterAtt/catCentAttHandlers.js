@@ -37,9 +37,9 @@ export const getAllCatCenterAttHandler = async () => {
 };
 
 // function to update center attention
-export const updateCatCenterAttHandler = async (body) => {
+export const updateCatCenterAttHandler = async (body, id) => {
   try {
-    const { id, name, address, phone, email, city } = body;
+    const { name, address, phone, email, city } = body;
     const data = await CatCenterAttention.update(
       {
         name,

@@ -96,8 +96,7 @@ import createPreConsultationController from "../controllers/patient/preConsultat
 import getAllProvisionaPreConsultationPatientController from "../controllers/patient/preConsultation/getAllProvisionaPreConsultationPatientController.js";
 import patchProvisionalPreConsultationController from "../controllers/patient/preConsultation/patchProvisionalPreConsultationController.js";
 import createSchedule from "../controllers/managementSchedule/createAttention.js";
-import getAllSchedules from "../controllers/managementSchedule/getAllSchedule.js";
-import getScheduleById from "../controllers/managementSchedule/getScheduleId.js";
+import getSchedule from "../controllers/managementSchedule/getSchedule.js";
 import updateSchedule from "../controllers/managementSchedule/updateSchedule.js";
 import deleteSchedule from "../controllers/managementSchedule/deleteSchedule.js";
 import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js"
@@ -130,9 +129,9 @@ const sociodemographicDetailsRouter = Router();
 const backgroundsRouter = Router();
 const alarmRouter = Router();
 const preConsultationRouter = Router();
-const createScheduleRouter = Router();
+const scheduleRouter = Router();
 const onbordingRouter = Router();
-const createCenterAttRouter = Router();
+const centerAttRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -461,11 +460,12 @@ statisticsRouter.get(
 );
 
 //* create schedule
-createScheduleRouter.post("/create_schedule/:idUser", createSchedule);
-createScheduleRouter.get("/getAllSchedule", getAllSchedules);
-createScheduleRouter.get("/getSchedule/:id", getScheduleById);
-createScheduleRouter.patch("/updateSchedule/:id", updateSchedule);
-createScheduleRouter.delete("/deleteSchedule/:id", deleteSchedule);
+scheduleRouter.route("/scheduleDoctor/:id")
+.post(createSchedule)
+.get(getSchedule)
+.patch(updateSchedule)
+.delete(deleteSchedule);
+
 
 statisticsRouter.get("/statistics-genre", getGenderDistributionController);
 statisticsRouter.get(
@@ -478,9 +478,11 @@ statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 onbordingRouter.patch("/onbording", createOnbordingController);
 
 //* center of attention
-createCenterAttRouter.post("/create-center-attention", createCenterAttention);
-createCenterAttRouter.get("/get-center-attention", getCenterAtt);
-createCenterAttRouter.get("/get-center-attention/:id", updateCenterAttention);
+centerAttRouter.route("/center-attention/:id")
+.patch(updateCenterAttention)
+.get(getCenterAtt)
+.post(createCenterAttention);
+
 
 export {
   getPatientsRouter,
@@ -506,6 +508,7 @@ export {
   alarmRouter,
   preConsultationRouter,
   backgroundsRouter,
-  createScheduleRouter,
+  scheduleRouter,
   onbordingRouter,
+  centerAttRouter,
 };
