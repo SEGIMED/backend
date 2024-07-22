@@ -105,6 +105,7 @@ import getPreConsultationByScheduleIdController from "../controllers/patient/pre
 import createOnbordingController from "../controllers/onbording/createOnbording.js";
 import getAllNotificationsPatienController from "../controllers/notifications/getAllNotificationsPatienController.js"
 import getAllNotificationsPhysicianController from "../controllers/notifications/getAllNotificationsPhysicianController.js"
+import patchNotificationsController from "../controllers/notifications/patchNotificationsController.js"
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -133,6 +134,7 @@ const createScheduleRouter = Router();
 const onbordingRouter = Router();
 const getAllNotificationsPatienRouter = Router()
 const getAllNotificationsPhysicianRouter = Router()
+const notificationsRouter=Router()
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -478,6 +480,7 @@ onbordingRouter.patch("/onbording", createOnbordingController);
 //* Notifications 
 getAllNotificationsPatienRouter.get("/all-notifications-patient",getAllNotificationsPatienController)
 getAllNotificationsPhysicianRouter.get("/all-notifications-physician",getAllNotificationsPhysicianController)
+notificationsRouter.patch("/notification-seen",patchNotificationsController)
 
 export {
   getPatientsRouter,
@@ -506,5 +509,6 @@ export {
   createScheduleRouter,
   onbordingRouter,
   getAllNotificationsPatienRouter,
-  getAllNotificationsPhysicianRouter
+  getAllNotificationsPhysicianRouter,
+  notificationsRouter,
 };
