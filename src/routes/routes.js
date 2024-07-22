@@ -105,6 +105,9 @@ import createOnbordingController from "../controllers/onbording/createOnbording.
 import { createCenterAttention } from "../controllers/catCenterAttention/createCenterAttention.js";
 import { getCenterAtt } from "../controllers/catCenterAttention/getCenterAtt.js";
 import { updateCenterAttention } from "../controllers/catCenterAttention/updateCenterAtt.js";
+import getAllNotificationsPatienController from "../controllers/notifications/getAllNotificationsPatienController.js"
+import getAllNotificationsPhysicianController from "../controllers/notifications/getAllNotificationsPhysicianController.js"
+import patchNotificationsController from "../controllers/notifications/patchNotificationsController.js"
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -132,6 +135,9 @@ const preConsultationRouter = Router();
 const scheduleRouter = Router();
 const onbordingRouter = Router();
 const centerAttRouter = Router();
+const getAllNotificationsPatienRouter = Router()
+const getAllNotificationsPhysicianRouter = Router()
+const notificationsRouter=Router()
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -483,6 +489,10 @@ centerAttRouter.route("/center-attention/:id")
 .get(getCenterAtt)
 .post(createCenterAttention);
 
+//* Notifications 
+getAllNotificationsPatienRouter.get("/all-notifications-patient",getAllNotificationsPatienController)
+getAllNotificationsPhysicianRouter.get("/all-notifications-physician",getAllNotificationsPhysicianController)
+notificationsRouter.patch("/notification-seen",patchNotificationsController)
 
 export {
   getPatientsRouter,
@@ -511,4 +521,7 @@ export {
   scheduleRouter,
   onbordingRouter,
   centerAttRouter,
+  getAllNotificationsPatienRouter,
+  getAllNotificationsPhysicianRouter,
+  notificationsRouter,
 };
