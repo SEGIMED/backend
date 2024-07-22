@@ -1,16 +1,21 @@
 import models, {
   CatMedicalSpecialty,
   CatRole,
+  PhysicianAttendancePlace,
   PhysicianDetails,
   PhysicianSpecialty,
   User,
 } from "../../databaseConfig.js";
+import {
+  transformPhysicianData,
+  transformPhysicianDataPagination,
+} from "../Pagination/helperFunctions.js";
 import paginationUsersHandler from "../Pagination/paginationUsersHandler.js";
 import { Op } from "sequelize";
 
 const getAllPhysiciansHandler = async ({ page, limit, name }) => {
   try {
-    //Specifications for the role selected
+    // Especificaciones para el rol seleccionado
     const queryOptions = {
       attributes: ["id", "name", "lastname", "email", "cellphone", "avatar"],
       include: [
@@ -35,28 +40,40 @@ const getAllPhysiciansHandler = async ({ page, limit, name }) => {
             roleName: "Médico",
           },
         },
+        {
+          model: PhysicianAttendancePlace,
+          as: "physicianAttendancePlaces",
+        },
       ],
       where: {},
     };
 
     if (name) {
-      const searchTerms = name.split(' ').filter(term => term.trim() !== '');
-      queryOptions.where[Op.or] = searchTerms.map(term => ({
+      const searchTerms = name.split(" ").filter((term) => term.trim() !== "");
+      queryOptions.where[Op.or] = searchTerms.map((term) => ({
         [Op.or]: [
           { name: { [Op.iLike]: `%${term}%` } },
           { lastname: { [Op.iLike]: `%${term}%` } },
-
-        ]
+        ],
       }));
     }
 
     if (!limit && !page) {
-      //Without pagination
+      // Sin paginación
       const allPhysicians = await User.findAll(queryOptions);
-      return allPhysicians;
+      return allPhysicians.map(transformPhysicianData);
     } else {
-      //Pagination Logic
-      return paginationUsersHandler({ page, limit, queryOptions });
+      // Con paginación
+      const paginatedResult = await paginationUsersHandler({
+        page,
+        limit,
+        queryOptions,
+      });
+      paginatedResult.user = paginatedResult.user.map(
+        transformPhysicianDataPagination
+      );
+
+      return paginatedResult;
     }
   } catch (error) {
     throw new Error("Error loading physicians: " + error.message);
