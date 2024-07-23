@@ -607,6 +607,10 @@ PhysicianFavoritePatient.belongsTo(User, { foreignKey: 'favoritePatient', as: 'u
 PhysicianFavoritePatient.belongsTo(User, { foreignKey: 'physicianId', as: 'physician' });
 User.belongsTo(PhysicianDetails, { as: "treatingPhysicianId", foreignKey: 'treatingPhysician' });
 PhysicianDetails.hasMany(User, { as: "treatingPhysician", foreignKey: 'treatingPhysician' });
+AppointmentScheduling.hasOne(PatientPhysicalExamination, {as: "physicalAppointment", foreignKey: "appointment_scheduling"})
+PatientPhysicalExamination.belongsTo(AppointmentScheduling, {as: "physicalAppointment", foreignKey: "appointment_scheduling"})
+AppointmentScheduling.hasOne(Backgrounds, {as: "backgroundAppointment", foreignKey: "appointment_scheduling"})
+Backgrounds.belongsTo(AppointmentScheduling, {as: "backgroundAppointment", foreignKey: "appointment_scheduling"})
 
 // Center Attention
 SociodemographicDetails.belongsTo(CatCenterAttention, { as: "catCenterAttention", foreignKey: "centerAttention" });
