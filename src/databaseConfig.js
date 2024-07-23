@@ -81,6 +81,7 @@ import BackgroundsModel from "./models/Backgrounds.js";
 import DoctorScheduleModel from "./models/DoctorSchedule.js";
 import CatCenterAttetionModel from "./models/CatCenterAttention.js";
 import PhysicianFavoritePatientModel from './models/PhysicianFavoritePatient.js';
+import PatientPulmonaryHypertensionGroupMappingModel from './models/PatientPulmonaryHypertensionGroupMapping.js'
 
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
@@ -183,6 +184,7 @@ CatPainTypeModel(sequelize)
 CatSurgicalRiskModel(sequelize)
 CatPulmonaryHypertensionGroupModel(sequelize)
 PatientPulmonaryHypertensionGroupModel(sequelize)
+PatientPulmonaryHypertensionGroupMappingModel(sequelize)
 PatientSurgicalRiskModel(sequelize)
 BackgroundsModel(sequelize)
 UserCurrentLocationModel(sequelize)
@@ -265,6 +267,7 @@ export const {
     CatPulmonaryHypertensionGroup,
     CatSurgicalRisk,
     PatientPulmonaryHypertensionGroup,
+    PatientPulmonaryHypertensionGroupMapping,
     PatientSurgicalRisk,
     UserCurrentLocation,
     AlarmEvent,
@@ -571,8 +574,8 @@ PatientPainMap.belongsTo(User, { as: "painOwnerUser", foreignKey: "painOwner" })
 User.hasMany(PatientPainMap, { as: "patientPainMaps", foreignKey: "painOwner" });
 PatientPainMap.belongsTo(User, { as: "painRecorderUser", foreignKey: "painRecorder" });
 User.hasMany(PatientPainMap, { as: "painRecorderPatientPainMaps", foreignKey: "painRecorder" });
-PatientPulmonaryHypertensionGroup.belongsTo(CatPulmonaryHypertensionGroup, { as: "catHpGroup", foreignKey: "group" });
-CatPulmonaryHypertensionGroup.hasMany(PatientPulmonaryHypertensionGroup, { as: "hpGroup", foreignKey: "group" });
+PatientPulmonaryHypertensionGroup.belongsToMany(CatPulmonaryHypertensionGroup,{through: PatientPulmonaryHypertensionGroupMapping, foreignKey: 'patient_group_id', otherKey: 'group_id'} );
+CatPulmonaryHypertensionGroup.belongsToMany(PatientPulmonaryHypertensionGroup, { through: PatientPulmonaryHypertensionGroupMapping, foreignKey: 'group_id',otherKey: 'patient_group_id'});
 PatientSurgicalRisk.belongsTo(CatSurgicalRisk, { as: "catSurgicalRisk", foreignKey: "risk" });
 CatSurgicalRisk.hasMany(PatientSurgicalRisk, { as: "surgicalRisk", foreignKey: "risk" });
 PatientPulmonaryHypertensionGroup.belongsTo(User, { as: "patientHpGroup", foreignKey: "patient" });

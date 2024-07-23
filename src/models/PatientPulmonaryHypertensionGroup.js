@@ -10,14 +10,6 @@ const model = (sequelize) => {
       allowNull: false,
       primaryKey: true
     },
-    group: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'cat_pulmonary_hypertension_group',
-        key: 'id'
-      }
-    },
     patient: {
       type: DataTypes.INTEGER,
       allowNull: false,
