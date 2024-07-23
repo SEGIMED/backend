@@ -2,7 +2,8 @@ import { PhysicianFavoritePatient, User, PatientPulmonaryHypertensionRisk, CatPu
 
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 
-const getPhysicianFavoritePatientHandler = async (physicianId, page, limit) => {
+const getPhysicianFavoritePatientHandler = async (physicianId, page, limit, risk) => {
+  console.log("favoros de id",physicianId);
   try {
     limit = parseInt(limit);
     page = parseInt(page);
@@ -82,6 +83,7 @@ const getPhysicianFavoritePatientHandler = async (physicianId, page, limit) => {
     };
 
   } catch (error) {
+    console.log(error);
     throw new SegimedAPIError("Hubo un error al obtener los favoritos.", 500);
   }
 };
