@@ -3,52 +3,43 @@ import { mapVitalSign } from "./vitalSignsMapper.js";
 import { mapSociodemographicDetails } from "./sociodemographicDetailsMapper.js";
 import { mapPatientMedicalBackground } from "./patientMedicalBackgroundMapper.js";
 
-
 export const mapPatient = (patient) => {
-
+  
     return {
-        userId: patient.id,
-        name: patient.name,
-        lastname: patient.lastname,
-        geolocation: patient.geolocation,
-        cellphone: patient.cellphone,
-        currentLocationCity: patient.currentLocationUser ? patient.currentLocationUser?.city : null,
-        currentLocationCountry: patient.currentLocationUser ? patient.currentLocationUser?.country : null,
-        lastLogin: patient.lastLogin,
-        anthropometricDetails: patient.patientAnthDet ? getLatestAnthropometricMeasures(patient.patientAnthDet.map(anthDetail => mapAnthropometricDetail(anthDetail))) : null,
-        vitalSigns: patient.patientVitalSignDetails ? getLatestVitalSignsMeasures(patient.patientVitalSignDetails.map(vitalSign => mapVitalSign(vitalSign))) : null,
+        userId: patient?.id,
+        name: patient?.name,
+        lastname: patient?.lastname,
+        geolocation: patient?.geolocation,
+        cellphone: patient?.cellphone,
+        avatar:patient?.avatar,
+        currentLocationCity: patient?.currentLocationUser?.city || null,
+        currentLocationCountry: patient?.currentLocationUser?.country || null,
+        lastLogin: patient?.lastLogin,
+        anthropometricDetails: patient.patientAnthDet ? getLatestAnthropometricMeasures(patient.patientAnthDet.map(anthDetail => mapAnthropometricDetail(anthDetail))) : [],
+        vitalSigns: patient.patientVitalSignDetails ? getLatestVitalSignsMeasures(patient.patientVitalSignDetails.map(vitalSign => mapVitalSign(vitalSign))) : [],
         sociodemographicDetails: patient.socDemDet ? mapSociodemographicDetails(patient.socDemDet) : null,
-        //patientMedicalBackgrounds: patient.patientMedicalBackgrounds ? patient.patientMedicalBackgrounds.map(background => mapPatientMedicalBackground(background)) : null,
         backgrounds: patient.backgrounds.length > 0 ? patient.backgrounds[0] : null,
-        patientPulmonaryHypertensionGroups: patient.userHpGroups ? patient.userHpGroups.map(hpGroup => {
-            return {
-                group: hpGroup.catHpGroup.name,
-                timestamp: hpGroup.timestamp
-            }
-        }) : null,
-        patientPulmonaryHypertensionRisks: patient.patientPulmonaryHypertensionRisks ? patient.patientPulmonaryHypertensionRisks.map(hpRisk => {
-            return {
-                risk: hpRisk.catHpRisk.name,
-                timestamp: hpRisk.registerTimestamp
-            }
-        }) : null,
-        patientCardiovascularRisks: patient.ptCvRsks ? patient.ptCvRsks.map(cardiovascularRisk => {
-            return {
-                risk: cardiovascularRisk.catCvRisk.name,
-                timestamp: cardiovascularRisk.registerTimestamp
-            }
-        }) : null,
-        patientSurgicalRisks: patient.patSgRisks ? patient.patSgRisks.map(surgicalRisk => {
-            return {
-                risk: surgicalRisk.catSurgicalRisk.name,
-                timestamp: surgicalRisk.timestamp
-            }
-        }) : null,
+        patientPulmonaryHypertensionGroups: patient.userHpGroups.length > 0 ? {
+            group: patient.userHpGroups[0].catHpGroup?.name || null,
+            timestamp: patient.userHpGroups[0].timestamp
+        } : null,
+        patientPulmonaryHypertensionRisks: patient.patientPulmonaryHypertensionRisks.length > 0 ? {
+            risk: patient.patientPulmonaryHypertensionRisks[0].catHpRisk?.name || null,
+            timestamp: patient.patientPulmonaryHypertensionRisks[0].registerTimestamp
+        } : null,
+        patientCardiovascularRisks: patient.ptCvRsks.length > 0 ? {
+            risk: patient.ptCvRsks[0].catCvRisk?.name || null,
+            timestamp: patient.ptCvRsks[0].registerTimestamp
+        } : null,
+        patientSurgicalRisks: patient.patSgRisks.length > 0 ? {
+            risk: patient.patSgRisks[0].catSurgicalRisk?.name || null,
+            timestamp: patient.patSgRisks[0].timestamp
+        } : null,
         lastMedicalEventDate: patient.patientAppScheds.length > 0 ? patient.patientAppScheds[0].scheduledStartTimestamp : null,
         currentPhysician: patient.patientAppScheds.length > 0 ? {
-            name: patient.patientAppScheds[0].physicianThatAttend.name,
-            lastname: patient.patientAppScheds[0].physicianThatAttend.lastname,
-            speciality: patient.patientAppScheds[0].specialty.name
+            name: patient.patientAppScheds[0].physicianThatAttend?.name || null,
+            lastname: patient.patientAppScheds[0].physicianThatAttend?.lastname || null,
+            speciality: patient.patientAppScheds[0].specialty?.name || null
         } : null
     }
 }
@@ -86,3 +77,31 @@ function getLatestVitalSignsMeasures(vitalSignsArray) {
     });
     return Array.from(measuresMap.values());
 }
+
+
+
+export const mapPatients = (patients) => {
+    return patients.map(patient => ({
+        ...patient.toJSON(),
+        patientPulmonaryHypertensionRisks: patient.patientPulmonaryHypertensionRisks?.length > 0 ? {
+            risk: patient.patientPulmonaryHypertensionRisks[0].catHpRisk?.name || null,
+            timestamp: patient.patientPulmonaryHypertensionRisks[0].registerTimestamp
+        } : null
+    }));
+}
+
+export const mapPatientsSchedule = (patients) => {
+    return patients.map(patient => ({
+        ...patient.toJSON(),
+        patientUser: {
+            name: patient.patientUser?.name || null,
+            lastname: patient.patientUser?.lastname || null,
+            avatar: patient.patientUser?.avatar || null,
+            patientPulmonaryHypertensionRisks: patient.patientUser?.patientPulmonaryHypertensionRisks?.length > 0 ? {
+                risk: patient.patientUser.patientPulmonaryHypertensionRisks[0].catHpRisk?.name || null,
+                timestamp: patient.patientUser.patientPulmonaryHypertensionRisks[0].registerTimestamp
+            } : null,
+        }
+    }));
+}
+

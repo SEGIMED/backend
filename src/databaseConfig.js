@@ -78,7 +78,9 @@ import UserCurrentLocationModel from "./models/UserCurrentLocation.js"
 import AlarmEventModel from "./models/AlarmEvent.js"
 import ProvisionalPreConsultationModel from "./models/ProvisionalPreConsultation.js"
 import BackgroundsModel from "./models/Backgrounds.js";
-
+import DoctorScheduleModel from "./models/DoctorSchedule.js";
+import CatCenterAttetionModel from "./models/CatCenterAttention.js";
+import PhysicianFavoritePatientModel from './models/PhysicianFavoritePatient.js';
 
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
@@ -186,7 +188,9 @@ BackgroundsModel(sequelize)
 UserCurrentLocationModel(sequelize)
 AlarmEventModel(sequelize)
 ProvisionalPreConsultationModel(sequelize)
-
+DoctorScheduleModel(sequelize);
+CatCenterAttetionModel(sequelize);
+PhysicianFavoritePatientModel(sequelize);
 
 export const {
     DiagnosticTest,
@@ -265,9 +269,14 @@ export const {
     UserCurrentLocation,
     AlarmEvent,
     ProvisionalPreConsultation,
-    Backgrounds
+    Backgrounds,
+    DoctorSchedule, // Doctor-attention
+    PhysicianFavoritePatient,
+    CatCenterAttention,
 
 } = sequelize.models;
+
+
 
 DiagnosticTest.belongsTo(AppointmentScheduling, { as: "scheduling_appointment_scheduling", foreignKey: "scheduling" });
 AppointmentScheduling.hasMany(DiagnosticTest, { as: "schDiagnosticTests", foreignKey: "scheduling" });
@@ -592,7 +601,18 @@ Backgrounds.belongsTo(MedicalEvent, { as: "medicalEventMedicalBackgrounds", fore
 MedicalEvent.hasOne(Backgrounds, { as: "background", foreignKey: "medicalEvent"});
 Backgrounds.belongsTo(User, { as: "patientUser", foreignKey: "patient"});
 User.hasMany(Backgrounds, { as: "backgrounds", foreignKey: "patient"});
+User.hasMany(DoctorSchedule, { foreignKey: "doctor_id"});
+DoctorSchedule.belongsTo(User, { foreignKey: "doctor_id"});
+PhysicianFavoritePatient.belongsTo(User, { foreignKey: 'favoritePatient', as: 'user' });
+PhysicianFavoritePatient.belongsTo(User, { foreignKey: 'physicianId', as: 'physician' });
+User.belongsTo(PhysicianDetails, { as: "treatingPhysicianId", foreignKey: 'treatingPhysician' });
+PhysicianDetails.hasMany(User, { as: "treatingPhysician", foreignKey: 'treatingPhysician' });
 
+// Center Attention
+SociodemographicDetails.belongsTo(CatCenterAttention, { as: "catCenterAttention", foreignKey: "centerAttention" });
+CatCenterAttention.hasMany(SociodemographicDetails, { as: "sociodemographicDetails", foreignKey: "centerAttention" });
+CatCenterAttention.belongsTo(CatCity, { foreignKey: "city" });
+CatCity.hasMany(CatCenterAttention, { foreignKey: "city" });
 
 const models = {
     AnthropometricDetails,
@@ -670,7 +690,10 @@ const models = {
     PatientSurgicalRisk,
     AlarmEvent,
     ProvisionalPreConsultation,
-    Backgrounds
+    Backgrounds,
+    DoctorSchedule,
+    PhysicianFavoritePatient,
+    CatCenterAttention
 };
 
 export default models
