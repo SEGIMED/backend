@@ -83,7 +83,6 @@ const getPhysicianFavoritePatientHandler = async (physicianId, page, limit, risk
     };
 
   } catch (error) {
-    console.log(error);
     throw new SegimedAPIError("Hubo un error al obtener los favoritos.", 500);
   }
 };
