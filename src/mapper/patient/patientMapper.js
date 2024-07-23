@@ -79,20 +79,22 @@ function getLatestVitalSignsMeasures(vitalSignsArray) {
 }
 
 export const mapPatients = (patients) => {
-    return patients.map(patient => {
-      const { favorites, ...patientData } = patient.toJSON();
-      
-      return {
-        ...patientData,
-        patientPulmonaryHypertensionRisks: patient.patientPulmonaryHypertensionRisks?.length > 0 ? {
-          risk: patient.patientPulmonaryHypertensionRisks[0].catHpRisk?.name || null,
-          timestamp: patient.patientPulmonaryHypertensionRisks[0].registerTimestamp
-        } : null,
-        isFavorite: favorites?.length > 0
-      };
-    });
-  };
-  
+   
+    return patients
+        .map(patient => {
+            const { favorites, ...patientData } = patient.toJSON();
+
+            return {
+                ...patientData,
+                patientPulmonaryHypertensionRisks: patient.patientPulmonaryHypertensionRisks?.length > 0 ? {
+                    risk: patient.patientPulmonaryHypertensionRisks[0].catHpRisk?.name || null,
+                    timestamp: patient.patientPulmonaryHypertensionRisks[0].registerTimestamp
+                } : null,
+                isFavorite: favorites?.length > 0
+            };
+        });
+};
+
 export const mapPatientsSchedule = (patients) => {
     return patients.map(patient => ({
         ...patient.toJSON(),

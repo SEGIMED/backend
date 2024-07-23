@@ -1,7 +1,7 @@
 import models from "../../databaseConfig.js";
 import { mapPatients } from "../../mapper/patient/patientMapper.js";
 
-const paginationUsersHandler = async ({ page, limit, queryOptions }) => {
+const paginationUsersHandler = async ({ page, limit, queryOptions } ) => {
   try {
     if ((limit && isNaN(parseInt(limit))) || (page && isNaN(parseInt(page)))) {
       throw new Error("Limit and page must be valid numbers");
