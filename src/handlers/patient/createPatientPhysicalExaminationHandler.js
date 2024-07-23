@@ -6,7 +6,8 @@ const newPhysicalExaminationHandler = async (body) => {
     const {
         physicalSubsystemId,
         description,
-        medicalEventId
+        medicalEventId,
+        schedulingId,
     } = body;
 
     try {
@@ -14,7 +15,8 @@ const newPhysicalExaminationHandler = async (body) => {
             {
                 physicalSubsystem: physicalSubsystemId,
                 description,
-                medicalEvent: medicalEventId
+                medicalEvent: medicalEventId,
+                appointmentScheduling: schedulingId
             }
         )
         return newPhysicalExamination
