@@ -39,6 +39,7 @@ const getPhysicianFavoritePatientHandler = async (physicianId, page, limit) => {
                   model: CatPulmonaryArterialHypertensionRisk,
                   as: 'catHpRisk',
                   attributes: ['name'],
+                  ...(risk ? { where: { name: { [Op.iLike]: `%${risk}%` } } } : {}), //filtro de riesgo, si quisiera hacerlo sin paginado, repetir queryopt y pasar propiedad
                 },
               },
             ],
