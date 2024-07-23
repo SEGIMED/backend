@@ -17,12 +17,12 @@ const patchScheduleHandler = async (id, updates) => {
       const newNotification = new Notify({
         content: {
           message: 
-          `<p>Su cita para : </p>
-          <p>Fecha: ${appointmentStart.toLocaleDateString()}</p>
-          <p>Hora: ${appointmentStart.toLocaleTimeString()}</p>
-          <p>Ha sido cambiada para el:  </p>
-          <p>Fecha: ${newAppointmentStart.toLocaleDateString()}</p>
-          <p>Hora: ${newAppointmentStart.toLocaleTimeString()}</p>`
+          `Su cita para : 
+          Fecha: ${appointmentStart.toLocaleDateString()}
+          Hora: ${appointmentStart.toLocaleTimeString()}
+          Ha sido cambiada para el:  
+          Fecha: ${newAppointmentStart.toLocaleDateString()}
+          Hora: ${newAppointmentStart.toLocaleTimeString()}`
           ,
         },
         target: updates.patient,
@@ -35,10 +35,11 @@ const patchScheduleHandler = async (id, updates) => {
       const appointmentStart = new Date(schedule.scheduledStartTimestamp);
       const newNotification = new Notify({
         content: {
-          message: `<p>Su cita para el : </p>
-          <p>Fecha: ${appointmentStart.toLocaleDateString()}</p>
-          <p>Hora: ${appointmentStart.toLocaleTimeString()}</p>
-          <p>Ha sido cancelada</p> `,
+          message: 
+          `Su cita para el : 
+          Fecha: ${appointmentStart.toLocaleDateString()}
+          Hora: ${appointmentStart.toLocaleTimeString()}
+          Ha sido cancelada `,
         },
         target: updates.patient,
       });
