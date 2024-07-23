@@ -14,6 +14,7 @@ import updatePhysicianAttendancePlaceController from "../controllers/physician/u
 import userRegisterController from "../controllers/user/userRegisterController.js";
 import otpMailValidationController from "../controllers/user/otpMailValidationController.js";
 import userLoginController from "../controllers/user/userLoginController.js";
+import getAllLoginRecordController from "../controllers/LoginRecord/getLoginRecordController.js";
 import recoverPasswordController from "../controllers/user/recoverPasswordController.js";
 import modifyPasswordWithOtpController from "../controllers/user/modifyPasswordWithOtpController.js";
 import postUserContactController from "../controllers/requestPatientContact/postUserContactController.js";
@@ -143,6 +144,7 @@ const notificationsRouter=Router()
 userRouter.route("/user/register-user").post(userRegisterController);
 userRouter.route("/user/validate-email").post(otpMailValidationController);
 userRouter.route("/user/login").post(userLoginController);
+userRouter.route("/user/login-record").get(getAllLoginRecordController);
 userRouter.route("/user/recover-password").post(recoverPasswordController);
 userRouter.route("/user/modify-password").post(modifyPasswordWithOtpController);
 userRouter.route("/user/getAllUsers").get(getAllUsersController);
@@ -150,6 +152,7 @@ userRouter.route("/user/:id").get(getUserController);
 userRouter
   .route("/user/update-user-info")
   .patch(updateUserInformationController);
+
 
 //* Patient
 patientRouter.route("/patient").post(postPatientController);
