@@ -9,7 +9,7 @@ sequelize.define('RequestFollow', {
         primaryKey: true,
         autoIncrement: true
     },
-    userSent: {
+    userSend: {
         type: DataTypes.INTEGER,
         allowNull: false,
         field: 'user_send',

@@ -109,6 +109,9 @@ import { updateCenterAttention } from "../controllers/catCenterAttention/updateC
 import getAllNotificationsPatienController from "../controllers/notifications/getAllNotificationsPatienController.js"
 import getAllNotificationsPhysicianController from "../controllers/notifications/getAllNotificationsPhysicianController.js"
 import patchNotificationsController from "../controllers/notifications/patchNotificationsController.js"
+import createReqFollow from "../controllers/reqFollow/createReqFollow.js";
+import getReqFollowById from "../controllers/reqFollow/getReqFollowById.js";
+import updateReqFollow from "../controllers/reqFollow/updateReqFollow.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -139,6 +142,7 @@ const centerAttRouter = Router();
 const getAllNotificationsPatienRouter = Router()
 const getAllNotificationsPhysicianRouter = Router()
 const notificationsRouter=Router()
+const reqFollowRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -492,6 +496,12 @@ centerAttRouter.route("/center-attention")
 .get(getCenterAtt)
 .post(createCenterAttention);
 
+//* Request Follow
+reqFollowRouter.route("/reqFollow")
+.post(createReqFollow)
+.get(getReqFollowById)
+.patch(updateReqFollow)
+
 //* Notifications 
 getAllNotificationsPatienRouter.get("/all-notifications-patient",getAllNotificationsPatienController)
 getAllNotificationsPhysicianRouter.get("/all-notifications-physician",getAllNotificationsPhysicianController)
@@ -527,4 +537,5 @@ export {
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
+  reqFollowRouter
 };
