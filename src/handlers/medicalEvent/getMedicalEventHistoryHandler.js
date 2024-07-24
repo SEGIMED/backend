@@ -282,7 +282,8 @@ const getMedicalEventHistoryHandler = async (patientId, physicianId) => {
       ],
     });
     const medicalEvent = medicalEventHistory.map((medicalEvent) =>
-      mapMedicalEvent(medicalEvent)
+      // mapMedicalEvent(medicalEvent)
+    medicalEvent
     );
     const vitalSigns = await consultationVitalSignsMapper(
       medicalEventHistory[0].vitalSignDetailsMedicalEvent
