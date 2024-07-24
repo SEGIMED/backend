@@ -9,6 +9,8 @@ import getRateESC2022RiskHandler from '../../handlers/statisticalCenter/getRateE
 import getRateHeartFailurHandler from '../../handlers/statisticalCenter/getRateHeartFailurHandler.js';
 
 const getGeneralStatisticsController = async (req, res) => {
+    const { physicianId } = req.query;
+    
     try {
         const actual_year = {
             from : moment().startOf('year').format('YYYY-MM-DD'),
@@ -23,16 +25,16 @@ const getGeneralStatisticsController = async (req, res) => {
             to: moment().format('YYYY-MM-DD HH:mm:ss'),
         };
 
-        const yearDeathRateStatistics = await getDeathRateHandler(actual_year.from, actual_year.to);
-        const monthDeathRateStatistics = await getDeathRateHandler(actual_month.from, actual_month.to);
-        const genderStatistics = await getGenderDistributionHandler();
-        const patientActivityDistribution = await getPatientActivityDistributionHandler();
-        const alarmEventsStatistics = await getAlarmEventsStatisticsHandler("0001-01-01", actual_year.to);
-        const last24hsAlarmStatistics = await getAlarmEventsStatisticsHandler(last24hs.from, last24hs.to);
-        const ageRanges = await getAgeRangesHandler();
-        const ratePulmonaryHypertensionRisk = await getRatePulmonaryHypertensionRiskHandler();
-        const rateESC2022Risk = await getRateESC2022RiskHandler();
-        const claseFuncional = await getRateHeartFailurHandler();
+        const yearDeathRateStatistics = await getDeathRateHandler(actual_year.from, actual_year.to, physicianId);
+        const monthDeathRateStatistics = await getDeathRateHandler(actual_month.from, actual_month.to, physicianId);
+        const genderStatistics = await getGenderDistributionHandler(physicianId);
+        const patientActivityDistribution = await getPatientActivityDistributionHandler(physicianId);
+        const alarmEventsStatistics = await getAlarmEventsStatisticsHandler("0001-01-01", actual_year.to, physicianId);
+        const last24hsAlarmStatistics = await getAlarmEventsStatisticsHandler(last24hs.from, last24hs.to, physicianId);
+        const ageRanges = await getAgeRangesHandler(physicianId);
+        const ratePulmonaryHypertensionRisk = await getRatePulmonaryHypertensionRiskHandler(physicianId);
+        const rateESC2022Risk = await getRateESC2022RiskHandler(physicianId);
+        const claseFuncional = await getRateHeartFailurHandler(physicianId);
         
         // estadisticas que faltan definir
         // const centrosDeAtencion =
