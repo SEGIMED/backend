@@ -11,10 +11,10 @@ const patchScheduleHandler = async (id, updates) => {
     const schedule = await AppointmentScheduling.findByPk(id);
     if (schedule.length === 0) throw new Error("Evento no encontrado");
   //TODO test the next logic
-    if(updates.scheduledStartTimestamp!=schedule.scheduledStartTimestamp){
+    if(updates?.scheduledStartTimestamp!=schedule.scheduledStartTimestamp && updates?.schedulingStatus!=3){
       const appointmentStart = new Date(schedule.scheduledStartTimestamp);
       const newAppointmentStart = new Date(updates.scheduledStartTimestamp);
-      const newNotification = new Notify({
+      const newNotificationPatient = new Notify({
         content: {
           message: 
           `Su cita para : 
@@ -25,15 +25,30 @@ const patchScheduleHandler = async (id, updates) => {
           Hora: ${newAppointmentStart.toLocaleTimeString()}`
           ,
         },
-        target: updates.patient,
+        target: schedule.patient,
       });
-      newNotification.save();
+      newNotificationPatient.save();
+      //Notification physician
+      const newNotificationPhysician = new Notify({
+        content: {
+          message: 
+          `Su cita para atender : 
+          Fecha: ${appointmentStart.toLocaleDateString()}
+          Hora: ${appointmentStart.toLocaleTimeString()}
+          Ha sido cambiada para el:  
+          Fecha: ${newAppointmentStart.toLocaleDateString()}
+          Hora: ${newAppointmentStart.toLocaleTimeString()}`
+          ,
+        },
+        target: schedule.physician,
+      });
+      newNotificationPhysician.save();
     }
-//TODO validate if pdates?.schedulingStatus exists before the next if
+//TODO validate if updates?.schedulingStatus exists before the next if
     // console.log(updates.patient)
-    if(updates?.schedulingStatus===3){
+    if(updates?.schedulingStatus==3){
       const appointmentStart = new Date(schedule.scheduledStartTimestamp);
-      const newNotification = new Notify({
+      const newNotificationPatient = new Notify({
         content: {
           message: 
           `Su cita para el : 
@@ -41,9 +56,20 @@ const patchScheduleHandler = async (id, updates) => {
           Hora: ${appointmentStart.toLocaleTimeString()}
           Ha sido cancelada `,
         },
-        target: updates.patient,
+        target: schedule.patient,
       });
-      newNotification.save();
+      newNotificationPatient.save();
+      const newNotificationPhysician = new Notify({
+        content: {
+          message: 
+          `Su cita para atender el : 
+          Fecha: ${appointmentStart.toLocaleDateString()}
+          Hora: ${appointmentStart.toLocaleTimeString()}
+          Ha sido cancelada `,
+        },
+        target: schedule.physician,
+      });
+      newNotificationPhysician.save();
     }
     await schedule.update(updates);
     return schedule;
