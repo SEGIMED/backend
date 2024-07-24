@@ -1,13 +1,10 @@
 import { RequestFollow } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
-import { verifyUser } from "../../validations/verifacionUser.js";
+import { verifyUser } from "../../validations/verificacionUser.js";
 
 export const createRequestFollowHandler = async (userSend, userReceptor) => {
   try {
-    const verify = await verifyUser(userReceptor);
-    if (!verify) {
-      throw new SegimedAPIError("User not found", 404);
-    }
+    await verifyUser(userReceptor);
     const requestFollow = await RequestFollow.create({
       userSend,
       userReceptor,

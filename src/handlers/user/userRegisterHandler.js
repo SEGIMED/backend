@@ -13,7 +13,7 @@ const userRegisterHandler = async (body) => {
     const {
         idNumber, idType, name, lastname, password, role, geolocation, avatar, cellphone, email, nationality
     } = body;
-
+    const validEmail = String(email.toLowerCase().trim()); // convertimos email en una cadena de texto en minúsculas y sin espacios en blanco
     try {
         const newUser = await sequelize.transaction(async t => {
             const newUser = await User.create({
@@ -27,7 +27,7 @@ const userRegisterHandler = async (body) => {
                 geolocation,
                 avatar,
                 cellphone,
-                email,
+                email: validEmail,
                 nationality
             })
 
@@ -46,12 +46,12 @@ async function inputValidation(body) {
     const {
         idNumber, idType, name, lastname, password, role, cellphone, email, nationality
     } = body;
-
-    if (!name || !lastname || !email || !idNumber || !idType || !password || !role || !cellphone || !nationality) throw new SegimedInputValidationError('Por favor, complete todos los campos requeridos.');
+    const validEmail = String(email.toLowerCase().trim()); // convertimos email en una cadena de texto en minúsculas y sin espacios en blanco
+    if (!name || !lastname || !validEmail || !idNumber || !idType || !password || !role || !cellphone || !nationality) throw new SegimedInputValidationError('Por favor, complete todos los campos requeridos.');
     if (!EMAIL_REGEX.test(email)) throw new SegimedInputValidationError('Por favor, ingrese un email valido.');
     const emailOnDb = await User.findOne({
         where: {
-            email: email
+            email: validEmail
         }
     })
     if (emailOnDb)
