@@ -34,7 +34,7 @@ const getGeneralStatisticsController = async (req, res) => {
         const ageRanges = await getAgeRangesHandler(physicianId);
         const ratePulmonaryHypertensionRisk = await getRatePulmonaryHypertensionRiskHandler(physicianId);
         const rateESC2022Risk = await getRateESC2022RiskHandler(physicianId);
-        const claseFuncional = await getRateHeartFailurHandler(physicianId);
+        const heartFailur = await getRateHeartFailurHandler(physicianId);
         
         // estadisticas que faltan definir
         // const centrosDeAtencion =
@@ -43,7 +43,7 @@ const getGeneralStatisticsController = async (req, res) => {
         // const perfiles completados =
 
         const statistics = {
-            claseFuncional,
+            heartFailur,
             ageRanges, 
             alarmEventsStatistics, 
             last24hsAlarmStatistics, 
