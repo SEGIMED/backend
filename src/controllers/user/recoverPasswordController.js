@@ -9,6 +9,7 @@ const recoverPasswordController = async (req, res) => {
         });
 
     } catch (error) {
+        console.log(error.message)
         return res.status(error.errorCode).json({error: error.message});
     }
 }

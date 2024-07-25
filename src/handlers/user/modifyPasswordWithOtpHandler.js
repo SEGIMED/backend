@@ -54,7 +54,7 @@ const modifyPasswordWithOtpHandler = async (body) => {
             return cleanUser
         }
     }
-    throw new SegimedInputValidationError('La cuenta no pudo ser verificada')
+    throw new SegimedInputValidationError('La cuenta no pudo ser verificada, re enviar codigo a su mail')
 
 }
 

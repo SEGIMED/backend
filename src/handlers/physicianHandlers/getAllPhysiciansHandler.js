@@ -17,6 +17,9 @@ const getAllPhysiciansHandler = async ({ page, limit, name }) => {
   try {
     // Especificaciones para el rol seleccionado
     const queryOptions = {
+      where: {
+        role: 2,
+      },  
       attributes: ["id", "name", "lastname", "email", "cellphone", "avatar"],
       include: [
         {
@@ -37,6 +40,7 @@ const getAllPhysiciansHandler = async ({ page, limit, name }) => {
           model: CatRole,
           as: "userRole",
           where: {
+            id: 2,
             roleName: "Médico",
           },
         },
@@ -44,8 +48,7 @@ const getAllPhysiciansHandler = async ({ page, limit, name }) => {
           model: PhysicianAttendancePlace,
           as: "physicianAttendancePlaces",
         },
-      ],
-      where: {},
+      ]
     };
 
     if (name) {
@@ -69,9 +72,9 @@ const getAllPhysiciansHandler = async ({ page, limit, name }) => {
         limit,
         queryOptions,
       });
-      paginatedResult.user = paginatedResult.user.map(
-        transformPhysicianDataPagination
-      );
+        paginatedResult.user = paginatedResult.user.map(
+          transformPhysicianDataPagination
+        );
 
       return paginatedResult;
     }

@@ -41,6 +41,8 @@ import {
 import { mapMedicalEvent } from "../../mapper/medicalEvent/medicalEventMapper.js";
 import { consultationVitalSignsMapper } from "../../mapper/patient/consultationVitalSignsMapper.js";
 
+
+
 const getMedicalEventHistoryHandler = async (patientId, physicianId) => {
   try {
     const filters = {};
@@ -282,13 +284,14 @@ const getMedicalEventHistoryHandler = async (patientId, physicianId) => {
       ],
     });
     const medicalEvent = medicalEventHistory.map((medicalEvent) =>
-      mapMedicalEvent(medicalEvent)
+      // mapMedicalEvent(medicalEvent)
+    medicalEvent
     );
     const vitalSigns = await consultationVitalSignsMapper(
       medicalEventHistory[0].vitalSignDetailsMedicalEvent
     );
     medicalEvent[0].vitalSigns = vitalSigns;
-    return medicalEvent;
+    return medicalEvent
   } catch (error) {
     throw new Error("Error loading physician: " + error.message);
   }
