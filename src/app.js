@@ -33,13 +33,11 @@ import {
   alarmRouter,
   preConsultationRouter,
   backgroundsRouter,
-  scheduleRouter,
+  createScheduleRouter,
   onbordingRouter,
-  centerAttRouter,
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
-  reqFollowRouter,
 } from "./routes/routes.js";
 
 const corsOptions = {
@@ -97,13 +95,11 @@ app.use("/api", sociodemographicDetailsRouter);
 app.use("/api", alarmRouter);
 app.use("/api", preConsultationRouter);
 app.use("/api", backgroundsRouter);
-app.use("/api", scheduleRouter);
+app.use("/api", createScheduleRouter);
 app.use("/api", onbordingRouter);
-app.use("/api", centerAttRouter);
-app.use("/api", getAllNotificationsPatienRouter);
-app.use("/api", getAllNotificationsPhysicianRouter);
-app.use("/api", notificationsRouter);
-app.use("/api", reqFollowRouter);
+app.use("/api", getAllNotificationsPatienRouter)
+app.use("/api", getAllNotificationsPhysicianRouter)
+app.use("/api", notificationsRouter)
 
 app.use("/api/doc", swaggerUI.serve, swaggerUI.setup(swaggerOptions));
 

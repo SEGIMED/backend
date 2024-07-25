@@ -81,7 +81,7 @@ import BackgroundsModel from "./models/Backgrounds.js";
 import DoctorScheduleModel from "./models/DoctorSchedule.js";
 import CatCenterAttetionModel from "./models/CatCenterAttention.js";
 import PhysicianFavoritePatientModel from './models/PhysicianFavoritePatient.js';
-import RequestFollowUpModel from './models/RequestFollow.js';
+
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
 // import { config } from "dotenv";
@@ -191,7 +191,6 @@ ProvisionalPreConsultationModel(sequelize)
 DoctorScheduleModel(sequelize);
 CatCenterAttetionModel(sequelize);
 PhysicianFavoritePatientModel(sequelize);
-RequestFollowUpModel(sequelize);
 
 export const {
     DiagnosticTest,
@@ -274,7 +273,6 @@ export const {
     DoctorSchedule, // Doctor-attention
     PhysicianFavoritePatient,
     CatCenterAttention,
-    RequestFollow
 
 } = sequelize.models;
 
@@ -621,10 +619,7 @@ SociodemographicDetails.belongsTo(CatCenterAttention, { as: "catCenterAttention"
 CatCenterAttention.hasMany(SociodemographicDetails, { as: "sociodemographicDetails", foreignKey: "centerAttention" });
 CatCenterAttention.belongsTo(CatCity, { foreignKey: "city" });
 CatCity.hasMany(CatCenterAttention, { foreignKey: "city" });
-RequestFollow.belongsTo(User, { as: "SentRequest", foreignKey: "userSent"})
-User.hasMany(RequestFollow, { as: "RequestFollow", foreignKey: "userSent"})
-RequestFollow.belongsTo(User, { as: "ReceivedRequest", foreignKey: "userReceptor"})
-User.hasMany(RequestFollow, { as: "receiver", foreignKey: "userReceptor"})
+
 const models = {
     AnthropometricDetails,
     AppointmentScheduling,

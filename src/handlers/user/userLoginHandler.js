@@ -12,14 +12,13 @@ import moment from "moment-timezone";
 const {JWT_EXPIRATION_SECONDS, ACCESS_TOKEN_SECRET} = process.env;
 
 const userLoginHandler = async (body) => {
-    const {email, password, idNumber} = body;
-    const validEmail = String(email.toLowerCase().trim());
+    const {email, password, idNumber} = body
     let databaseUser
     try {
-        if(validEmail){
+        if(email){
             databaseUser = await User.findOne({
                 where: {
-                    email: validEmail
+                    email: email
                 },
                 include: [
                     {
@@ -79,10 +78,10 @@ const userLoginHandler = async (body) => {
         throw new SegimedAuthenticationError('El usuario no se encuentra registrado')
 
 
-    if (validEmail && databaseUser.verified === false)
+    if (email && databaseUser.verified === false)
         throw new SegimedAuthenticationError('La cuenta no esta verificada.')
 
-    if(validEmail || databaseUser.lastLogin !==null){
+    if(email || databaseUser.lastLogin !==null){
         const doesPasswordMatches = await bcrypt.compare(password, databaseUser.password)
         if (!doesPasswordMatches)
             throw new SegimedAuthenticationError('La contraseña es incorrecta.')
