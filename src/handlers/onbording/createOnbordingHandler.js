@@ -5,11 +5,11 @@ export const createOnbordingHandler = async (body) => {
   try {
     const {
       userId,
-      hipertPulm,
-      centerAttention,
-      liveAlone,
-      hasTechUseDifficulty,
-      needsCellphoneAssistance,
+      hipertPulm, //  hipertension pulmonar
+      centerAttention, // centro de atencion
+      liveAlone, // vive solo
+      hasTechUseDifficulty, // tiene dificultad en el uso de tecn
+      needsCellphoneAssistance, // necesita asistencia de celular
     } = body;
     const data = await SociodemographicDetails.update(
       {

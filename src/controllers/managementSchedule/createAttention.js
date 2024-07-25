@@ -1,7 +1,7 @@
 import createScheduleHandler from "../../handlers/managementSchedule/createAttentionHandler.js";
 
 const createSchedule = async (req, res) => {
-  const { idUser } = req.params;
+  const { idUser } = req.query;
   const { openAtt, closeAtt } = req.body;
   try {
     await createScheduleHandler(idUser, openAtt, closeAtt);

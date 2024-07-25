@@ -1,7 +1,7 @@
 import updateScheduleHandler from "../../handlers/managementSchedule/updateScheduleHandler.js";
 
 const updateSchedule = async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.query;
     const { start_time, end_time } = req.body;
     try {
         const response = await updateScheduleHandler(id, start_time, end_time);

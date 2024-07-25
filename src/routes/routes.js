@@ -97,16 +97,21 @@ import createPreConsultationController from "../controllers/patient/preConsultat
 import getAllProvisionaPreConsultationPatientController from "../controllers/patient/preConsultation/getAllProvisionaPreConsultationPatientController.js";
 import patchProvisionalPreConsultationController from "../controllers/patient/preConsultation/patchProvisionalPreConsultationController.js";
 import createSchedule from "../controllers/managementSchedule/createAttention.js";
-import getAllSchedules from "../controllers/managementSchedule/getAllSchedule.js";
-import getScheduleById from "../controllers/managementSchedule/getScheduleId.js";
+import getSchedule from "../controllers/managementSchedule/getSchedule.js";
 import updateSchedule from "../controllers/managementSchedule/updateSchedule.js";
 import deleteSchedule from "../controllers/managementSchedule/deleteSchedule.js";
 import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js"
 import getPreConsultationByScheduleIdController from "../controllers/patient/preConsultation/getPreConsultationByScheduleIdController.js";
 import createOnbordingController from "../controllers/onbording/createOnbording.js";
+import { createCenterAttention } from "../controllers/catCenterAttention/createCenterAttention.js";
+import { getCenterAtt } from "../controllers/catCenterAttention/getCenterAtt.js";
+import { updateCenterAttention } from "../controllers/catCenterAttention/updateCenterAtt.js";
 import getAllNotificationsPatienController from "../controllers/notifications/getAllNotificationsPatienController.js"
 import getAllNotificationsPhysicianController from "../controllers/notifications/getAllNotificationsPhysicianController.js"
 import patchNotificationsController from "../controllers/notifications/patchNotificationsController.js"
+import createReqFollow from "../controllers/reqFollow/createReqFollow.js";
+import getReqFollowById from "../controllers/reqFollow/getReqFollowById.js";
+import updateReqFollow from "../controllers/reqFollow/updateReqFollow.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -131,11 +136,13 @@ const sociodemographicDetailsRouter = Router();
 const backgroundsRouter = Router();
 const alarmRouter = Router();
 const preConsultationRouter = Router();
-const createScheduleRouter = Router();
+const scheduleRouter = Router();
 const onbordingRouter = Router();
+const centerAttRouter = Router();
 const getAllNotificationsPatienRouter = Router()
 const getAllNotificationsPhysicianRouter = Router()
 const notificationsRouter=Router()
+const reqFollowRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -368,6 +375,8 @@ sociodemographicDetailsRouter
 sociodemographicDetailsRouter
   .route("/sociodemographic-details/update-sociodemographic-detail")
   .patch(updateSociodemographicDetailsController);
+  //* agregamos ruta para onbording
+  sociodemographicDetailsRouter.patch("/sociodemographic-details/update-sociodemographic-detail", createOnbordingController);
 
 //* Medical Backgrounds
 medicalBackgroundsRouter
@@ -464,11 +473,12 @@ statisticsRouter.get(
 );
 
 //* create schedule
-createScheduleRouter.post("/create_schedule/:idUser", createSchedule);
-createScheduleRouter.get("/getAllSchedule", getAllSchedules);
-createScheduleRouter.get("/getSchedule/:id", getScheduleById);
-createScheduleRouter.patch("/updateSchedule/:id", updateSchedule);
-createScheduleRouter.delete("/deleteSchedule/:id", deleteSchedule);
+scheduleRouter.route("/scheduleDoctor")
+.post(createSchedule)
+.get(getSchedule)
+.patch(updateSchedule)
+.delete(deleteSchedule);
+
 
 statisticsRouter.get("/statistics-genre", getGenderDistributionController);
 statisticsRouter.get(
@@ -479,6 +489,18 @@ statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 
 //* Onbording
 onbordingRouter.patch("/onbording", createOnbordingController);
+
+//* center of attention
+centerAttRouter.route("/center-attention")
+.patch(updateCenterAttention)
+.get(getCenterAtt)
+.post(createCenterAttention);
+
+//* Request Follow
+reqFollowRouter.route("/reqFollow")
+.post(createReqFollow)
+.get(getReqFollowById)
+.patch(updateReqFollow)
 
 //* Notifications 
 getAllNotificationsPatienRouter.get("/all-notifications-patient",getAllNotificationsPatienController)
@@ -509,9 +531,11 @@ export {
   alarmRouter,
   preConsultationRouter,
   backgroundsRouter,
-  createScheduleRouter,
+  scheduleRouter,
   onbordingRouter,
+  centerAttRouter,
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
+  reqFollowRouter
 };
