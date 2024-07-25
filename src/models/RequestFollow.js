@@ -41,3 +41,4 @@ sequelize.define('RequestFollow', {
 };
 
 export default model;
+// nextval('backgrounds_id_seq'::regclass)
