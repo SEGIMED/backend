@@ -102,7 +102,7 @@ describe("Protected Route Tests", () => {
 
     test("should return 200 for authorized request to /get-physician-favorite-patient", async () => {
       const response = await request(app)
-        .get(`${URL_API}/get-physician-favorite-patient?physicianId=3&page=1&limit=10`) // Reemplaza '1' con un ID válido para la prueba
+        .get(`${URL_API}/get-physician-favorite-patient?physicianId=15&page=1&limit=10`) // Reemplaza '1' con un ID válido para la prueba
         .set("token", `${TOKEN}`)
         .expect(200);
       // Verifica la respuesta
@@ -247,21 +247,25 @@ describe("Protected Route Tests", () => {
       expect(response.statusCode).toBe(200);
     })
 
-    test('should return 200 for authorized request to /all-notifications-patient', async () => {
+    test('should return 200 for authorized request to /get-all-pateint-preconsultation', async () => {
       const response = await request(app)
-        .get(`${URL_API}/all-notifications-patient?patientId=15`)
+        .get(`${URL_API}/get-all-pateint-preconsultation?patientId=15`)
         .set('token', `${TOKEN}`)
         .expect(200);
+        response.body.forEach((element) => {
+          expect(element).toHaveProperty('id');
+        });
       // Verifica la respuesta
       expect(response.statusCode).toBe(200);
-    }, 15000);
-
-    test('should return 200 for authorized request to /all-notifications-physician', async () => { 
-      const response = await request(app)
-        .get(`${URL_API}/all-notifications-physician?physicianId=22`)
-        .set('token', `${TOKEN}`)
-      // Verifica la respuesta
-      expect(response.statusCode).toBe(201);
-     });
   });
+
+  test('should return 200 and id property on the response /get-preconsultation ', async () => {
+    const response = await request(app)
+      .get(`${URL_API}/get-preconsultation?scheduleId=5`)
+      .set('token', `${TOKEN}`)
+      .expect(200);
+      expect(response.body).toHaveProperty('id');
+      expect(response.statusCode).toBe(200);
+  })
+})
 });
