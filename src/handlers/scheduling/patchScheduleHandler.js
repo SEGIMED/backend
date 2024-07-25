@@ -11,38 +11,65 @@ const patchScheduleHandler = async (id, updates) => {
     const schedule = await AppointmentScheduling.findByPk(id);
     if (schedule.length === 0) throw new Error("Evento no encontrado");
   //TODO test the next logic
-    if(updates.scheduledStartTimestamp!=schedule.scheduledStartTimestamp){
+    if(updates?.scheduledStartTimestamp!=schedule.scheduledStartTimestamp && updates?.schedulingStatus!=3){
       const appointmentStart = new Date(schedule.scheduledStartTimestamp);
       const newAppointmentStart = new Date(updates.scheduledStartTimestamp);
-      const newNotification = new Notify({
+      const newNotificationPatient = new Notify({
         content: {
           message: 
-          `<p>Su cita para : </p>
-          <p>Fecha: ${appointmentStart.toLocaleDateString()}</p>
-          <p>Hora: ${appointmentStart.toLocaleTimeString()}</p>
-          <p>Ha sido cambiada para el:  </p>
-          <p>Fecha: ${newAppointmentStart.toLocaleDateString()}</p>
-          <p>Hora: ${newAppointmentStart.toLocaleTimeString()}</p>`
+          `Su cita para : 
+          Fecha: ${appointmentStart.toLocaleDateString()}
+          Hora: ${appointmentStart.toLocaleTimeString()}
+          Ha sido cambiada para el:  
+          Fecha: ${newAppointmentStart.toLocaleDateString()}
+          Hora: ${newAppointmentStart.toLocaleTimeString()}`
           ,
         },
-        target: updates.patient,
+        target: schedule.patient,
       });
-      newNotification.save();
-    }
-//TODO validate if pdates?.schedulingStatus exists before the next if
-    // console.log(updates.patient)
-    if(updates?.schedulingStatus===3){
-      const appointmentStart = new Date(schedule.scheduledStartTimestamp);
-      const newNotification = new Notify({
+      newNotificationPatient.save();
+      //Notification physician
+      const newNotificationPhysician = new Notify({
         content: {
-          message: `<p>Su cita para el : </p>
-          <p>Fecha: ${appointmentStart.toLocaleDateString()}</p>
-          <p>Hora: ${appointmentStart.toLocaleTimeString()}</p>
-          <p>Ha sido cancelada</p> `,
+          message: 
+          `Su cita para atender : 
+          Fecha: ${appointmentStart.toLocaleDateString()}
+          Hora: ${appointmentStart.toLocaleTimeString()}
+          Ha sido cambiada para el:  
+          Fecha: ${newAppointmentStart.toLocaleDateString()}
+          Hora: ${newAppointmentStart.toLocaleTimeString()}`
+          ,
         },
-        target: updates.patient,
+        target: schedule.physician,
       });
-      newNotification.save();
+      newNotificationPhysician.save();
+    }
+//TODO validate if updates?.schedulingStatus exists before the next if
+    // console.log(updates.patient)
+    if(updates?.schedulingStatus==3){
+      const appointmentStart = new Date(schedule.scheduledStartTimestamp);
+      const newNotificationPatient = new Notify({
+        content: {
+          message: 
+          `Su cita para el : 
+          Fecha: ${appointmentStart.toLocaleDateString()}
+          Hora: ${appointmentStart.toLocaleTimeString()}
+          Ha sido cancelada `,
+        },
+        target: schedule.patient,
+      });
+      newNotificationPatient.save();
+      const newNotificationPhysician = new Notify({
+        content: {
+          message: 
+          `Su cita para atender el : 
+          Fecha: ${appointmentStart.toLocaleDateString()}
+          Hora: ${appointmentStart.toLocaleTimeString()}
+          Ha sido cancelada `,
+        },
+        target: schedule.physician,
+      });
+      newNotificationPhysician.save();
     }
     await schedule.update(updates);
     return schedule;
