@@ -2,7 +2,7 @@ import getAllProvisionaPreConsultationHandler from "../../../handlers/patient/pr
 
 const getAllProvisionaPreConsultationPatientController = async(req,res)=>{
     try {
-        const { patientId }=req.query
+        const {patientId}=req.query
         const allConsultationsPatient = await getAllProvisionaPreConsultationHandler(patientId)
         return res.status(200).json(allConsultationsPatient);
     } catch (error) {

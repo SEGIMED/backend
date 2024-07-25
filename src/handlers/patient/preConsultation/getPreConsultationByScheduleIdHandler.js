@@ -12,7 +12,6 @@ const getPreConsultationByScheduleIdHandler = async (scheduleId) => {
         {
           model: models.PatientPainMap,
           as: "provisionalPreConsultationPainMap",
-          attributes: ["id"],
           include: [
             {
               model: models.CatPainDuration,

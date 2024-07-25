@@ -1,26 +1,23 @@
-import { sequelize } from "../databaseConfig.js";
-import { expect } from "@jest/globals";
+import pg from "pg";
+const { TOKEN, URL_API, DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 
-const modelos = sequelize.models;
-describe("TEST DATABASE", () => {
-  // Test database connection
-  describe("Test database connection", () => {
-    it("should connect to the database", async () => {
-      try {
-        await sequelize.authenticate();
-        console.log("Connection has been established successfully.");
-      } catch (error) {
-        console.error("Unable to connect to the database:", error);
-      }
+describe("Postgres DataBase Connection", () => {
+  let client;
+  beforeAll(async () => {
+    client = new pg.Client({
+      user: "postgres",
+      host: "localhost",
+      database: "postgres",
+      password: "",
+      port: 5432,
     });
-
-    // Test models
-    describe("Models test", () => {
-      Object.keys(modelos).forEach((model) => {
-        it(`should test the ${model} model`, () => {
-          expect(modelos[model].name).toEqual(model);
-        });
-      });
-    });
+    await client.connect();
+  }); // Establecer conexión
+  test("should connect to the test database successfully", async () => {
+    const res = await client.query("SELECT 1"); // Consulta sencilla para verificar la conexión
+    expect(res.rows[0]).toEqual({ "?column?": 1 });
+  });
+  afterAll(() => {
+    client.end();
   });
 });
