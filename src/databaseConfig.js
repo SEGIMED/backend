@@ -620,6 +620,8 @@ CatCenterAttention.hasMany(SociodemographicDetails, { as: "sociodemographicDetai
 CatCenterAttention.belongsTo(CatCity, { foreignKey: "city" });
 CatCity.hasMany(CatCenterAttention, { foreignKey: "city" });
 
+AlarmEvent.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
+
 const models = {
     AnthropometricDetails,
     AppointmentScheduling,
