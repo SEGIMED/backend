@@ -242,6 +242,11 @@ const model = (sequelize) => {
         allowNull: true,//TODO CAMBIAR A FALSE
         field: "current_medications",
       },
+      status:{
+        type: DataTypes.ENUM('pending','sent'),
+        allowNull:true,
+        defaultValue:'pending'
+      }
     },
     {
       tableName: "provisional_pre_consultation",

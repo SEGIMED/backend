@@ -2,7 +2,8 @@ import { PhysicianFavoritePatient, User, PatientPulmonaryHypertensionRisk, CatPu
 
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 
-const getPhysicianFavoritePatientHandler = async (physicianId, page, limit) => {
+const getPhysicianFavoritePatientHandler = async (physicianId, page, limit, risk) => {
+  console.log("favoros de id",physicianId);
   try {
     limit = parseInt(limit);
     page = parseInt(page);
