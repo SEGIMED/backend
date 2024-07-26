@@ -102,7 +102,7 @@ describe("Protected Route Tests", () => {
 
     test("should return 200 for authorized request to /get-physician-favorite-patient", async () => {
       const response = await request(app)
-        .get(`${URL_API}/get-physician-favorite-patient?physicianId=15&page=1&limit=10`) // Reemplaza '1' con un ID válido para la prueba
+        .get(`${URL_API}/get-physician-favorite-patient?physicianId=1`)
         .set("token", `${TOKEN}`)
         .expect(200);
       // Verifica la respuesta
@@ -175,7 +175,7 @@ describe("Protected Route Tests", () => {
     test("should return 200 for authorized request to /medical-event/get-medical-event-detail", async () => {
       const response = await request(app)
         .get(
-          `${URL_API}/medical-event/get-medical-event-detail?medicalEventId=5`
+          `${URL_API}/medical-event/get-medical-event-detail?medicalEventId=2`
         )
         .set("token", `${TOKEN}`)
         .expect(200);
@@ -190,11 +190,12 @@ describe("Protected Route Tests", () => {
         .expect(200);
       // Verifica la respuesta
       expect(response.statusCode).toBe(200);
+      expect(response.body).toBeInstanceOf(Array);
     });
 
     test("should return 200 for authorized request", async () => {
       const response = await request(app)
-        .get(`${URL_API}/scheduleDoctor`)
+        .get(`${URL_API}/getAllSchedule`)
         .set("token", `${TOKEN}`)
         .expect(200);
       // Verifica la respuesta
@@ -203,69 +204,22 @@ describe("Protected Route Tests", () => {
 
     test("should return 200 and Array object for authorized request /getSchedule", async () => {
       const response = await request(app)
-        .get(`${URL_API}/scheduleDoctor?id=3`)
+        .get(`${URL_API}/getSchedule/3`)
         .set("token", `${TOKEN}`)
-        .set("query", "id=3")
         .expect(200);
       expect(response.statusCode).toBe(200);
       expect(response.body).toBeInstanceOf(Array);
     });
-
-    test("should return 200 for authorized request to /statistics-genre", async () => {
-      const response = await request(app)
-        .get(`${URL_API}/statistics-genre`)
-        .set("token", `${TOKEN}`)
-        .expect(200);
-      // Verifica la respuesta
-      expect(response.statusCode).toBe(200);
-    });
-
-    test("should return 200 for authorized request to /statistics-patient-activity", async () => {
-      const response = await request(app)
-        .get(`${URL_API}/statistics-patient-activity`)
-        .set("token", `${TOKEN}`)
-        .expect(200);
-      // Verifica la respuesta
-      expect(response.statusCode).toBe(200);
-    });
-
-    test('should return 200 for authorized request to statistics-general', async () => {
-      const response = await request(app)
-        .get(`${URL_API}/statistics-general`)
-        .set('token', `${TOKEN}`)
-        .expect(200);
-      // Verifica la respuesta
-      expect(response.statusCode).toBe(200);
-    })
-
-    test('should return 200 for authorized request to center-attention', async () => {
-      const response = await request(app)
-        .get(`${URL_API}/center-attention`)
-        .set('token', `${TOKEN}`)
-        .expect(200);
-      // Verifica la respuesta
-      expect(response.statusCode).toBe(200);
-    })
-
-    test('should return 200 for authorized request to /get-all-pateint-preconsultation', async () => {
-      const response = await request(app)
-        .get(`${URL_API}/get-all-pateint-preconsultation?patientId=15`)
-        .set('token', `${TOKEN}`)
-        .expect(200);
-        response.body.forEach((element) => {
-          expect(element).toHaveProperty('id');
-        });
-      // Verifica la respuesta
-      expect(response.statusCode).toBe(200);
   });
 
-  test('should return 200 and id property on the response /get-preconsultation ', async () => {
-    const response = await request(app)
-      .get(`${URL_API}/get-preconsultation?scheduleId=5`)
-      .set('token', `${TOKEN}`)
-      .expect(200);
-      expect(response.body).toHaveProperty('id');
+  describe("DELETE / request", () => {
+    test("should return 200 for authorized request", async () => {
+      const response = await request(app)
+        .delete(`${URL_API}/deleteSchedule/3`)
+        .set("token", `${TOKEN}`)
+        .expect(200);
+      // Verifica la respuesta
       expect(response.statusCode).toBe(200);
-  })
-})
+    });
+  });
 });

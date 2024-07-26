@@ -1,37 +1,75 @@
-import { SociodemographicDetails } from "../../databaseConfig.js";
+import { SociodemographicDetails, User } from "../../databaseConfig.js";
 import { Op } from "sequelize";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 
-const getDeathRateHandler = async (from, to) => {
-    
+const getDeathRateHandler = async (from, to, physicianId) => {
     try {
+        const deathCounterWhere = {
+            dateOfDeathReport: {
+                [Op.between]: [from, to],
+            },
+        };
+
+        const registredInDateCountWhere = {
+            registrationDate: {
+                [Op.lte]: to,
+            },
+        };
+
+        const historyDeathCountWhere = {
+            dateOfDeathReport: {
+                [Op.lte]: from,
+            },
+        };
+
+        if (physicianId) {
+            deathCounterWhere['$patient_user.treating_physician$'] = physicianId;
+            registredInDateCountWhere['$patient_user.treating_physician$'] = physicianId;
+            historyDeathCountWhere['$patient_user.treating_physician$'] = physicianId;
+        }
+
         const deathCounter = await SociodemographicDetails.count({
-            where: {
-                dateOfDeathReport: {
-                    [Op.between]: [from, to],
+            where: deathCounterWhere,
+            include: [
+                {
+                    model: User,
+                    as: 'patient_user',
+                    attributes: [],
                 },
-            },
-        });// con esto obtengo los muertos entre esas fechas
-        
-        // cantidad de pacientes activon entre (from,to) = registrados hasta to - muertos hasta from
+            ],
+        });
+
         const registredInDateCount = await SociodemographicDetails.count({
-            where: {
-                registrationDate: {
-                    [Op.lte]: to,
+            where: registredInDateCountWhere,
+            include: [
+                {
+                    model: User,
+                    as: 'patient_user',
+                    attributes: [],
                 },
-            },
-        });// cuento los registrados hasta la fecha TO
+            ],
+        });
 
         const historyDeathCount = await SociodemographicDetails.count({
-            where: {
-                dateOfDeathReport: {
-                    [Op.lte]: from,
+            where: historyDeathCountWhere,
+            include: [
+                {
+                    model: User,
+                    as: 'patient_user',
+                    attributes: [],
                 },
-            },
-        });// cuento los muertos historicos hasta la fecha FROM
-        return { from, to, dead: deathCounter, alive: (registredInDateCount - historyDeathCount - deathCounter) ,total: (registredInDateCount - historyDeathCount) };
+            ],
+        });
+
+        return { 
+            from, 
+            to, 
+            dead: deathCounter, 
+            alive: (registredInDateCount - historyDeathCount - deathCounter), 
+            total: (registredInDateCount - historyDeathCount) 
+        };
     } catch (error) {
-        throw new SegimedAPIError("Error al cargar las estadísticas de mortalidad: ", 500);
+        throw new SegimedAPIError("Error al cargar las estadísticas de mortalidad: " + error.message, 500);
     }
 };
 

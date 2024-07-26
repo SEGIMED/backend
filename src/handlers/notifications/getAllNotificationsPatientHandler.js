@@ -14,7 +14,7 @@ const getAllNotificationsPatientHandler = async (patientId) => {
       }).exec();
     }
     if (unseenNotifications.length === 0) {
-      throw new Error("No se encontraron notificaciones para este paciente");
+      return [];
     } else {
       return unseenNotifications;
     }

@@ -1,7 +1,7 @@
 import { DoctorSchedule } from "../../databaseConfig.js";
 
 const deleteSchedule = async (req, res) => {
-    const { id } = req.query;
+    const { id } = req.params;
     try {
         await DoctorSchedule.destroy({
             where: {

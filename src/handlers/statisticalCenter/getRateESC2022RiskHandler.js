@@ -1,19 +1,37 @@
-import { PatientCardiovascularRisk, CatCardiovascularRisk } from "../../databaseConfig.js";
+import { PatientCardiovascularRisk, CatCardiovascularRisk, User } from "../../databaseConfig.js";
 import { Sequelize } from "sequelize";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 
-const getRateESC2022RiskHandler = async () => {
+const getRateESC2022RiskHandler = async (physicianId) => {
     try {
+        const includeClause = [
+            {
+                model: CatCardiovascularRisk,
+                as: 'catCvRisk',
+                attributes: ['name', 'description']
+            }
+        ];
+
+        const whereClause = {};
+
+        // Si physicianId está definido, agregar la condición de filtro
+        if (physicianId) {
+            includeClause.push({
+                model: User,
+                as: 'patientUser',
+                attributes: [],
+                where: {
+                    treatingPhysician: physicianId
+                }
+            });
+        }
+
         const statistics = await PatientCardiovascularRisk.findAll({
             attributes: [
                 'risk',
                 [Sequelize.fn('COUNT', Sequelize.col('patient')), 'patientCount']
             ],
-            include: [{
-                model: CatCardiovascularRisk,
-                as: 'catCvRisk', 
-                attributes: ['name','description']
-            }],
+            include: includeClause,
             group: ['risk', 'catCvRisk.id']
         });
 
@@ -30,7 +48,7 @@ const getRateESC2022RiskHandler = async () => {
         }, {});
 
         return result;
-        
+
     } catch (error) {
         throw new SegimedAPIError("Error al cargar las estadísticas de riesgo: " + error.message, 500);
     }
