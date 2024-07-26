@@ -709,7 +709,8 @@ const models = {
     Backgrounds,
     DoctorSchedule,
     PhysicianFavoritePatient,
-    CatCenterAttention
+    CatCenterAttention,
+    RequestFollow
 };
 
 export default models
