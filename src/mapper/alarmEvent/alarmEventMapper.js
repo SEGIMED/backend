@@ -21,3 +21,4 @@ export const mapquestionsPriority = (questionsPriority) =>{
       });
     return  mappAnswer
 }
+

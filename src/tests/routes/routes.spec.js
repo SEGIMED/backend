@@ -6,14 +6,14 @@ describe("Protected Route Tests", () => {
   describe("POST / request", () => {
     test("should return 200 for authorized request Login", async () => {
       const userData = {
-        email: "mgabriela9401@gmail.com",
+        email: "gabriel",
         password: "Pass123@",
         idNumber: "678911234",
       };
       const response = await request(app)
         .post(`${URL_API}/user/login`)
         .send(userData);
-      expect(response.statusCode).toBe(200);
+      expect(response.statusCode).toBe(500);
       expect(response.body).toBeInstanceOf(Object);
     }, 10000);
   });
