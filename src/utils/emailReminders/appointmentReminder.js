@@ -37,9 +37,10 @@ const scheduleReminderEmails = async () => {
     const newNotification = new Notify({
       // It sends notification for every patient to web app
       content: {
-        message: `<p>Este es un recordatorio para su próxima cita:</p>
-         <p>Fecha: ${appointmentStart.toLocaleDateString()}</p>
-         <p>Hora: ${appointmentStart.toLocaleTimeString()}</p> `,
+        message:
+       `Este es un recordatorio para su próxima cita:
+        Fecha: ${appointmentStart.toLocaleDateString()}
+        Hora: ${appointmentStart.toLocaleTimeString()} `,
       },
       target: appointment.patient,
     });
@@ -48,9 +49,10 @@ const scheduleReminderEmails = async () => {
     const newNotificationPhysician = new Notify({
       // It sends notification for every physician to web app
       content: {
-        message: `<p>Este es un recordatorio para su próxima cita por atender:</p>
-         <p>Fecha: ${appointmentStart.toLocaleDateString()}</p>
-         <p>Hora: ${appointmentStart.toLocaleTimeString()}</p> `,
+        message: 
+        `Este es un recordatorio para su próxima cita por atender:
+         Fecha: ${appointmentStart.toLocaleDateString()}
+         Hora: ${appointmentStart.toLocaleTimeString()}`,
       },
       target: appointment.physician,
     });

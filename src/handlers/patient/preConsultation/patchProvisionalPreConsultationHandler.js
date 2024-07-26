@@ -45,6 +45,7 @@ const patchProvisionalPreConsultationHandler = async(body)=>{
         consultationReason,
         importantSymptoms,
         currentMedications,//array  strings
+        status
     }=body
     try {
         const existingPreconsultation = await ProvisionalPreConsultation.findOne({ where: { id: preconsultationId } });
@@ -94,9 +95,12 @@ const patchProvisionalPreConsultationHandler = async(body)=>{
             consultationReason: consultationReason !== undefined ? consultationReason : existingPreconsultation.consultationReason,
             importantSymptoms: importantSymptoms !== undefined ? importantSymptoms : existingPreconsultation.importantSymptoms,
             currentMedications: currentMedications !== undefined ? currentMedications : existingPreconsultation.currentMedications,
+            status: status !== undefined ?status: existingPreconsultation.status
         },
         {where:{id:preconsultationId}})
-        return await ProvisionalPreConsultation.findOne({ where: { id: preconsultationId } })
+        const updatedPreconsultation = await ProvisionalPreConsultation.findOne({ where: { id: preconsultationId } })
+
+        return updatedPreconsultation
     } catch (error) {
         throw new Error("Error actualizando la preconsulta: " + error.message);
     }
