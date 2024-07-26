@@ -245,7 +245,7 @@ const model = (sequelize) => {
       status:{
         type: DataTypes.ENUM('pending','sent'),
         allowNull:true,
-        default:'pending'
+        defaultValue:'pending'
       }
     },
     {
