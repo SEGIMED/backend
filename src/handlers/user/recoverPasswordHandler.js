@@ -4,10 +4,8 @@ import SegimedInputValidationError from "../../error/SegimedInputValidationError
 import { generateOTP } from "../../utils/generateOTP.js";
 import { sendMail } from "../../utils/sendMail.js";
 import recoverPasswordHtml from "../../utils/emailTemplates/recoverPasswordHtml.js";
-
-const recoverPasswordHandler = async (body) => {
+const recoverPasswordHandler = async (body, frontendUrl) => {
   const { email } = body;
-
   let databaseUser;
   try {
     databaseUser = await User.findOne({
@@ -25,11 +23,12 @@ const recoverPasswordHandler = async (body) => {
 
   await sequelize.transaction(async (t) => {
     const userOtp = await generateOTP(databaseUser);
-    const emailSent = recoverPasswordHtml(userOtp);
+    const linkOtp = `${frontendUrl}/accounts/password/resetMail?codeOTP=${userOtp}&userEmail=${email}`;
+    const emailSent = recoverPasswordHtml(linkOtp);
     await sendMail(
       databaseUser.email,
       emailSent,
-      "Tu código para recuperar tu contraseña"
+      "Link para recuperar tu contraseña"
     );
   });
 

@@ -1,11 +1,11 @@
-const recoverPasswordHtml = (link) => {
+const confirmEmailHtml = (link) => {
   return `<!DOCTYPE html>
 <html>
   <head>
+    <title>Confirmar email</title>
     <meta
       name="viewport"
       content="width=device-width,initial-scale=1,maximum-scale=2,shrink-to-fit=no" />
-    <title>Recuperar contraseña</title>
     <style>
       * {
         margin: 0;
@@ -127,13 +127,11 @@ const recoverPasswordHtml = (link) => {
             width="100%">
             <tr>
               <td class="content">
-                <h1>Tu link para cambiar contraseña</h1>
+                <h1>Tu link de verificación</h1>
                 <p>
                   Entra al siguiente
-                  <a style="color: #808080; font-weight: 700" href="${link}"
-                    >link</a
-                  >
-                  o presiona el botón para poder cambiar tu contraseña.
+                  <a style="color: #808080" href="${link}">link</a> o presiona
+                  el botón para poder verificar tu cuenta.
                 </p>
               </td>
             </tr>
@@ -149,15 +147,16 @@ const recoverPasswordHtml = (link) => {
                     color: white;
                     font-weight: 700;
                   ">
-                  Cambiar contraseña
+                  Verificar aquí
                 </a>
               </td>
             </tr>
             <tr>
               <td class="footer">
                 <p>
-                  Si no solicitaste cambiar tu contraseña, puedes ignorar este
-                  correo. Solo las personas con acceso a tu email cambiar tu contraseña.
+                  Si no solicitaste verificar tu cuenta, puedes ignorar este
+                  correo. Solo las personas con acceso a tu email pueden
+                  verificar tu cuenta.
                 </p>
               </td>
             </tr>
@@ -169,7 +168,8 @@ const recoverPasswordHtml = (link) => {
 </html>
 
 
-  `;
+  
+    `;
 };
 
-export default recoverPasswordHtml;
+export default confirmEmailHtml;
