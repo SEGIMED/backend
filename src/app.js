@@ -33,11 +33,11 @@ import {
   alarmRouter,
   preConsultationRouter,
   backgroundsRouter,
-  createScheduleRouter,
   onbordingRouter,
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
+  doctorScheduleRouter,
 } from "./routes/routes.js";
 
 const corsOptions = {
@@ -95,7 +95,7 @@ app.use("/api", sociodemographicDetailsRouter);
 app.use("/api", alarmRouter);
 app.use("/api", preConsultationRouter);
 app.use("/api", backgroundsRouter);
-app.use("/api", createScheduleRouter);
+app.use("/api", doctorScheduleRouter);
 app.use("/api", onbordingRouter);
 app.use("/api", getAllNotificationsPatienRouter)
 app.use("/api", getAllNotificationsPhysicianRouter)
