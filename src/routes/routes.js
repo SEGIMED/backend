@@ -510,7 +510,7 @@ export {
   alarmRouter,
   preConsultationRouter,
   backgroundsRouter,
-  createScheduleRouter,
+  doctorScheduleRouter,
   onbordingRouter,
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
