@@ -14,7 +14,7 @@ sequelize.define('RequestFollow', {
         allowNull: false,
         field: 'user_send',
         references: {
-            model: 'user',
+        model: 'user',
             key: 'id'
         }
     },
@@ -41,4 +41,3 @@ sequelize.define('RequestFollow', {
 };
 
 export default model;
-// nextval('backgrounds_id_seq'::regclass)

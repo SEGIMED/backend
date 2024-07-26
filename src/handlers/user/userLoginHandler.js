@@ -13,7 +13,7 @@ const {JWT_EXPIRATION_SECONDS, ACCESS_TOKEN_SECRET} = process.env;
 
 const userLoginHandler = async (body) => {
     const {email, password, idNumber} = body;
-    const validEmail = String(email.toLowerCase().trim());
+    const validEmail = email.toLowerCase().trim();
     let databaseUser
     try {
         if(validEmail){
