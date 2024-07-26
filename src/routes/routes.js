@@ -97,8 +97,6 @@ import createPreConsultationController from "../controllers/patient/preConsultat
 import getAllProvisionaPreConsultationPatientController from "../controllers/patient/preConsultation/getAllProvisionaPreConsultationPatientController.js";
 import patchProvisionalPreConsultationController from "../controllers/patient/preConsultation/patchProvisionalPreConsultationController.js";
 import createSchedule from "../controllers/managementSchedule/createAttention.js";
-import getAllSchedules from "../controllers/managementSchedule/getAllSchedule.js";
-import getScheduleById from "../controllers/managementSchedule/getScheduleId.js";
 import updateSchedule from "../controllers/managementSchedule/updateSchedule.js";
 import deleteSchedule from "../controllers/managementSchedule/deleteSchedule.js";
 import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js"
@@ -107,6 +105,7 @@ import createOnbordingController from "../controllers/onbording/createOnbording.
 import getAllNotificationsPatienController from "../controllers/notifications/getAllNotificationsPatienController.js"
 import getAllNotificationsPhysicianController from "../controllers/notifications/getAllNotificationsPhysicianController.js"
 import patchNotificationsController from "../controllers/notifications/patchNotificationsController.js"
+import getSchedules from "../controllers/managementSchedule/getSchedule.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -136,6 +135,7 @@ const onbordingRouter = Router();
 const getAllNotificationsPatienRouter = Router()
 const getAllNotificationsPhysicianRouter = Router()
 const notificationsRouter=Router()
+const doctorScheduleRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -463,12 +463,13 @@ statisticsRouter.get(
   getPatientActivityDistributionController
 );
 
-//* create schedule
-createScheduleRouter.post("/create_schedule/:idUser", createSchedule);
-createScheduleRouter.get("/getAllSchedule", getAllSchedules);
-createScheduleRouter.get("/getSchedule/:id", getScheduleById);
-createScheduleRouter.patch("/updateSchedule/:id", updateSchedule);
-createScheduleRouter.delete("/deleteSchedule/:id", deleteSchedule);
+//* Doctor schedule
+doctorScheduleRouter.route("/doctorSchedule")
+.get(getSchedules)
+.post(createSchedule)
+.patch(updateSchedule)
+.delete(deleteSchedule)
+
 
 statisticsRouter.get("/statistics-genre", getGenderDistributionController);
 statisticsRouter.get(
