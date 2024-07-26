@@ -81,6 +81,7 @@ import BackgroundsModel from "./models/Backgrounds.js";
 import DoctorScheduleModel from "./models/DoctorSchedule.js";
 import CatCenterAttetionModel from "./models/CatCenterAttention.js";
 import PhysicianFavoritePatientModel from './models/PhysicianFavoritePatient.js';
+import RefreshTokenModel from './models/RefreshToken.js';
 
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
@@ -191,6 +192,7 @@ ProvisionalPreConsultationModel(sequelize)
 DoctorScheduleModel(sequelize);
 CatCenterAttetionModel(sequelize);
 PhysicianFavoritePatientModel(sequelize);
+RefreshTokenModel(sequelize)
 
 export const {
     DiagnosticTest,
@@ -273,6 +275,7 @@ export const {
     DoctorSchedule, // Doctor-attention
     PhysicianFavoritePatient,
     CatCenterAttention,
+    RefreshToken
 
 } = sequelize.models;
 
@@ -622,6 +625,9 @@ CatCity.hasMany(CatCenterAttention, { foreignKey: "city" });
 
 AlarmEvent.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
 
+User.hasOne(RefreshToken, { foreignKey: 'userId', as: 'refreshToken' });
+RefreshToken.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+
 const models = {
     AnthropometricDetails,
     AppointmentScheduling,
@@ -701,7 +707,8 @@ const models = {
     Backgrounds,
     DoctorSchedule,
     PhysicianFavoritePatient,
-    CatCenterAttention
+    CatCenterAttention,
+    RefreshToken
 };
 
 export default models

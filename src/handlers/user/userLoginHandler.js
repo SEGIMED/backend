@@ -8,8 +8,9 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {mapUser} from "../../mapper/user/userMapper.js";
 import moment from "moment-timezone";
+import refreshTokenCreationHandler from "./refreshTokenCreationHandler.js";
 
-const {JWT_EXPIRATION_SECONDS, ACCESS_TOKEN_SECRET} = process.env;
+const {JWT_EXPIRATION_SECONDS, ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET, REFRESH_TOKEN_EXPIRATION_DAYS} = process.env;
 
 const userLoginHandler = async (body) => {
     const {email, password, idNumber} = body
@@ -91,9 +92,12 @@ const userLoginHandler = async (body) => {
     }
 
     const mappedUser = mapUser(databaseUser.dataValues)
+    
+    mappedUser.accessToken = jwt.sign(mappedUser, ACCESS_TOKEN_SECRET, { expiresIn: `15s` });
+    mappedUser.refreshToken = jwt.sign(mappedUser, REFRESH_TOKEN_SECRET, { expiresIn: `${REFRESH_TOKEN_EXPIRATION_DAYS}d` });
 
-    mappedUser.jwtToken = jwt.sign(mappedUser, ACCESS_TOKEN_SECRET, {expiresIn: JWT_EXPIRATION_SECONDS+'s'})
-    mappedUser.jwtTokenTtlSeconds = JWT_EXPIRATION_SECONDS
+    await refreshTokenCreationHandler({userId:mappedUser.userId, refreshToken:mappedUser.refreshToken})
+    
     const now = moment()
     databaseUser.lastLogin = now.format("YYYY-MM-DD HH:mm:ss z")
     await databaseUser.save()
