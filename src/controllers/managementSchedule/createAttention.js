@@ -1,14 +1,13 @@
 import createScheduleHandler from "../../handlers/managementSchedule/createAttentionHandler.js";
 
 const createSchedule = async (req, res) => {
-  const { idUser } = req.params;
+  const { idUser } = req.query;
   const { openAtt, closeAtt } = req.body;
   try {
     await createScheduleHandler(idUser, openAtt, closeAtt);
-    res.status(200).json({ message: "Registro con exito" });
+    return res.status(200).json({ message: "Registro con exito" });
   } catch (error) {
-    res.status(400).json({ message: error.message });
-    console.error(error.message);
+    return res.status(400).json({ message: error.message });
   }
 };
 
