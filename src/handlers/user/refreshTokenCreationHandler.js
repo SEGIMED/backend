@@ -1,30 +1,25 @@
 import { RefreshToken } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
-
-const {REFRESH_TOKEN_EXPIRATION_DAYS} = process.env
-
-const refreshTokenCreationHandler = async ({userId, refreshToken}) => {
+const REFRESH_TOKEN_EXPIRATION_MS = 15 * 24 * 60 * 60 * 1000; // 15 days
+const refreshTokenCreationHandler = async ({ userId, refreshToken }) => {
   try {
+    const expiresAt = new Date(Date.now() + REFRESH_TOKEN_EXPIRATION_MS);
     const [refreshTokenRecord, created] = await RefreshToken.findOrCreate({
       where: { userId },
       defaults: {
         token: refreshToken,
-        expiresAt: new Date(
-          Date.now() + REFRESH_TOKEN_EXPIRATION_DAYS * 24 * 60 * 60 * 1000
-        ),
+        expiresAt,
       },
     });
 
     if (!created) {
-      refreshTokenRecord.expiresAt = new Date(
-        Date.now() + REFRESH_TOKEN_EXPIRATION_DAYS * 24 * 60 * 60 * 1000
-      );
-      refreshTokenRecord.token = refreshToken
+      refreshTokenRecord.expiresAt = expiresAt;
+      refreshTokenRecord.token = refreshToken;
       await refreshTokenRecord.save();
     }
   } catch (error) {
-    throw new SegimedAPIError("Error al refrescar el token", 400)
+    throw new SegimedAPIError("Error al refrescar el token", 400);
   }
 };
 
-export default refreshTokenCreationHandler
+export default refreshTokenCreationHandler;
