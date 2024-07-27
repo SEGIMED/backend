@@ -82,6 +82,7 @@ import DoctorScheduleModel from "./models/DoctorSchedule.js";
 import CatCenterAttetionModel from "./models/CatCenterAttention.js";
 import PhysicianFavoritePatientModel from './models/PhysicianFavoritePatient.js';
 import RefreshTokenModel from './models/RefreshToken.js';
+import RequestFollowModel from './models/RequestFollow.js';
 
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
@@ -193,6 +194,7 @@ DoctorScheduleModel(sequelize);
 CatCenterAttetionModel(sequelize);
 PhysicianFavoritePatientModel(sequelize);
 RefreshTokenModel(sequelize)
+RequestFollowModel(sequelize);
 
 export const {
     DiagnosticTest,
@@ -275,7 +277,8 @@ export const {
     DoctorSchedule, // Doctor-attention
     PhysicianFavoritePatient,
     CatCenterAttention,
-    RefreshToken
+    RefreshToken,
+    RequestFollow,
 
 } = sequelize.models;
 
@@ -622,6 +625,11 @@ SociodemographicDetails.belongsTo(CatCenterAttention, { as: "catCenterAttention"
 CatCenterAttention.hasMany(SociodemographicDetails, { as: "sociodemographicDetails", foreignKey: "centerAttention" });
 CatCenterAttention.belongsTo(CatCity, { foreignKey: "city" });
 CatCity.hasMany(CatCenterAttention, { foreignKey: "city" });
+User.hasMany(RequestFollow, { foreignKey: "userSend" });
+User.hasMany(RequestFollow, { foreignKey: "userReceptor" });
+RequestFollow.belongsTo(User, { foreignKey: "userSend" });
+RequestFollow.belongsTo(User, { foreignKey: "userReceptor" });
+
 
 AlarmEvent.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
 
@@ -708,7 +716,8 @@ const models = {
     DoctorSchedule,
     PhysicianFavoritePatient,
     CatCenterAttention,
-    RefreshToken
+    RefreshToken,
+    RequestFollow
 };
 
 export default models
