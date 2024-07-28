@@ -12,8 +12,6 @@ const getAllProvisionaPreConsultationHandler = async (patientId) => {
           {
             model: models.PatientPainMap,
             as: "provisionalPreConsultationPainMap",
-            required: false,
-            attributes: ["id"],
           },
           {
             model: models.AppointmentScheduling,
