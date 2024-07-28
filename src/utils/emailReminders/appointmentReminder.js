@@ -33,7 +33,7 @@ const scheduleReminderEmails = async () => {
       <p>Fecha: ${appointmentStart.toLocaleDateString()}</p>
       <p>Hora: ${appointmentStart.toLocaleTimeString()}</p>
     `;
-    //TODO validaciones en hora y fecha, para que sean en formatos válidos.
+
     const newNotification = new Notify({
       // It sends notification for every patient to web app
       content: {

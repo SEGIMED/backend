@@ -1,12 +1,16 @@
 import { AppointmentScheduling } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import Notify from "../../realtime_server/models/Notify.js";
+import validateAllowedDate from "../../validations/validateAllowedDate.js";
 
 const createSchedulingHandler = async (body) => {
   try {
- 
+    const startTimeValidate = validateAllowedDate(body.scheduledStartTimestamp)
+    const endTimeValidate = validateAllowedDate(body.scheduledEndTimestamp)
+    if(!endTimeValidate||!startTimeValidate) throw new Error ('Formato de fecha inválido, no esposible crear la cita')
+
     const newScheduling = await AppointmentScheduling.create(body);
-       //TODO validaciones en hora y fecha, para que sean en formatos válidos.
+       
     if(newScheduling){
       //Notification patient
       const appointmentStart = new Date(newScheduling.scheduledStartTimestamp);
@@ -34,7 +38,7 @@ const createSchedulingHandler = async (body) => {
     }
     
   } catch (error) {
-    throw new SegimedAPIError("Error al crear el agendamiento", 500);
+    throw new SegimedAPIError("Error al crear el agendamiento"+ error.message, 500);
   }
 };
 

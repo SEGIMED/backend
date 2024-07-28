@@ -1,5 +1,6 @@
 import {AppointmentScheduling} from "../../databaseConfig.js";
 import Notify from "../../realtime_server/models/Notify.js";
+import validateAllowedDate from "../../validations/validateAllowedDate.js";
 
 const regexPositiveNumbers = /^[1-9][0-9]*$/;
 
@@ -9,8 +10,14 @@ const patchScheduleHandler = async (id, updates) => {
       throw new Error("El id del evento debe ser un entero positivo");
     }
     const schedule = await AppointmentScheduling.findByPk(id);
+
+    //Validations
     if (schedule.length === 0) throw new Error("Evento no encontrado");
-//TODO validaciones en hora y fecha, para que sean en formatos válidos.
+    const startTimeValidate = validateAllowedDate(updates.scheduledStartTimestamp)
+    const endTimeValidate = validateAllowedDate(updates.scheduledEndTimestamp)
+    if(!endTimeValidate||!startTimeValidate) throw new Error ('Formato de fecha inválido, no se pudo actualizar la cita')
+    
+    //Updates
     if(updates?.scheduledStartTimestamp!=schedule.scheduledStartTimestamp && updates?.schedulingStatus!=3){
       const appointmentStart = new Date(schedule.scheduledStartTimestamp);
       const newAppointmentStart = new Date(updates.scheduledStartTimestamp);
