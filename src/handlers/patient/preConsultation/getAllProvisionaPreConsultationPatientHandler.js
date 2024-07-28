@@ -12,28 +12,8 @@ const getAllProvisionaPreConsultationHandler = async (patientId) => {
           {
             model: models.PatientPainMap,
             as: "provisionalPreConsultationPainMap",
-            include: [
-              {
-                model: models.CatPainDuration,
-                as: "catPainDuration",
-              },
-              {
-                model: models.CatPainScale,
-                as: "catPainScale",
-              },
-              {
-                model: models.CatPainType,
-                as: "catPainType",
-              },
-              {
-                model: models.CatPainFrequency,
-                as: "catPainFrequency",
-              },
-              {
-                model: models.User,
-                as: "painRecorderUser",
-              },
-            ],
+            required: false,
+            attributes: ["id"],
           },
           {
             model: models.AppointmentScheduling,
