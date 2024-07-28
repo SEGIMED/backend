@@ -2,13 +2,17 @@ import {
   AppointmentScheduling,
   MedicalEvent,
   ProvisionalPreConsultation,
+  sequelize,
 } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import Notify from "../../realtime_server/models/Notify.js";
 
 const createSchedulingHandler = async (body) => {
+
+  const transaction = await sequelize.transaction()
+
   try {
-    const newScheduling = await AppointmentScheduling.create(body);
+    const newScheduling = await AppointmentScheduling.create(body,{transaction});
 
     if (newScheduling) {
       //Notification patient
@@ -21,7 +25,7 @@ const createSchedulingHandler = async (body) => {
         },
         target: newScheduling.patient,
       });
-      newNotificationPatient.save();
+      newNotificationPatient.save({transaction});
       //Notification physician
       const newNotificationPhysician = new Notify({
         content: {
@@ -31,7 +35,7 @@ const createSchedulingHandler = async (body) => {
         },
         target: newScheduling.physician,
       });
-      newNotificationPhysician.save();
+      newNotificationPhysician.save({transaction});
 
       const newMedicalEvent = await MedicalEvent.create(
         {
@@ -40,6 +44,7 @@ const createSchedulingHandler = async (body) => {
         {
           returning: true,
           plain: true,
+          transaction
         }
       );
       const newPreConsultation = await ProvisionalPreConsultation.create(
@@ -50,16 +55,18 @@ const createSchedulingHandler = async (body) => {
         {
           returning: true,
           plain: true,
+          transaction
         }
       );
       newScheduling.setDataValue('medicalEventId', newMedicalEvent.id);
       newScheduling.setDataValue('preConsultationId', newPreConsultation.id);
 
+      await transaction.commit()
       return newScheduling;
     }
   } catch (error) {
-    console.log(error);
-    throw new SegimedAPIError("Error al crear el agendamiento", 500);
+    await transaction.rollback();
+    throw new SegimedAPIError(`Error al crear el agendamiento: ${error}`, 500);
   }
 };
 
