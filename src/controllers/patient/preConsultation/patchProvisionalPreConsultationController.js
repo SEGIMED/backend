@@ -9,9 +9,11 @@ const patchProvisionalPreConsultationController = async (req, res) => {
     const updatedPreconsultation = await patchProvisionalPreConsultationHandler(
       req.body
     );
+    console.log("asdasd")
     const updatedVitalSigns = await updateVitalSignsHandler(req.body);
+    console.log("asdasd")
     const updatedPainRecords = await patchPatientPainMapHandler(req.body);
-
+    console.log("asdasd")
     return res
       .status(200)
       .json({ updatedPreconsultation, updatedVitalSigns, updatedPainRecords });

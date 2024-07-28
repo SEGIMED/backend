@@ -1,23 +1,28 @@
 import SegimedAPIError from "../../error/SegimedAPIError.js";
+import contextService from "request-context";
 import { PatientPainMap } from "../../databaseConfig.js";
 import moment from "moment";
 
 const patchPatientPainMapHandler = async (body) => {
-    body= body.painRecordsToCreate[0]
     try {
-        const patientPainMapping = await mapPainRecord(body);
-        const updatedPainRecord = await PatientPainMap.update(
-            patientPainMapping ,
-            {
-                where: {
-                    id: body.patientPainMapId
-                }
-            }
-        );
+        const patientPainMapping = await mapPainRecord(body.painRecordsToCreate[0]);
+        patientPainMapping.painOwner = body.patient
+        patientPainMapping.painRecorder = contextService.get('request:user').userId
         
-        const update = await PatientPainMap.findByPk(body.patientPainMapId);
-        return update;
+        const [updatedPainRecord, created] = await PatientPainMap.findOrCreate({
+            where: {
+                id: body.patient
+            },
+            defaults: patientPainMapping
+        });
+        
+        if (!created) {
+            await updatedPainRecord.update(patientPainMapping);
+        }
+       
+        return updatedPainRecord;
     } catch (error) {
+        console.log(error);
         throw new SegimedAPIError('Hubo un error durante el proceso de actualización: ', 500);
     }
 };

@@ -31,14 +31,11 @@ export const validateJWT = async (req, res, next) => {
         //el token debería traer el access-token
         const requestJWT = req.get('token');
         try {
-            console.log(requestJWT)
             // Validate the access token
             const decodedToken = jwt.verify(requestJWT, process.env.ACCESS_TOKEN_SECRET)
-            console.log("ACSADFSVCSVCVSD")
             contextService.set('request:user',decodedToken )
             next();
         } catch (error) {
-            console.log(error)
             //Si llega acá es porque no se pudo validar
             if (error.name === 'TokenExpiredError') {
                 // Access token no valido, asi que busco el refresh token
@@ -62,7 +59,7 @@ export const validateJWT = async (req, res, next) => {
                     //  
                 
                     const { accessToken, iat, exp, ...newPayload } = decodedRefreshToken;
-                    console.log('New payload for access token:', newPayload);
+
                     const newAccessToken = jwt.sign(newPayload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' }); // 10 seconds for testing
                     //console.log('New access token generated:', newAccessToken);
                     
