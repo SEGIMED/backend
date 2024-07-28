@@ -3,7 +3,7 @@ import contextService from "request-context";
 import { PatientPainMap } from "../../databaseConfig.js";
 import moment from "moment";
 
-const patchPatientPainMapHandler = async (body) => {
+const patchPatientPainMapHandler = async (body,{transaction}) => {
     try {
         const patientPainMapping = await mapPainRecord(body.painRecordsToCreate[0]);
         patientPainMapping.painOwner = body.patient
@@ -11,18 +11,19 @@ const patchPatientPainMapHandler = async (body) => {
         
         const [updatedPainRecord, created] = await PatientPainMap.findOrCreate({
             where: {
-                id: body.patient
+                scheduling: patientPainMapping.scheduling,
+                medicalEvent: patientPainMapping.medicalEvent
             },
-            defaults: patientPainMapping
+            defaults: patientPainMapping,
+            transaction
         });
         
         if (!created) {
-            await updatedPainRecord.update(patientPainMapping);
+            await updatedPainRecord.update(patientPainMapping, {transaction});
         }
        
         return updatedPainRecord;
     } catch (error) {
-        console.log(error);
         throw new SegimedAPIError('Hubo un error durante el proceso de actualización: ', 500);
     }
 };
@@ -39,7 +40,9 @@ async function mapPainRecord(body) {
         doesAnalgesicWorks: body.doesAnalgesicWorks,
         isWorstPainEver: body.isWorstPainEver,
         timestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-        painRecorder: body.patient
+        painRecorder: body.patient,
+        scheduling: body.schedulingId,
+        medicalEvent: body.medicalEventId
     };
 }
 
