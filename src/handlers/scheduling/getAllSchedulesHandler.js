@@ -1,3 +1,4 @@
+import { Sequelize } from "sequelize";
 import {
   AppointmentScheduling,
   User,
@@ -9,7 +10,11 @@ import { mapPatientsSchedule } from "../../mapper/patient/patientMapper.js";
 
 const getAllSchedulesHandler = async (patientId, physicianId, id) => {
   try {
-    const filters = {};
+    const filters = {
+      schedulingStatus: {
+        [Sequelize.Op.ne]: 5, // Excluye filas donde schedulingStatus es igual a 5
+      },
+    };
     if (patientId) {
       filters.patient = patientId;
     }
