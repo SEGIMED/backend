@@ -24,7 +24,7 @@ const userRegisterHandler = async (body, frontendUrl) => {
     email,
     nationality,
   } = body;
-
+  const emailLowerCase = String(email).toLowerCase();
   try {
     const newUser = await sequelize.transaction(async (t) => {
       const newUser = await User.create({
@@ -38,7 +38,7 @@ const userRegisterHandler = async (body, frontendUrl) => {
         geolocation,
         avatar,
         cellphone,
-        email,
+        email: emailLowerCase,
         nationality,
       });
 
@@ -71,7 +71,7 @@ async function inputValidation(body) {
     email,
     nationality,
   } = body;
-
+  const emailLowerCase = String(email).toLowerCase();
   if (
     !name ||
     !lastname ||
@@ -92,7 +92,7 @@ async function inputValidation(body) {
     );
   const emailOnDb = await User.findOne({
     where: {
-      email: email,
+      email: emailLowerCase,
     },
   });
   if (emailOnDb)

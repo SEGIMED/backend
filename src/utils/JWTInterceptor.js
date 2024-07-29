@@ -3,6 +3,7 @@ import contextService from "request-context";
 
 
 const excludedJWTPaths = [
+    "/api/patientsfilter",
     "/api/user/login",
     "/api/user/recover-password",
     "/api/user/modify-password",

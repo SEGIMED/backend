@@ -13,12 +13,13 @@ const {JWT_EXPIRATION_SECONDS, ACCESS_TOKEN_SECRET} = process.env;
 
 const userLoginHandler = async (body) => {
     const {email, password, idNumber} = body
-    let databaseUser
+    let databaseUser;
+    const legEmail = String(email).toLowerCase().trim();
     try {
-        if(email){
+        if(legEmail){
             databaseUser = await User.findOne({
                 where: {
-                    email: email
+                    email: legEmail
                 },
                 include: [
                     {
@@ -78,10 +79,10 @@ const userLoginHandler = async (body) => {
         throw new SegimedAuthenticationError('El usuario no se encuentra registrado')
 
 
-    if (email && databaseUser.verified === false)
+    if (legEmail && databaseUser.verified === false)
         throw new SegimedAuthenticationError('La cuenta no esta verificada.')
 
-    if(email || databaseUser.lastLogin !==null){
+    if(legEmail || databaseUser.lastLogin !==null){
         const doesPasswordMatches = await bcrypt.compare(password, databaseUser.password)
         if (!doesPasswordMatches)
             throw new SegimedAuthenticationError('La contraseña es incorrecta.')
