@@ -3,19 +3,20 @@ import contextService from "request-context";
 import { RefreshToken } from "../databaseConfig.js";
 
 const excludedJWTPaths = [
-  "/api/user/login",
-  "/api/user/recover-password",
-  "/api/user/modify-password",
-  "/api/user/register-user",
-  "/api/user/validate-email",
-  "/api/doc/favicon-32x32.png",
-  "/api/doc/favicon-16x16.png",
-  "/api/doc/",
-  "/api/doc/swagger-ui-init.js",
-  "/api/doc/swagger-ui-standalone-preset.js",
-  "/api/doc/swagger-ui-bundle.js",
-  "/api/doc/swagger-ui.css",
-];
+    "/api/patientsfilter",
+    "/api/user/login",
+    "/api/user/recover-password",
+    "/api/user/modify-password",
+    "/api/user/register-user",
+    "/api/user/validate-email",
+    "/api/doc/favicon-32x32.png",
+    "/api/doc/favicon-16x16.png",
+    "/api/doc/",
+    "/api/doc/swagger-ui-init.js",
+    "/api/doc/swagger-ui-standalone-preset.js",
+    "/api/doc/swagger-ui-bundle.js",
+    "/api/doc/swagger-ui.css",
+]
 
 export const validateJWT = async (req, res, next) => {
 

@@ -13,16 +13,22 @@ import { mapUser } from "../../mapper/user/userMapper.js";
 import moment from "moment-timezone";
 import refreshTokenCreationHandler from "./refreshTokenCreationHandler.js";
 
-const { JWT_EXPIRATION_SECONDS, ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET, REFRESH_TOKEN_EXPIRATION_DAYS } = process.env;
+const {
+  JWT_EXPIRATION_SECONDS,
+  ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET,
+  REFRESH_TOKEN_EXPIRATION_DAYS,
+} = process.env;
 
 const userLoginHandler = async (body) => {
   const { email, password, idNumber } = body;
   let databaseUser;
+  const legEmail = String(email).toLowerCase().trim();
   try {
-    if (email) {
+    if (legEmail) {
       databaseUser = await User.findOne({
         where: {
-          email: email,
+          email: legEmail,
         },
         include: [
           {
@@ -65,7 +71,7 @@ const userLoginHandler = async (body) => {
     if (databaseUser) {
       const now = moment();
 
-      await LoginRecord.create({
+      const loginRecorded = await LoginRecord.create({
         userId: databaseUser.id,
         record: now.format("YYYY-MM-DD HH:mm:ss z"),
       });
@@ -79,10 +85,10 @@ const userLoginHandler = async (body) => {
       "El usuario no se encuentra registrado"
     );
 
-  if (email && databaseUser.verified === false)
+  if (legEmail && databaseUser.verified === false)
     throw new SegimedAuthenticationError("La cuenta no esta verificada.");
 
-  if (email || databaseUser.lastLogin !== null) {
+  if (legEmail || databaseUser.lastLogin !== null) {
     const doesPasswordMatches = await bcrypt.compare(
       password,
       databaseUser.password
@@ -97,7 +103,7 @@ const userLoginHandler = async (body) => {
   const mappedUser = mapUser(databaseUser.dataValues);
 
   mappedUser.accessToken = jwt.sign(mappedUser, ACCESS_TOKEN_SECRET, {
-    expiresIn: `${JWT_EXPIRATION_SECONDS || '15'}m`,
+    expiresIn: `${JWT_EXPIRATION_SECONDS || "15"}m`,
   });
   mappedUser.refreshToken = jwt.sign(mappedUser, REFRESH_TOKEN_SECRET, {
     expiresIn: `${REFRESH_TOKEN_EXPIRATION_DAYS || 7}d`,
