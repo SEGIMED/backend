@@ -20,7 +20,7 @@ Remember to work on your own root and ask for aproval of at least one person, be
 ## Good practices
 
  * The comments, documentation and code must be in ENGLISH
- * Use the relevant validations in the models, in order to detect errors early and avoid failed queries to the database.
+ * Use the relevant validations in the models, in order to detect errors early and avoid failed queries to the database, and relevant validations in handlers.
  * Create unit tests for the routes to be created, because of the asociations between the models 
  * If a task is left incomplete then leave a TODO comment to specify what is missing and also leave a record in the trello.
  
