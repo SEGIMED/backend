@@ -114,7 +114,6 @@ const getPreConsultationByScheduleIdHandler = async (scheduleId) => {
 
     return preConsultation;
   } catch (error) {
-    console.log(error);
     throw new SegimedAPIError(
       "Error al cargar los detalles de la preconsulta ",
       500
