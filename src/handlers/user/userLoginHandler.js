@@ -103,7 +103,7 @@ const userLoginHandler = async (body) => {
   const mappedUser = mapUser(databaseUser.dataValues);
 
   mappedUser.accessToken = jwt.sign(mappedUser, ACCESS_TOKEN_SECRET, {
-    expiresIn: `${JWT_EXPIRATION_SECONDS || "15"}m`,
+    expiresIn: `${JWT_EXPIRATION_SECONDS || "900"}s`,
   });
   mappedUser.refreshToken = jwt.sign(mappedUser, REFRESH_TOKEN_SECRET, {
     expiresIn: `${REFRESH_TOKEN_EXPIRATION_DAYS || 7}d`,
