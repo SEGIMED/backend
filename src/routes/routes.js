@@ -108,6 +108,7 @@ import patchNotificationsController from "../controllers/notifications/patchNoti
 import getSchedules from "../controllers/managementSchedule/getSchedule.js";
 import { getRequestController } from "../controllers/requestFollow/getReqFollowController.js";
 import { createRequestController } from "../controllers/requestFollow/createReqFollowCtrl.js";
+import { validateRequestFollow } from "../handlers/requestFollow/verifyData.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -475,7 +476,7 @@ doctorScheduleRouter.route("/doctorSchedule")
 
 requestFollowRouter.route("/requestFollow")
 .get(getRequestController)
-.post(createRequestController)
+.post(validateRequestFollow ,createRequestController)
 
 statisticsRouter.get("/statistics-genre", getGenderDistributionController);
 statisticsRouter.get(
