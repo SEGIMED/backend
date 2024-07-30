@@ -26,7 +26,7 @@ const patchProvisionalPreConsultationHandler = async(body)=>{
         exerciseStatus,
         abnormalGlycemia,
         lastAbnormalGlycemia,
-        physicalExamination,
+        // physicalExamination,
         laboratoryResults,//array strings
         laboratoryResultsDescription,//array  strings
         electrocardiogram,
@@ -76,7 +76,7 @@ const patchProvisionalPreConsultationHandler = async(body)=>{
             exerciseStatus: exerciseStatus !== undefined ? exerciseStatus : existingPreconsultation.exerciseStatus,
             abnormalGlycemia: abnormalGlycemia !== undefined ? abnormalGlycemia : existingPreconsultation.abnormalGlycemia,
             lastAbnormalGlycemia: lastAbnormalGlycemia !== undefined ? lastAbnormalGlycemia : existingPreconsultation.lastAbnormalGlycemia,
-            physicalExamination: physicalExamination !== undefined ? physicalExamination : existingPreconsultation.physicalExamination,
+            // physicalExamination: physicalExamination !== undefined ? physicalExamination : existingPreconsultation.physicalExamination,
             laboratoryResults: laboratoryResults !== undefined ? laboratoryResults : existingPreconsultation.laboratoryResults,
             laboratoryResultsDescription: laboratoryResultsDescription !== undefined ? laboratoryResultsDescription : existingPreconsultation.laboratoryResultsDescription,
             electrocardiogram: electrocardiogram !== undefined ? electrocardiogram : existingPreconsultation.electrocardiogram,
