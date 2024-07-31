@@ -14,7 +14,7 @@ const verifyToken = (socket, next) => {
             socket.decoded = decoded;
             next();
         });
-    } else {
+    } else { 
         console.log(`Authentication error from ${socket.handshake.address}`);
         next(new Error('Authentication error'));
     }
