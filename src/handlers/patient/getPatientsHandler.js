@@ -74,13 +74,28 @@ const getPatientsHandler = async (
     // Sin paginación
     if (!limit && !page) {
       const getPatients = await models.User.findAll(queryOptions);
+
+      if (physicianId && treating && getPatients.length === 0) {
+        throw new Error("No estás tratando pacientes actualmente");
+      }
+
       return mapPatients(getPatients);
     } else {
       // Lógica de paginación
-      return paginationUsersHandler({ page, limit, queryOptions });
+      const paginatedPatients = await paginationUsersHandler({
+        page,
+        limit,
+        queryOptions,
+      });
+
+      if (physicianId && treating && getPatients.length === 0) {
+        throw new Error("No estás tratando pacientes actualmente");
+      }
+
+      return paginatedPatients;
     }
   } catch (error) {
-    throw new Error("Error loading patients: " + error.message);
+    throw new Error(error.message);
   }
 };
 
