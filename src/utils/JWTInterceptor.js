@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken";
 import contextService from "request-context";
 import { verifyAndRefreshToken } from "./JWTUtils.js";
 
