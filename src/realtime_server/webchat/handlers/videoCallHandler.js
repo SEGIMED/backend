@@ -7,13 +7,14 @@ export default (io,socket) => {
         console.log(data);
     }
 
-    const joinRoom = async (consultId, callback) => {
+    const joinRoom = async (consultId, cb) => {
         try {
+            console.log("esto es callback en handler",cb)
             if(!consultId) throw new Error('Error, no recibio el id de la consulta');
-            ListVideoCall.createRoom(consultId);
-            // buscar la informacion.
-
-            // crear la sala. 
+            const data = await ListVideoCall.findOrCreateRoom(consultId) 
+            console.log("esto es data", data)
+            if(data ) cb(data)
+            
 
             // usar callback para modificar entregar la informacion al front.
 

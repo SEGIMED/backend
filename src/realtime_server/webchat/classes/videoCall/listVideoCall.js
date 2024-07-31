@@ -14,10 +14,15 @@ class ListVideoCall{
 
     
 
-    async createRoom(id){
+    async findOrCreateRoom(id){
          try {
-             const newRoom = new Room();
-             await newRoom.getData(id);
+            if(!this._local.has(id)){
+            const newRoom = new Room();
+            const data = await newRoom.getData(id);
+            this._local.set(data.id,data)
+            }
+            return this._local.get(id)
+
          } catch (error) {
             console.log(error.message)
          }

@@ -37,8 +37,10 @@ export async function getDataConsult(id){
               },
             ],
           });
-          console.log(consultData);
+          console.log(consultData.dataValues.patient, consultData.dataValues.physician)
+          const {patient, physician} = consultData.dataValues
 
+          return {id, users:[patient,physician]}
         
     } catch (error) {
         console.log(error.message)
