@@ -4,7 +4,8 @@ import { consultationVitalSignsMapper } from "../../../mapper/patient/consultati
 
 const getPreConsultationByScheduleIdHandler = async (scheduleId) => {
   try {
-    const preConsultations = await models.ProvisionalPreConsultation.findAll({
+
+    let preConsultation = await models.ProvisionalPreConsultation.findOne({
       where: {
         appointmentSchedule: scheduleId,
       },
@@ -12,28 +13,6 @@ const getPreConsultationByScheduleIdHandler = async (scheduleId) => {
         {
           model: models.PatientPainMap,
           as: "provisionalPreConsultationPainMap",
-          include: [
-            {
-              model: models.CatPainDuration,
-              as: "catPainDuration",
-            },
-            {
-              model: models.CatPainScale,
-              as: "catPainScale",
-            },
-            {
-              model: models.CatPainType,
-              as: "catPainType",
-            },
-            {
-              model: models.CatPainFrequency,
-              as: "catPainFrequency",
-            },
-            {
-              model: models.User,
-              as: "painRecorderUser",
-            },
-          ],
         },
         {
           model: models.AppointmentScheduling,
@@ -86,17 +65,52 @@ const getPreConsultationByScheduleIdHandler = async (scheduleId) => {
         },
       ],
     });
+    const painAreas = await models.PatientPainMap.findOne({
+      where: {
+        scheduling: scheduleId,
+      },
+      include: [
+        {
+          model: models.CatPainDuration,
+          as: "catPainDuration",
+        },
+        {
+          model: models.CatPainScale,
+          as: "catPainScale",
+        },
+        {
+          model: models.CatPainType,
+          as: "catPainType",
+        },
+        {
+          model: models.CatPainFrequency,
+          as: "catPainFrequency",
+        },
+        {
+          model: models.User,
+          as: "painRecorderUser",
+        },
+      ],
+    });
 
-    if (preConsultations.length === 0) {
-      throw new SegimedAPIError("No se encontraron preconsultas para el ID de programación proporcionado.", 404);
+    if (!preConsultation) {
+      throw new SegimedAPIError(
+        "No se encontraron preconsultas para el ID de programación proporcionado.",
+        404
+      );
     }
-    
-    const preConsultation = preConsultations[0].get({ plain: true }); //Era lo que faltaba
-    const vitalSignDetails = preConsultation.ProvisionalPreConsultationSchedule.vitalSignDetailsScheduling;
 
-    const filteredVitalSigns = await consultationVitalSignsMapper(vitalSignDetails);
+     preConsultation = preConsultation.get({ plain: true }); //Era lo que faltaba
+    const vitalSignDetails =
+      preConsultation.ProvisionalPreConsultationSchedule
+        .vitalSignDetailsScheduling;
 
-    preConsultation.ProvisionalPreConsultationSchedule.vitalSignDetailsScheduling = filteredVitalSigns;
+    const filteredVitalSigns = await consultationVitalSignsMapper(
+      vitalSignDetails
+    );
+    preConsultation.provisionalPreConsultationPainMap = painAreas;
+    preConsultation.ProvisionalPreConsultationSchedule.vitalSignDetailsScheduling =
+      filteredVitalSigns;
 
     return preConsultation;
   } catch (error) {
