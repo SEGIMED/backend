@@ -37,7 +37,7 @@ export async function getDataConsult(id){
               },
             ],
           });
-          console.log(consultData.dataValues.patient, consultData.dataValues.physician)
+         
           const {patient, physician} = consultData.dataValues
 
           return {id, users:[patient,physician]}

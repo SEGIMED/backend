@@ -1,5 +1,3 @@
-
-
 import ListVideoCall from "../classes/videoCall/listVideoCall.js";
 
 export default (io,socket) => {
@@ -24,6 +22,7 @@ export default (io,socket) => {
         }
 
     }
+    
 
     socket.on("joinRoom", joinRoom);
     socket.on('sendOffer',createOffer);
