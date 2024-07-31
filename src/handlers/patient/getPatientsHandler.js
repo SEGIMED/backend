@@ -3,12 +3,12 @@ import paginationUsersHandler from "../Pagination/paginationUsersHandler.js";
 import { mapPatients } from '../../mapper/patient/patientMapper.js';
 import { Op } from "sequelize";
 
-const getPatientsHandler = async ({ limit, page, name, risk, physicianId }, onlyFavorites) => {
-  
+const getPatientsHandler = async ({ limit, page, name, risk, physicianId, treating }, onlyFavorites) => {
   try {
     const queryOptions = {
       where: {
         role: 3,
+        treatingPhysician: treating ? physicianId : undefined
       },  
       attributes: {
         exclude: ["password", "cellphone", "email"],
