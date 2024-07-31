@@ -46,6 +46,7 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization", "token", "x-refresh-token"], // Encabezados permitidos
   credentials: true, // Si estás utilizando cookies o autenticación basada en sesiones
   optionsSuccessStatus: 200, // Para navegadores más antiguos que no soportan 204
+  exposedHeaders: ["token"], // Encabezados que el navegador puede acceder
 };
 
 const app = express();
