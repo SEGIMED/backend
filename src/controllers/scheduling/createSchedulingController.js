@@ -1,7 +1,6 @@
 import createSchedulingHandler from "../../handlers/scheduling/createSchedulingHandler.js";
 
 const createSchedulingController = async (req, res) => {
-  console.log("creando agendando");
   try {
     const newPatientScheduling = await createSchedulingHandler(req.body);
     return res.status(201).json({
