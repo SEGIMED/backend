@@ -5,6 +5,7 @@ import moment from "moment";
 
 const patchPatientPainMapHandler = async (body,{transaction}) => {
   try {
+    
     //Validación. Si se envía el objeto painRecordsToUpdate pero es diferente a un array, retorna error
     if (body.painRecordsToUpdate && !Array.isArray(body.painRecordsToUpdate)) {
       throw new SegimedAPIError(
@@ -15,7 +16,7 @@ const patchPatientPainMapHandler = async (body,{transaction}) => {
 
     //Validación. Si no vienen zonas de dolor para actualizar, se retorna []
     if (body.painRecordsToUpdate && body.painRecordsToUpdate?.length !== 0) {
-      const patientPainMapping = await mapPainRecord(body.painRecordsToCreate[0]);
+      const patientPainMapping = await mapPainRecord(body.painRecordsToUpdate[0]);
       patientPainMapping.painOwner = body.patient
       patientPainMapping.painRecorder = contextService.get('request:user').userId
       const [updatedPainRecord, created] = await PatientPainMap.findOrCreate({
