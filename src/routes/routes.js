@@ -107,6 +107,8 @@ import getAllNotificationsPatienController from "../controllers/notifications/ge
 import getAllNotificationsPhysicianController from "../controllers/notifications/getAllNotificationsPhysicianController.js";
 import patchNotificationsController from "../controllers/notifications/patchNotificationsController.js";
 import getSchedules from "../controllers/managementSchedule/getSchedule.js";
+import { getRequestController } from "../controllers/requestFollow/getReqFollowController.js";
+import { createRequestController } from "../controllers/requestFollow/createReqFollowCtrl.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -131,7 +133,7 @@ const sociodemographicDetailsRouter = Router();
 const backgroundsRouter = Router();
 const alarmRouter = Router();
 const preConsultationRouter = Router();
-const createScheduleRouter = Router();
+const requestFollowRouter = Router();
 const onbordingRouter = Router();
 const getAllNotificationsPatienRouter = Router();
 const getAllNotificationsPhysicianRouter = Router();
@@ -473,6 +475,10 @@ doctorScheduleRouter
   .post(createSchedule)
   .patch(updateSchedule)
   .delete(deleteSchedule);
+
+requestFollowRouter.route("/requestFollow")
+.get(getRequestController)
+.post(createRequestController)
 
 statisticsRouter.get("/statistics-genre", getGenderDistributionController);
 statisticsRouter.get(

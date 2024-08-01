@@ -3,7 +3,7 @@ import SegimedAPIError from "../../error/SegimedAPIError.js";
 import moment from "moment-timezone";
 import contextService from "request-context";
 
-const updateOrCreateVitalSignsHandler = async (body) => {
+const updateOrCreateVitalSignsHandler = async (body,{transaction}) => {
   const { updateVitalSigns, patient, appointmentSchedule } = body;
 
   try {
@@ -18,6 +18,7 @@ const updateOrCreateVitalSignsHandler = async (body) => {
           measureType: vitalSign.measureType,
           scheduling: appointmentSchedule,
         },
+        transaction
       });
 
       if (existingVitalSign) {
@@ -33,6 +34,7 @@ const updateOrCreateVitalSignsHandler = async (body) => {
               id: existingVitalSign.id,
             },
             returning: true,
+            transaction
           }
         );
         return updatedVitalSign;
@@ -46,6 +48,8 @@ const updateOrCreateVitalSignsHandler = async (body) => {
           measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
           scheduling: appointmentSchedule,
           medicalEvent: vitalSign.medicalEventId,
+        },{
+          transaction
         });
         return newVitalSign;
       }
