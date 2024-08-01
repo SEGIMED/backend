@@ -18,7 +18,7 @@ const createDrugPrescriptionHandler = async (body) => {
       patient: patientId,
       prescribedPhysician: contextService.get("request:user").userId,
       prescriptionTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-      drug: drugId,
+      drug: 1,
       drugName,
       prescribedDose,
       quantity,
@@ -26,6 +26,7 @@ const createDrugPrescriptionHandler = async (body) => {
     });
     return newPrescription;
   } catch (error) {
+    console.error(error.message);
     throw new SegimedAPIError("Hubo un error durante en la prescripción.", 500);
   }
 };
