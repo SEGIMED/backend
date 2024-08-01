@@ -1,9 +1,8 @@
-// jwtUtils.js
-
 import jwt from "jsonwebtoken";
 import { RefreshToken } from "../databaseConfig.js";
 
-const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
+const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET, JWT_EXPIRATION_SECONDS } =
+  process.env;
 
 // Function to verify and refresh JWT
 export const verifyAndRefreshToken = async (token, refreshToken) => {
@@ -12,7 +11,11 @@ export const verifyAndRefreshToken = async (token, refreshToken) => {
     const decodedToken = jwt.verify(token, ACCESS_TOKEN_SECRET);
     return { decodedToken };
   } catch (error) {
-    if (error.name === "TokenExpiredError") {
+    if (
+      error.name === "TokenExpiredError" ||
+      error.message === "jwt expired" ||
+      error.message === "invalid token"
+    ) {
       if (!refreshToken) {
         throw new Error("Refresh token is missing");
       }
@@ -24,18 +27,24 @@ export const verifyAndRefreshToken = async (token, refreshToken) => {
       if (!refreshTokenRecord || refreshTokenRecord.expiresAt < new Date()) {
         throw new Error("Refresh token is invalid or expired");
       }
+      try {
+        const decodedRefreshToken = jwt.verify(
+          refreshToken,
+          REFRESH_TOKEN_SECRET
+        );
+        const { iat, exp, ...newPayload } = decodedRefreshToken;
 
-      const decodedRefreshToken = jwt.verify(
-        refreshToken,
-        REFRESH_TOKEN_SECRET
-      );
+        const newAccessToken = jwt.sign(newPayload, ACCESS_TOKEN_SECRET, {
+          expiresIn: `${JWT_EXPIRATION_SECONDS || "900"}s`,
+        });
 
-      const { iat, exp, ...newPayload } = decodedRefreshToken;
-      const newAccessToken = jwt.sign(newPayload, ACCESS_TOKEN_SECRET, {
-        expiresIn: "15m",
-      });
-
-      return { newAccessToken, decodedToken: newPayload };
+        return { newAccessToken, decodedToken: newPayload };
+      } catch (error) {
+        if (error.name === "TokenExpiredError") {
+          throw new Error("Refresh token expired");
+        }
+        throw new Error("Invalid refresh token");
+      }
     } else {
       throw new Error("Invalid access token");
     }

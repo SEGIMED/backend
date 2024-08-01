@@ -39,6 +39,7 @@ export const validateJWT = async (req, res, next) => {
       );
       if (newAccessToken) {
         res.setHeader("token", newAccessToken);
+        console.log("newAccessToken");
       }
       contextService.set("request:user", decodedToken);
       return next();
