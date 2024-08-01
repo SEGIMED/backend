@@ -3,6 +3,7 @@ import data from "../../helpers/chatbotData.json" assert { type: "json" };
 import getMedicalEventHistoryHandler from "../../../../handlers/medicalEvent/getMedicalEventHistoryHandler.js";
 import getAllAlarmsForPatientHandler from "../../../../handlers/alarmEvent/getAllAlarmsForPatientHandler.js";
 import getPatientDetailsHandler from "../../../../handlers/patient/getPatientDetailsHandler.js";
+import getPatientsHandler from "../../../../handlers/patient/getPatientsHandler.js";
 const API_KEY = process.env.GOOGLE_API_KEY;
 if (!API_KEY) {
   throw new Error("API_KEY is required");
@@ -23,6 +24,9 @@ class Chatbot {
   }
 
   async startChat() {
+    if (this.chat) {
+      return;
+    }
     let userInformation = `
       - **Nombre:** ${this.user.name}
       - **Rol:** ${this.user.role}
@@ -33,13 +37,16 @@ class Chatbot {
       const patientAlarms = await this.getAlarms();
       const patientData = await this.getPatientInformation();
       userInformation += `
-      - **Información del paciente:** ${patientData}
-        - **Historial Médico:** ${patientBackground}
-        - **Alarmas del usuario:** ${patientAlarms}
+      -  ${patientData}
+        -  ${patientBackground}
+        -  ${patientAlarms}
         `;
     } else if (this.user.role === "Médico") {
+      const physicianPatients = await this.getPatients();
+
       const physicianInformation = `
-        - **Especialidad:** ${this.user.specialty}`;
+        - **Especialidad:** ${this.user.specialty}
+       - ${physicianPatients}`;
 
       userInformation += physicianInformation;
     }
@@ -78,6 +85,8 @@ Si recibes una pregunta que pertenece a un contexto diferente al actual, respond
 
 **Advertencia adicional:**
 - Si la fecha te viene en un formato timestamp (ejemplo 2024-08-24T10:10:00.000Z), conviértela a un formato más legible.
+- Si te vienen datos en formato JSON, puedes mostrarlos en un formato más legible.
+- Si te vienen links solo muestra los de la aplicación Segimed.
 ### Información del Usuario:
 ${userInformation}
 ### Preguntas Frecuentes
@@ -139,7 +148,7 @@ ${formatCategory("Médico-Paciente", data.medico_paciente)}`;
       return response;
     } catch (error) {
       console.error("Error handling message:", error);
-      return "Lo siento, ocurrió un error al procesar tu mensaje.";
+      return "Lo siento, ocurrió un error, por favor intenta nuevamente.";
     }
   }
   //Paciente
@@ -173,10 +182,20 @@ ${formatCategory("Médico-Paciente", data.medico_paciente)}`;
   async getPhysicianInformation() {} //Información de mi médico tratante
   async getLastPreconsultations() {} //Ultimas preconsultas
   //Médico
-  async getGetPatients() {} //Pacientes del médico
-  async getGetSchedulings() {} //Citas del médico
-  async getGetStadistics() {} //Estadisticas de los pacientes
-  async getGetLastsMedicalEvent() {} //Ultimos 5 eventos médicos
+  async getPatients() {
+    try {
+      const result = await getPatientsHandler({
+        physicianId: this.user.userId,
+        treating: true,
+      });
+      return `Los pacientes del médico son:\n${JSON.stringify(result)}`;
+    } catch (error) {
+      return "No se pudo obtener la información de los pacientes.";
+    }
+  } //Pacientes del médico
+  async getSchedulings() {} //Citas del médico
+  async getStadistics() {} //Estadisticas de los pacientes
+  async getLastsMedicalEvent() {} //Ultimos 5 eventos médicos
 
   //resetear contador de mensajes
   async resetMessageCount() {
