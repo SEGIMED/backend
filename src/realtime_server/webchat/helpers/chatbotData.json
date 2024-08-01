@@ -1,0 +1,188 @@
+{
+  "preguntas_generales": [
+    {
+      "question": "¿Cómo puedo ver mi historia clínica?",
+      "answer": "Ingresando al panel de usuario, después a la izquierda en 'historial clínico', accederás a toda la información que necesites."
+    },
+    {
+      "question": "¿Cómo puedo actualizar o ingresar nueva información a mi historia clínica?",
+      "answer": "Puedes actualizar tus registros médicos en Segimed en el apartado de 'historial clínico'. Algunos registros pueden ser modificados, mientras que otros están compartidos en tiempo real con tu médico y no pueden ser alterados por ti."
+    },
+    {
+      "question": "¿Qué es la preconsulta?",
+      "answer": "Es un formulario de preguntas que te permite informar de manera anticipada al grupo de médicos sobre tu salud, lo que ahorra tiempo en la consulta y evita que olvides información valiosa. También ayuda a determinar si necesitas una consulta anticipada, algún estudio o procedimiento previo."
+    },
+    {
+      "question": "¿Qué debo hacer si tengo preguntas adicionales sobre mi tratamiento después de la consulta con mi médico?",
+      "answer": "Puedes enviar un mensaje a tu médico a través de Segimed CHAT para resolver tus dudas. Además, tienes a SEGI, tu asistente virtual, disponible para ayudarte en cualquier momento."
+    },
+    {
+      "question": "¿Hay alguna forma de recibir recordatorios automáticos para tomar mis medicamentos diarios?",
+      "answer": "Sí, en Segimed puedes configurar recordatorios automáticos para tus medicamentos en la opción: 'tratamiento', luego 'recordatorios'. Esto te ayudará a mantener tu rutina de medicación en orden."
+    },
+    {
+      "question": "¿Cómo puedo saber si hay cambios en mi horario de citas médicas programadas?",
+      "answer": "Segimed te enviará notificaciones automáticas sobre cualquier cambio en tu horario de citas médicas a través de correo electrónico, WhatsApp y mensajería. Debes estar pendiente el día antes de la consulta para verificar si ha habido algún cambio."
+    },
+    {
+      "question": "¿Qué debo hacer si tengo síntomas nuevos o preocupantes en casa?",
+      "answer": "Si experimentas síntomas nuevos que consideras graves, severos o no tenías antes, puedes activar el sistema de alarmas en la opción 'ALARMAS'."
+    },
+    {
+      "question": "¿Qué son las alarmas?",
+      "answer": "El sistema de alarmas te permite dar aviso sobre síntomas nuevos o en progresión. Hay 3 prioridades: alta, media y baja, según la urgencia. Las alarmas de prioridad alta se responden en las primeras 12 horas, las de prioridad media entre 1 y 3 días, y las de prioridad baja pueden esperar más de 3 días pero menos de una semana."
+    },
+    {
+      "question": "¿Cómo se activan las alarmas, o qué hago para crear una alarma nueva?",
+      "answer": "Ingresa a tu panel, selecciona 'ALARMAS' a la izquierda y sigue los pasos. Asegúrate de proporcionar información real y verdadera, ya que las falsas alarmas pueden llevar a bloqueos o suspensiones en tu cuenta."
+    },
+    {
+      "question": "¿Cuánto tiempo debo esperar hasta que me respondan la alarma?",
+      "answer": "Las alarmas de prioridad alta se responden en las primeras 12 horas, las de prioridad media entre 1 y 3 días, y las de prioridad baja pueden esperar más de 3 días pero menos de una semana. En ocasiones, la respuesta puede ser más rápida según la disponibilidad del servicio."
+    },
+    {
+      "question": "Quiero aprender más sobre mi enfermedad, hipertensión pulmonar, insuficiencia cardíaca, etc.",
+      "answer": "Segimed ofrece recursos educativos sobre una variedad de condiciones médicas. Puedes explorar artículos informativos y materiales educativos en la sección 'educación' de tu panel."
+    },
+    {
+      "question": "¿Cómo puedo actualizar mi información de contacto y asegurarme de que sea correcta en Segimed?",
+      "answer": "Puedes actualizar tu información de contacto en la sección de configuración de perfil de Segimed. Asegúrate de que la información esté siempre actualizada para una comunicación efectiva. Si necesitas actualizar tu historia clínica, ingresa a 'historial clínico' y modifica las casillas disponibles, recordando que algunas pueden necesitar permisos del médico."
+    },
+    {
+      "question": "¿Qué medidas de seguridad tiene Segimed para proteger mi información médica personal?",
+      "answer": "Segimed utiliza un avanzado sistema de ciberseguridad y encriptado de datos supervisado por entidades internacionales. La privacidad y seguridad de tu información médica personal son prioridades fundamentales."
+    },
+    {
+      "question": "¿Hasta cuándo puedo tener SEGIMED?",
+      "answer": "Puedes usar el servicio hasta cuando quieras. Segimed no tiene un tiempo de expiración, salvo situaciones especiales como investigaciones, actividad sospechosa, usurpación de cuenta o mal uso, en las cuales el servicio podría ser limitado o cerrado con previo conocimiento del usuario."
+    },
+    {
+      "question": "¿Cómo puedo registrar mis signos vitales?",
+      "answer": "Utiliza la función de registro de signos vitales en tu panel bajo 'autoevaluación en casa'. Llena los campos para peso, talla, presión arterial, saturación de oxígeno, frecuencia cardíaca, frecuencia respiratoria, niveles de glucosa, entre otros."
+    },
+    {
+      "question": "¿Cómo puedo calcular mi frecuencia cardíaca?",
+      "answer": "Cuenta las pulsaciones en un minuto manualmente buscando pulsos radial, carotídeo, cubital o braquial. También puedes usar dispositivos automáticos como pulsómetros, smartwatches o tensiómetros digitales."
+    },
+    {
+      "question": "¿Cómo puedo calcular mi frecuencia respiratoria?",
+      "answer": "Pide a alguien que te observe y cuente cuántas respiraciones tienes en un minuto. Esta persona debe estar a una distancia para no influir en tu ritmo respiratorio."
+    },
+    {
+      "question": "¿Necesito contactar a mi médico?",
+      "answer": "Ingresa a la opción 'médicos', selecciona a un médico disponible, escribe un chat y espera su respuesta. Usa un lenguaje respetuoso y no insistas si el profesional no puede atenderte en ese momento. El uso inapropiado del chat puede llevar al bloqueo de la opción."
+    },
+    {
+      "question": "¿El médico no me responde qué hago?",
+      "answer": "El equipo de soporte está disponible para ayudarte. Contactaremos a tu médico y te brindaremos una solución pronta. Si hay una urgencia, activa el sistema de ALARMAS."
+    },
+    {
+      "question": "¿No puedo encontrar un estudio o laboratorio?",
+      "answer": "Ingresa a 'historial clínico' y luego a 'estudios' para encontrar todos los estudios realizados."
+    },
+    {
+      "question": "Quiero subir un estudio o laboratorio.",
+      "answer": "Ingresa a 'historial clínico', luego a 'estudios' y sube tus resultados."
+    },
+    {
+      "question": "¿Cómo agendo una cita?",
+      "answer": "Ingresa a tu panel, luego a 'AGENDA' y selecciona un horario disponible en el que tu médico pueda atenderte. Si necesitas cancelar, usa la opción de cancelación y avísale a tu médico la razón."
+    }
+  ],
+  "medicos": [
+    {
+      "question": "¿Cómo agendo cita con mis pacientes?",
+      "answer": "Ingresa a tu panel, luego a 'mi agenda'. Allí podrás proporcionar turnos a tus pacientes, cancelar agenda, reprogramar citas o informar sobre eventualidades."
+    },
+    {
+      "question": "¿Dónde debería ingresar sus exámenes médicos e historiales?",
+      "answer": "Los exámenes médicos e historiales deben ser ingresados en la sección correspondiente de la historia clínica dentro de la aplicación."
+    },
+    {
+      "question": "¿Hay un límite de pacientes a los que pueda acceder?",
+      "answer": "El límite de pacientes está relacionado con el tiempo que puedas manejar. Puedes contar con un asistente virtual para ayudarte a gestionar tu agenda y responder dudas e inquietudes."
+    },
+    {
+      "question": "¿Cómo cancelo o suspendo mi agenda o mis turnos?",
+      "answer": "Ingresa a tu agenda y selecciona los turnos que deseas cancelar o reprogramar. No abuses de esta función, ya que podría afectar tu credibilidad y el flujo de atención de tus pacientes. También puedes transferir turnos a otro médico con la comunicación y consentimiento previos del paciente."
+    },
+    {
+      "question": "¿Hay algún pago por mi atención?",
+      "answer": "Actualmente, Segimed permite que los pacientes envíen dinero a través del botón 'DONACIONES'. Sin embargo, la atención se realiza de acuerdo a las prestaciones y convenios con Segimed y terceros o instituciones médicas, quienes a su vez pagan a los médicos."
+    },
+    {
+      "question": "¿Qué es esta aplicación y para qué sirve?",
+      "answer": "Esta aplicación es una herramienta integral para el manejo de la insuficiencia cardíaca e hipertensión pulmonar. Ofrece acceso a una variedad de servicios para mejorar la atención médica y la calidad de vida de los pacientes."
+    },
+    {
+      "question": "¿Qué funciones ofrece la aplicación?",
+      "answer": "La aplicación ofrece las siguientes funciones:\n- Chat paciente-médico: Comunicación directa con el equipo médico para consultas y seguimiento.\n- Chat médico-médico: Colaboración entre médicos para discutir casos y tomar decisiones conjuntas.\n- Historia clínica interactiva: Acceso a la historia clínica completa y actualizada.\n- Sistema de alarmas: Notificaciones sobre cambios relevantes en el estado de salud.\n- Monitorización remota de signos vitales: Registro de signos vitales bajo supervisión médica.\n- Seguimiento 24/7: Atención y soporte continuo.\n- Turnos ágiles y dirigidos: Programación rápida y sencilla de citas.\n- Invitación a médicos externos: Participación de médicos de otras instituciones en la atención.\n- Acceso a la historia clínica: Obtención de historia clínica y resúmenes actualizados.\n- Avisos en tiempo real: Notificaciones inmediatas sobre novedades médicas.\n- Educación continua: Materiales educativos sobre la enfermedad y recomendaciones de estilo de vida.\n- Aporte de información vital: Envío de estudios e información importante a los médicos.\n- Preconsulta: Formularios enviados con anticipación sobre el estado de salud del paciente.\n- Geolocalización de pacientes: Ubicación de los pacientes para planes de atención personalizados.\n- Localización de centros médicos: Encuentra centros médicos cercanos para urgencias.\n- Equipo médico a su disposición: Acceso a médicos especialistas para la mejor atención.\n- Sistema de alarmas para pacientes: Alerta de síntomas nuevos o empeoramiento que requieren atención prioritaria.\n- Educación continua para pacientes: Acceso a materiales educativos para aprender sobre la enfermedad."
+    },
+    {
+      "question": "¿Cómo puedo acceder a la aplicación?",
+      "answer": "La aplicación está disponible para dispositivos móviles (iOS y Android). Puedes descargarla desde App Store, Google Play (URL: play.google.com), o ingresar desde la web www.segimed.com."
+    }
+  ],
+  "medico_paciente": [
+    {
+      "question": "¿Cómo puedo comunicarme con mi médico a través de la aplicación?",
+      "answer": "Para comunicarse con su médico a través de la aplicación, siga estos pasos:\n1. Abra la aplicación e inicie sesión en su cuenta.\n2. Seleccione la opción 'Chat paciente-médico'.\n3. Elija el médico con el que desea comunicarse.\n4. Escriba su mensaje y envíelo.\n5. Su médico le responderá lo antes posible."
+    },
+    {
+      "question": "¿Con qué frecuencia puedo comunicarme con mi médico?",
+      "answer": "Puede comunicarse con su médico con la frecuencia que lo necesite. Sin embargo, tenga en cuenta que los horarios de respuesta de su médico pueden variar, la atención es de 9 am a 17 hrs de lunes a viernes."
+    },
+    {
+      "question": "¿Qué tipo de preguntas puedo hacerle a mi médico a través del chat?",
+      "answer": "Puede hacerle a su médico cualquier pregunta relacionada con su salud, su enfermedad o su tratamiento. También puede usar el chat para informar a su médico sobre cualquier nuevo síntoma o inquietud que tenga."
+    },
+    {
+      "question": "¿Quiénes pueden usar la función de chat médico-médico?",
+      "answer": "La función de chat médico-médico solo está disponible para médicos que participan en la aplicación."
+    },
+    {
+      "question": "¿Cómo puedo usar la función de chat médico-médico?",
+      "answer": "Para usar la función de chat médico-médico, ingrese a 'Mis chats' y seleccione el médico con el que desee chatear."
+    },
+    {
+      "question": "¿A quiénes van las donaciones?",
+      "answer": "Las donaciones van a un fondo administrado por SEGIMED S.R.L con varios objetivos, tales como:\n- Generar mayor crecimiento de la aplicación.\n- Ayudar a pacientes a conseguir fármacos costosos que no puedan pagar.\n- Apoyar programas sociales como FUNDAR HP.\n- Ayudar a jóvenes en formación de carreras informáticas que contribuyen al crecimiento de la aplicación.\n- Apoyar a médicos que requieran asistencia financiera."
+    },
+    {
+      "question": "¿Qué pasa si pierdo o extravío mi celular?",
+      "answer": "Tu inicio de sesión siempre está protegido por tus datos biométricos, que se requieren para iniciar sesión (huella, Face ID, contraseña, etc.). En caso de detectar alguna anormalidad en tu cuenta, te solicitaremos un PIN para confirmar que eres tú quien está usando tu cuenta."
+    },
+    {
+      "question": "¿Puedo administrar la cuenta de mi familiar?",
+      "answer": "Sí, esto es posible si vives junto a él y él te concede el permiso expreso para hacerlo. Además, deberás informar al servicio de la aplicación que eres tú quien está administrando la cuenta."
+    },
+    {
+      "question": "¿Descargar la aplicación tiene algún costo?",
+      "answer": "No, descargar la aplicación es totalmente gratis. Sin embargo, algunas funciones pueden tener costos. Se te proporcionará toda la información necesaria en el momento que se requiera."
+    },
+    {
+      "question": "¿En qué países puedo usar la aplicación?",
+      "answer": "Actualmente, la aplicación está disponible en Argentina y Colombia como parte de su fase beta. Posteriormente, se informará a los usuarios en qué otros países estará disponible."
+    },
+    {
+      "question": "¿Qué debo hacer para darme de baja o suspender la aplicación?",
+      "answer": "Para darte de baja o suspender el servicio, deberás llenar un formulario indicando los motivos. Tu historial clínico se mantendrá en nuestros archivos y se destruirá automáticamente después de 10 años, siempre y cuando no se detecte actividad."
+    },
+    {
+      "question": "¿Qué pasa si no uso la aplicación por algún tiempo?",
+      "answer": "Tu perfil permanecerá inactivo pero funcional. Aunque cierres sesión, tus datos e información médica permanecerán almacenados en nuestra nube y podrás recuperarlos con un nuevo inicio de sesión. En caso de inactividad prolongada, te contactaremos por algún medio y, si no hay respuesta, esperaremos hasta 10 años antes de borrar tus datos."
+    },
+    {
+      "question": "¿Qué pasa si un médico me trata mal?",
+      "answer": "En caso de maltrato o mala comunicación de un médico, te solicitamos que presentes un reclamo en el apartado de sugerencias y envíes un correo a pacientes@segimed.com. El reclamo será revisado y respondido. También puedes crear reseñas para que otros pacientes puedan revisarlas."
+    },
+    {
+      "question": "¿Qué pasa si un paciente me trata mal?",
+      "answer": "En caso de maltrato o mala comunicación de un paciente, te solicitamos que presentes un reclamo en el apartado de sugerencias y envíes un correo a medicos@segimed.com. El reclamo será revisado y respondido. También puedes crear reseñas para que otros médicos puedan revisarlas."
+    },
+    {
+      "question": "¿Quién puede ver mis reseñas?",
+      "answer": "Todas las reseñas son visibles para médicos y pacientes de la aplicación. Este método ayuda a generar calificaciones y mejorar la calidad de la atención y el servicio."
+    }
+  ]
+}

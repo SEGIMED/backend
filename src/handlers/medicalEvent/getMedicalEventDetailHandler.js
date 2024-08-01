@@ -1,4 +1,3 @@
-
 import { Op } from "sequelize";
 import {
   AnthropometricDetails,
@@ -263,14 +262,14 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
         model: DrugPrescription,
         as: "drugPrescriptions",
         separate: true,
-        include: {
-          model: CatDrug,
-          as: "catDrug",
-          include: {
-            model: CatDrugPresentation,
-            as: "catDrugPresentation",
-          },
-        },
+        // include: {
+        //   model: CatDrug,
+        //   as: "catDrug",
+        //   include: {
+        //     model: CatDrugPresentation,
+        //     as: "catDrugPresentation",
+        //   },
+        // },
       },
       {
         model: MedicalProcedurePrescription,
@@ -329,7 +328,7 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
       );
     }
     const mapMedicalEvent = mapMedicalEventDetail(medicalEventDetail);
-  
+
     const vitalSigns = await consultationVitalSignsMapper(
       medicalEventDetail.appSch.vitalSignDetailsScheduling
     );
