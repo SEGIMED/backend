@@ -5,6 +5,9 @@ export class Room{
         this.key = null;
         this.users= null;
         this.id = null;
+        this.offer= null;
+        this.asw = null;
+        this.candidate = [];
     }
 
     async getData(id){

@@ -27,6 +27,24 @@ class ListVideoCall{
             console.log(error.message)
          }
     }
+    setOfferRoomById(id,offer){
+        if(this._local.has(id)){
+          const dataRoom = this._local.get(id);
+          dataRoom.offer = offer;
+        }
+    }
+    setAswRoomById(id,asw){
+        if(this._local.has(id)){
+            const dataRoom = this._local.get(id);
+            dataRoom.asw = asw;
+          }
+    }
+    setNewCandidate(id,data){
+        if(this._local.has(id)){
+            const dataRoom = this._local.get(id);
+            dataRoom.candidate.push(data);
+          }
+    }
 }
 
 
