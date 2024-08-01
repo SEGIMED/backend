@@ -1,6 +1,7 @@
 import patchProvisionalPreConsultationHandler from "../../../handlers/patient/preConsultation/patchProvisionalPreConsultationHandler.js";
 import updateVitalSignsHandler from "../../../handlers/vitalSigns/updateVitalSignsHandler.js";
 import patchPatientPainMapHandler from "../../../handlers/painMap/patchPatientPainMapHandler.js";
+import SegimedAPIError from "../../../error/SegimedAPIError.js";
 
 const patchProvisionalPreConsultationController = async (req, res) => {
   try {
@@ -14,9 +15,15 @@ const patchProvisionalPreConsultationController = async (req, res) => {
       .status(200)
       .json({ updatedPreconsultation, updatedVitalSigns, updatedPainRecords });
   } catch (error) {
-    throw new Error(
-      "Hubo un error durante el proceso de actualización." + error.message
-    );
+    if (error instanceof SegimedAPIError) {
+      return res
+        .status(error.errorCode)
+        .json({ error: error.message });
+    } else {
+      return res
+        .status(500)
+        .json({ error: "Error durante el proceso de actualización de la preconsulta: " + error.message });
+    }
   }
 };
 

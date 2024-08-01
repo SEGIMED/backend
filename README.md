@@ -1,21 +1,28 @@
 # SEGIMED-server
 This repository contains the backend of Segimed project
 
-
 ## Git flow
 Remember to work on your own root and ask for aproval of at least one person, before merge to development root
 
 #### To do a push on my branch
-- git checkout branchName
-- git pull origin development
-- git add .
-- git commit -m “message here”
-- git push
+git checkout -b feature/nueva-funcionalidad        I creates a new branch
+git pull origin development                        It brings all changes from development branch to this new branch
+git add .                                                                 
+git commit -m “message here”
+git push                                           It createsthis new branch in the remote repo at github
 
-----------
-#### To merge my branch into development
-- git checkout development
-- git merge gaby
+## Git branch naming conventions
+**bugfix**: used when the commit fixes a bug in the application code.
+
+**feature**: used when a commit adds a new feature to the application.
+
+**hotfix**: used when a commit adds a quick fix to the application.
+
+**refactor**: used when the code does not fix a bug, nor add a feature.
+
+**style**: used when changes do not affect the meaning of the code (whitespace, semicolons, formatting... etc).
+
+**test**: used to add additional unit tests, or correct existing tests.
 
 ## Good practices
 

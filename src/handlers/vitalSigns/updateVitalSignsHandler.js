@@ -7,12 +7,14 @@ const updateOrCreateVitalSignsHandler = async (body) => {
   const { updateVitalSigns, patient, appointmentSchedule } = body;
 
   try {
+    //Validación. Si se envía el objeto updateVitalSigns pero es diferente a un array, retorna error
     if (updateVitalSigns && !Array.isArray(updateVitalSigns)) {
       throw new SegimedAPIError(
-        "No se proporcionaron signos vitales para actualizar o crear.",
+        "Los datos proporcionados no se encuentran en un formato válido o no fueron enviados",
         400
       );
     }
+    
     //Validación. Si no vienen signos vitales para actualizar, se retorna []
     if (updateVitalSigns?.length !== 0 && updateVitalSigns) {
       const updatedOrCreatedVitalSigns = await Promise.all(
@@ -63,9 +65,8 @@ const updateOrCreateVitalSignsHandler = async (body) => {
       return [];
     }
   } catch (error) {
-    throw new Error(
-      "Hubo un error durante el proceso de actualización o creación de signos vitales." +
-        error.message,
+    throw new SegimedAPIError(
+      "Hubo un error durante el proceso de actualización o creación de signos vitales: " + error.message,
       500
     );
   }
