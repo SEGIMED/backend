@@ -2,19 +2,28 @@ import patchProvisionalPreConsultationHandler from "../../../handlers/patient/pr
 import updateVitalSignsHandler from "../../../handlers/vitalSigns/updateVitalSignsHandler.js";
 import patchPatientPainMapHandler from "../../../handlers/painMap/patchPatientPainMapHandler.js";
 import SegimedAPIError from "../../../error/SegimedAPIError.js";
+import { sequelize } from "../../../databaseConfig.js";
 
 const patchProvisionalPreConsultationController = async (req, res) => {
+  const transaction = await sequelize.transaction();
   try {
     const updatedPreconsultation = await patchProvisionalPreConsultationHandler(
-      req.body
+      req.body,
+      { transaction }
     );
-    const updatedVitalSigns = await updateVitalSignsHandler(req.body);
-    const updatedPainRecords = await patchPatientPainMapHandler(req.body);
+    const updatedVitalSigns = await updateVitalSignsHandler(req.body, {
+      transaction,
+    });
 
+    const updatedPainRecords = await patchPatientPainMapHandler(req.body, {
+      transaction,
+    });
+    await transaction.commit();
     return res
       .status(200)
       .json({ updatedPreconsultation, updatedVitalSigns, updatedPainRecords });
   } catch (error) {
+    await transaction.rollback();
     if (error instanceof SegimedAPIError) {
       return res
         .status(error.errorCode)

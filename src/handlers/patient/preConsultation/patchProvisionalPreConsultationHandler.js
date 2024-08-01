@@ -1,6 +1,6 @@
 import { ProvisionalPreConsultation } from "../../../databaseConfig.js";
 
-const patchProvisionalPreConsultationHandler = async(body)=>{
+const patchProvisionalPreConsultationHandler = async(body,{transaction})=>{
     const{
         preconsultationId,
         lackOfAir,
@@ -52,7 +52,7 @@ const patchProvisionalPreConsultationHandler = async(body)=>{
         if (!existingPreconsultation) {
             throw new Error("No se encontró esta preconsulta");
         }
-        await ProvisionalPreConsultation.update({
+        const [numberOfAffectedRows, updatedPreconsultation]  = await ProvisionalPreConsultation.update({
             lackOfAir: lackOfAir !== undefined ? lackOfAir : existingPreconsultation.lackOfAir,
             lackOfAirAsAlways: lackOfAirAsAlways !== undefined ? lackOfAirAsAlways : existingPreconsultation.lackOfAirAsAlways,
             lackOfAirIncremented: lackOfAirIncremented !== undefined ? lackOfAirIncremented : existingPreconsultation.lackOfAirIncremented,
@@ -97,10 +97,11 @@ const patchProvisionalPreConsultationHandler = async(body)=>{
             currentMedications: currentMedications !== undefined ? currentMedications : existingPreconsultation.currentMedications,
             status: status !== undefined ?status: existingPreconsultation.status
         },
-        {where:{id:preconsultationId}})
-        const updatedPreconsultation = await ProvisionalPreConsultation.findOne({ where: { id: preconsultationId } })
+        {where:{id:preconsultationId},
+        returning:true,
+        transaction})
 
-        return updatedPreconsultation
+        return updatedPreconsultation[0]
     } catch (error) {
         throw new Error("Error actualizando la preconsulta: " + error.message);
     }
