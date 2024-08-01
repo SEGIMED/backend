@@ -1,7 +1,6 @@
 import getPatientDiagnosticByIdHandler from "../../handlers/patient/getPatientDiagnosticByIdHandler.js";
 
 const getPatientDiagnosticByIdController = async (req, res) => {
-  console.log("aca estoy buscando un diagnostico por ID");
   try {
     const { id } = req.query;
     const patientDiagnostic = await getPatientDiagnosticByIdHandler(id);
