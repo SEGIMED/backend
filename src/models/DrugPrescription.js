@@ -59,7 +59,7 @@ const model = (sequelize) => {
       },
       prescribedDose: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         field: "prescribed_dose",
       },
       quantity: {
