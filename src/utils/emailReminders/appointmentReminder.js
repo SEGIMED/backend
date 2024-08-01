@@ -39,7 +39,8 @@ const scheduleReminderEmails = async () => {
       content: {
         notificationType:"appointmentReminderOneDayBefore",
         date: appointmentStart.toLocaleDateString(),
-        hour: appointmentStart.toLocaleTimeString()
+        hour: appointmentStart.toLocaleTimeString(),
+        scheduleId:appointment.id 
       },
       target: appointment.patient,
     });
@@ -50,7 +51,8 @@ const scheduleReminderEmails = async () => {
       content: {
         notificationType:"appointmentReminderOneDayBefore",
         date: appointmentStart.toLocaleDateString(),
-        hour: appointmentStart.toLocaleTimeString()
+        hour: appointmentStart.toLocaleTimeString(),
+        scheduleId:appointment.id 
       },
       target: appointment.physician,
     });

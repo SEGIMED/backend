@@ -18,7 +18,8 @@ const createSchedulingHandler = async (body) => {
         content: {
           notificationType:"appointmentCreated",
           date: appointmentStart.toLocaleDateString(),
-          hour: appointmentStart.toLocaleTimeString()
+          hour: appointmentStart.toLocaleTimeString(),
+          scheduleId: newScheduling.id
         },
         target: newScheduling.patient,
       });
@@ -28,7 +29,8 @@ const createSchedulingHandler = async (body) => {
           content: { 
           notificationType:"appointmentCreated",
           date: appointmentStart.toLocaleDateString(),
-          hour: appointmentStart.toLocaleTimeString()
+          hour: appointmentStart.toLocaleTimeString(),
+          scheduleId: newScheduling.id
         },
         target: newScheduling.physician,
       });

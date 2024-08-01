@@ -15,7 +15,7 @@ const patchScheduleHandler = async (id, updates) => {
     if (schedule.length === 0) throw new Error("Evento no encontrado");
     const startTimeValidate = validateAllowedDate(updates.scheduledStartTimestamp)
     const endTimeValidate = validateAllowedDate(updates.scheduledEndTimestamp)
-    if(!endTimeValidate||!startTimeValidate) throw new Error ('Formato de fecha inválido, no se pudo actualizar la cita')
+    if((!endTimeValidate||!startTimeValidate)&&(!schedule.scheduledStartTimestamp && !schedule.scheduledEndTimestamp)) throw new Error ('Formato de fecha inválido, no se pudo actualizar la cita')
     
     //Updates
     if(updates?.scheduledStartTimestamp!=schedule.scheduledStartTimestamp && updates?.schedulingStatus!=3){
@@ -28,7 +28,8 @@ const patchScheduleHandler = async (id, updates) => {
           pastDate: appointmentStart.toLocaleDateString(),
           pastHour: appointmentStart.toLocaleTimeString(),
           currentDate: newAppointmentStart.toLocaleDateString(),
-          currentHour: newAppointmentStart.toLocaleTimeString()
+          currentHour: newAppointmentStart.toLocaleTimeString(),
+          scheduleId:schedule.id
         },
         target: schedule.patient,
       });
@@ -40,7 +41,8 @@ const patchScheduleHandler = async (id, updates) => {
           pastDate: appointmentStart.toLocaleDateString(),
           pastHour: appointmentStart.toLocaleTimeString(),
           currentDate: newAppointmentStart.toLocaleDateString(),
-          currentHour: newAppointmentStart.toLocaleTimeString()
+          currentHour: newAppointmentStart.toLocaleTimeString(),
+          scheduleId:schedule.id
         },
         target: schedule.physician,
       });
@@ -55,7 +57,8 @@ const patchScheduleHandler = async (id, updates) => {
         content: {
           notificationType:"appointmentCanceled",
           date: appointmentStart.toLocaleDateString(),
-          hour: appointmentStart.toLocaleTimeString()
+          hour: appointmentStart.toLocaleTimeString(),
+          scheduleId:schedule.id
         },
         target: schedule.patient,
       });
@@ -65,7 +68,8 @@ const patchScheduleHandler = async (id, updates) => {
         content: {
           notificationType:"appointmentCanceled",
           date: appointmentStart.toLocaleDateString(),
-          hour: appointmentStart.toLocaleTimeString()
+          hour: appointmentStart.toLocaleTimeString(),
+          scheduleId:schedule.id
         },
         target: schedule.physician,
       });
