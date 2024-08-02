@@ -66,16 +66,16 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
         model: DrugPrescription,
         as: "drugPrescriptions", // Alias para DrugPrescription
         include: [
-          {
-            model: User,
-            as: "patient_user", // Alias para el paciente en DrugPrescription
-            attributes: ["id", "name", "lastname"], // Campos necesarios
-          },
-          {
-            model: User,
-            as: "prescribed_physician_user", // Alias para el médico prescriptor en DrugPrescription
-            attributes: ["id", "name", "lastname"], // Campos necesarios
-          },
+          // {
+          //   model: User,
+          //   as: "patient_user", // Alias para el paciente en DrugPrescription
+          //   attributes: ["id", "name", "lastname"], // Campos necesarios
+          // },
+          // {
+          //   model: User,
+          //   as: "prescribed_physician_user", // Alias para el médico prescriptor en DrugPrescription
+          //   attributes: ["id", "name", "lastname"], // Campos necesarios
+          // },
           {
             model: CatDrug,
             as: "catDrug", // Alias para CatDrug
@@ -328,7 +328,8 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
         "No se encontró ningún evento con los datos proporcionados"
       );
     }
-    const mapMedicalEvent = mapMedicalEventDetail(medicalEventDetail);
+    // const mapMedicalEvent = mapMedicalEventDetail(medicalEventDetail);
+    const mapMedicalEvent = medicalEventDetail;
     const vitalSigns = await consultationVitalSignsMapper(
       medicalEventDetail.appSch?.vitalSignDetailsScheduling || []
     );
