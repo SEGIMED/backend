@@ -4,7 +4,7 @@ const patchProvisionalPreConsultationHandler = async(body,{transaction})=>{
     const{
         preconsultationId,
         lackOfAir,
-        lackOfAirAsAlways,
+        // lackOfAirAsAlways,
         lackOfAirIncremented,
         lackOfAirClasification,
         chestPainAtRest,
@@ -26,9 +26,9 @@ const patchProvisionalPreConsultationHandler = async(body,{transaction})=>{
         exerciseStatus,
         abnormalGlycemia,
         lastAbnormalGlycemia,
-        physicalExamination,
-        laboratoryResults,//array strings
-        laboratoryResultsDescription,//array  strings
+        // physicalExamination,
+        laboratoryResults,
+        laboratoryResultsDescription,
         electrocardiogram,
         electrocardiogramDescription,
         rxThorax,
@@ -40,11 +40,11 @@ const patchProvisionalPreConsultationHandler = async(body,{transaction})=>{
         ccg,
         resonance,
         leftHeartCatheterization,
-        otherStudies,//array  strings
+        otherStudies,
         pendingStudies,
         consultationReason,
         importantSymptoms,
-        currentMedications,//array  strings
+        currentMedications,
         status
     }=body
     try {
@@ -52,9 +52,10 @@ const patchProvisionalPreConsultationHandler = async(body,{transaction})=>{
         if (!existingPreconsultation) {
             throw new Error("No se encontró esta preconsulta");
         }
+        //TODO HACERLO como proissAll
         const [numberOfAffectedRows, updatedPreconsultation]  = await ProvisionalPreConsultation.update({
             lackOfAir: lackOfAir !== undefined ? lackOfAir : existingPreconsultation.lackOfAir,
-            lackOfAirAsAlways: lackOfAirAsAlways !== undefined ? lackOfAirAsAlways : existingPreconsultation.lackOfAirAsAlways,
+            // lackOfAirAsAlways: lackOfAirAsAlways !== undefined ? lackOfAirAsAlways : existingPreconsultation.lackOfAirAsAlways,
             lackOfAirIncremented: lackOfAirIncremented !== undefined ? lackOfAirIncremented : existingPreconsultation.lackOfAirIncremented,
             lackOfAirClasification: lackOfAirClasification !== undefined ? lackOfAirClasification : existingPreconsultation.lackOfAirClasification,
             chestPainAtRest: chestPainAtRest !== undefined ? chestPainAtRest : existingPreconsultation.chestPainAtRest,
@@ -76,7 +77,7 @@ const patchProvisionalPreConsultationHandler = async(body,{transaction})=>{
             exerciseStatus: exerciseStatus !== undefined ? exerciseStatus : existingPreconsultation.exerciseStatus,
             abnormalGlycemia: abnormalGlycemia !== undefined ? abnormalGlycemia : existingPreconsultation.abnormalGlycemia,
             lastAbnormalGlycemia: lastAbnormalGlycemia !== undefined ? lastAbnormalGlycemia : existingPreconsultation.lastAbnormalGlycemia,
-            physicalExamination: physicalExamination !== undefined ? physicalExamination : existingPreconsultation.physicalExamination,
+            // physicalExamination: physicalExamination !== undefined ? physicalExamination : existingPreconsultation.physicalExamination,
             laboratoryResults: laboratoryResults !== undefined ? laboratoryResults : existingPreconsultation.laboratoryResults,
             laboratoryResultsDescription: laboratoryResultsDescription !== undefined ? laboratoryResultsDescription : existingPreconsultation.laboratoryResultsDescription,
             electrocardiogram: electrocardiogram !== undefined ? electrocardiogram : existingPreconsultation.electrocardiogram,

@@ -251,14 +251,14 @@ const getMedicalEventHistoryHandler = async (patientId, physicianId) => {
           model: DrugPrescription,
           as: "drugPrescriptions",
           separate: true,
-          include: {
-            model: CatDrug,
-            as: "catDrug",
-            include: {
-              model: CatDrugPresentation,
-              as: "catDrugPresentation",
-            },
-          },
+          // include: {
+          //   model: CatDrug,
+          //   as: "catDrug",
+          //   include: {
+          //     model: CatDrugPresentation,
+          //     as: "catDrugPresentation",
+          //   },
+          // },
         },
         {
           model: MedicalProcedurePrescription,

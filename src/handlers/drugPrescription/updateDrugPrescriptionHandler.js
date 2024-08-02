@@ -1,28 +1,20 @@
-import {DrugPrescription} from "../../databaseConfig.js";
+import { DrugPrescription } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
+import createDrugPrescriptionHandler from "./createDrugPrescriptionHandler.js"; // Importa la función de creación
+import deleteDrugPrescriptionsHandler from "./deleteDrugPrescriptionsHandler.js";
 
 const updateDrugPrescriptionHandler = async (body) => {
-    const {id} = body
-
-    try {
-        const updateDrugPrescription = await DrugPrescription.update(
-            {
-                drug : body.drugId,
-                prescribedDose: body.prescribedDose,
-                quantity: body.quantity
-            },
-            {
-                where: {
-                    id: id
-                },
-                returning: true,
-                plain: true
-            }
-        )
-        return updateDrugPrescription[1]
-    } catch (error) {
-        throw new SegimedAPIError('Hubo un error durante el proceso.', 500)
-    }
+  const {
+    //id,
+    patientId,
+    drugId,
+    drugName,
+    // prescribedDose,
+    quantity,
+    medicalEventId,
+  } = body;
+  // console.log("delete drugs ", body);
+  // deleteDrugPrescriptionsHandler(medicalEventId);
 };
 
 export default updateDrugPrescriptionHandler;
