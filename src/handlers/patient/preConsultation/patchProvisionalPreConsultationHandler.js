@@ -1,5 +1,4 @@
 import { ProvisionalPreConsultation } from "../../../databaseConfig.js";
-import { updatePreconsultation } from "../../../validations/updatePreconsutation.js";
 
 const patchProvisionalPreConsultationHandler = async(body,{transaction})=>{
     const{
