@@ -10,6 +10,8 @@ import {
 import {mapPhysician} from "../../mapper/physician/physicianMapper.js";
 
 const getPhysicianInformationHandler = async (id) => {
+
+    //TODO verificaciones para el id. Que si llegue y sea número entero positivo y otras que se ocurran
     try {
         const physicianInformation = await User.findOne(
             {

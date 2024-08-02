@@ -1,129 +1,85 @@
 export const mapPainMap = (painMap) => {
-
-    return {
-        isTakingAnalgesic: painMap.isTakingAnalgesic,
-        doesAnalgesicWorks: painMap.doesAnalgesicWorks,
-        isWorstPainEver: painMap.isWorstPainEver,
-        timestamp: painMap.timestamp,
-        painDuration: painMap.catPainDuration.name, 
-        painAreas: mapPainArea(painMap.painAreas),
-        painType: painMap.catPainType.name,
-        painScale: painMap.catPainScale.name,
-        painFrequency: painMap.catPainFrequency.name,
+    
+    if (!painMap) {
+        throw new Error('Pain map object is required.');
+    }
+     
+    const mappedPainMap = {
+        isTherePain: painMap.isTherePain || false,
+        isTakingAnalgesic: painMap.isTakingAnalgesic || false,
+        doesAnalgesicWorks: painMap.doesAnalgesicWorks || false,
+        isWorstPainEver: painMap.isWorstPainEver || false,
+        timestamp: painMap.timestamp || null,
+        painDuration: painMap.catPainDuration ? painMap.catPainDuration.name : '',
+        painAreas: mapPainAreas(painMap.painAreas || []),
+        painType: painMap.catPainType ? painMap.catPainType.name : '',
+        painScale: painMap.catPainScale ? painMap.catPainScale.name : '',
+        painFrequency: painMap.catPainFrequency ? painMap.catPainFrequency.name : '',
         painRecorderUser: {
-            painRecorderUserId: painMap.painRecorderUser.id,
-            painRecorderUserName: painMap.painRecorderUser.name,
-            painRecorderUserLastname: painMap.painRecorderUser.lastname
+            painRecorderUserId: painMap.painRecorderUser ? painMap.painRecorderUser.id : '',
+            painRecorderUserName: painMap.painRecorderUser ? painMap.painRecorderUser.name : '',
+            painRecorderUserLastname: painMap.painRecorderUser ? painMap.painRecorderUser.lastname : ''
         }
+    };
+
+    return mappedPainMap;
+};
+
+const mapPainAreas = (painAreas) => {
+    if (!Array.isArray(painAreas)) {
+        throw new Error('Pain areas must be provided as an array.');
+    }
+
+    return painAreas.map(painArea => ({
+        painArea: painAreaNameMap(painArea.painArea),
+        painNotes: painArea.painNotes || ''
+    }));
+};
+const painAreaNameMap = (painArea) => {
+    switch(painArea) {
+        case 1:
+            return { painAreaEnglish: "trapezius", painAreaSpanish: "Trapecio" };
+        case 2:
+            return { painAreaEnglish: "upper-back", painAreaSpanish: "Espalda Superior" };
+        case 3:
+            return { painAreaEnglish: "lower-back", painAreaSpanish: "Espalda Inferior" };
+        case 4:
+            return { painAreaEnglish: "chest", painAreaSpanish: "Pecho" };
+        case 5:
+            return { painAreaEnglish: "biceps", painAreaSpanish: "Bíceps" };
+        case 6:
+            return { painAreaEnglish: "triceps", painAreaSpanish: "Tríceps" };
+        case 7:
+            return { painAreaEnglish: "forearm", painAreaSpanish: "Antebrazo" };
+        case 8:
+            return { painAreaEnglish: "back-deltoids", painAreaSpanish: "Deltoides Posterior" };
+        case 9:
+            return { painAreaEnglish: "front-deltoids", painAreaSpanish: "Deltoides Anterior" };
+        case 10:
+            return { painAreaEnglish: "abs", painAreaSpanish: "Abdominales" };
+        case 11:
+            return { painAreaEnglish: "obliques", painAreaSpanish: "Oblicuos" };
+        case 12:
+            return { painAreaEnglish: "adductor", painAreaSpanish: "Aductores" };
+        case 13:
+            return { painAreaEnglish: "hamstring", painAreaSpanish: "Isquiotibiales" };
+        case 14:
+            return { painAreaEnglish: "quadriceps", painAreaSpanish: "Cuádriceps" };
+        case 15:
+            return { painAreaEnglish: "abductors", painAreaSpanish: "Abductores" };
+        case 16:
+            return { painAreaEnglish: "calves", painAreaSpanish: "Pantorrillas" };
+        case 17:
+            return { painAreaEnglish: "gluteal", painAreaSpanish: "Glúteos" };
+        case 18:
+            return { painAreaEnglish: "knees", painAreaSpanish: "Rodillas" };
+        case 21:
+            return { painAreaEnglish: "head", painAreaSpanish: "Cabeza" };
+        case 22:
+            return { painAreaEnglish: "neck", painAreaSpanish: "Cuello" };
+        default:
+            return { painAreaEnglish: "", painAreaSpanish: "" };
     }
 }
 
-const mapPainArea = (painAreas)=>{
-    const painAreasMaped= painAreas.map(painAreaMap =>{
-        let painAreaName = painAreaNameMap(painAreaMap.painArea)
-        return{
-        painArea:painAreaName,
-        painNotes: painAreaMap.painNotes
-    }
-    })
-    return painAreasMaped
-}
 
-const painAreaNameMap = (painArea)=>{
-    if (painArea==1){return {
-        painAreaEnglish:"head",
-        painAreaSpanish:"Cabeza(Orejas, ojos, nariz, boca)"
-    }}
-    if (painArea==2){return {
-        painAreaEnglish:"neck",
-        painAreaSpanish:"Cuello"
-    }}
-    if (painArea==3){return {
-        painAreaEnglish:"shoulders",
-        painAreaSpanish:"Hombros"
-    }}
-    if (painArea==4){return {
-        painAreaEnglish:"chest",
-        painAreaSpanish:"Tórax"
-    }}
-    if (painArea==5){return {
-        painAreaEnglish:"abs",
-        painAreaSpanish:"Abdomen"
-    }}
-    if (painArea==6){return {
-        painAreaEnglish:"obliques",
-        painAreaSpanish:"Oblicuos"
-    }}
-    if (painArea==7){return {
-        painAreaEnglish:"forearm",
-        painAreaSpanish:"Antebrazos"
-    }}
-    if (painArea==8){return {
-        painAreaEnglish:"thigh",
-        painAreaSpanish:"Muslo"
-    }}
-    if (painArea==9){return {
-        painAreaEnglish:"shin",
-        painAreaSpanish:"Pantorrilla"
-    }}
-    if (painArea==10){return {
-        painAreaEnglish:"foot",
-        painAreaSpanish:"Pie"
-    }}
-    if (painArea==11){return {
-        painAreaEnglish:"glutes",
-        painAreaSpanish:"Glúteos"
-    }}
-    if (painArea==12){return {
-        painAreaEnglish:"biceps",
-        painAreaSpanish:"Biceps"
-    }}
-    if (painArea==13){return {
-        painAreaEnglish:"triceps",
-        painAreaSpanish:"Triceps"
-    }}
-    if (painArea==14){return {
-        painAreaEnglish:"quadriceps",
-        painAreaSpanish:"Cuadriceps"
-    }}
-    if (painArea==15){return {
-        painAreaEnglish:"forearms",
-        painAreaSpanish:"Antebrazos"
-    }}
-    if (painArea==16){return {
-        painAreaEnglish:"feet",
-        painAreaSpanish:"Pies"
-    }}
-    if (painArea==17){return {
-        painAreaEnglish:"hands",
-        painAreaSpanish:"Manos"
-    }}
-    if (painArea==18){return {
-        painAreaEnglish:"adductors",
-        painAreaSpanish:"Aductores"
-    }}
-    if (painArea==19){return {
-        painAreaEnglish:"knees",
-        painAreaSpanish:"Rodillas"
-    }}
-    if (painArea==20){return {
-        painAreaEnglish:"calves",
-        painAreaSpanish:"Pantorrillas"
-    }}
-    if (painArea==21){return {
-        painAreaEnglish:"tibialis",
-        painAreaSpanish:"Tibiales"
-    }}
-    if (painArea==22){return {
-        painAreaEnglish:"deltoids",
-        painAreaSpanish:"Deltoides"
-    }}
-    if (painArea==23){return {
-        painAreaEnglish:"hair",
-        painAreaSpanish:"Cabello"
-    }}
-    if (painArea==24){return {
-        painAreaEnglish:"trapecius",
-        painAreaSpanish:"Trapecios"
-    }}
-}

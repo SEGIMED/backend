@@ -25,10 +25,11 @@ const updateFullPatientController = async (req, res) => {
             civilStatusId,
             address,
             healthCarePlanId,
-            dateOfDeathReport
+            dateOfDeathReport,
+            treatingPhysician
         } = req.body
 
-        const patchPatientBody = { name, lastname, cellphone, email, city, country, avatar, patientId, verified, geolocation }
+        const patchPatientBody = { name, lastname, cellphone, email, city, country, avatar, patientId, verified, geolocation,treatingPhysician }
         const patchSociodemographicBody = { genreId, birthDate, emergencyContactPhone, patientId, educationalLevelId, profession, civilStatusId, address, healthCarePlanId, dateOfDeathReport }
 
         const updatePatientBasic = await patchPatientHandler(patchPatientBody)
