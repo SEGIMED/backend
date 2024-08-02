@@ -1,18 +1,24 @@
 import { SociodemographicDetails } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 
-export const createOnbordingHandler = async (body) => {
+export const createOnbordingHandler = async (body, userId) => {
+  const convertUserid = parseInt(userId);
   try {
     const {
-      userId,
-      hipertPulm,
-      centerAttention,
-      liveAlone,
-      hasTechUseDifficulty,
-      needsCellphoneAssistance,
+      birthDate, // date
+      address, // string
+      genre, // Integer
+      hipertPulm, // boolean
+      centerAttention, // bigint
+      liveAlone, // boolean
+      hasTechUseDifficulty, // boolean
+      needsCellphoneAssistance, // boolean
     } = body;
     const data = await SociodemographicDetails.update(
       {
+        birthDate,
+        address,
+        genre,
         hipertPulm,
         centerAttention,
         liveAlone,
@@ -21,7 +27,7 @@ export const createOnbordingHandler = async (body) => {
       },
       {
         where: {
-          patient: userId,
+          patient: convertUserid,
         },
       }
     );
