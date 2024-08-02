@@ -38,6 +38,7 @@ import getAllReviewsMadeByPatientController from "../controllers/physician/revie
 import patchPhysicianReviewController from "../controllers/physician/reviewPhysician/patchPhysicianReviewController.js";
 import createDiagnosticTestController from "../controllers/diagnosticTest/createDiagnosticTestController.js";
 import createPatientDiagnosticController from "../controllers/patient/createPatientDiagnosticController.js";
+import getPatientDiagnosticByIdController from "../controllers/patient/getPatientDiagnosticByIdController.js";
 import patchDiagnosticTestController from "../controllers/diagnosticTest/patchDiagnosticTestController.js";
 import getGenderDistributionController from "../controllers/statisticalCenter/getGenderDistributionController.js";
 import getPatientActivityDistributionController from "../controllers/statisticalCenter/getPatientActivityDistributionController.js";
@@ -99,15 +100,15 @@ import patchProvisionalPreConsultationController from "../controllers/patient/pr
 import createSchedule from "../controllers/managementSchedule/createAttention.js";
 import updateSchedule from "../controllers/managementSchedule/updateSchedule.js";
 import deleteSchedule from "../controllers/managementSchedule/deleteSchedule.js";
-import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js"
+import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js";
 import getPreConsultationByScheduleIdController from "../controllers/patient/preConsultation/getPreConsultationByScheduleIdController.js";
-import createOnbordingController from "../controllers/onbording/createOnbording.js";
-import getAllNotificationsPatienController from "../controllers/notifications/getAllNotificationsPatienController.js"
-import getAllNotificationsPhysicianController from "../controllers/notifications/getAllNotificationsPhysicianController.js"
-import patchNotificationsController from "../controllers/notifications/patchNotificationsController.js"
+import getAllNotificationsPatienController from "../controllers/notifications/getAllNotificationsPatienController.js";
+import getAllNotificationsPhysicianController from "../controllers/notifications/getAllNotificationsPhysicianController.js";
+import patchNotificationsController from "../controllers/notifications/patchNotificationsController.js";
 import getSchedules from "../controllers/managementSchedule/getSchedule.js";
 import { getRequestController } from "../controllers/requestFollow/getReqFollowController.js";
 import { createRequestController } from "../controllers/requestFollow/createReqFollowCtrl.js";
+import createOnboardingHandler from "../handlers/onbording/createOnbordingHandler.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -134,9 +135,9 @@ const alarmRouter = Router();
 const preConsultationRouter = Router();
 const requestFollowRouter = Router();
 const onbordingRouter = Router();
-const getAllNotificationsPatienRouter = Router()
-const getAllNotificationsPhysicianRouter = Router()
-const notificationsRouter=Router()
+const getAllNotificationsPatienRouter = Router();
+const getAllNotificationsPhysicianRouter = Router();
+const notificationsRouter = Router();
 const doctorScheduleRouter = Router();
 
 //* User
@@ -152,7 +153,6 @@ userRouter
   .route("/user/update-user-info")
   .patch(updateUserInformationController);
 
-
 //* Patient
 patientRouter.route("/patient").post(postPatientController);
 
@@ -164,6 +164,9 @@ patientRouter
 patientRouter.route("/patch-patient").patch(patchPatientController);
 
 patientRouter.route("/patient-details").get(getPatientDetailsController);
+patientRouter
+  .route("/patient-diagnostic-byId")
+  .get(getPatientDiagnosticByIdController);
 patientRouter
   .route("/patient-diagnostic")
   .post(createPatientDiagnosticController);
@@ -397,10 +400,10 @@ diagnosticTestRouter
 
 //* Drug Prescription
 drugPrescriptionRouter
-  .route("/drug-prescription/create-drug-prescription")
+  .route("/drug-prescription/deprecated-create-drug-prescription")
   .post(createDrugPrescriptionController);
 drugPrescriptionRouter
-  .route("/drug-prescription/update-drug-prescription")
+  .route("/drug-prescription/deprecated-update-drug-prescription")
   .patch(updateDrugPrescriptionController);
 
 //* medical Procedure Prescription
@@ -452,7 +455,7 @@ preConsultationRouter
   .get(getAllProvisionaPreConsultationPatientController);
 preConsultationRouter
   .route("/get-preconsultation")
-  .get(getPreConsultationByScheduleIdController)
+  .get(getPreConsultationByScheduleIdController);
 preConsultationRouter
   .route("/update-pre-consultation")
   .patch(patchProvisionalPreConsultationController);
@@ -466,16 +469,17 @@ statisticsRouter.get(
 );
 
 //* Doctor schedule
-doctorScheduleRouter.route("/doctorSchedule")
-.get(getSchedules)
-.post(createSchedule)
-.patch(updateSchedule)
-.delete(deleteSchedule)
+doctorScheduleRouter
+  .route("/doctorSchedule")
+  .get(getSchedules)
+  .post(createSchedule)
+  .patch(updateSchedule)
+  .delete(deleteSchedule);
 
-
-requestFollowRouter.route("/requestFollow")
-.get(getRequestController)
-.post(createRequestController)
+requestFollowRouter
+  .route("/requestFollow")
+  .get(getRequestController)
+  .post(createRequestController);
 
 statisticsRouter.get("/statistics-genre", getGenderDistributionController);
 statisticsRouter.get(
@@ -484,13 +488,19 @@ statisticsRouter.get(
 );
 statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 
-//* Onbording
-onbordingRouter.patch("/onbording", createOnbordingController);
+//* Onboarding
+onbordingRouter.patch("/onboarding", createOnboardingHandler);
 
-//* Notifications 
-getAllNotificationsPatienRouter.get("/all-notifications-patient",getAllNotificationsPatienController)
-getAllNotificationsPhysicianRouter.get("/all-notifications-physician",getAllNotificationsPhysicianController)
-notificationsRouter.patch("/notification-seen",patchNotificationsController)
+//* Notifications
+getAllNotificationsPatienRouter.get(
+  "/all-notifications-patient",
+  getAllNotificationsPatienController
+);
+getAllNotificationsPhysicianRouter.get(
+  "/all-notifications-physician",
+  getAllNotificationsPhysicianController
+);
+notificationsRouter.patch("/notification-seen", patchNotificationsController);
 
 export {
   getPatientsRouter,

@@ -1,33 +1,62 @@
-import {PatientDiagnostic} from "../../databaseConfig.js";
+import { PatientDiagnostic } from "../../databaseConfig.js";
 import contextService from "request-context";
 import moment from "moment-timezone";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
-
+import createDrugPrescriptionHandler from "../drugPrescription/createDrugPrescriptionHandler.js";
 
 const createPatientDiagnosticHandler = async (body) => {
-    const {
-        patientId,
-        diseaseId,
-        diagnosticNotes,
-        medicalEventId
-    } = body;
+  const {
+    patientId,
+    diseaseId,
+    diagnosticNotes,
+    medicalEventId,
+    drugId,
+    drugName,
+    quantityDrug,
+  } = body;
 
-    try {
-        const newDiagnostic = await PatientDiagnostic.create(
-            {
-                patient : patientId,
-                diagnosedBy : contextService.get('request:user').userId,
-                timestamp : moment().format("YYYY-MM-DD HH:mm:ss z"),
-                disease : diseaseId,
-                diagnosticNotes,
-                medicalEvent : medicalEventId
-            }
-        )
-        return newDiagnostic
-    } catch (error) {
-        throw new SegimedAPIError('Hubo un error durante el proceso.', 500)
+  try {
+    // Verificar si ya existe un diagnóstico con el mismo medicalEvent
+    const existingDiagnostic = await PatientDiagnostic.findOne({
+      where: { medicalEvent: medicalEventId },
+    });
+
+    if (existingDiagnostic) {
+      throw new SegimedAPIError(
+        "Ya existe un diagnóstico para el mismo evento médico.",
+        400
+      );
     }
+
+    const newDiagnostic = await PatientDiagnostic.create({
+      patient: patientId,
+      diagnosedBy: contextService.get("request:user").userId,
+      timestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
+      disease: diseaseId,
+      diagnosticNotes,
+      medicalEvent: medicalEventId,
+    });
+
+    if (drugName) {
+      drugName.forEach((drug) => {
+        const drugPrescription = {
+          patientId,
+          drugId,
+          drugName: drug,
+          quantity: quantityDrug,
+          medicalEventId,
+        };
+        createDrugPrescriptionHandler(drugPrescription);
+      });
+    }
+
+    return newDiagnostic;
+  } catch (error) {
+    throw new SegimedAPIError(
+      "Hubo un error durante el proceso: " + error.message,
+      500
+    );
+  }
 };
 
 export default createPatientDiagnosticHandler;
-

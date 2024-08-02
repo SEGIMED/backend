@@ -43,6 +43,7 @@ import {
   User,
   VitalSignDetails,
 } from "../../databaseConfig.js";
+
 import { mapMedicalEventDetail } from "../../mapper/medicalEvent/medicalEventDetailMapper.js";
 import { consultationVitalSignsMapper } from "../../mapper/patient/consultationVitalSignsMapper.js";
 
@@ -52,6 +53,36 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
       [Op.or]: [],
     },
     include: [
+      {
+        model: PatientDiagnostic,
+        as: "patientDiagnostics",
+        separate: true,
+        include: {
+          model: CatDisease,
+          as: "diagnosedDisease",
+        },
+      },
+      {
+        model: DrugPrescription,
+        as: "drugPrescriptions", // Alias para DrugPrescription
+        include: [
+          {
+            model: User,
+            as: "patient_user", // Alias para el paciente en DrugPrescription
+            attributes: ["id", "name", "lastname"], // Campos necesarios
+          },
+          {
+            model: User,
+            as: "prescribed_physician_user", // Alias para el médico prescriptor en DrugPrescription
+            attributes: ["id", "name", "lastname"], // Campos necesarios
+          },
+          {
+            model: CatDrug,
+            as: "catDrug", // Alias para CatDrug
+            attributes: ["id", "name"], // Campos necesarios
+          },
+        ],
+      },
       {
         model: AppointmentScheduling,
         as: "appSch",
@@ -64,11 +95,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
                 model: SociodemographicDetails,
                 as: "socDemDet",
                 include: [
-                  {
-                    model: CatGenre,
-                    as: "catGenre",
-                    attributes: ["name"],
-                  },
                   {
                     model: CatEducationalLevel,
                     as: "catEducationalLevel",
@@ -135,18 +161,18 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
                 model: Backgrounds,
                 as: "backgrounds",
               },
-              {
-                model: AnthropometricDetails,
-                as: "patientAnthDet",
-                include: {
-                  model: CatAnthropometricMeasureType,
-                  as: "anthMeasType",
-                  include: {
-                    model: CatMeasureUnit,
-                    as: "measUnit",
-                  },
-                },
-              },
+              // {
+              //   model: AnthropometricDetails,
+              //   as: "patientAnthDet",
+              //   include: {
+              //     model: CatAnthropometricMeasureType,
+              //     as: "anthMeasType",
+              //     include: {
+              //       model: CatMeasureUnit,
+              //       as: "measUnit",
+              //     },
+              //   },
+              // },
             ],
           },
           {
@@ -209,10 +235,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
             model: CatPainDuration,
             as: "catPainDuration",
           },
-          // {
-          //     model: CatPainAreas,
-          //     as: 'catPainArea'
-          // },
           {
             model: CatPainType,
             as: "catPainType",
@@ -248,28 +270,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
           model: CatDiagnosticTestType,
           as: "catDiagnosticTestType",
         },
-      },
-      {
-        model: PatientDiagnostic,
-        as: "patientDiagnostics",
-        separate: true,
-        include: {
-          model: CatDisease,
-          as: "diagnosedDisease",
-        },
-      },
-      {
-        model: DrugPrescription,
-        as: "drugPrescriptions",
-        separate: true,
-        // include: {
-        //   model: CatDrug,
-        //   as: "catDrug",
-        //   include: {
-        //     model: CatDrugPresentation,
-        //     as: "catDrugPresentation",
-        //   },
-        // },
       },
       {
         model: MedicalProcedurePrescription,
@@ -313,6 +313,7 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
       },
     ],
   };
+
   try {
     if (typeof medicalEventId !== "undefined") {
       query.where[Op.or].push({ id: medicalEventId });
@@ -328,11 +329,11 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
       );
     }
     const mapMedicalEvent = mapMedicalEventDetail(medicalEventDetail);
-
     const vitalSigns = await consultationVitalSignsMapper(
-      medicalEventDetail.appSch.vitalSignDetailsScheduling
+      medicalEventDetail.appSch?.vitalSignDetailsScheduling || []
     );
     mapMedicalEvent.vitalSigns = vitalSigns;
+
     return mapMedicalEvent;
   } catch (error) {
     throw new Error("Error loading physician: " + error.message);
