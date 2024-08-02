@@ -36,7 +36,7 @@ const model = (sequelize) => {
       },
       appointmentScheduling: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "appointment_scheduling",
           key: "id",

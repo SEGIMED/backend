@@ -2,11 +2,23 @@ import patchProvisionalPreConsultationHandler from "../../../handlers/patient/pr
 import updateVitalSignsHandler from "../../../handlers/vitalSigns/updateVitalSignsHandler.js";
 import patchPatientPainMapHandler from "../../../handlers/painMap/patchPatientPainMapHandler.js";
 import SegimedAPIError from "../../../error/SegimedAPIError.js";
-import { sequelize } from "../../../databaseConfig.js";
+import { MedicalEvent, sequelize } from "../../../databaseConfig.js";
 
 const patchProvisionalPreConsultationController = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
+    const medicalEvent = await MedicalEvent.findOne({
+      where: {
+        scheduling: req.body.appointmentSchedule,
+      },
+      attributes: ["id"],
+    });
+
+    if (!medicalEvent) {
+      throw new Error("Hay un error en la agenda. Solicite turno nuevamente.");
+    }
+    req.body.medicalEvent = medicalEvent;
+
     const updatedPreconsultation = await patchProvisionalPreConsultationHandler(
       req.body,
       { transaction }
@@ -24,11 +36,17 @@ const patchProvisionalPreConsultationController = async (req, res) => {
       .json({ updatedPreconsultation, updatedVitalSigns, updatedPainRecords });
   } catch (error) {
     await transaction.rollback();
-    throw new SegimedAPIError(
-      "Hubo un error durante el proceso de actualización.",
-      error,
-      500
-    );
+    if (error instanceof SegimedAPIError) {
+      return res.status(error.errorCode).json({ error: error.message });
+    } else {
+      return res
+        .status(500)
+        .json({
+          error:
+            "Error durante el proceso de actualización de la preconsulta: " +
+            error.message,
+        });
+    }
   }
 };
 
