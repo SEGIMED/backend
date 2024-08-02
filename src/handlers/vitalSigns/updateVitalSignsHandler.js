@@ -4,7 +4,7 @@ import moment from "moment-timezone";
 import contextService from "request-context";
 
 const updateOrCreateVitalSignsHandler = async (body,{transaction}) => {
-  const { updateVitalSigns, patient, appointmentSchedule } = body;
+  const { updateVitalSigns, patient, appointmentSchedule, medicalEvent} = body;
 
   try {
     //Validación. Si se envía el objeto updateVitalSigns pero es diferente a un array, retorna error
@@ -36,6 +36,7 @@ const updateOrCreateVitalSignsHandler = async (body,{transaction}) => {
                   measure: vitalSign.measure,
                   measureSource: contextService.get("request:user").userId,
                   measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
+                  medicalEvent: medicalEvent?.id??existingVitalSign.medicalEvent
                 },
                 {
                   where: {
@@ -55,7 +56,7 @@ const updateOrCreateVitalSignsHandler = async (body,{transaction}) => {
               measureType: vitalSign.measureType,
               measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
               scheduling: appointmentSchedule,
-              medicalEvent: vitalSign.medicalEventId,
+              medicalEvent: medicalEvent.id,
             },{
               transaction
             });

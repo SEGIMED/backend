@@ -6,7 +6,7 @@ const createPreConsultationHandler = async (body) => {
     patient,
     appointmentSchedule,
     lackOfAir,
-    lackOfAirAsAlways,
+    // lackOfAirAsAlways,
     lackOfAirIncremented,
     lackOfAirClasification,
     chestPainAtRest,

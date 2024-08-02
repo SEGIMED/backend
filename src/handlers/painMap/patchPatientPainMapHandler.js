@@ -16,9 +16,9 @@ const patchPatientPainMapHandler = async (body,{transaction}) => {
 
     //Validación. Si no vienen zonas de dolor para actualizar, se retorna []
     if (body.painRecordsToUpdate && body.painRecordsToUpdate?.length !== 0) {
-      const patientPainMapping = await mapPainRecord(body.painRecordsToUpdate[0]);
+      const patientPainMapping = await mapPainRecord(body.painRecordsToUpdate[0],body);
       patientPainMapping.painOwner = body.patient
-      patientPainMapping.painRecorder = contextService.get('request:user').userId
+      
       const [updatedPainRecord, created] = await PatientPainMap.findOrCreate({
         where: {
             scheduling: patientPainMapping.scheduling,
@@ -42,22 +42,21 @@ const patchPatientPainMapHandler = async (body,{transaction}) => {
     );
   }
 };
-
-async function mapPainRecord(body) {
+async function mapPainRecord(props,body) {
     return {
-        isTherePain: body.isTherePain,
-        painDuration: body.painDurationId,
-        painScale: body.painScaleId,
-        painType: body.painTypeId,
-        painAreas: body.painAreas,
-        painFrequency: body.painFrequencyId,
-        isTakingAnalgesic: body.isTakingAnalgesic,
-        doesAnalgesicWorks: body.doesAnalgesicWorks,
-        isWorstPainEver: body.isWorstPainEver,
+        isTherePain: props.isTherePain,
+        painDuration: props.painDurationId,
+        painScale: props.painScaleId,
+        painType: props.painTypeId,
+        painAreas: props.painAreas,
+        painFrequency: props.painFrequencyId,
+        isTakingAnalgesic: props.isTakingAnalgesic,
+        doesAnalgesicWorks: props.doesAnalgesicWorks,
+        isWorstPainEver: props.isWorstPainEver,
         timestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-        painRecorder: body.patient,
-        scheduling: body.schedulingId,
-        medicalEvent: body.medicalEventId
+        painRecorder: contextService.get('request:user').userId,
+        scheduling: body.appointmentSchedule,
+        medicalEvent: body.medicalEvent.id
     };
 }
 
