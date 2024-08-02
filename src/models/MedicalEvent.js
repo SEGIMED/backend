@@ -14,7 +14,7 @@ const model = (sequelize) => {
       },
       physicianComments: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
         field: "physician_comments",
       },
       scheduling: {
