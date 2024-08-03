@@ -14,7 +14,8 @@ export const verifyAndRefreshToken = async (token, refreshToken) => {
     if (
       error.name === "TokenExpiredError" ||
       error.message === "jwt expired" ||
-      error.message === "invalid token"
+      error.message === "invalid token" ||
+      error.message === "invalid signature"
     ) {
       if (!refreshToken) {
         throw new Error("Refresh token is missing");
@@ -23,8 +24,8 @@ export const verifyAndRefreshToken = async (token, refreshToken) => {
       const refreshTokenRecord = await RefreshToken.findOne({
         where: { token: refreshToken },
       });
-
-      if (!refreshTokenRecord || refreshTokenRecord.expiresAt < new Date()) {
+      console.log(refreshTokenRecord.expiresAt , new Date())
+      if (!refreshTokenRecord || refreshTokenRecord.expiresAt.toISOString() < new Date().toISOString) {
         throw new Error("Refresh token is invalid or expired");
       }
       try {
