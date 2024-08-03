@@ -21,7 +21,7 @@ const paginationUsersHandler = async ({ page, limit, queryOptions } ) => {
     const { count, rows: user } = await models.User.findAndCountAll(
       queryOptions
     );
-    console.log(user.length)
+
     const totalPages = Math.ceil(count / limit);
 
     return {
