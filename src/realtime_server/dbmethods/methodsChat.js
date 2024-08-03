@@ -41,7 +41,6 @@ export async function getChatWithPopulate(userId, targetId) {
 export async function createChatMongoDb(data, cb) {
   // Crear una nueva instancia de Chat
   const {chat,lastMessage} = data;
-  console.log('este es el chat cuando entra a la funcion',data)
   try {
     let newchat;
     if (chat._id === "temporal") {
@@ -54,7 +53,7 @@ export async function createChatMongoDb(data, cb) {
     }
 
     // Agregar los mensajes
-    if (lastMessage._id.startsWith("Message-")) {
+    if (lastMessage?._id.startsWith("Message-")) {
       const newMessage = new MessageModel({
                 sender: lastMessage.sender._id,
                 target: lastMessage.target._id,
@@ -63,7 +62,6 @@ export async function createChatMongoDb(data, cb) {
                 date: lastMessage.date,
               });
               await newMessage.save();
-              console.log("se ha creado este mensaje", newMessage);
               newchat.addMessage(newMessage._id);
     }
       
@@ -92,7 +90,6 @@ export async function createChatMongoDb(data, cb) {
       newchat.users[0],
       newchat.users[1]
     );
-    console.log("valor del chat en la db", chatWithPopulate);
     cb(chatWithPopulate);
   } catch (error) {
     console.log(error.message);

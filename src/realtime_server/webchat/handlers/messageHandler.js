@@ -1,7 +1,5 @@
 import { ClientListenners, ServerListenners } from "../events/events.js";
 import Webchat from "../classes/chat/WebChat.js";
-import listChats from "../classes/chat/listChats.js";
-import listUser from "../classes/user/listUser.js";
 
 export default (io,socket) => {
     
@@ -11,34 +9,38 @@ export default (io,socket) => {
         const message = payload.message;
         const {userId} = socket.decoded
         const data =  Webchat.sendChatMessage(userId, targetId,message);
-        const target= listUser.getUser(targetId)
-        const userObj= listUser.getUser(userId)
+        const target= Webchat.listUser.getUser(targetId)
+        const userObj= Webchat.listUser.getUser(userId)
         data.chat.target = target
 
         socket.emit(ClientListenners.updateMessage,data);
         if(io.users[targetId]){
             data.chat.target =userObj
-            if(data.isNewChat){
                 io.users[targetId].emit(ClientListenners.updateNewChat, data);
-            } else {
-                io.users[targetId].emit(ClientListenners.updateMessage, data);
-            }
+            
         }
     }
 
     const createChat = async(payload) => {
         const {id} = payload; 
         const {userId} = socket.decoded;
-        const chat =  Webchat.findOrCreateChat(userId,id);
-        socket.emit(ClientListenners.updateNewChat,chat);
+        let data =  Webchat.findOrCreateChat(userId,id);
+        let target = Webchat.listUser.getUser(id);
+        data.chat.target = target
+        socket.emit(ClientListenners.updateNewChat,data);
     }
 
     const persistChat = async(payload,callback) => {
         //crear la persistencia del chat.
        const newChat = await Webchat.listChat.saveInDatabase(payload);
        const target = Webchat.listUser.getUser(payload.chat.target.userId);
+       const userobj = Webchat.listUser.getUser(socket.decoded.userId);
        newChat.target = target;
        callback(newChat);
+       newChat.target = userobj
+       if(io.users[target.userId]){
+         io.users[target.userId].emit("updateNewChat",{chat: newChat});
+       }
     }
 
     const getChatMessage = async(payload) => {
@@ -58,12 +60,22 @@ export default (io,socket) => {
 
     const messageSeenHandler = async (data, cb) => {
         const {unseenMessages, chat} = data
-        const findChat= listChats.getChat(chat.users[0],chat.users[1])
+        const findChat= Webchat.listChat.getChat(chat.users[0],chat.users[1])
         if(findChat){
              await findChat.markedMessages(unseenMessages)    
+             let newData = Webchat.listChat.getChat(chat.users[0],chat.users[1]);
+             let userobj = Webchat.listUser.getUser(socket.decoded.userId);
+
+             newData = newData.mapper()
+             newData.target = chat.target
+             cb (newData)
+             newData.target = userobj
+             if(io.users[chat.target.userId]){
+                io.users[chat.target.userId].emit("updateNewChat",{chat: newData})
+             }
         }
-        const newData = Webchat.findOrCreateChat(chat.users[0], chat.users[1])
-        cb (newData) 
+        
+
     };
     
 
