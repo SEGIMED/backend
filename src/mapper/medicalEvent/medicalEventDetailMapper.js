@@ -113,5 +113,15 @@ export const mapMedicalEventDetail = (medicalEvent) => {
 
     //Pauta de alarma
     alarmPattern: medicalEvent?.alarmPattern ?? null,
+
+    // Añadir los timestamps del scheduling a la respuesta
+    timestamps: {
+      scheduledStartTimestamp:
+        medicalEvent?.appSch?.scheduledStartTimestamp ?? null,
+      scheduledEndTimestamp:
+        medicalEvent?.appSch?.scheduledEndTimestamp ?? null,
+      actualStartTimestamp: medicalEvent?.appSch?.actualStartTimestamp ?? null,
+      actualEndTimestamp: medicalEvent?.appSch?.actualEndTimestamp ?? null,
+    },
   };
 };

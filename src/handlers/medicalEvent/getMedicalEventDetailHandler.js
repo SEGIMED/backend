@@ -313,7 +313,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
       },
     ],
   };
-
   try {
     if (typeof medicalEventId !== "undefined") {
       query.where[Op.or].push({ id: medicalEventId });
@@ -328,8 +327,7 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
         "No se encontró ningún evento con los datos proporcionados"
       );
     }
-    // const mapMedicalEvent = mapMedicalEventDetail(medicalEventDetail);
-    const mapMedicalEvent = medicalEventDetail;
+    const mapMedicalEvent = mapMedicalEventDetail(medicalEventDetail);
     const vitalSigns = await consultationVitalSignsMapper(
       medicalEventDetail.appSch?.vitalSignDetailsScheduling || []
     );

@@ -1,30 +1,27 @@
 import { MedicalProcedurePrescription } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import moment from "moment-timezone";
-// import contextService from "request-context";
 
 const newMedicalProcedurePrescriptionHandler = async (body) => {
-  const {
-    // patientId,
-    medicalProcedureName,
-    medicalProcedureId,
-    medicalEvent,
-  } = body;
-
+  const { medicalProcedureName, medicalProcedureId, medicalEventId } = body;
   try {
+    // Verificar que los datos de entrada no estén vacíos
+    if (!medicalProcedureName || !medicalEventId) {
+      throw new SegimedAPIError("Los datos de entrada no son válidos.", 400);
+    }
+
+    // Crear nueva prescripción de procedimiento médico
     const newProcedure = await MedicalProcedurePrescription.create({
-      // patient: patientId,
-      medicalProcedure: medicalProcedureId,
+      // medicalProcedure: medicalProcedureId,
       medicalProcedureName: medicalProcedureName,
-      // prescribedPhysician: contextService.get('request:user').userId,
       prescriptionTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-      medicalEvent,
+      medicalEvent: medicalEventId,
     });
+
     return newProcedure;
   } catch (error) {
-    console.log(error.message);
     throw new SegimedAPIError(
-      "Hubo un error durante el proceso de solicitud.",
+      "Hubo un error durante el proceso de solicitud: " + error.message,
       500
     );
   }
