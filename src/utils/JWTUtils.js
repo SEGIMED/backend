@@ -14,8 +14,7 @@ export const verifyAndRefreshToken = async (token, refreshToken) => {
     if (
       error.name === "TokenExpiredError" ||
       error.message === "jwt expired" ||
-      error.message === "invalid token" ||
-      error.message === "invalid signature"
+      error.message === "invalid token"
     ) {
       if (!refreshToken) {
         throw new Error("Refresh token is missing");
