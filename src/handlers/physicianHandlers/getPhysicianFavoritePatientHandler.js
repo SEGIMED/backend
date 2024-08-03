@@ -1,9 +1,18 @@
-import { PhysicianFavoritePatient, User, PatientPulmonaryHypertensionRisk, CatPulmonaryArterialHypertensionRisk } from "../../databaseConfig.js";
+import {
+  PhysicianFavoritePatient,
+  User,
+  PatientPulmonaryHypertensionRisk,
+  CatPulmonaryArterialHypertensionRisk,
+} from "../../databaseConfig.js";
 
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 
-const getPhysicianFavoritePatientHandler = async (physicianId, page, limit, risk) => {
-  console.log("favoros de id",physicianId);
+const getPhysicianFavoritePatientHandler = async (
+  physicianId,
+  page,
+  limit,
+  risk
+) => {
   try {
     limit = parseInt(limit);
     page = parseInt(page);
@@ -20,7 +29,7 @@ const getPhysicianFavoritePatientHandler = async (physicianId, page, limit, risk
             attributes: [
               "id",
               "idNumber",
-              "idType", 
+              "idType",
               "name",
               "lastname",
               "role",
@@ -30,17 +39,19 @@ const getPhysicianFavoritePatientHandler = async (physicianId, page, limit, risk
               "lastLogin",
               "currentLocation",
               "geolocation",
-              "id_type"
+              "id_type",
             ],
             include: [
               {
                 model: PatientPulmonaryHypertensionRisk,
-                as: 'patientPulmonaryHypertensionRisks',
+                as: "patientPulmonaryHypertensionRisks",
                 include: {
                   model: CatPulmonaryArterialHypertensionRisk,
-                  as: 'catHpRisk',
-                  attributes: ['name'],
-                  ...(risk ? { where: { name: { [Op.iLike]: `%${risk}%` } } } : {}), //filtro de riesgo, si quisiera hacerlo sin paginado, repetir queryopt y pasar propiedad
+                  as: "catHpRisk",
+                  attributes: ["name"],
+                  ...(risk
+                    ? { where: { name: { [Op.iLike]: `%${risk}%` } } }
+                    : {}), //filtro de riesgo, si quisiera hacerlo sin paginado, repetir queryopt y pasar propiedad
                 },
               },
             ],
@@ -52,7 +63,7 @@ const getPhysicianFavoritePatientHandler = async (physicianId, page, limit, risk
     const totalPages = Math.ceil(count / limit);
 
     // Mapea los datos para formatearlos como los requiere el front
-    const result = favoritePatients.map(favPatient => ({
+    const result = favoritePatients.map((favPatient) => ({
       id: favPatient.id,
       favoritePatient: favPatient.patient,
       physicianId: favPatient.physicianId,
@@ -69,10 +80,17 @@ const getPhysicianFavoritePatientHandler = async (physicianId, page, limit, risk
       currentLocation: favPatient.user.currentLocation,
       geolocation: favPatient.user.geolocation,
       id_type: favPatient.user.id_type,
-      patientPulmonaryHypertensionRisks: favPatient.user.patientPulmonaryHypertensionRisks?.length > 0 ? {
-        risk: favPatient.user.patientPulmonaryHypertensionRisks[0].catHpRisk?.name || null,
-        timestamp: favPatient.user.patientPulmonaryHypertensionRisks[0].registerTimestamp
-    } : null
+      patientPulmonaryHypertensionRisks:
+        favPatient.user.patientPulmonaryHypertensionRisks?.length > 0
+          ? {
+              risk:
+                favPatient.user.patientPulmonaryHypertensionRisks[0].catHpRisk
+                  ?.name || null,
+              timestamp:
+                favPatient.user.patientPulmonaryHypertensionRisks[0]
+                  .registerTimestamp,
+            }
+          : null,
     }));
 
     return {
@@ -81,7 +99,6 @@ const getPhysicianFavoritePatientHandler = async (physicianId, page, limit, risk
       currentPage: page,
       user: result,
     };
-
   } catch (error) {
     throw new SegimedAPIError("Hubo un error al obtener los favoritos.", 500);
   }
