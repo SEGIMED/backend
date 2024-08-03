@@ -43,9 +43,10 @@ const getPhysicianFavoritePatientHandler = async (physicianId, page, limit, risk
                   ...(risk ? { where: { name: { [Op.iLike]: `%${risk}%` } } } : {}), //filtro de riesgo, si quisiera hacerlo sin paginado, repetir queryopt y pasar propiedad
                 },
               },
-            ],
+            ], 
           },
         ],
+        distinct: true,
         limit,
         offset,
       });
