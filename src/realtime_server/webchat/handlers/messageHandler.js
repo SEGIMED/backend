@@ -29,7 +29,7 @@ export default (io,socket) => {
     const persistChat = async(payload,callback) => {
         //crear la persistencia del chat.
        const newChat = await Webchat.listChat.saveInDatabase(payload);
-       const target = Webchat.listUser.getUser(payload.target.userId);
+       const target = Webchat.listUser.getUser(payload.chat.target.userId);
        newChat.target = target;
        callback(newChat);
     }

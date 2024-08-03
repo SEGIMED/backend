@@ -4,7 +4,7 @@ import { createMessage } from "./methodsMessages.js";
 
 export async function getAllChatsWithPopulate() {
   try {
-    const chats = await ChatModel.find({}).populate({
+    const chats = await ChatModel.find({}).sort({ lastMessage: -1 }).populate({
       path: "messages",
       populate: {
         path: "sender target",
@@ -40,43 +40,57 @@ export async function getChatWithPopulate(userId, targetId) {
 
 export async function createChatMongoDb(data, cb) {
   // Crear una nueva instancia de Chat
+  const {chat,lastMessage} = data;
   console.log('este es el chat cuando entra a la funcion',data)
   try {
-    let chat;
-    if (data._id === "temporal") {
-      chat = new ChatModel({
-        users: data.users,
+    let newchat;
+    if (chat._id === "temporal") {
+      newchat = new ChatModel({
+        users: chat.users,
         messages: [],
       });
     } else {
-      chat = await ChatModel.findOne({ _id: data._id });
+      newchat = await ChatModel.findOne({ _id: chat._id });
     }
 
     // Agregar los mensajes
-    await Promise.all(
-      data.unseenMessages.map(async (message) => {
-        if (message._id.startsWith("Message-")) {
-          const newMessage = new MessageModel({
-            sender: message.sender._id,
-            target: message.target._id,
-            text: message.text,
-            state: message.state,
-            date: message.date,
-          });
-          await newMessage.save();
-          console.log("se ha creado este mensaje", newMessage);
-          chat.addMessage(newMessage._id);
-        }
-      })
-    );
+    if (lastMessage._id.startsWith("Message-")) {
+      const newMessage = new MessageModel({
+                sender: lastMessage.sender._id,
+                target: lastMessage.target._id,
+                text: lastMessage.text,
+                state: lastMessage.state,
+                date: lastMessage.date,
+              });
+              await newMessage.save();
+              console.log("se ha creado este mensaje", newMessage);
+              newchat.addMessage(newMessage._id);
+    }
+      
+    // await Promise.all(
+    //   data.unseenMessages.map(async (message) => {
+    //     if (message._id.startsWith("Message-")) {
+    //       const newMessage = new MessageModel({
+    //         sender: message.sender._id,
+    //         target: message.target._id,
+    //         text: message.text,
+    //         state: message.state,
+    //         date: message.date,
+    //       });
+    //       await newMessage.save();
+    //       console.log("se ha creado este mensaje", newMessage);
+    //       chat.addMessage(newMessage._id);
+    //     }
+    //   })
+    // );
 
     // Guardar el chat en la base de datos
-    await chat.save();
+    await newchat.save();
 
     // Llamar al callback con el chat guardado
     const chatWithPopulate = await getChatWithPopulate(
-      chat.users[0],
-      chat.users[1]
+      newchat.users[0],
+      newchat.users[1]
     );
     console.log("valor del chat en la db", chatWithPopulate);
     cb(chatWithPopulate);
