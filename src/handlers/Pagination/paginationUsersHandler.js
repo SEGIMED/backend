@@ -16,11 +16,12 @@ const paginationUsersHandler = async ({ page, limit, queryOptions } ) => {
     const offset = (page - 1) * limit;
     queryOptions.limit = limit;
     queryOptions.offset = offset;
+    queryOptions.distinct = true;
 
     const { count, rows: user } = await models.User.findAndCountAll(
       queryOptions
     );
-    
+    console.log(user.length)
     const totalPages = Math.ceil(count / limit);
 
     return {
