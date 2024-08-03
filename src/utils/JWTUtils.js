@@ -23,7 +23,7 @@ export const verifyAndRefreshToken = async (token, refreshToken) => {
       const refreshTokenRecord = await RefreshToken.findOne({
         where: { token: refreshToken },
       });
-      console.log(refreshTokenRecord.expiresAt , new Date())
+
       if (!refreshTokenRecord || refreshTokenRecord.expiresAt.toISOString() < new Date().toISOString) {
         throw new Error("Refresh token is invalid or expired");
       }
