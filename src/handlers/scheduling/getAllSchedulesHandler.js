@@ -4,6 +4,7 @@ import {
   User,
   PatientPulmonaryHypertensionRisk,
   CatPulmonaryArterialHypertensionRisk,
+  MedicalEvent,
 } from "../../databaseConfig.js";
 
 import { mapPatientsSchedule } from "../../mapper/patient/patientMapper.js";
@@ -49,6 +50,11 @@ const getAllSchedulesHandler = async (patientId, physicianId, id) => {
           as: "physicianThatAttend",
           attributes: ["name", "lastname", "avatar"],
         },
+        {
+          model: MedicalEvent,
+          as: "medicalEvent",
+          attributes:["id"]
+        }
       ],
     });
     return mapPatientsSchedule(schedules);
