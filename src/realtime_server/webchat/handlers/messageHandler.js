@@ -1,5 +1,7 @@
 import { ClientListenners, ServerListenners } from "../events/events.js";
 import Webchat from "../classes/chat/WebChat.js";
+import listChats from "../classes/chat/listChats.js";
+import listUser from "../classes/user/listUser.js";
 
 export default (io,socket) => {
     
@@ -9,8 +11,13 @@ export default (io,socket) => {
         const message = payload.message;
         const {userId} = socket.decoded
         const data =  Webchat.sendChatMessage(userId, targetId,message);
+        const target= listUser.getUser(targetId)
+        const userObj= listUser.getUser(userId)
+        data.chat.target = target
+
         socket.emit(ClientListenners.updateMessage,data);
         if(io.users[targetId]){
+            data.chat.target =userObj
             if(data.isNewChat){
                 io.users[targetId].emit(ClientListenners.updateNewChat, data);
             } else {
@@ -49,9 +56,15 @@ export default (io,socket) => {
 
     //  //handler mark of message state to true;
 
-    // const messageSeenHandler = async (unseenMessages) => {
-    //     await Webchat.setSeenMessage(unseenMessages);
-    // };
+    const messageSeenHandler = async (data, cb) => {
+        const {unseenMessages, chat} = data
+        const findChat= listChats.getChat(chat.users[0],chat.users[1])
+        if(findChat){
+             await findChat.markedMessages(unseenMessages)    
+        }
+        const newData = Webchat.findOrCreateChat(chat.users[0], chat.users[1])
+        cb (newData) 
+    };
     
 
 
@@ -66,6 +79,7 @@ export default (io,socket) => {
     socket.on(ServerListenners.createChat,createChat)
     socket.on("getChatMessage",getChatMessage);
     socket.on("persistChat",persistChat)
+    socket.on("markedMessages",messageSeenHandler);
     // socket.on(ServerListenners.getChatMessages,getChatMessageHandler);
 
 

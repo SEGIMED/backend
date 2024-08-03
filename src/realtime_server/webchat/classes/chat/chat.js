@@ -1,4 +1,6 @@
 import listUser from "../user/listUser.js";
+import { markAsSeen } from "../../../dbmethods/methodsMessages.js";
+
 class Chat{
     constructor({_id,users,messages}){
         this._id = _id
@@ -10,6 +12,17 @@ class Chat{
     }
     addUser(userId){
         this.users.push(userId);
+    }
+    async markedMessages(messages){
+
+        const cb= (newMessages)=>{
+            if (newMessages.length){
+               this.messages=newMessages
+            }
+            
+        }
+        await markAsSeen(messages, cb, this.users)
+        return this
     }
 
     mapper(){
