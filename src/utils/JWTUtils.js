@@ -24,8 +24,11 @@ export const verifyAndRefreshToken = async (token, refreshToken) => {
         where: { token: refreshToken },
       });
 
-      if (!refreshTokenRecord || refreshTokenRecord.expiresAt.toISOString() < new Date().toISOString) {
-        throw new Error("Refresh token is invalid or expired");
+      if (!refreshTokenRecord) {
+        throw new Error("Invalid refresh token");
+      }
+      if (refreshTokenRecord.expiresAt.getTime() < Date.now()) {
+        throw new Error("Refresh token expired");
       }
       try {
         const decodedRefreshToken = jwt.verify(

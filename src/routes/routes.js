@@ -109,7 +109,7 @@ import patchNotificationsController from "../controllers/notifications/patchNoti
 import getSchedules from "../controllers/managementSchedule/getSchedule.js";
 import { getRequestController } from "../controllers/requestFollow/getReqFollowController.js";
 import { createRequestController } from "../controllers/requestFollow/createReqFollowCtrl.js";
-
+import getAllSchedulesByUserController from "../controllers/scheduling/getAllSchedulesByUserController.js";
 const patientRouter = Router();
 const userRouter = Router();
 const getPatientsRouter = Router();
@@ -335,6 +335,9 @@ schedulingRouter
   .route("/schedule/:id")
   .patch(patchScheduleController)
   .delete(deleteSchedulingController);
+schedulingRouter
+  .route("/schedulesByUserId")
+  .get(getAllSchedulesByUserController);
 
 //* Medical Event
 medicalEventRouter
@@ -476,9 +479,10 @@ doctorScheduleRouter
   .patch(updateSchedule)
   .delete(deleteSchedule);
 
-requestFollowRouter.route("/requestFollow")
-.get(getRequestController)
-.post(createRequestController)
+requestFollowRouter
+  .route("/requestFollow")
+  .get(getRequestController)
+  .post(createRequestController);
 
 statisticsRouter.get("/statistics-genre", getGenderDistributionController);
 statisticsRouter.get(

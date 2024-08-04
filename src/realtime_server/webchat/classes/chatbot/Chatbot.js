@@ -4,6 +4,7 @@ import getMedicalEventHistoryHandler from "../../../../handlers/medicalEvent/get
 import getAllAlarmsForPatientHandler from "../../../../handlers/alarmEvent/getAllAlarmsForPatientHandler.js";
 import getPatientDetailsHandler from "../../../../handlers/patient/getPatientDetailsHandler.js";
 import getPatientsHandler from "../../../../handlers/patient/getPatientsHandler.js";
+import getAllSchedulesByUserHandler from "../../../../handlers/scheduling/getAllSchedulesByUserHandler.js";
 const API_KEY = process.env.GOOGLE_API_KEY;
 if (!API_KEY) {
   throw new Error("API_KEY is required");
@@ -27,10 +28,13 @@ class Chatbot {
     if (this.chat) {
       return;
     }
+    const consultas = await this.getSchedulings();
     let userInformation = `
       - **Nombre:** ${this.user.name}
       - **Rol:** ${this.user.role}
       - **ID de usuario:** ${this.user.userId}
+      - **Consultas:** ${consultas} Cuando se te pida una consulta siempre da las consultas mas proximas al día actual.
+      - Dia actual: ${new Date().toLocaleDateString()}
     `;
     if (this.user.role === "Paciente") {
       const patientBackground = await this.getClinicalHistory();
@@ -151,6 +155,18 @@ ${formatCategory("Médico-Paciente", data.medico_paciente)}`;
       return "Lo siento, ocurrió un error, por favor intenta nuevamente.";
     }
   }
+  //General
+  async getSchedulings() {
+    try {
+      const result = await getAllSchedulesByUserHandler(
+        this.user.userId,
+        this.user.role
+      );
+      return `Los turnos del médico son:\n${JSON.stringify(result)}`;
+    } catch (error) {
+      return "No se pudo obtener la información de los turnos.";
+    }
+  }
   //Paciente
   async getClinicalHistory() {
     try {
@@ -193,7 +209,6 @@ ${formatCategory("Médico-Paciente", data.medico_paciente)}`;
       return "No se pudo obtener la información de los pacientes.";
     }
   } //Pacientes del médico
-  async getSchedulings() {} //Citas del médico
   async getStadistics() {} //Estadisticas de los pacientes
   async getLastsMedicalEvent() {} //Ultimos 5 eventos médicos
 
