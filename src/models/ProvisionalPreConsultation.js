@@ -25,6 +25,7 @@ const model = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         field: "appointment_schedule",
+        unique: true,
         references: {
           model: "appointment_scheduling",
           key: "id",
@@ -239,14 +240,14 @@ const model = (sequelize) => {
       },
       currentMedications: {
         type: DataTypes.ARRAY(DataTypes.STRING),
-        allowNull: true,//TODO CAMBIAR A FALSE
+        allowNull: true, //TODO CAMBIAR A FALSE
         field: "current_medications",
       },
-      status:{
-        type: DataTypes.ENUM('pending','sent'),
-        allowNull:true,
-        defaultValue:'pending'
-      }
+      status: {
+        type: DataTypes.ENUM("pending", "sent"),
+        allowNull: true,
+        defaultValue: "pending",
+      },
     },
     {
       tableName: "provisional_pre_consultation",
@@ -256,13 +257,11 @@ const model = (sequelize) => {
         {
           name: "provisonal_pre_consultation_id_pk",
           unique: true,
-          fields: [
-            { name: "id" },
-          ]
+          fields: [{ name: "id" }],
         },
-      ]
+      ],
     }
   );
 };
 
-export default model
+export default model;
