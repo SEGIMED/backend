@@ -54,7 +54,6 @@ const createBackgroundsHandler = async (body) => {
       return `Ya existe un registro de antecedentes para el evento médico con id ${medicalEventId}`;
     }
   } catch (error) {
-    console.log(error);
     throw new SegimedAPIError(
       "Hubo un error durante el proceso de registro.",
       500
