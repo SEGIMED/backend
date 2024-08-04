@@ -15,7 +15,7 @@ const model = (sequelize) => {
       idPhysician: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        field: "reviews_score",
+        field: "id_physician",
         unique: true,
         references: {
           model: "user",
@@ -57,12 +57,12 @@ const model = (sequelize) => {
         },
       },
       nacionalRegistration: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
         field: "nacional_registration",
       },
       provincialRegistration: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
         field: "provincial_registration",
       },
