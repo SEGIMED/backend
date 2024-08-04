@@ -108,6 +108,7 @@ import patchNotificationsController from "../controllers/notifications/patchNoti
 import getSchedules from "../controllers/managementSchedule/getSchedule.js";
 import { getRequestController } from "../controllers/requestFollow/getReqFollowController.js";
 import { createRequestController } from "../controllers/requestFollow/createReqFollowCtrl.js";
+import getAllSchedulesByUserController from "../controllers/scheduling/getAllSchedulesByUserController.js";
 import createOnboardingController from "../controllers/onbording/createOnbording.js";
 
 const patientRouter = Router();
@@ -335,6 +336,9 @@ schedulingRouter
   .route("/schedule/:id")
   .patch(patchScheduleController)
   .delete(deleteSchedulingController);
+schedulingRouter
+  .route("/schedulesByUserId")
+  .get(getAllSchedulesByUserController);
 
 //* Medical Event
 medicalEventRouter
