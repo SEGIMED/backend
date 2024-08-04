@@ -4,7 +4,7 @@ const DataTypes = sequelize.DataTypes;
 
 const model = (sequelize) => {
   sequelize.define(
-    "PatientDiagnostic",
+    "PhysicianOnboarding",
     {
       id: {
         autoIncrement: true,
@@ -12,67 +12,64 @@ const model = (sequelize) => {
         allowNull: false,
         primaryKey: true,
       },
-      patient: {
+      idPhysician: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        field: "id_physician",
         references: {
           model: "user",
           key: "id",
         },
       },
-      diagnosedBy: {
+      genre: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
-          model: "user",
-          key: "id",
-        },
-        field: "diagnosed_by",
-      },
-      medicalEvent: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        unique: true,
-        references: {
-          model: "medical_event",
-          key: "id",
-        },
-        field: "medical_event",
-      },
-      timestamp: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      disease: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "cat_disease",
+          model: "cat_genre",
           key: "id",
         },
       },
-      diagnosticNotes: {
+      birthDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: true,
+        field: "birth_date",
+      },
+      address: {
         type: DataTypes.TEXT,
         allowNull: true,
-        field: "diagnostic_notes",
       },
-      diseaseEtiology: {
+      centerAttention: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+        field: "center_attention",
+        references: {
+          model: "cat_center_attention",
+          key: "id",
+        },
+      },
+      specialty: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+        references: {
+          model: "cat_medical_specialty",
+          key: "id",
+        },
+      },
+      nacionalRegistration: {
         type: DataTypes.TEXT,
         allowNull: true,
-        field: "disease_etiology",
+        field: "nacional_registration",
+      },
+      provincialRegistration: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        field: "provincial_registration",
       },
     },
     {
-      tableName: "patient_diagnostic",
+      tableName: "physician_onboarding",
       schema: "public",
       timestamps: false,
-      indexes: [
-        {
-          name: "patient_diagnostic_pk",
-          unique: true,
-          fields: [{ name: "id" }],
-        },
-      ],
     }
   );
 };

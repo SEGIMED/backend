@@ -12,6 +12,8 @@ export const mapMedicalEventDetail = (medicalEvent) => {
   const painMapArray = (medicalEvent?.patientPainMaps ?? [])
     .concat(medicalEvent?.appSch?.patientPainMaps ?? [])
     .map((painMap) => mapPainMap(painMap));
+
+    
   return {
     medicalEventId: medicalEvent?.id ?? null,
 
@@ -26,7 +28,7 @@ export const mapMedicalEventDetail = (medicalEvent) => {
       currentLocation:
         medicalEvent?.appSch?.patientUser?.currentLocation ?? null,
       geolocation: medicalEvent?.appSch?.patientUser?.geolocation ?? null,
-      genre: medicalEvent?.appSch?.patientUser?.socDemDet.catGenre ?? null,
+      genre: medicalEvent?.appSch?.patientUser?.socDemDet?.catGenre ?? null,
     },
 
     // grupo HTP
@@ -113,5 +115,8 @@ export const mapMedicalEventDetail = (medicalEvent) => {
 
     //Pauta de alarma
     alarmPattern: medicalEvent?.alarmPattern ?? null,
+
+    // Añadir los timestamps del scheduling a la respuesta
+    timestamp: medicalEvent?.appSch?.scheduledStartTimestamp ?? null,
   };
 };

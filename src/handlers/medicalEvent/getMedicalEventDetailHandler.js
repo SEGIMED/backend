@@ -66,16 +66,16 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
         model: DrugPrescription,
         as: "drugPrescriptions", // Alias para DrugPrescription
         include: [
-          {
-            model: User,
-            as: "patient_user", // Alias para el paciente en DrugPrescription
-            attributes: ["id", "name", "lastname"], // Campos necesarios
-          },
-          {
-            model: User,
-            as: "prescribed_physician_user", // Alias para el médico prescriptor en DrugPrescription
-            attributes: ["id", "name", "lastname"], // Campos necesarios
-          },
+          // {
+          //   model: User,
+          //   as: "patient_user", // Alias para el paciente en DrugPrescription
+          //   attributes: ["id", "name", "lastname"], // Campos necesarios
+          // },
+          // {
+          //   model: User,
+          //   as: "prescribed_physician_user", // Alias para el médico prescriptor en DrugPrescription
+          //   attributes: ["id", "name", "lastname"], // Campos necesarios
+          // },
           {
             model: CatDrug,
             as: "catDrug", // Alias para CatDrug
@@ -161,18 +161,18 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
                 model: Backgrounds,
                 as: "backgrounds",
               },
-              {
-                model: AnthropometricDetails,
-                as: "patientAnthDet",
-                include: {
-                  model: CatAnthropometricMeasureType,
-                  as: "anthMeasType",
-                  include: {
-                    model: CatMeasureUnit,
-                    as: "measUnit",
-                  },
-                },
-              },
+              // {
+              //   model: AnthropometricDetails,
+              //   as: "patientAnthDet",
+              //   include: {
+              //     model: CatAnthropometricMeasureType,
+              //     as: "anthMeasType",
+              //     include: {
+              //       model: CatMeasureUnit,
+              //       as: "measUnit",
+              //     },
+              //   },
+              // },
             ],
           },
           {
@@ -313,7 +313,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
       },
     ],
   };
-
   try {
     if (typeof medicalEventId !== "undefined") {
       query.where[Op.or].push({ id: medicalEventId });

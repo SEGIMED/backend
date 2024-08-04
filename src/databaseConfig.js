@@ -83,7 +83,7 @@ import CatCenterAttetionModel from "./models/CatCenterAttention.js";
 import PhysicianFavoritePatientModel from "./models/PhysicianFavoritePatient.js";
 import RefreshTokenModel from "./models/RefreshToken.js";
 import RequestFollowModel from "./models/RequestFollow.js";
-
+import PhysicianOnboardingModel from "./models/PhysicianOnboarding.js";
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
 // import { config } from "dotenv";
@@ -198,6 +198,7 @@ CatCenterAttetionModel(sequelize);
 PhysicianFavoritePatientModel(sequelize);
 RefreshTokenModel(sequelize);
 RequestFollowModel(sequelize);
+PhysicianOnboardingModel(sequelize);
 
 export const {
   DiagnosticTest,
@@ -282,6 +283,7 @@ export const {
   CatCenterAttention,
   RefreshToken,
   RequestFollow,
+  PhysicianOnboarding,
 } = sequelize.models;
 
 DiagnosticTest.belongsTo(AppointmentScheduling, {
@@ -750,22 +752,22 @@ User.hasMany(MedicalIndications, {
   as: "prescribedPhysicianMedicalIndications",
   foreignKey: "prescribedPhysician",
 });
-MedicalProcedurePrescription.belongsTo(User, {
-  as: "patientUser",
-  foreignKey: "patient",
-});
-User.hasMany(MedicalProcedurePrescription, {
-  as: "medicalProcedurePrescriptions",
-  foreignKey: "patient",
-});
-MedicalProcedurePrescription.belongsTo(User, {
-  as: "prescribedPhysicianUser",
-  foreignKey: "prescribedPhysician",
-});
-User.hasMany(MedicalProcedurePrescription, {
-  as: "prescribedPhysicianMedicalProcedurePrescriptions",
-  foreignKey: "prescribedPhysician",
-});
+// MedicalProcedurePrescription.belongsTo(User, {
+//   as: "patientUser",
+//   foreignKey: "patient",
+// });
+// User.hasMany(MedicalProcedurePrescription, {
+//   as: "medicalProcedurePrescriptions",
+//   foreignKey: "patient",
+// });
+// MedicalProcedurePrescription.belongsTo(User, {
+//   as: "prescribedPhysicianUser",
+//   foreignKey: "prescribedPhysician",
+// });
+// User.hasMany(MedicalProcedurePrescription, {
+//   as: "prescribedPhysicianMedicalProcedurePrescriptions",
+//   foreignKey: "prescribedPhysician",
+// });
 MedicalReferral.belongsTo(User, { as: "patientUser", foreignKey: "patient" });
 User.hasMany(MedicalReferral, {
   as: "medicalReferrals",
@@ -800,22 +802,22 @@ User.hasMany(PatientMedicalBackground, {
   as: "patientMedicalBackgrounds",
   foreignKey: "patient",
 });
-TherapyPrescription.belongsTo(User, {
-  as: "patientUser",
-  foreignKey: "patient",
-});
-User.hasMany(TherapyPrescription, {
-  as: "therapyPrescriptions",
-  foreignKey: "patient",
-});
-TherapyPrescription.belongsTo(User, {
-  as: "prescribedPhysicianUser",
-  foreignKey: "prescribedPhysician",
-});
-User.hasMany(TherapyPrescription, {
-  as: "prescribedPhysicianTherapyPrescriptions",
-  foreignKey: "prescribedPhysician",
-});
+// TherapyPrescription.belongsTo(User, {
+//   as: "patientUser",
+//   foreignKey: "patient",
+// });
+// User.hasMany(TherapyPrescription, {
+//   as: "therapyPrescriptions",
+//   foreignKey: "patient",
+// });
+// TherapyPrescription.belongsTo(User, {
+//   as: "prescribedPhysicianUser",
+//   foreignKey: "prescribedPhysician",
+// });
+// User.hasMany(TherapyPrescription, {
+//   as: "prescribedPhysicianTherapyPrescriptions",
+//   foreignKey: "prescribedPhysician",
+// });
 SociodemographicDetails.belongsTo(CatCivilStatus, {
   as: "catCivilStatus",
   foreignKey: "civilStatus",
@@ -1174,11 +1176,20 @@ CatCenterAttention.hasMany(SociodemographicDetails, {
 });
 CatCenterAttention.belongsTo(CatCity, { foreignKey: "city" });
 CatCity.hasMany(CatCenterAttention, { foreignKey: "city" });
+
 User.hasMany(RequestFollow, { foreignKey: "userSend" });
 User.hasMany(RequestFollow, { foreignKey: "userReceptor" });
+
 RequestFollow.belongsTo(User, { foreignKey: "userSend" });
 RequestFollow.belongsTo(User, { foreignKey: "userReceptor" });
 
+User.hasOne(PhysicianOnboarding, { foreignKey: "idPhysician" });
+PhysicianOnboarding.belongsTo(User, { foreignKey: "idPhysician" });
+PhysicianOnboarding.belongsTo(CatMedicalSpecialty, { foreignKey: "specialty" });
+PhysicianOnboarding.belongsTo(CatGenre, { foreignKey: "genre" });
+PhysicianOnboarding.belongsTo(CatCenterAttention, {
+  foreignKey: "centerAttention",
+});
 AlarmEvent.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
 
 User.hasOne(RefreshToken, { foreignKey: "userId", as: "refreshToken" });
@@ -1266,6 +1277,7 @@ const models = {
   CatCenterAttention,
   RefreshToken,
   RequestFollow,
+  PhysicianOnboarding,
 };
 
 export default models;

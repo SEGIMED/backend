@@ -13,7 +13,6 @@ const updateDrugPrescriptionHandler = async (body) => {
     quantity,
     medicalEventId,
   } = body;
-  // console.log("delete drugs ", body);
   // deleteDrugPrescriptionsHandler(medicalEventId);
 };
 

@@ -27,7 +27,6 @@ const deleteDrugPrescriptionsHandler = async (medicalEventId) => {
 
     return { message: `${deletedCount} registros eliminados correctamente.` };
   } catch (error) {
-    console.error(error.message);
     throw new SegimedAPIError(
       "Error al eliminar los registros: " + error.message,
       500
