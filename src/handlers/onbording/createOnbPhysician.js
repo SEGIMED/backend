@@ -8,7 +8,7 @@ export const createOnbPhysician = async (body, userId) => {
     birthDate,
     address,
     centerAttention,
-    specialty,
+    speciality,
     nacionalRegistration,
     provincialRegistration,
   } = body;
@@ -19,7 +19,7 @@ export const createOnbPhysician = async (body, userId) => {
       birthDate,
       address,
       centerAttention,
-      specialty,
+      speciality,
       nacionalRegistration,
       provincialRegistration,
     });
