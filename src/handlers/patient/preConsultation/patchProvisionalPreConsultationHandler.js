@@ -2,7 +2,7 @@ import { ProvisionalPreConsultation } from "../../../databaseConfig.js";
 
 const patchProvisionalPreConsultationHandler = async(body,{transaction})=>{
     const{
-        preconsultationId,
+        appointmentSchedule,
         lackOfAir,
         // lackOfAirAsAlways,
         lackOfAirIncremented,
@@ -48,7 +48,7 @@ const patchProvisionalPreConsultationHandler = async(body,{transaction})=>{
         status
     }=body
     try {
-        const existingPreconsultation = await ProvisionalPreConsultation.findOne({ where: { id: preconsultationId } });
+        const existingPreconsultation = await ProvisionalPreConsultation.findOne({ where: { appointmentSchedule } });
         if (!existingPreconsultation) {
             throw new Error("No se encontró esta preconsulta");
         }
@@ -98,7 +98,7 @@ const patchProvisionalPreConsultationHandler = async(body,{transaction})=>{
             currentMedications: currentMedications !== undefined ? currentMedications : existingPreconsultation.currentMedications,
             status: status !== undefined ?status: existingPreconsultation.status
         },
-        {where:{id:preconsultationId},
+        {where:{appointmentSchedule},
         returning:true,
         transaction})
 

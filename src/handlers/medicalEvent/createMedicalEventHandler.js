@@ -44,7 +44,6 @@ const createMedicalEventHandler = async (body) => {
       return newMedicalEvent;
     });
   } catch (error) {
-    console.error(error.message);
     throw new SegimedAPIError("Error al crear la consulta", 500);
   }
 };

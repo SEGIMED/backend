@@ -3,6 +3,8 @@ import contextService from "request-context";
 import moment from "moment-timezone";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import createDrugPrescriptionHandler from "../drugPrescription/createDrugPrescriptionHandler.js";
+import createMedicalProcedurePrescriptionHandler from "../../handlers/medicalProcedurePrescription/createMedicalProcedurePrescriptionHandler.js";
+import createTherapyPrescriptionHandler from "../therapy/createTherapyPrescriptionHandler.js";
 
 const createPatientDiagnosticHandler = async (body) => {
   const {
@@ -12,6 +14,7 @@ const createPatientDiagnosticHandler = async (body) => {
     medicalEventId,
     drugId,
     drugName,
+    therapyPrescription: therapyDescription,
     quantityDrug,
   } = body;
 
@@ -36,7 +39,7 @@ const createPatientDiagnosticHandler = async (body) => {
       diagnosticNotes,
       medicalEvent: medicalEventId,
     });
-
+    //guardo las drugsPrescriptions
     if (drugName) {
       drugName.forEach((drug) => {
         const drugPrescription = {
@@ -49,6 +52,16 @@ const createPatientDiagnosticHandler = async (body) => {
         createDrugPrescriptionHandler(drugPrescription);
       });
     }
+    //guardo procedure prescription
+    createMedicalProcedurePrescriptionHandler({
+      medicalEventId,
+      medicalProcedureName: body.medicalProcedureName,
+    });
+    //guardo therapy prescription
+    createTherapyPrescriptionHandler({
+      medicalEventId,
+      therapyDescription: body.descriptionTherapy,
+    });
 
     return newDiagnostic;
   } catch (error) {

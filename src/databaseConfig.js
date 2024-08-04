@@ -752,22 +752,22 @@ User.hasMany(MedicalIndications, {
   as: "prescribedPhysicianMedicalIndications",
   foreignKey: "prescribedPhysician",
 });
-MedicalProcedurePrescription.belongsTo(User, {
-  as: "patientUser",
-  foreignKey: "patient",
-});
-User.hasMany(MedicalProcedurePrescription, {
-  as: "medicalProcedurePrescriptions",
-  foreignKey: "patient",
-});
-MedicalProcedurePrescription.belongsTo(User, {
-  as: "prescribedPhysicianUser",
-  foreignKey: "prescribedPhysician",
-});
-User.hasMany(MedicalProcedurePrescription, {
-  as: "prescribedPhysicianMedicalProcedurePrescriptions",
-  foreignKey: "prescribedPhysician",
-});
+// MedicalProcedurePrescription.belongsTo(User, {
+//   as: "patientUser",
+//   foreignKey: "patient",
+// });
+// User.hasMany(MedicalProcedurePrescription, {
+//   as: "medicalProcedurePrescriptions",
+//   foreignKey: "patient",
+// });
+// MedicalProcedurePrescription.belongsTo(User, {
+//   as: "prescribedPhysicianUser",
+//   foreignKey: "prescribedPhysician",
+// });
+// User.hasMany(MedicalProcedurePrescription, {
+//   as: "prescribedPhysicianMedicalProcedurePrescriptions",
+//   foreignKey: "prescribedPhysician",
+// });
 MedicalReferral.belongsTo(User, { as: "patientUser", foreignKey: "patient" });
 User.hasMany(MedicalReferral, {
   as: "medicalReferrals",
@@ -802,22 +802,22 @@ User.hasMany(PatientMedicalBackground, {
   as: "patientMedicalBackgrounds",
   foreignKey: "patient",
 });
-TherapyPrescription.belongsTo(User, {
-  as: "patientUser",
-  foreignKey: "patient",
-});
-User.hasMany(TherapyPrescription, {
-  as: "therapyPrescriptions",
-  foreignKey: "patient",
-});
-TherapyPrescription.belongsTo(User, {
-  as: "prescribedPhysicianUser",
-  foreignKey: "prescribedPhysician",
-});
-User.hasMany(TherapyPrescription, {
-  as: "prescribedPhysicianTherapyPrescriptions",
-  foreignKey: "prescribedPhysician",
-});
+// TherapyPrescription.belongsTo(User, {
+//   as: "patientUser",
+//   foreignKey: "patient",
+// });
+// User.hasMany(TherapyPrescription, {
+//   as: "therapyPrescriptions",
+//   foreignKey: "patient",
+// });
+// TherapyPrescription.belongsTo(User, {
+//   as: "prescribedPhysicianUser",
+//   foreignKey: "prescribedPhysician",
+// });
+// User.hasMany(TherapyPrescription, {
+//   as: "prescribedPhysicianTherapyPrescriptions",
+//   foreignKey: "prescribedPhysician",
+// });
 SociodemographicDetails.belongsTo(CatCivilStatus, {
   as: "catCivilStatus",
   foreignKey: "civilStatus",
