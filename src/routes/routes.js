@@ -102,7 +102,6 @@ import updateSchedule from "../controllers/managementSchedule/updateSchedule.js"
 import deleteSchedule from "../controllers/managementSchedule/deleteSchedule.js";
 import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js";
 import getPreConsultationByScheduleIdController from "../controllers/patient/preConsultation/getPreConsultationByScheduleIdController.js";
-import createOnbordingController from "../controllers/onbording/createOnbording.js";
 import getAllNotificationsPatienController from "../controllers/notifications/getAllNotificationsPatienController.js";
 import getAllNotificationsPhysicianController from "../controllers/notifications/getAllNotificationsPhysicianController.js";
 import patchNotificationsController from "../controllers/notifications/patchNotificationsController.js";
@@ -110,6 +109,8 @@ import getSchedules from "../controllers/managementSchedule/getSchedule.js";
 import { getRequestController } from "../controllers/requestFollow/getReqFollowController.js";
 import { createRequestController } from "../controllers/requestFollow/createReqFollowCtrl.js";
 import getAllSchedulesByUserController from "../controllers/scheduling/getAllSchedulesByUserController.js";
+import createOnboardingController from "../controllers/onbording/createOnbording.js";
+
 const patientRouter = Router();
 const userRouter = Router();
 const getPatientsRouter = Router();
@@ -491,8 +492,8 @@ statisticsRouter.get(
 );
 statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 
-//* Onbording
-onbordingRouter.patch("/onbording", createOnbordingController);
+//* Onboarding
+onbordingRouter.patch("/onboarding", createOnboardingController);
 
 //* Notifications
 getAllNotificationsPatienRouter.get(
