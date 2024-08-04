@@ -7,7 +7,7 @@ const refreshTokenCreationHandler = async ({ userId, refreshToken }) => {
   try {
     const expiresAt = new Date(
       Date.now() + (parseInt(REFRESH_TOKEN_EXPIRATION_DAYS, 10) || 7) * 24 * 60 * 60 * 1000
-    );
+    ).toISOString();
     
     const [refreshTokenRecord, created] = await RefreshToken.findOrCreate({
       where: { userId },
