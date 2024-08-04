@@ -1,6 +1,5 @@
 import { SociodemographicDetails } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
-import { updateValueModel } from "../../validations/updatePreconsutation.js";
 import { validationOnbording } from "../../validations/validationOnbording.js";
 
 export const createOnboardingHandler = async (body, userId) => {
@@ -19,7 +18,7 @@ export const createOnboardingHandler = async (body, userId) => {
     throw new SegimedAPIError("Error en la validacion de datos", 400);
   }
   try {
-    const updateData = await SociodemographicDetails.update(
+    await SociodemographicDetails.update(
       {
         birthDate,
         address,
@@ -36,7 +35,12 @@ export const createOnboardingHandler = async (body, userId) => {
         },
       }
     );
-    return updateData;
+    const updateValue = await SociodemographicDetails.findOne({
+      where: {
+        patient: convertUserid,
+      },
+    });
+    return updateValue;
   } catch (error) {
     throw new SegimedAPIError(
       "Error en la operacion de registro: ",
