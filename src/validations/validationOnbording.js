@@ -1,27 +1,30 @@
 export const validationOnbording = (body) => {
   if (typeof body.birthDate !== "string") {
-    return "birthDate must be a string";
+    return false;
   }
   if (typeof body.address !== "string") {
-    return "address must be a string";
+    return false;
+  }
+  if (body.address.length <= 3 || body.address.length >= 50) {
+    return false;
   }
   if (typeof body.genre !== "number") {
-    return "genre must be a number";
+    return false;
   }
   if (typeof body.hipertPulm !== "boolean") {
-    return "hipertPulm must be a boolean";
+    return false;
   }
   if (typeof body.centerAttention !== "number") {
-    return "centerAttention must be a number";
+    return false;
   }
   if (typeof body.liveAlone !== "boolean") {
-    return "liveAlone must be a boolean";
+    return false;
   }
   if (typeof body.hasTechUseDifficulty !== "boolean") {
-    return "hasTechUseDifficulty must be a boolean";
+    return false;
   }
   if (typeof body.needsCellphoneAssistance !== "boolean") {
-    return "needsCellphoneAssistance must be a boolean";
+    return false;
   }
   return true;
 };
