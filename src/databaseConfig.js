@@ -83,7 +83,7 @@ import CatCenterAttetionModel from "./models/CatCenterAttention.js";
 import PhysicianFavoritePatientModel from "./models/PhysicianFavoritePatient.js";
 import RefreshTokenModel from "./models/RefreshToken.js";
 import RequestFollowModel from "./models/RequestFollow.js";
-
+import PhysicianOnboardingModel from "./models/PhysicianOnboarding.js";
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
 // import { config } from "dotenv";
@@ -198,6 +198,7 @@ CatCenterAttetionModel(sequelize);
 PhysicianFavoritePatientModel(sequelize);
 RefreshTokenModel(sequelize);
 RequestFollowModel(sequelize);
+PhysicianOnboardingModel(sequelize);
 
 export const {
   DiagnosticTest,
@@ -282,6 +283,7 @@ export const {
   CatCenterAttention,
   RefreshToken,
   RequestFollow,
+  PhysicianOnboarding,
 } = sequelize.models;
 
 DiagnosticTest.belongsTo(AppointmentScheduling, {
@@ -1174,11 +1176,20 @@ CatCenterAttention.hasMany(SociodemographicDetails, {
 });
 CatCenterAttention.belongsTo(CatCity, { foreignKey: "city" });
 CatCity.hasMany(CatCenterAttention, { foreignKey: "city" });
+
 User.hasMany(RequestFollow, { foreignKey: "userSend" });
 User.hasMany(RequestFollow, { foreignKey: "userReceptor" });
+
 RequestFollow.belongsTo(User, { foreignKey: "userSend" });
 RequestFollow.belongsTo(User, { foreignKey: "userReceptor" });
 
+User.hasOne(PhysicianOnboarding, { foreignKey: "idPhysician" });
+PhysicianOnboarding.belongsTo(User, { foreignKey: "idPhysician" });
+PhysicianOnboarding.belongsTo(CatMedicalSpecialty, { foreignKey: "specialty" });
+PhysicianOnboarding.belongsTo(CatGenre, { foreignKey: "genre" });
+PhysicianOnboarding.belongsTo(CatCenterAttention, {
+  foreignKey: "centerAttention",
+});
 AlarmEvent.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
 
 User.hasOne(RefreshToken, { foreignKey: "userId", as: "refreshToken" });
@@ -1266,6 +1277,7 @@ const models = {
   CatCenterAttention,
   RefreshToken,
   RequestFollow,
+  PhysicianOnboarding,
 };
 
 export default models;
