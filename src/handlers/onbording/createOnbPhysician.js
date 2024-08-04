@@ -2,6 +2,7 @@ import models from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 
 export const createOnbPhysician = async (body, userId) => {
+  const convertUserid = parseInt(userId, 10);
   const {
     genre,
     birthDate,
@@ -13,7 +14,7 @@ export const createOnbPhysician = async (body, userId) => {
   } = body;
   try {
     const newOnbPhysician = await models.PhysicianOnboarding.create({
-      userId,
+      idPhysician: convertUserid,
       genre,
       birthDate,
       address,

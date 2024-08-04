@@ -108,7 +108,7 @@ import patchNotificationsController from "../controllers/notifications/patchNoti
 import getSchedules from "../controllers/managementSchedule/getSchedule.js";
 import { getRequestController } from "../controllers/requestFollow/getReqFollowController.js";
 import { createRequestController } from "../controllers/requestFollow/createReqFollowCtrl.js";
-import createOnboardingHandler from "../handlers/onbording/createOnbordingHandler.js";
+import createOnboardingController from "../controllers/onbording/createOnbording.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -489,7 +489,7 @@ statisticsRouter.get(
 statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 
 //* Onboarding
-onbordingRouter.patch("/onboarding", createOnboardingHandler);
+onbordingRouter.patch("/onboarding", createOnboardingController);
 
 //* Notifications
 getAllNotificationsPatienRouter.get(

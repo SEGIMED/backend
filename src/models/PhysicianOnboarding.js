@@ -16,7 +16,6 @@ const model = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         field: "id_physician",
-        unique: true,
         references: {
           model: "user",
           key: "id",
