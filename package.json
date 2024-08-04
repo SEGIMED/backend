@@ -35,6 +35,7 @@
     "nodemailer": "^6.9.13",
     "pg": "^8.12.0",
     "request-context": "^2.0.0",
+    "segimed-server": "file:",
     "sequelize": "^6.37.3",
     "sharp": "^0.33.3",
     "socket.io": "^4.7.5",
