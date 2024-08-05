@@ -22,7 +22,7 @@ const updateOrCreateVitalSignsHandler = async (body,{transaction}) => {
           
           //Verificación de signos vitales en null
           if (vitalSign.measure == null) {
-            return null;
+            return;
           }
           // Verificar si el signo vital ya existe
           const existingVitalSign = await VitalSignDetails.findOne({
