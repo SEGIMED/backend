@@ -40,6 +40,7 @@ import {
   PatientPulmonaryHypertensionGroup,
   PatientSurgicalRisk,
   SociodemographicDetails,
+  TherapyPrescription,
   User,
   VitalSignDetails,
 } from "../../databaseConfig.js";
@@ -64,22 +65,12 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
       },
       {
         model: DrugPrescription,
-        as: "drugPrescriptions", // Alias para DrugPrescription
+        as: "drugPrescriptions",
         include: [
-          // {
-          //   model: User,
-          //   as: "patient_user", // Alias para el paciente en DrugPrescription
-          //   attributes: ["id", "name", "lastname"], // Campos necesarios
-          // },
-          // {
-          //   model: User,
-          //   as: "prescribed_physician_user", // Alias para el médico prescriptor en DrugPrescription
-          //   attributes: ["id", "name", "lastname"], // Campos necesarios
-          // },
           {
             model: CatDrug,
-            as: "catDrug", // Alias para CatDrug
-            attributes: ["id", "name"], // Campos necesarios
+            as: "catDrug",
+            attributes: ["id", "name"],
           },
         ],
       },
@@ -95,6 +86,11 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
                 model: SociodemographicDetails,
                 as: "socDemDet",
                 include: [
+                  {
+                    model: CatGenre,
+                    as: "catGenre",
+                    attributes: ["name"],
+                  },
                   {
                     model: CatEducationalLevel,
                     as: "catEducationalLevel",
@@ -283,6 +279,19 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
             as: "catMedicalProcedureType",
           },
         },
+      },
+      {
+        model: TherapyPrescription,
+        as: "therapyPrescriptions",
+        separate: true,
+        // include: {
+        //   model: CatMedicalProcedure,
+        //   as: "catMedicalProcedure",
+        //   include: {
+        //     model: CatMedicalProcedureType,
+        //     as: "catMedicalProcedureType",
+        //   },
+        // },
       },
       {
         model: VitalSignDetails,
