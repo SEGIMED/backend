@@ -39,13 +39,11 @@ const patchProvisionalPreConsultationController = async (req, res) => {
     if (error instanceof SegimedAPIError) {
       return res.status(error.errorCode).json({ error: error.message });
     } else {
-      return res
-        .status(500)
-        .json({
-          error:
-            "Error durante el proceso de actualización de la preconsulta: " +
-            error.message,
-        });
+      return res.status(500).json({
+        error:
+          "Error durante el proceso de actualización de la preconsulta: " +
+          error.message,
+      });
     }
   }
 };
