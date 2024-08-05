@@ -1185,7 +1185,6 @@ RequestFollow.belongsTo(User, { foreignKey: "userReceptor" });
 
 User.hasOne(PhysicianOnboarding, { foreignKey: "idPhysician" });
 PhysicianOnboarding.belongsTo(User, { foreignKey: "idPhysician" });
-PhysicianOnboarding.belongsTo(CatMedicalSpecialty, { foreignKey: "specialty" });
 PhysicianOnboarding.belongsTo(CatGenre, { foreignKey: "genre" });
 PhysicianOnboarding.belongsTo(CatCenterAttention, {
   foreignKey: "centerAttention",
