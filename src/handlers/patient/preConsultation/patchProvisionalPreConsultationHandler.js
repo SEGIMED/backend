@@ -1,79 +1,82 @@
 import { ProvisionalPreConsultation } from "../../../databaseConfig.js";
 import { loadFile } from "../../../utils/cloudinary/cloudinary.js";
 
-const patchProvisionalPreConsultationHandler = async (body, { transaction }) => {
-    const {
-        appointmentSchedule,
-        lackOfAir,
-        // lackOfAirAsAlways,
-        lackOfAirIncremented,
-        lackOfAirClasification,
-        chestPainAtRest,
-        chestPainOnExertion,
-        chestPainOnExertionAmount,
-        edemaPresence,
-        edemaPresenceDescription,
-        feelings,
-        healthChanges,
-        healthChangesDescription,
-        healthWorsened,
-        bodyPain,
-        mentalHealthAffected,
-        mentalHealthAffectedDescription,
-        energyStatus,
-        feed,
-        hydrationStatus,
-        urineStatus,
-        exerciseStatus,
-        abnormalGlycemia,
-        lastAbnormalGlycemia,
-        // physicalExamination,
-        laboratoryResults,
-        laboratoryResultsDescription,
-        electrocardiogram,
-        electrocardiogramDescription,
-        rxThorax,
-        echocardiogram,
-        walkTest,
-        respiratoryFunctional,
-        tomographies,
-        rightHeartCatheterization,
-        ccg,
-        resonance,
-        leftHeartCatheterization,
-        otherStudies,
-        pendingStudies,
-        consultationReason,
-        importantSymptoms,
-        currentMedications,
-        status
-    } = body
+const patchProvisionalPreConsultationHandler = async (
+  body,
+  { transaction }
+) => {
+  const {
+    appointmentSchedule,
+    lackOfAir,
+    // lackOfAirAsAlways,
+    lackOfAirIncremented,
+    lackOfAirClasification,
+    chestPainAtRest,
+    chestPainOnExertion,
+    chestPainOnExertionAmount,
+    edemaPresence,
+    edemaPresenceDescription,
+    feelings,
+    healthChanges,
+    healthChangesDescription,
+    healthWorsened,
+    bodyPain,
+    mentalHealthAffected,
+    mentalHealthAffectedDescription,
+    energyStatus,
+    feed,
+    hydrationStatus,
+    urineStatus,
+    exerciseStatus,
+    abnormalGlycemia,
+    lastAbnormalGlycemia,
+    // physicalExamination,
+    laboratoryResults,
+    laboratoryResultsDescription,
+    electrocardiogram,
+    electrocardiogramDescription,
+    rxThorax,
+    echocardiogram,
+    walkTest,
+    respiratoryFunctional,
+    tomographies,
+    rightHeartCatheterization,
+    ccg,
+    resonance,
+    leftHeartCatheterization,
+    otherStudies,
+    pendingStudies,
+    consultationReason,
+    importantSymptoms,
+    currentMedications,
+    status,
+  } = body;
 
-    let studies = {
-        electrocardiogram,
-        rxThorax,
-        echocardiogram,
-        walkTest,
-        respiratoryFunctional,
-        tomographies,
-        rightHeartCatheterization,
-        ccg,
-        resonance,
-        leftHeartCatheterization,
-        otherStudies,
-        laboratoryResults,
-    };
+  let studies = {
+    electrocardiogram,
+    rxThorax,
+    echocardiogram,
+    walkTest,
+    respiratoryFunctional,
+    tomographies,
+    rightHeartCatheterization,
+    ccg,
+    resonance,
+    leftHeartCatheterization,
+    otherStudies,
+    laboratoryResults,
+  };
 
-    await Promise.all(Object.keys(studies).map(async studio => {
-        if (studies[studio]) {
-            // let parsetStudy = JSON.parse(studies[studio]);
-            const file = await loadFile(studies[studio]);
-            studies = { ...studies, [studio]: file?.url }
-            return;
-        }
-    }));
-
-
+  await Promise.all(
+    Object.keys(studies).map(async (studio) => {
+      if (studies[studio]) {
+        // let parsetStudy = JSON.parse(studies[studio]);
+        const file = await loadFile(studies[studio]);
+        studies = { ...studies, [studio]: file?.url };
+        return;
+      }
+    })
+  );
     try {
         const existingPreconsultation = await ProvisionalPreConsultation.findOne({ where: { appointmentSchedule } });
         if (!existingPreconsultation) {
@@ -103,7 +106,7 @@ const patchProvisionalPreConsultationHandler = async (body, { transaction }) => 
             urineStatus: urineStatus !== undefined ? urineStatus : existingPreconsultation.urineStatus,
             exerciseStatus: exerciseStatus !== undefined ? exerciseStatus : existingPreconsultation.exerciseStatus,
             abnormalGlycemia: abnormalGlycemia !== undefined ? abnormalGlycemia : existingPreconsultation.abnormalGlycemia,
-            lastAbnormalGlycemia: lastAbnormalGlycemia !== undefined ? lastAbnormalGlycemia : existingPreconsultation.lastAbnormalGlycemia,
+            lastAbnormalGlycemia: lastAbnormalGlycemia !== undefined ? lastAbnormalGlycemia?.map(a=>parseInt(a)).filter(a => !isNaN(a)) : existingPreconsultation.lastAbnormalGlycemia,
             // physicalExamination: physicalExamination !== undefined ? physicalExamination : existingPreconsultation.physicalExamination,
             laboratoryResults: laboratoryResults !== undefined ? studies.laboratoryResults : existingPreconsultation.laboratoryResults,
             laboratoryResultsDescription: laboratoryResultsDescription !== undefined ? laboratoryResultsDescription : existingPreconsultation.laboratoryResultsDescription,
@@ -125,16 +128,17 @@ const patchProvisionalPreConsultationHandler = async (body, { transaction }) => 
             currentMedications: currentMedications !== undefined ? currentMedications : existingPreconsultation.currentMedications,
             status: status !== undefined ? status : existingPreconsultation.status
         },
-            {
-                where: { appointmentSchedule },
-                returning: true,
-                transaction
-            })
+        {
+          where: { appointmentSchedule },
+          returning: true,
+          transaction,
+        }
+      );
 
-        return updatedPreconsultation[0]
-    } catch (error) {
-        throw new Error("Error actualizando la preconsulta: " + error.message);
-    }
-}
+    return updatedPreconsultation[0];
+  } catch (error) {
+    throw new Error("Error actualizando la preconsulta: " + error.message);
+  }
+};
 
-export default patchProvisionalPreConsultationHandler
+export default patchProvisionalPreConsultationHandler;
