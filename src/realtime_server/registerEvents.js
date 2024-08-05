@@ -39,17 +39,16 @@ export default (io) => {
     //get data of chats the user in database.
 
     // const dataChats = await Webchat.getAllChatUser(socket.decoded);
-    let chats = Webchat.listChat.getAllChatByUserId(dataUser.userId);
+    let chats = Webchat.listChat.getAllChatByUserId(userId);
     if (chats.length) {
       chats = chats.map((chat) => {
         const newChat = chat.mapper();
-        let target = newChat.users.find((user) => user != dataUser.userId);
+        let target = newChat.users.find((user) => user != userId);
         target = Webchat.listUser.getUser(target);
         newChat.target = target;
         return newChat;
       });
     }
-
     socket.emit(ClientListenners.getHistoryChats, chats);
     //others event listenners
     if (role !== Roles.Paciente && role !== Roles.Invitado) {

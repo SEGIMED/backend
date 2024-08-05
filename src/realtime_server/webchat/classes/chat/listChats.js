@@ -77,20 +77,20 @@ class ListChat{
         return users.sort().join("-");
     }
 
-    async saveInDatabase(chat){
+    async saveInDatabase(payload){
+        const {chat} = payload;
         const key = this.generateKey(chat.users);
         let context = this;
-        const callback = async (data) =>{
+        const callback =  (data) =>{
             const copyChat = JSON.parse(JSON.stringify(data))
             context.addChat(copyChat)
         }
         if(chat){
-            await createChatMongoDb(chat,callback)
+            await createChatMongoDb(payload,callback)
         } 
         let newChat = this._list.get(key);
-        return newChat.mapper();
-        
-       
+        newChat = newChat.mapper();
+        return newChat       
     }
 }
 

@@ -1,35 +1,32 @@
-import { Sequelize } from "sequelize";
-import {
-  AppointmentScheduling,
-  User,
-  PatientPulmonaryHypertensionRisk,
+import models, {
   CatPulmonaryArterialHypertensionRisk,
-  MedicalEvent,
+  PatientPulmonaryHypertensionRisk,
 } from "../../databaseConfig.js";
-
 import { mapPatientsSchedule } from "../../mapper/patient/patientMapper.js";
 
-const getAllSchedulesHandler = async (patientId, physicianId, id) => {
+const getAllSchedulesByUserHandler = async (userId, userRole) => {
   try {
-    const filters = {
-      schedulingStatus: {
-        [Sequelize.Op.ne]: 5, // Excluye filas donde schedulingStatus es igual a 5
+    let role;
+    if (userRole === "Paciente") {
+      role = "patient";
+    } else {
+      role = "physician";
+    }
+
+    const schedules = await models.AppointmentScheduling.findAll({
+      where: {
+        [`${role}`]: userId,
       },
-    };
-    if (patientId) {
-      filters.patient = patientId;
-    }
-    if (physicianId) {
-      filters.physician = physicianId;
-    }
-    if (id) {
-      filters.id = id;
-    }
-    const schedules = await AppointmentScheduling.findAll({
-      where: filters,
       include: [
         {
-          model: User,
+          model: models.User,
+          as: "physicianThatAttend",
+          attributes: {
+            exclude: ["password", "email", "createdAt", "updatedAt"],
+          },
+        },
+        {
+          model: models.User,
           as: "patientUser",
           attributes: ["name", "lastname", "avatar"],
           include: [
@@ -44,14 +41,11 @@ const getAllSchedulesHandler = async (patientId, physicianId, id) => {
             },
           ],
         },
-
         {
-          model: User,
-          as: "physicianThatAttend",
-          attributes: ["name", "lastname", "avatar"],
-        },
-        {
-          model: MedicalEvent,
+          model: models.MedicalEvent,
+          attributes: {
+            exclude: ["createdAt", "updatedAt"],
+          },
           as: "medicalEvent",
           attributes: ["id"],
         },
@@ -63,4 +57,4 @@ const getAllSchedulesHandler = async (patientId, physicianId, id) => {
   }
 };
 
-export default getAllSchedulesHandler;
+export default getAllSchedulesByUserHandler;
