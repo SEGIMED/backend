@@ -103,7 +103,7 @@ const patchProvisionalPreConsultationHandler = async (body, { transaction }) => 
             urineStatus: urineStatus !== undefined ? urineStatus : existingPreconsultation.urineStatus,
             exerciseStatus: exerciseStatus !== undefined ? exerciseStatus : existingPreconsultation.exerciseStatus,
             abnormalGlycemia: abnormalGlycemia !== undefined ? abnormalGlycemia : existingPreconsultation.abnormalGlycemia,
-            lastAbnormalGlycemia: lastAbnormalGlycemia !== undefined ? lastAbnormalGlycemia : existingPreconsultation.lastAbnormalGlycemia,
+            lastAbnormalGlycemia: lastAbnormalGlycemia !== undefined ? lastAbnormalGlycemia?.map(a=>parseInt(a)).filter(a => !isNaN(a)) : existingPreconsultation.lastAbnormalGlycemia,
             // physicalExamination: physicalExamination !== undefined ? physicalExamination : existingPreconsultation.physicalExamination,
             laboratoryResults: laboratoryResults !== undefined ? studies.laboratoryResults : existingPreconsultation.laboratoryResults,
             laboratoryResultsDescription: laboratoryResultsDescription !== undefined ? laboratoryResultsDescription : existingPreconsultation.laboratoryResultsDescription,

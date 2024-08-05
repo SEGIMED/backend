@@ -19,6 +19,11 @@ const updateOrCreateVitalSignsHandler = async (body,{transaction}) => {
     if (updateVitalSigns?.length !== 0 && updateVitalSigns) {
       const updatedOrCreatedVitalSigns = await Promise.all(
         updateVitalSigns.map(async (vitalSign) => {
+          
+          //Verificación de signos vitales en null
+          if (vitalSign.measure == null) {
+            return;
+          }
           // Verificar si el signo vital ya existe
           const existingVitalSign = await VitalSignDetails.findOne({
             where: {
@@ -64,8 +69,11 @@ const updateOrCreateVitalSignsHandler = async (body,{transaction}) => {
           }
         })
       );
+      const filteredVitalSigns = updatedOrCreatedVitalSigns.filter(
+        (vitalSign) => vitalSign !== undefined
+      );
 
-      return updatedOrCreatedVitalSigns;
+      return filteredVitalSigns;
     } else {
       return [];
     }
