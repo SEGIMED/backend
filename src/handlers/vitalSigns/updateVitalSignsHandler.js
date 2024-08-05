@@ -70,7 +70,7 @@ const updateOrCreateVitalSignsHandler = async (body,{transaction}) => {
         })
       );
 
-      return updatedOrCreatedVitalSigns;
+      return updatedOrCreatedVitalSigns.filter(vitalSign => vitalSign !== null);
     } else {
       return [];
     }
