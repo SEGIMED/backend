@@ -174,7 +174,6 @@ const getMedicalEventHistoryHandler = async (patientId, physicianId) => {
               },
             },
           ],
-          attributes: ["scheduledStartTimestamp","scheduledEndTimestamp","actualEndTimestamp","actualStartTimestamp"]
         },
         {
           model: PatientPainMap,
