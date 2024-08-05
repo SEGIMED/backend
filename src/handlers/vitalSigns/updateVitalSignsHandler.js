@@ -69,8 +69,11 @@ const updateOrCreateVitalSignsHandler = async (body,{transaction}) => {
           }
         })
       );
+      const filteredVitalSigns = updatedOrCreatedVitalSigns.filter(
+        (vitalSign) => vitalSign !== undefined
+      );
 
-      return updatedOrCreatedVitalSigns.filter(vitalSign => vitalSign !== null);
+      return filteredVitalSigns;
     } else {
       return [];
     }
