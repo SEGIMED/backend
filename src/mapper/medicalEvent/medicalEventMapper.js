@@ -7,94 +7,109 @@ import { mapAnthropometricDetail } from "../patient/anthropometricDetailsMapper.
 import { mapVitalSign } from "../patient/vitalSignsMapper.js";
 
 export const mapMedicalEvent = (medicalEvent) => {
+  const painMapArray = (medicalEvent?.patientPainMaps ?? [])
+    .concat(medicalEvent?.appSch?.patientPainMaps ?? [])
+    .map((painMap) => mapPainMap(painMap));
+  return {
+    medicalEventId: medicalEvent.id,
+    timestamp: medicalEvent.appSch.scheduledStartTimestamp,
 
-    const painMapArray = (medicalEvent?.patientPainMaps ?? [])
-        .concat(medicalEvent?.appSch?.patientPainMaps ?? [])
-        .map(painMap => mapPainMap(painMap));
-    return {
-        medicalEventId: medicalEvent.id,
-        timestamp: medicalEvent.appSch.actualStartTimestamp,
+    //motivo de consulta
+    chiefComplaint: medicalEvent.appSch.reasonForConsultation,
+    status: medicalEvent.appSch.schedulingStatus,
 
-        //motivo de consulta
-        chiefComplaint: medicalEvent.chiefComplaint,
-        status: medicalEvent.appSch.schedulingStatus,
+    // grupo HTP hipertensión pulmonar
+    patientHpGroups: medicalEvent.appSch.patientUser.userHpGroups.map(
+      (hpGroup) => {
+        return {
+          group: hpGroup.catHpGroup.name,
+          timestamp: hpGroup.timestamp,
+        };
+      }
+    ),
+    /// especialidad médica
+    medicalSpecialty: medicalEvent.appSch.specialty.name,
+    patient: {
+      id: medicalEvent.appSch.patientUser.id,
+      name: medicalEvent.appSch.patientUser.name,
+      lastname: medicalEvent.appSch.patientUser.lastname,
+    },
+    physician: {
+      id: medicalEvent.appSch.physicianThatAttend.id,
+      name: medicalEvent.appSch.physicianThatAttend.name,
+      lastname: medicalEvent.appSch.physicianThatAttend.lastname,
+      avatar: medicalEvent.appSch.physicianThatAttend.avatar,
+    },
+    // Sitio de atención
+    attendancePlace: medicalEvent.appSch.attendancePlace
+      ? {
+          googleMapsLink: medicalEvent.appSch.attendancePlace.googleMapsLink,
+          addressDetails: medicalEvent.appSch.attendancePlace.addressDetails,
+          alias: medicalEvent.appSch.attendancePlace.alias,
+        }
+      : null,
 
-        // grupo HTP hipertensión pulmonar
-        patientHpGroups: medicalEvent.appSch.patientUser.userHpGroups.map(hpGroup => {
-            return {
-                group: hpGroup.catHpGroup.name,
-                timestamp: hpGroup.timestamp
-            }
-        }),
-        /// especialidad médica
-        medicalSpecialty: medicalEvent.appSch.specialty.name,
-        patient: {
-            id: medicalEvent.appSch.patientUser.id,
-            name: medicalEvent.appSch.patientUser.name,
-            lastname: medicalEvent.appSch.patientUser.lastname
-        },
-        physician: {
-            id: medicalEvent.appSch.physicianThatAttend.id,
-            name: medicalEvent.appSch.physicianThatAttend.name,
-            lastname: medicalEvent.appSch.physicianThatAttend.lastname,
-            avatar: medicalEvent.appSch.physicianThatAttend.avatar
-        },
-        // Sitio de atención
-        attendancePlace: medicalEvent.appSch.attendancePlace ? {
-            googleMapsLink: medicalEvent.appSch.attendancePlace.googleMapsLink,
-            addressDetails: medicalEvent.appSch.attendancePlace.addressDetails,
-            alias: medicalEvent.appSch.attendancePlace.alias
-        } : null,
+    //Evoluciones
+    physicianComments: medicalEvent.physicianComments,
 
-        //Evoluciones
-        physicianComments: medicalEvent.physicianComments,
+    //ANAMNESIS
+    // 1. Motivo de consulta mapeado en la linea 8
+    historyOfPresentIllness: medicalEvent.historyOfPresentIllness, // 2. enfermedad actual
+    reviewOfSystems: medicalEvent.reviewOfSystems, // 3.sintomas o revision por sistemas
 
-        //ANAMNESIS
-        // 1. Motivo de consulta mapeado en la linea 8
-        historyOfPresentIllness: medicalEvent.historyOfPresentIllness, // 2. enfermedad actual
-        reviewOfSystems: medicalEvent.reviewOfSystems, // 3.sintomas o revision por sistemas
+    //detalles antropometricos
+    anthropometricDetails: medicalEvent.appSch.patientUser.patientAnthDet.map(
+      (anthDetail) => mapAnthropometricDetail(anthDetail)
+    ),
+    //signos vitales
+    vitalSigns: medicalEvent.vitalSignDetailsMedicalEvent
+      .concat(medicalEvent.appSch.vitalSignDetailsScheduling)
+      .map((vitalSign) => mapVitalSign(vitalSign)),
 
-        //detalles antropometricos
-        anthropometricDetails: medicalEvent.appSch.patientUser.patientAnthDet.map(anthDetail => mapAnthropometricDetail(anthDetail)),
-        //signos vitales
-        vitalSigns: medicalEvent.vitalSignDetailsMedicalEvent.concat(medicalEvent.appSch.vitalSignDetailsScheduling).map(vitalSign => mapVitalSign(vitalSign)),
+    ///AUTOEVALUACIONES - mapa del dolor
+    painMap: painMapArray[0],
 
+    //EXAMEN FÍSICO
+    physicalExaminations: medicalEvent.patientPhysicalExaminations.map(
+      (physicalExam) => mapPhysicalExamination(physicalExam)
+    ),
 
-        ///AUTOEVALUACIONES - mapa del dolor
-        painMap: painMapArray[0],
+    // // examenes pendientes
+    // pendingDiagnosticTest: medicalEvent.pendingDiagnosticTest,
 
-        //EXAMEN FÍSICO
-        physicalExaminations: medicalEvent.patientPhysicalExaminations.map(physicalExam => mapPhysicalExamination(physicalExam)),
+    ///DIAGNÓSTICOS Y TRATAMIENTOS
+    //Diagnósticos
+    diagnostics: medicalEvent.patientDiagnostics.map((diagnostic) =>
+      mapPatientDiagnostic(diagnostic)
+    ),
 
-        // // examenes pendientes
-        // pendingDiagnosticTest: medicalEvent.pendingDiagnosticTest,
+    // Medicamentos recetados
+    drugPrescriptions: medicalEvent.drugPrescriptions.map((drugPrescription) =>
+      mapDrugPrescription(drugPrescription)
+    ),
 
-        ///DIAGNÓSTICOS Y TRATAMIENTOS
-        //Diagnósticos
-        diagnostics: medicalEvent.patientDiagnostics.map(diagnostic => mapPatientDiagnostic(diagnostic)),
+    // Examenes de laboratorio prescritos
+    // prescribedDiagnosticTests: medicalEvent
 
-        // Medicamentos recetados
-        drugPrescriptions: medicalEvent.drugPrescriptions.map(drugPrescription => mapDrugPrescription(drugPrescription)),
+    // Procedimientos recetados
+    medicalProcedures: medicalEvent.procedurePrescriptions.map(
+      (procedurePrescription) => mapProcedurePrescription(procedurePrescription)
+    ),
 
-        // Examenes de laboratorio prescritos
-        // prescribedDiagnosticTests: medicalEvent
+    //plan de tratamiento
+    treatmentPlan: medicalEvent.pendingDiagnosticTest,
 
-        // Procedimientos recetados
-        medicalProcedures: medicalEvent.procedurePrescriptions.map(procedurePrescription => mapProcedurePrescription(procedurePrescription)),
+    //Tratamiento no faqrmacológico
+    medicalIndications: medicalEvent.medicalIndications.map(
+      (medicalIndication) => {
+        return {
+          description: medicalIndication.description,
+          timestamp: medicalIndication.timestamp,
+        };
+      }
+    ),
 
-        //plan de tratamiento
-        treatmentPlan: medicalEvent.pendingDiagnosticTest,
-
-        //Tratamiento no faqrmacológico
-        medicalIndications: medicalEvent.medicalIndications.map(medicalIndication => {
-            return {
-                description: medicalIndication.description,
-                timestamp: medicalIndication.timestamp
-            }
-        }),
-
-        //Pauta de alarma
-        alarmPattern: medicalEvent.alarmPattern
-
-    }
-}
+    //Pauta de alarma
+    alarmPattern: medicalEvent.alarmPattern,
+  };
+};

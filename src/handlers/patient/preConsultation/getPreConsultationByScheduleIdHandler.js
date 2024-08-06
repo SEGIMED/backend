@@ -1,40 +1,27 @@
-import models from "../../../databaseConfig.js";
-import SegimedAPIError from "../../../error/SegimedAPIError.js";
+import models, { CatSchedulingStatus } from "../../../databaseConfig.js";
 import { consultationVitalSignsMapper } from "../../../mapper/patient/consultationVitalSignsMapper.js";
+import contextService from "request-context";
 
-const getPreConsultationByScheduleIdHandler = async (scheduleId) => {
+const getPreConsultationByScheduleIdHandler = async (scheduleId, status) => {
+  
+  const userType = contextService.get('request:user').role
+
+  const validStatusesResult =
+    await models.CatSchedulingStatus.findAndCountAll();
+  const validStatuses = validStatusesResult.rows.map((row) => parseInt(row.id));
+
+  if (status && !validStatuses.includes(parseInt(status))) {
+    throw new Error(
+      `El estado proporcionado no es válido. Debe ser un número del 1 al ${validStatuses.length}.`
+    );
+  }
+
   try {
-    const preConsultations = await models.ProvisionalPreConsultation.findAll({
+    let preConsultation = await models.ProvisionalPreConsultation.findOne({
       where: {
-        appointmentSchedule: scheduleId,
+        appointmentSchedule: scheduleId
       },
       include: [
-        {
-          model: models.PatientPainMap,
-          as: "provisionalPreConsultationPainMap",
-          include: [
-            {
-              model: models.CatPainDuration,
-              as: "catPainDuration",
-            },
-            {
-              model: models.CatPainScale,
-              as: "catPainScale",
-            },
-            {
-              model: models.CatPainType,
-              as: "catPainType",
-            },
-            {
-              model: models.CatPainFrequency,
-              as: "catPainFrequency",
-            },
-            {
-              model: models.User,
-              as: "painRecorderUser",
-            },
-          ],
-        },
         {
           model: models.AppointmentScheduling,
           as: "ProvisionalPreConsultationSchedule",
@@ -86,24 +73,68 @@ const getPreConsultationByScheduleIdHandler = async (scheduleId) => {
         },
       ],
     });
-
-    if (preConsultations.length === 0) {
-      throw new SegimedAPIError("No se encontraron preconsultas para el ID de programación proporcionado.", 404);
+    const painAreas = await models.PatientPainMap.findOne({
+      where: {
+        scheduling: scheduleId,
+      },
+      include: [
+        {
+          model: models.CatPainDuration,
+          as: "catPainDuration",
+        },
+        {
+          model: models.CatPainScale,
+          as: "catPainScale",
+        },
+        {
+          model: models.CatPainType,
+          as: "catPainType",
+        },
+        {
+          model: models.CatPainFrequency,
+          as: "catPainFrequency",
+        },
+        {
+          model: models.User,
+          as: "painRecorderUser",
+        },
+      ],
+    });
+    if (!preConsultation) {
+      throw new Error("No se encontraron preconsultas para el ID de programación proporcionado.");
     }
+
+    preConsultation = preConsultation.get({ plain: true });
+    const preConsultationStatusId = preConsultation.ProvisionalPreConsultationSchedule.status.id;
     
-    const preConsultation = preConsultations[0].get({ plain: true }); //Era lo que faltaba
-    const vitalSignDetails = preConsultation.ProvisionalPreConsultationSchedule.vitalSignDetailsScheduling;
+    if (userType!=="Médico" & parseInt(preConsultationStatusId) === 2) {
+      throw new Error("No está autorizado a ver la preconsulta.");
+    }
 
-    const filteredVitalSigns = await consultationVitalSignsMapper(vitalSignDetails);
+    if (status && preConsultationStatusId !== status) {
+      throw new Error("El estado de la preconsulta no coincide con el estado proporcionado.");
+    }
 
-    preConsultation.ProvisionalPreConsultationSchedule.vitalSignDetailsScheduling = filteredVitalSigns;
+    const vitalSignDetails =
+      preConsultation.ProvisionalPreConsultationSchedule
+        .vitalSignDetailsScheduling;
+
+    const filteredVitalSigns = await consultationVitalSignsMapper(
+      vitalSignDetails
+    );
+    preConsultation.provisionalPreConsultationPainMap = painAreas;
+    preConsultation.ProvisionalPreConsultationSchedule.vitalSignDetailsScheduling =
+      filteredVitalSigns;
 
     return preConsultation;
   } catch (error) {
-    throw new SegimedAPIError(
-      "Error al cargar los detalles de la preconsulta ",
-      500
-    );
+    if (error.message === "No se encontraron preconsultas para el ID de programación proporcionado." ||
+      error.message === "No está autorizado a ver la preconsulta." ||
+      error.message === "El estado de la preconsulta no coincide con el estado proporcionado.") {
+    throw error; 
+  } else {
+    throw new Error("Error al cargar los detalles de la preconsulta.");
+  }
   }
 };
 

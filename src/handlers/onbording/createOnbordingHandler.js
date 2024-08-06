@@ -1,31 +1,38 @@
 import { SociodemographicDetails } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
+import { validationOnbording } from "../../validations/validationOnbording.js";
 
-export const createOnbordingHandler = async (body) => {
+export const createOnbordingHandler = async (body, userId) => {
+  if (!validationOnbording(body)) {
+    throw new SegimedAPIError(400, "Error en la validacion de datos");
+  }
+  const convertUserid = parseInt(userId, 10);
+  const {
+    hipertPulm,
+    centerAttention,
+    liveAlone,
+    address,
+    genre,
+    birthDate,
+    hasTechUseDifficulty,
+    needsCellphoneAssistance,
+  } = body;
+
+
+
   try {
-    const {
-      userId,
+    const newEntry = await SociodemographicDetails.create({
       hipertPulm,
       centerAttention,
       liveAlone,
+      address,
+      genre,
+      birthDate,
       hasTechUseDifficulty,
       needsCellphoneAssistance,
-    } = body;
-    const data = await SociodemographicDetails.update(
-      {
-        hipertPulm,
-        centerAttention,
-        liveAlone,
-        hasTechUseDifficulty,
-        needsCellphoneAssistance,
-      },
-      {
-        where: {
-          patient: userId,
-        },
-      }
-    );
-    return data;
+      patient: convertUserid,
+    });
+    return newEntry;
   } catch (error) {
     throw new SegimedAPIError(
       "Error en la operacion de registro: ",

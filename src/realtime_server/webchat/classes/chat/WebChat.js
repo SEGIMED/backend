@@ -127,16 +127,17 @@ class WebChat {
     }
     const newMessage = new classMessage(findUser,findTarget,message);
     chat.messages.push(newMessage);
-    let target = chat.users.find(user => user != userId);
-    target = this.listUser.getUser(target);
+    // let target = chat.users.find(user => user != userId);
+    // target = this.listUser.getUser(target);
     chat = chat.mapper()
-    chat.target= target;
+    // chat.target= target;
+
     return { chat:chat , lastMessage: newMessage, isNewChat: isNewChat}
    }
-   let target = chat.users.find(user => user != userId);
-   target = this.listUser.getUser(target);
+  //  let target = chat.users.find(user => user != userId);
+  //  target = this.listUser.getUser(target);
    chat = chat.mapper();
-   chat.target= target;
+  //  chat.target= target;
    
    return { chat:chat, isNewChat:isNewChat}
 

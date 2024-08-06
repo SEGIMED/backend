@@ -33,13 +33,14 @@ const scheduleReminderEmails = async () => {
       <p>Fecha: ${appointmentStart.toLocaleDateString()}</p>
       <p>Hora: ${appointmentStart.toLocaleTimeString()}</p>
     `;
-    //TODO change as a  find or create
+
     const newNotification = new Notify({
       // It sends notification for every patient to web app
       content: {
-        message: `<p>Este es un recordatorio para su próxima cita:</p>
-         <p>Fecha: ${appointmentStart.toLocaleDateString()}</p>
-         <p>Hora: ${appointmentStart.toLocaleTimeString()}</p> `,
+        notificationType:"appointmentReminderOneDayBefore",
+        date: appointmentStart.toLocaleDateString(),
+        hour: appointmentStart.toLocaleTimeString(),
+        scheduleId:appointment.id 
       },
       target: appointment.patient,
     });
@@ -48,9 +49,10 @@ const scheduleReminderEmails = async () => {
     const newNotificationPhysician = new Notify({
       // It sends notification for every physician to web app
       content: {
-        message: `<p>Este es un recordatorio para su próxima cita por atender:</p>
-         <p>Fecha: ${appointmentStart.toLocaleDateString()}</p>
-         <p>Hora: ${appointmentStart.toLocaleTimeString()}</p> `,
+        notificationType:"appointmentReminderOneDayBefore",
+        date: appointmentStart.toLocaleDateString(),
+        hour: appointmentStart.toLocaleTimeString(),
+        scheduleId:appointment.id 
       },
       target: appointment.physician,
     });

@@ -38,6 +38,7 @@ import getAllReviewsMadeByPatientController from "../controllers/physician/revie
 import patchPhysicianReviewController from "../controllers/physician/reviewPhysician/patchPhysicianReviewController.js";
 import createDiagnosticTestController from "../controllers/diagnosticTest/createDiagnosticTestController.js";
 import createPatientDiagnosticController from "../controllers/patient/createPatientDiagnosticController.js";
+import getPatientDiagnosticByIdController from "../controllers/patient/getPatientDiagnosticByIdController.js";
 import patchDiagnosticTestController from "../controllers/diagnosticTest/patchDiagnosticTestController.js";
 import getGenderDistributionController from "../controllers/statisticalCenter/getGenderDistributionController.js";
 import getPatientActivityDistributionController from "../controllers/statisticalCenter/getPatientActivityDistributionController.js";
@@ -97,16 +98,20 @@ import createPreConsultationController from "../controllers/patient/preConsultat
 import getAllProvisionaPreConsultationPatientController from "../controllers/patient/preConsultation/getAllProvisionaPreConsultationPatientController.js";
 import patchProvisionalPreConsultationController from "../controllers/patient/preConsultation/patchProvisionalPreConsultationController.js";
 import createSchedule from "../controllers/managementSchedule/createAttention.js";
-import getAllSchedules from "../controllers/managementSchedule/getAllSchedule.js";
-import getScheduleById from "../controllers/managementSchedule/getScheduleId.js";
 import updateSchedule from "../controllers/managementSchedule/updateSchedule.js";
 import deleteSchedule from "../controllers/managementSchedule/deleteSchedule.js";
-import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js"
+import patchPatientPainMapController from "../controllers/painMap/patchPatientPainMapController.js";
 import getPreConsultationByScheduleIdController from "../controllers/patient/preConsultation/getPreConsultationByScheduleIdController.js";
-import createOnbordingController from "../controllers/onbording/createOnbording.js";
-import getAllNotificationsPatienController from "../controllers/notifications/getAllNotificationsPatienController.js"
-import getAllNotificationsPhysicianController from "../controllers/notifications/getAllNotificationsPhysicianController.js"
-import patchNotificationsController from "../controllers/notifications/patchNotificationsController.js"
+import getAllNotificationsPatienController from "../controllers/notifications/getAllNotificationsPatienController.js";
+import getAllNotificationsPhysicianController from "../controllers/notifications/getAllNotificationsPhysicianController.js";
+import patchNotificationsController from "../controllers/notifications/patchNotificationsController.js";
+import getSchedules from "../controllers/managementSchedule/getSchedule.js";
+import { getRequestController } from "../controllers/requestFollow/getReqFollowController.js";
+import { createRequestController } from "../controllers/requestFollow/createReqFollowCtrl.js";
+import getAllSchedulesByUserController from "../controllers/scheduling/getAllSchedulesByUserController.js";
+import createOnboardingController from "../controllers/onbording/createOnbording.js";
+import createCenterAtt from "../controllers/catCenterAtt/createCenterAtt.js";
+import getCenterAtt from "../controllers/catCenterAtt/getCenterAtt.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -131,11 +136,13 @@ const sociodemographicDetailsRouter = Router();
 const backgroundsRouter = Router();
 const alarmRouter = Router();
 const preConsultationRouter = Router();
-const createScheduleRouter = Router();
+const requestFollowRouter = Router();
 const onbordingRouter = Router();
-const getAllNotificationsPatienRouter = Router()
-const getAllNotificationsPhysicianRouter = Router()
-const notificationsRouter=Router()
+const getAllNotificationsPatienRouter = Router();
+const getAllNotificationsPhysicianRouter = Router();
+const notificationsRouter = Router();
+const doctorScheduleRouter = Router();
+const centerAttRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -150,7 +157,6 @@ userRouter
   .route("/user/update-user-info")
   .patch(updateUserInformationController);
 
-
 //* Patient
 patientRouter.route("/patient").post(postPatientController);
 
@@ -162,6 +168,9 @@ patientRouter
 patientRouter.route("/patch-patient").patch(patchPatientController);
 
 patientRouter.route("/patient-details").get(getPatientDetailsController);
+patientRouter
+  .route("/patient-diagnostic-byId")
+  .get(getPatientDiagnosticByIdController);
 patientRouter
   .route("/patient-diagnostic")
   .post(createPatientDiagnosticController);
@@ -330,6 +339,9 @@ schedulingRouter
   .route("/schedule/:id")
   .patch(patchScheduleController)
   .delete(deleteSchedulingController);
+schedulingRouter
+  .route("/schedulesByUserId")
+  .get(getAllSchedulesByUserController);
 
 //* Medical Event
 medicalEventRouter
@@ -395,10 +407,10 @@ diagnosticTestRouter
 
 //* Drug Prescription
 drugPrescriptionRouter
-  .route("/drug-prescription/create-drug-prescription")
+  .route("/drug-prescription/deprecated-create-drug-prescription")
   .post(createDrugPrescriptionController);
 drugPrescriptionRouter
-  .route("/drug-prescription/update-drug-prescription")
+  .route("/drug-prescription/deprecated-update-drug-prescription")
   .patch(updateDrugPrescriptionController);
 
 //* medical Procedure Prescription
@@ -450,7 +462,7 @@ preConsultationRouter
   .get(getAllProvisionaPreConsultationPatientController);
 preConsultationRouter
   .route("/get-preconsultation")
-  .get(getPreConsultationByScheduleIdController)
+  .get(getPreConsultationByScheduleIdController);
 preConsultationRouter
   .route("/update-pre-consultation")
   .patch(patchProvisionalPreConsultationController);
@@ -463,12 +475,18 @@ statisticsRouter.get(
   getPatientActivityDistributionController
 );
 
-//* create schedule
-createScheduleRouter.post("/create_schedule/:idUser", createSchedule);
-createScheduleRouter.get("/getAllSchedule", getAllSchedules);
-createScheduleRouter.get("/getSchedule/:id", getScheduleById);
-createScheduleRouter.patch("/updateSchedule/:id", updateSchedule);
-createScheduleRouter.delete("/deleteSchedule/:id", deleteSchedule);
+//* Doctor schedule
+doctorScheduleRouter
+  .route("/doctorSchedule")
+  .get(getSchedules)
+  .post(createSchedule)
+  .patch(updateSchedule)
+  .delete(deleteSchedule);
+
+requestFollowRouter
+  .route("/requestFollow")
+  .get(getRequestController)
+  .post(createRequestController);
 
 statisticsRouter.get("/statistics-genre", getGenderDistributionController);
 statisticsRouter.get(
@@ -477,13 +495,23 @@ statisticsRouter.get(
 );
 statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 
-//* Onbording
-onbordingRouter.patch("/onbording", createOnbordingController);
+//* Onboarding
+onbordingRouter.patch("/onboarding", createOnboardingController);
 
-//* Notifications 
-getAllNotificationsPatienRouter.get("/all-notifications-patient",getAllNotificationsPatienController)
-getAllNotificationsPhysicianRouter.get("/all-notifications-physician",getAllNotificationsPhysicianController)
-notificationsRouter.patch("/notification-seen",patchNotificationsController)
+centerAttRouter.route("/center-attention")
+.post(createCenterAtt)
+.get(getCenterAtt);
+
+//* Notifications
+getAllNotificationsPatienRouter.get(
+  "/all-notifications-patient",
+  getAllNotificationsPatienController
+);
+getAllNotificationsPhysicianRouter.get(
+  "/all-notifications-physician",
+  getAllNotificationsPhysicianController
+);
+notificationsRouter.patch("/notification-seen", patchNotificationsController);
 
 export {
   getPatientsRouter,
@@ -509,9 +537,10 @@ export {
   alarmRouter,
   preConsultationRouter,
   backgroundsRouter,
-  createScheduleRouter,
+  doctorScheduleRouter,
   onbordingRouter,
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
+  centerAttRouter,
 };

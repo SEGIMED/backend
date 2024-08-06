@@ -23,16 +23,13 @@ class ListUser {
       this._users.set(newUser.userId, newUser);
     });
 
-   
     // console.log(`Created local state of users: ${this._users.size}`);
     // console.log(this._users);
-
   }
 
   addUser(user) {
     const newUser = new User(user);
     this._users.set(newUser.userId, newUser);
-    console.log("a new user has registred in local state", newUser);
     return newUser;
   }
 
@@ -78,9 +75,13 @@ class ListUser {
 
   async saveUserDatabase(userId) {
     try {
-        const dataUser = this._users.get(userId);
-        const result = await createUserMongoDB(dataUser);
-        if(!result) throw new Error('Error in created the user in Mongo Database.',dataUser);
+      const dataUser = this._users.get(userId);
+      const result = await createUserMongoDB(dataUser);
+      if (!result)
+        throw new Error(
+          "Error in created the user in Mongo Database.",
+          dataUser
+        );
     } catch (error) {
       console.log(error);
       return null;

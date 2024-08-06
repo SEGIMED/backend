@@ -1,10 +1,11 @@
 import { PhysicianDetails, PhysicianReview } from "../../../databaseConfig.js";
-
+import contextService from "request-context";
 const regexPositiveNumbers = /^[1-9][0-9]*$/;
 
 const createPhysicianReviewHandler = async (physicianId, body) => {
   try {
-    const { reviewScore, patientId, comments } = body;
+    const { reviewScore, comments } = body;
+    const patientId = contextService.get("request:user").userId;
 
     if (
       !regexPositiveNumbers.test(reviewScore) ||
@@ -47,6 +48,7 @@ const createPhysicianReviewHandler = async (physicianId, body) => {
 
     return "La reseña ha sido creada: ", physicianReview;
   } catch (error) {
+    console.log(error);
     throw new Error("Ha habido un error al crear la reseña: " + error.message);
   }
 };

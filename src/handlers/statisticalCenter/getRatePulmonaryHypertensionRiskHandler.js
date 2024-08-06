@@ -1,19 +1,35 @@
-import { PatientPulmonaryHypertensionRisk, CatPulmonaryArterialHypertensionRisk } from "../../databaseConfig.js";
+import { PatientPulmonaryHypertensionRisk, CatPulmonaryArterialHypertensionRisk, User } from "../../databaseConfig.js";
 import { Sequelize } from "sequelize";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 
-const getRatePulmonaryHypertensionRiskHandler = async () => {
+const getRatePulmonaryHypertensionRiskHandler = async (physicianId) => {
     try {
+        // Configuración del filtro para la consulta
+        const whereClause = {};
+
+        // Si physicianId está definido, agregar la condición de filtro
+        const includeClause = [{
+            model: CatPulmonaryArterialHypertensionRisk,
+            as: 'catHpRisk',
+            attributes: ['name', 'description']
+        }];
+
+        if (physicianId) {
+            whereClause['$patientUser.treating_physician$'] = physicianId;
+            includeClause.push({
+                model: User,
+                as: 'patientUser',
+                attributes: [],
+            });
+        }
+
         const statistics = await PatientPulmonaryHypertensionRisk.findAll({
             attributes: [
                 'pulmonaryHypertensionRisk',
                 [Sequelize.fn('COUNT', Sequelize.col('patient')), 'patientCount']
             ],
-            include: [{
-                model: CatPulmonaryArterialHypertensionRisk,
-                as: 'catHpRisk', 
-                attributes: ['name']
-            }],
+            where: whereClause,
+            include: includeClause,
             group: ['pulmonaryHypertensionRisk', 'catHpRisk.id']
         });
 

@@ -33,19 +33,21 @@ import {
   alarmRouter,
   preConsultationRouter,
   backgroundsRouter,
-  createScheduleRouter,
   onbordingRouter,
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
+  doctorScheduleRouter,
+  centerAttRouter
 } from "./routes/routes.js";
 
 const corsOptions = {
   origin: "*", // Asegúrate de que este origen coincida con el de tu aplicación cliente
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], // Métodos HTTP permitidos
-  allowedHeaders: ["Content-Type", "Authorization", "token"], // Encabezados permitidos
+  allowedHeaders: ["Content-Type", "Authorization", "token", "x-refresh-token"], // Encabezados permitidos
   credentials: true, // Si estás utilizando cookies o autenticación basada en sesiones
   optionsSuccessStatus: 200, // Para navegadores más antiguos que no soportan 204
+  exposedHeaders: ["token"], // Encabezados que el navegador puede acceder
 };
 
 const app = express();
@@ -95,11 +97,12 @@ app.use("/api", sociodemographicDetailsRouter);
 app.use("/api", alarmRouter);
 app.use("/api", preConsultationRouter);
 app.use("/api", backgroundsRouter);
-app.use("/api", createScheduleRouter);
+app.use("/api", doctorScheduleRouter);
 app.use("/api", onbordingRouter);
-app.use("/api", getAllNotificationsPatienRouter)
-app.use("/api", getAllNotificationsPhysicianRouter)
-app.use("/api", notificationsRouter)
+app.use("/api", getAllNotificationsPatienRouter);
+app.use("/api", getAllNotificationsPhysicianRouter);
+app.use("/api", notificationsRouter);
+app.use("/api", centerAttRouter);
 
 app.use("/api/doc", swaggerUI.serve, swaggerUI.setup(swaggerOptions));
 

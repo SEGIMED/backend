@@ -1,15 +1,21 @@
+import { Sequelize } from "sequelize";
 import {
   AppointmentScheduling,
   User,
   PatientPulmonaryHypertensionRisk,
   CatPulmonaryArterialHypertensionRisk,
+  MedicalEvent,
 } from "../../databaseConfig.js";
 
 import { mapPatientsSchedule } from "../../mapper/patient/patientMapper.js";
 
 const getAllSchedulesHandler = async (patientId, physicianId, id) => {
   try {
-    const filters = {};
+    const filters = {
+      schedulingStatus: {
+        [Sequelize.Op.ne]: 5, // Excluye filas donde schedulingStatus es igual a 5
+      },
+    };
     if (patientId) {
       filters.patient = patientId;
     }
@@ -43,6 +49,11 @@ const getAllSchedulesHandler = async (patientId, physicianId, id) => {
           model: User,
           as: "physicianThatAttend",
           attributes: ["name", "lastname", "avatar"],
+        },
+        {
+          model: MedicalEvent,
+          as: "medicalEvent",
+          attributes: ["id"],
         },
       ],
     });
