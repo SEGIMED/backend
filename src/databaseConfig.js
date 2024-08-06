@@ -736,22 +736,22 @@ User.hasMany(DiagnosticTestPrescription, {
   as: "prescribedPhysicianDiagnosticTestPrescriptions",
   foreignKey: "prescribedPhysician",
 });
-MedicalIndications.belongsTo(User, {
-  as: "patientUser",
-  foreignKey: "patient",
-});
-User.hasMany(MedicalIndications, {
-  as: "medicalIndications",
-  foreignKey: "patient",
-});
-MedicalIndications.belongsTo(User, {
-  as: "prescribedPhysicianUser",
-  foreignKey: "prescribedPhysician",
-});
-User.hasMany(MedicalIndications, {
-  as: "prescribedPhysicianMedicalIndications",
-  foreignKey: "prescribedPhysician",
-});
+// MedicalIndications.belongsTo(User, {
+//   as: "patientUser",
+//   foreignKey: "patient",
+// });
+// User.hasMany(MedicalIndications, {
+//   as: "medicalIndications",
+//   foreignKey: "patient",
+// });
+// MedicalIndications.belongsTo(User, {
+//   as: "prescribedPhysicianUser",
+//   foreignKey: "prescribedPhysician",
+// });
+// User.hasMany(MedicalIndications, {
+//   as: "prescribedPhysicianMedicalIndications",
+//   foreignKey: "prescribedPhysician",
+// });
 // MedicalProcedurePrescription.belongsTo(User, {
 //   as: "patientUser",
 //   foreignKey: "patient",
