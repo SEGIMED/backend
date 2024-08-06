@@ -4,10 +4,12 @@ import deleteDrugPrescriptionsHandler from "../drugPrescription/deleteDrugPrescr
 import createDrugPrescriptionHandler from "../drugPrescription/createDrugPrescriptionHandler.js";
 import updateTherapyPrescriptionHandler from "../therapy/updateTherapyPrescriptionHandler.js";
 import updateMedicalProcedurePrescriptionHandler from "../medicalProcedurePrescription/updateMedicalProcedurePrescriptionHandler.js";
+import createOrUpdateMedicalIndicationsHandler from "../medicalIndications/createOrUpdateMedicalIndicationsHandler.js";
 
 const updatePatientDiagnosticHandler = async (body) => {
   const { id, drugName, patientId, medicalEventId, drugId, quantityDrug } =
     body;
+  console.log(body);
   try {
     // Verificar si existe el diagnóstico con el id
     const existingDiagnostic = await PatientDiagnostic.findOne({
@@ -59,6 +61,11 @@ const updatePatientDiagnosticHandler = async (body) => {
     updateTherapyPrescriptionHandler({
       medicalEventId,
       therapyDescription: body.therapyDescription,
+    });
+    //actualizar o crear el Indicaciones Medicas NO FARMACOLOGICAS
+    createOrUpdateMedicalIndicationsHandler({
+      medicalEventId,
+      description: body.descriptionIndication,
     });
 
     return updatedDiagnostic[1];
