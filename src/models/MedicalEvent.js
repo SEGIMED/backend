@@ -44,7 +44,7 @@ const model = (sequelize) => {
       treatmentPlan: {
         type: DataTypes.TEXT,
         allowNull: true,
-        field: "treatment_plan ",
+        field: "treatment_plan",
       },
       pendingDiagnosticTest: {
         type: DataTypes.TEXT,

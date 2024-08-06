@@ -46,25 +46,7 @@ const model = (sequelize) => {
           model: "cat_center_attention",
           key: "id",
         },
-      },
-      specialty: {
-        type: DataTypes.BIGINT,
-        allowNull: true,
-        references: {
-          model: "cat_medical_specialty",
-          key: "id",
-        },
-      },
-      nacionalRegistration: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        field: "nacional_registration",
-      },
-      provincialRegistration: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        field: "provincial_registration",
-      },
+      }
     },
     {
       tableName: "physician_onboarding",

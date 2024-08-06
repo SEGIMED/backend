@@ -1,5 +1,7 @@
 import models from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
+import { PhysicianSpecialty } from "../../databaseConfig.js";
+import { PhysicianMedicalRegistry } from "../../databaseConfig.js";
 
 export const createOnbPhysician = async (body, userId) => {
   const convertUserid = parseInt(userId, 10);
@@ -12,6 +14,7 @@ export const createOnbPhysician = async (body, userId) => {
     nacionalRegistration,
     provincialRegistration,
   } = body;
+
   try {
     const newOnbPhysician = await models.PhysicianOnboarding.create({
       idPhysician: convertUserid,
@@ -19,17 +22,14 @@ export const createOnbPhysician = async (body, userId) => {
       birthDate,
       address,
       centerAttention,
-      specialty,
-      nacionalRegistration,
-      provincialRegistration,
     });
-    const [newSpecialty, created] =
-      await models.PhysicianSpecialty.findOrCreate({
-        where: { physician: convertUserid, medicalSpecialty: specialty },
-      });
+
+    const [newSpecialty, created] = await PhysicianSpecialty.findOrCreate({
+      where: { physician: convertUserid, medicalSpecialty: specialty },
+    });
 
     const [newMedicalRegistryProvincial, createdProvincial] =
-      await models.PhysicianMedicalRegistry.findOrCreate({
+      await PhysicianMedicalRegistry.findOrCreate({
         where: {
           physician: convertUserid,
           registryType: 1,
@@ -38,6 +38,7 @@ export const createOnbPhysician = async (body, userId) => {
         defaults: { registryId: provincialRegistration },
       });
 
+    // Crear un nuevo registro médico nacional
     const [newMedicalRegistryNacional, createdNacional] =
       await PhysicianMedicalRegistry.findOrCreate({
         where: {
@@ -55,6 +56,8 @@ export const createOnbPhysician = async (body, userId) => {
       newSpecialty,
     };
   } catch (error) {
+    console.log(error);
+
     throw new SegimedAPIError(500, error.message);
   }
 };
