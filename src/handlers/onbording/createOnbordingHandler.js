@@ -17,30 +17,22 @@ export const createOnbordingHandler = async (body, userId) => {
     hasTechUseDifficulty,
     needsCellphoneAssistance,
   } = body;
+
+
+
   try {
-    await SociodemographicDetails.update(
-      {
-        hipertPulm,
-        centerAttention,
-        liveAlone,
-        address,
-        genre,
-        birthDate,
-        hasTechUseDifficulty,
-        needsCellphoneAssistance,
-      },
-      {
-        where: {
-          patient: convertUserid,
-        },
-      }
-    );
-    const updateValue = await SociodemographicDetails.findOne({
-      where: {
-        patient: convertUserid,
-      },
+    const newEntry = await SociodemographicDetails.create({
+      hipertPulm,
+      centerAttention,
+      liveAlone,
+      address,
+      genre,
+      birthDate,
+      hasTechUseDifficulty,
+      needsCellphoneAssistance,
+      patient: convertUserid,
     });
-    return updateValue;
+    return newEntry;
   } catch (error) {
     throw new SegimedAPIError(
       "Error en la operacion de registro: ",

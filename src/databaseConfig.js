@@ -736,22 +736,22 @@ User.hasMany(DiagnosticTestPrescription, {
   as: "prescribedPhysicianDiagnosticTestPrescriptions",
   foreignKey: "prescribedPhysician",
 });
-MedicalIndications.belongsTo(User, {
-  as: "patientUser",
-  foreignKey: "patient",
-});
-User.hasMany(MedicalIndications, {
-  as: "medicalIndications",
-  foreignKey: "patient",
-});
-MedicalIndications.belongsTo(User, {
-  as: "prescribedPhysicianUser",
-  foreignKey: "prescribedPhysician",
-});
-User.hasMany(MedicalIndications, {
-  as: "prescribedPhysicianMedicalIndications",
-  foreignKey: "prescribedPhysician",
-});
+// MedicalIndications.belongsTo(User, {
+//   as: "patientUser",
+//   foreignKey: "patient",
+// });
+// User.hasMany(MedicalIndications, {
+//   as: "medicalIndications",
+//   foreignKey: "patient",
+// });
+// MedicalIndications.belongsTo(User, {
+//   as: "prescribedPhysicianUser",
+//   foreignKey: "prescribedPhysician",
+// });
+// User.hasMany(MedicalIndications, {
+//   as: "prescribedPhysicianMedicalIndications",
+//   foreignKey: "prescribedPhysician",
+// });
 // MedicalProcedurePrescription.belongsTo(User, {
 //   as: "patientUser",
 //   foreignKey: "patient",
@@ -1185,7 +1185,6 @@ RequestFollow.belongsTo(User, { foreignKey: "userReceptor" });
 
 User.hasOne(PhysicianOnboarding, { foreignKey: "idPhysician" });
 PhysicianOnboarding.belongsTo(User, { foreignKey: "idPhysician" });
-PhysicianOnboarding.belongsTo(CatMedicalSpecialty, { foreignKey: "specialty" });
 PhysicianOnboarding.belongsTo(CatGenre, { foreignKey: "genre" });
 PhysicianOnboarding.belongsTo(CatCenterAttention, {
   foreignKey: "centerAttention",

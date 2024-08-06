@@ -5,6 +5,7 @@ import SegimedAPIError from "../../error/SegimedAPIError.js";
 import createDrugPrescriptionHandler from "../drugPrescription/createDrugPrescriptionHandler.js";
 import createMedicalProcedurePrescriptionHandler from "../../handlers/medicalProcedurePrescription/createMedicalProcedurePrescriptionHandler.js";
 import createTherapyPrescriptionHandler from "../therapy/createTherapyPrescriptionHandler.js";
+import createOrUpdateMedicalIndicationsHandler from "../medicalIndications/createOrUpdateMedicalIndicationsHandler.js";
 
 const createPatientDiagnosticHandler = async (body) => {
   const {
@@ -61,6 +62,11 @@ const createPatientDiagnosticHandler = async (body) => {
     createTherapyPrescriptionHandler({
       medicalEventId,
       therapyDescription: body.descriptionTherapy,
+    });
+    //actualizar o crear el Indicaciones Medicas NO FARMACOLOGICAS
+    createOrUpdateMedicalIndicationsHandler({
+      medicalEventId,
+      description: body.descriptionIndication,
     });
 
     return newDiagnostic;
