@@ -7,14 +7,18 @@ import {
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import Notify from "../../realtime_server/models/Notify.js";
 import validateAllowedDate from "../../validations/validateAllowedDate.js";
-
+import contextService from "request-context";
 const createSchedulingHandler = async (body) => {
+  const role = contextService.get("request:user").role;
   const transaction = await sequelize.transaction();
   try {
     const startTimeValidate = validateAllowedDate(body.scheduledStartTimestamp);
     const endTimeValidate = validateAllowedDate(body.scheduledEndTimestamp);
     if (!endTimeValidate || !startTimeValidate)
       throw new Error("Formato de fecha inválido, no esposible crear la cita");
+    if (role === "Paciente") {
+      body.IsApproved = false;
+    }
 
     const newScheduling = await AppointmentScheduling.create(body, {
       transaction,
