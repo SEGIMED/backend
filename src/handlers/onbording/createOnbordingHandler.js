@@ -2,7 +2,7 @@ import { SociodemographicDetails } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import { validationOnbording } from "../../validations/validationOnbording.js";
 
-export const createOrUpdateOnboardingHandler = async (body, userId) => {
+export const createOnbordingHandler = async (body, userId) => {
   if (!validationOnbording(body)) {
     throw new SegimedAPIError(400, "Error en la validación de datos");
   }
@@ -46,4 +46,4 @@ export const createOrUpdateOnboardingHandler = async (body, userId) => {
   }
 };
 
-export default createOrUpdateOnboardingHandler;
+export default createOnbordingHandler;
