@@ -2,7 +2,7 @@ import { Router } from "express";
 import getPatientsController from "../controllers/patient/getPatientsController.js";
 import getPatientsFilterController from "../controllers/patient/getPatientsFilterController.js";
 import getPatientController from "../controllers/patient/getPatientController.js";
-import postPatientController from "../controllers/patient/postPatientController.js";
+// import postPatientController from "../controllers/patient/postPatientController.js";
 import patchPatientController from "../controllers/patient/patchPatientController.js";
 import deletePatientController from "../controllers/patient/deletePatientController.js";
 import getPhysicianInformationController from "../controllers/physician/getPhysicianInformationController.js";
@@ -157,7 +157,7 @@ userRouter
   .patch(updateUserInformationController);
 
 //* Patient
-patientRouter.route("/patient").post(postPatientController);
+// patientRouter.route("/patient").post(postPatientController);
 
 patientRouter
   .route("/patient/:id")
