@@ -16,7 +16,7 @@ const createSchedulingHandler = async (body) => {
     const startTimeValidate = validateAllowedDate(body.scheduledStartTimestamp);
     const endTimeValidate = validateAllowedDate(body.scheduledEndTimestamp);
     if (!endTimeValidate || !startTimeValidate)
-      throw new Error("Formato de fecha inválido, no esposible crear la cita");
+      throw new Error("Formato de fecha inválido, no es posible crear la cita");
 
     //overlapping??
     await validateSchedule(
