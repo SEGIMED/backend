@@ -38,7 +38,6 @@ import getAllReviewsMadeByPatientController from "../controllers/physician/revie
 import patchPhysicianReviewController from "../controllers/physician/reviewPhysician/patchPhysicianReviewController.js";
 import createDiagnosticTestController from "../controllers/diagnosticTest/createDiagnosticTestController.js";
 import createPatientDiagnosticController from "../controllers/patient/createPatientDiagnosticController.js";
-import getPatientDiagnosticByIdController from "../controllers/patient/getPatientDiagnosticByIdController.js";
 import patchDiagnosticTestController from "../controllers/diagnosticTest/patchDiagnosticTestController.js";
 import getGenderDistributionController from "../controllers/statisticalCenter/getGenderDistributionController.js";
 import getPatientActivityDistributionController from "../controllers/statisticalCenter/getPatientActivityDistributionController.js";
@@ -168,9 +167,7 @@ patientRouter
 patientRouter.route("/patch-patient").patch(patchPatientController);
 
 patientRouter.route("/patient-details").get(getPatientDetailsController);
-patientRouter
-  .route("/patient-diagnostic-byId")
-  .get(getPatientDiagnosticByIdController);
+
 patientRouter
   .route("/patient-diagnostic")
   .post(createPatientDiagnosticController);
@@ -498,9 +495,10 @@ statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 //* Onboarding
 onbordingRouter.patch("/onboarding", createOnboardingController);
 
-centerAttRouter.route("/center-attention")
-.post(createCenterAtt)
-.get(getCenterAtt);
+centerAttRouter
+  .route("/center-attention")
+  .post(createCenterAtt)
+  .get(getCenterAtt);
 
 //* Notifications
 getAllNotificationsPatienRouter.get(
