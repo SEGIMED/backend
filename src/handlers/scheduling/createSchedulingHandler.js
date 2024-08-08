@@ -8,6 +8,7 @@ import SegimedAPIError from "../../error/SegimedAPIError.js";
 import Notify from "../../realtime_server/models/Notify.js";
 import validateAllowedDate from "../../validations/validateAllowedDate.js";
 import contextService from "request-context";
+import validateSchedule from "../../validations/validateSchedule.js";
 const createSchedulingHandler = async (body) => {
   const role = contextService.get("request:user").role;
   const transaction = await sequelize.transaction();
@@ -15,7 +16,15 @@ const createSchedulingHandler = async (body) => {
     const startTimeValidate = validateAllowedDate(body.scheduledStartTimestamp);
     const endTimeValidate = validateAllowedDate(body.scheduledEndTimestamp);
     if (!endTimeValidate || !startTimeValidate)
-      throw new Error("Formato de fecha inválido, no esposible crear la cita");
+      throw new Error("Formato de fecha inválido, no es posible crear la cita");
+
+    //overlapping??
+    await validateSchedule(
+      body.physician,
+      body.scheduledStartTimestamp,
+      body.scheduledEndTimestamp
+    );
+
     if (role === "Paciente") {
       body.IsApproved = false;
     }
@@ -78,7 +87,7 @@ const createSchedulingHandler = async (body) => {
   } catch (error) {
     await transaction.rollback();
     throw new SegimedAPIError(
-      "Error al crear el agendamiento" + error.message,
+      "Error al crear el agendamiento: " + error.message,
       500
     );
   }
