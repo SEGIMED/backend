@@ -30,7 +30,9 @@ const model = (sequelize) => {
     {
       tableName: "attendent_place",
       schema: "public",
-      timestamps: true,
+      timestamps: false,
     }
   );
 };
+
+export default model;
