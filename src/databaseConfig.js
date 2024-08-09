@@ -84,6 +84,7 @@ import PhysicianFavoritePatientModel from "./models/PhysicianFavoritePatient.js"
 import RefreshTokenModel from "./models/RefreshToken.js";
 import RequestFollowModel from "./models/RequestFollow.js";
 import PhysicianOnboardingModel from "./models/PhysicianOnboarding.js";
+import AttendentPlaceModel from "./models/AttendentPlace.js";
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
 // import { config } from "dotenv";
@@ -199,6 +200,7 @@ PhysicianFavoritePatientModel(sequelize);
 RefreshTokenModel(sequelize);
 RequestFollowModel(sequelize);
 PhysicianOnboardingModel(sequelize);
+AttendentPlaceModel(sequelize);
 
 export const {
   DiagnosticTest,
@@ -284,6 +286,7 @@ export const {
   RefreshToken,
   RequestFollow,
   PhysicianOnboarding,
+  AttendentPlace,
 } = sequelize.models;
 
 DiagnosticTest.belongsTo(AppointmentScheduling, {
@@ -1189,6 +1192,15 @@ PhysicianOnboarding.belongsTo(CatGenre, { foreignKey: "genre" });
 PhysicianOnboarding.belongsTo(CatCenterAttention, {
   foreignKey: "centerAttention",
 });
+PhysicianOnboarding.belongsToMany(CatCenterAttention, {
+  through: AttendentPlace,
+  foreignKey: "idPhysician",
+});
+CatCenterAttention.belongsToMany(PhysicianOnboarding, {
+  through: AttendentPlace,
+  foreignKey: "idCenterAttention",
+});
+
 AlarmEvent.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
 
 User.hasOne(RefreshToken, { foreignKey: "userId", as: "refreshToken" });
