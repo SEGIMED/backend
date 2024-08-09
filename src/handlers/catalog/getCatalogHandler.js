@@ -37,6 +37,8 @@ import {
     CatPainType,
     CatSurgicalRisk,
     CatPulmonaryHypertensionGroup,
+    CatCenterAttention,
+
 
 } from "../../databaseConfig.js";
 
@@ -122,6 +124,8 @@ const getCatalogHandler = async (catalogName) => {
                 return await CatSurgicalRisk.findAll()
             case 'HP_GROUPS':
                 return await CatPulmonaryHypertensionGroup.findAll()
+            case 'CENTER_ATT':
+                return await CatCenterAttention.findAll()
 
 
             default:
