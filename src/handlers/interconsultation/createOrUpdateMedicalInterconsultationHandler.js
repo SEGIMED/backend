@@ -5,12 +5,20 @@ import {
 } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import { Op } from "sequelize"; // Asegúrate de importar Op para las consultas con Sequelize
+import contextService from "request-context";
 
 const createOrUpdateMedicalInterconsultationHandler = async (data) => {
-  console.log(data);
+  const physicianRequester = contextService.get("request:user").userId;
+  console.log(physicianRequester);
   try {
     // Validaciones
-    if (!data.patient || !data.physicianRequester || !data.physicianQueried) {
+    if (physicianRequester === data.physicianQueried) {
+      throw new SegimedAPIError(
+        "Physicians cannot make interconsultation requests to themselves",
+        400
+      );
+    }
+    if (!data.patient || !physicianRequester || !data.physicianQueried) {
       throw new SegimedAPIError(
         "patient, physicianRequester, and physicianQueried fields are required.",
         400
@@ -21,11 +29,7 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
     const users = await User.findAll({
       where: {
         id: {
-          [Op.in]: [
-            data.patient,
-            data.physicianRequester,
-            data.physicianQueried,
-          ],
+          [Op.in]: [data.patient, physicianRequester, data.physicianQueried],
         },
       },
     });
@@ -35,7 +39,7 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
       userRoles[user.id] = user.role;
     });
 
-    if (userRoles[data.physicianRequester] !== 2) {
+    if (userRoles[physicianRequester] !== 2) {
       throw new SegimedAPIError("Physician Requester must have role=3.", 400);
     }
 
@@ -50,11 +54,8 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
     // Validar que los campos no sean null
     const requiredFields = [
       "patient",
-      "physicianRequester",
       "physicianQueried",
       "medicalSpecialty",
-      "interconsultationStartTimestamp",
-      "interconsultationEndTimestamp",
       "interconsultationStatus",
       "reasonForConsultation",
     ];
@@ -63,17 +64,6 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
       if (data[field] === null || data[field] === undefined) {
         throw new SegimedAPIError(`${field} cannot be null.`, 400);
       }
-    }
-
-    // Validar que interconsultationStartTimestamp sea menor o igual a interconsultationEndTimestamp
-    if (
-      new Date(data.interconsultationStartTimestamp) >
-      new Date(data.interconsultationEndTimestamp)
-    ) {
-      throw new SegimedAPIError(
-        "Interconsultation start timestamp must be less than or equal to end timestamp.",
-        400
-      );
     }
 
     let interconsultation;
@@ -88,7 +78,10 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
       interconsultation = updatedInterconsultation;
     } else {
       // Creación de una nueva interconsulta médica
-      interconsultation = await MedicalInterconsultations.create(data);
+      interconsultation = await MedicalInterconsultations.create({
+        ...data,
+        physicianRequester,
+      });
     }
 
     // Manejo de los archivos relacionados

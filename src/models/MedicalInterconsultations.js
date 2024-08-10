@@ -48,12 +48,12 @@ const model = (sequelize) => {
       },
       interconsultationStartTimestamp: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
         field: "interconsultation_start_timestamp",
       },
       interconsultationEndTimestamp: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
         field: "interconsultation_end_timestamp",
       },
       interconsultationStatus: {

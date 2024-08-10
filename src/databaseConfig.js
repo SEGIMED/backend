@@ -1196,17 +1196,38 @@ PhysicianOnboarding.belongsTo(CatCenterAttention, {
   foreignKey: "centerAttention",
 });
 // Relaciones del modelo MedicalInterconsultations
-User.hasOne(MedicalInterconsultations, { foreignKey: "physicianRequester" });
-MedicalInterconsultations.belongsTo(User, { foreignKey: "physicianRequester" });
-User.hasOne(MedicalInterconsultations, { foreignKey: "patient" });
-MedicalInterconsultations.belongsTo(User, { foreignKey: "patient" });
-User.hasOne(MedicalInterconsultations, { foreignKey: "physicianQueried" });
-MedicalInterconsultations.belongsTo(User, { foreignKey: "physicianQueried" });
 
-// MedicalInterconsultationFiles.belongsTo(MedicalInterconsultations, {
-//   foreignKey: "medicalInterconsultationId",
-//   as: "medicalInterconsultationId",
-// });
+User.hasOne(MedicalInterconsultations, {
+  foreignKey: "physicianRequester",
+  as: "requestingPhysician",
+});
+MedicalInterconsultations.belongsTo(User, {
+  foreignKey: "physicianRequester",
+  as: "requestingPhysician",
+});
+User.hasOne(MedicalInterconsultations, {
+  foreignKey: "patient",
+  as: "patientDetails",
+});
+MedicalInterconsultations.belongsTo(User, {
+  foreignKey: "patient",
+  as: "patientDetails",
+});
+User.hasOne(MedicalInterconsultations, {
+  foreignKey: "physicianQueried",
+  as: "queriedPhysician",
+});
+MedicalInterconsultations.belongsTo(User, {
+  foreignKey: "physicianQueried",
+  as: "queriedPhysician",
+});
+MedicalInterconsultations.hasMany(MedicalInterconsultationFile, {
+  foreignKey: "medicalInterconsultationId",
+  as: "files",
+});
+MedicalInterconsultationFile.belongsTo(MedicalInterconsultations, {
+  foreignKey: "medicalInterconsultationId",
+});
 
 AlarmEvent.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
 
