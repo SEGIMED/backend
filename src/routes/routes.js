@@ -112,6 +112,8 @@ import getAllSchedulesByUserController from "../controllers/scheduling/getAllSch
 import createOnboardingController from "../controllers/onbording/createOnbording.js";
 import createCenterAtt from "../controllers/catCenterAtt/createCenterAtt.js";
 import getCenterAtt from "../controllers/catCenterAtt/getCenterAtt.js";
+import createOrUpdateMedicalInterconsultation from "../controllers/interconsultation/MedicalInterconsultations.js";
+import getMedicalInterconsultationController from "../controllers/interconsultation/getMedicalInterconsultation.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -143,6 +145,7 @@ const getAllNotificationsPhysicianRouter = Router();
 const notificationsRouter = Router();
 const doctorScheduleRouter = Router();
 const centerAttRouter = Router();
+const interconsultationRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -488,19 +491,33 @@ requestFollowRouter
   .get(getRequestController)
   .post(createRequestController);
 
-statisticsRouter.get("/statistics-genre", getGenderDistributionController);
 statisticsRouter.get(
-  "/statistics-patient-activity",
+  "/deprecatedstatistics-genre",
+  getGenderDistributionController
+);
+statisticsRouter.get(
+  "/deprecatedstatistics-patient-activity",
   getPatientActivityDistributionController
 );
 statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 
+//* INTERCONSULTAS
+interconsultationRouter.get(
+  "/interconsultations",
+  getMedicalInterconsultationController
+);
+interconsultationRouter.patch(
+  "/interconsultations",
+  createOrUpdateMedicalInterconsultation
+);
+
 //* Onboarding
 onbordingRouter.patch("/onboarding", createOnboardingController);
 
-centerAttRouter.route("/center-attention")
-.post(createCenterAtt)
-.get(getCenterAtt);
+centerAttRouter
+  .route("/center-attention")
+  .post(createCenterAtt)
+  .get(getCenterAtt);
 
 //* Notifications
 getAllNotificationsPatienRouter.get(
@@ -543,4 +560,5 @@ export {
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
   centerAttRouter,
+  interconsultationRouter,
 };

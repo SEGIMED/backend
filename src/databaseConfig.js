@@ -84,6 +84,8 @@ import PhysicianFavoritePatientModel from "./models/PhysicianFavoritePatient.js"
 import RefreshTokenModel from "./models/RefreshToken.js";
 import RequestFollowModel from "./models/RequestFollow.js";
 import PhysicianOnboardingModel from "./models/PhysicianOnboarding.js";
+import MedicalInterconsultationsModel from "./models/MedicalInterconsultations.js";
+import MedicalInterconsultationFileModel from "./models/MedicalInterconsultationFile.js";
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
 // import { config } from "dotenv";
@@ -199,6 +201,8 @@ PhysicianFavoritePatientModel(sequelize);
 RefreshTokenModel(sequelize);
 RequestFollowModel(sequelize);
 PhysicianOnboardingModel(sequelize);
+MedicalInterconsultationsModel(sequelize);
+MedicalInterconsultationFileModel(sequelize);
 
 export const {
   DiagnosticTest,
@@ -284,6 +288,8 @@ export const {
   RefreshToken,
   RequestFollow,
   PhysicianOnboarding,
+  MedicalInterconsultations,
+  MedicalInterconsultationFile,
 } = sequelize.models;
 
 DiagnosticTest.belongsTo(AppointmentScheduling, {
@@ -1189,6 +1195,19 @@ PhysicianOnboarding.belongsTo(CatGenre, { foreignKey: "genre" });
 PhysicianOnboarding.belongsTo(CatCenterAttention, {
   foreignKey: "centerAttention",
 });
+// Relaciones del modelo MedicalInterconsultations
+User.hasOne(MedicalInterconsultations, { foreignKey: "physicianRequester" });
+MedicalInterconsultations.belongsTo(User, { foreignKey: "physicianRequester" });
+User.hasOne(MedicalInterconsultations, { foreignKey: "patient" });
+MedicalInterconsultations.belongsTo(User, { foreignKey: "patient" });
+User.hasOne(MedicalInterconsultations, { foreignKey: "physicianQueried" });
+MedicalInterconsultations.belongsTo(User, { foreignKey: "physicianQueried" });
+
+// MedicalInterconsultationFiles.belongsTo(MedicalInterconsultations, {
+//   foreignKey: "medicalInterconsultationId",
+//   as: "medicalInterconsultationId",
+// });
+
 AlarmEvent.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
 
 User.hasOne(RefreshToken, { foreignKey: "userId", as: "refreshToken" });
@@ -1277,6 +1296,8 @@ const models = {
   RefreshToken,
   RequestFollow,
   PhysicianOnboarding,
+  MedicalInterconsultations,
+  MedicalInterconsultationFile,
 };
 
 export default models;
