@@ -16,29 +16,31 @@ export const createOnbPhysician = async (body, userId) => {
     provincialRegistration,
   } = body;
   try {
-    const newOnbPhysician = await models.PhysicianOnboarding.create({
-      idPhysician: convertUserid,
-      genre,
-      birthDate,
-      address,
-    });
-
-    const cent_att = await models.CatCenterAttention.findByPk(centerAttention);
-    console.log(cent_att);
-
-    const physician = await models.User.findByPk(convertUserid);
-
-    if (!cent_att) {
-      throw new SegimedAPIError(404, "Centro de atención no encontrado");
-    }
-
-    const [newAttendentPlace, createdPlace] = await AttendentPlace.findOrCreate(
-      {
-        where: {
-          idPhysician: convertUserid,
-          idCenterAttention: centerAttention,
+    const [newOnbPhysician, createdOnb] =
+      await models.PhysicianOnboarding.findOrCreate({
+        where: { idPhysician: convertUserid },
+        defaults: {
+          genre,
+          birthDate,
+          address,
         },
-      }
+      });
+
+    const centerAttentionArray = Array.isArray(centerAttention)
+      ? centerAttention
+      : [centerAttention];
+
+    const attendentPlaceRegister = await Promise.all(
+      centerAttention.map(async (element) => {
+        const [newAttendentPlace, createdPlace] =
+          await AttendentPlace.findOrCreate({
+            where: {
+              idPhysician: convertUserid,
+              idCenterAttention: element,
+            },
+          });
+        return newAttendentPlace;
+      })
     );
 
     const [newSpecialty, created] = await PhysicianSpecialty.findOrCreate({
@@ -71,7 +73,7 @@ export const createOnbPhysician = async (body, userId) => {
       newMedicalRegistryNacional,
       newMedicalRegistryProvincial,
       newSpecialty,
-      newAttendentPlace,
+      attendentPlaceRegister,
     };
   } catch (error) {
     console.log(error);
