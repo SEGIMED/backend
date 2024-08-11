@@ -38,7 +38,7 @@ import {
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
   doctorScheduleRouter,
-  centerAttRouter
+  centerAttRouter,
 } from "./routes/routes.js";
 
 const corsOptions = {
