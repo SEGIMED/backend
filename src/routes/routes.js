@@ -110,8 +110,6 @@ import { getRequestController } from "../controllers/requestFollow/getReqFollowC
 import { createRequestController } from "../controllers/requestFollow/createReqFollowCtrl.js";
 import getAllSchedulesByUserController from "../controllers/scheduling/getAllSchedulesByUserController.js";
 import createOnboardingController from "../controllers/onbording/createOnbording.js";
-import createCenterAtt from "../controllers/catCenterAtt/createCenterAtt.js";
-import getCenterAtt from "../controllers/catCenterAtt/getCenterAtt.js";
 import createPatientMedReqCtrl from "../controllers/patient/patientMedicaReq/createPatientMedReqCtrl.js";
 import getPatientMedReqCtrl from "../controllers/patient/patientMedicaReq/getPatientMedReqCtrl.js";
 
@@ -144,7 +142,6 @@ const getAllNotificationsPatienRouter = Router();
 const getAllNotificationsPhysicianRouter = Router();
 const notificationsRouter = Router();
 const doctorScheduleRouter = Router();
-const centerAttRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -503,11 +500,6 @@ statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 
 //* Onboarding
 onbordingRouter.patch("/onboarding", createOnboardingController);
-
-centerAttRouter
-  .route("/center-attention")
-  .post(createCenterAtt)
-  .get(getCenterAtt);
 
 //* Notifications
 getAllNotificationsPatienRouter.get(
