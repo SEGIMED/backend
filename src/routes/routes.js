@@ -114,6 +114,7 @@ import createCenterAtt from "../controllers/catCenterAtt/createCenterAtt.js";
 import getCenterAtt from "../controllers/catCenterAtt/getCenterAtt.js";
 import createOrUpdateMedicalInterconsultation from "../controllers/interconsultation/MedicalInterconsultations.js";
 import getMedicalInterconsultationController from "../controllers/interconsultation/getMedicalInterconsultation.js";
+import getMedicalInterconsultationDetailsController from "../controllers/interconsultation/getMedicalInterconsultationDetailsController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -146,6 +147,7 @@ const notificationsRouter = Router();
 const doctorScheduleRouter = Router();
 const centerAttRouter = Router();
 const interconsultationRouter = Router();
+const interconsultationDetailsRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -502,6 +504,10 @@ statisticsRouter.get(
 statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 
 //* INTERCONSULTAS
+interconsultationDetailsRouter
+  .route("/interconsultation/:id")
+  .get(getMedicalInterconsultationDetailsController);
+
 interconsultationRouter.get(
   "/interconsultations",
   getMedicalInterconsultationController
@@ -561,4 +567,5 @@ export {
   notificationsRouter,
   centerAttRouter,
   interconsultationRouter,
+  interconsultationDetailsRouter,
 };

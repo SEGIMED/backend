@@ -9,7 +9,7 @@ import contextService from "request-context";
 
 const createOrUpdateMedicalInterconsultationHandler = async (data) => {
   const physicianRequester = contextService.get("request:user").userId;
-  console.log(physicianRequester);
+
   try {
     // Validaciones
     if (physicianRequester === data.physicianQueried) {

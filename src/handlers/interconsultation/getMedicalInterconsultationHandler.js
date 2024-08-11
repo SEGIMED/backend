@@ -1,7 +1,8 @@
 import {
   MedicalInterconsultations,
   User,
-  MedicalInterconsultationFile,
+  CatSchedulingStatus,
+  //   MedicalInterconsultationFile,
 } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import { Op } from "sequelize";
@@ -45,10 +46,15 @@ const getInterconsultationHandler = async (queryParams) => {
           attributes: ["name", "lastname"],
         },
         {
-          model: MedicalInterconsultationFile,
-          as: "files",
-          attributes: ["fileURL"],
+          model: CatSchedulingStatus,
+          as: "statusCategory",
+          attributes: ["name"],
         },
+        // {
+        //   model: MedicalInterconsultationFile,
+        //   as: "files",
+        //   attributes: ["fileURL"],
+        // },
       ],
     });
 

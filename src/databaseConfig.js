@@ -384,6 +384,18 @@ CatSchedulingStatus.hasMany(AppointmentScheduling, {
   as: "appointment_schedulings",
   foreignKey: "scheduling_status",
 });
+// En el modelo MedicalInterconsultations
+MedicalInterconsultations.belongsTo(CatSchedulingStatus, {
+  as: "statusCategory", // Cambiado de "interconsultationStatus" a "statusCategory"
+  foreignKey: "interconsultation_status",
+});
+
+// En el modelo CatSchedulingStatus
+CatSchedulingStatus.hasMany(MedicalInterconsultations, {
+  as: "interconsultations",
+  foreignKey: "interconsultation_status",
+});
+
 VitalSignDetails.belongsTo(CatVitalSignMeasureType, {
   as: "vitalSignMeasureType",
   foreignKey: "measure_type",
