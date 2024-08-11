@@ -38,7 +38,7 @@ const createPatientDiagnosticHandler = async (body) => {
 
     if (userPatient.role !== 3) {
       throw new SegimedAPIError(
-        "El usuario no es un paciente no puede para crear un diagnóstico.",
+        "El usuario no es un paciente, no puede para crear un diagnóstico.",
         403
       );
     }
