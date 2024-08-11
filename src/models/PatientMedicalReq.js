@@ -60,6 +60,12 @@ const model = (sequelize) => {
         allowNull: true,
         field: "message",
       },
+      status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+        field: "status",
+      },
     },
     {
       tableName: "patient_medical_req",

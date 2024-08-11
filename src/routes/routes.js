@@ -112,6 +112,8 @@ import getAllSchedulesByUserController from "../controllers/scheduling/getAllSch
 import createOnboardingController from "../controllers/onbording/createOnbording.js";
 import createPatientMedReqCtrl from "../controllers/patient/patientMedicaReq/createPatientMedReqCtrl.js";
 import getPatientMedReqCtrl from "../controllers/patient/patientMedicaReq/getPatientMedReqCtrl.js";
+import updatePatientMedReqCtrl from "../controllers/patient/patientMedicaReq/updatePatientMedReqCtrl.js";
+import deletePatientMedReqCtrl from "../controllers/patient/patientMedicaReq/deletePatientMedReqCtrl.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -186,7 +188,9 @@ patientRouter.route("/update-full-patient").patch(updateFullPatientController);
 patientRouter
   .route("/patient-medical-request")
   .post(createPatientMedReqCtrl)
-  .get(getPatientMedReqCtrl);
+  .get(getPatientMedReqCtrl)
+  .patch(updatePatientMedReqCtrl)
+  .delete(deletePatientMedReqCtrl);
 
 //* cardiovascular risk
 patientRouter
