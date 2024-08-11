@@ -1,7 +1,7 @@
 import models from "../../../databaseConfig.js";
 
 const createPatientMedReq = async (body, patientId) => {
-  const { physicianId, reqTypes } = body;
+  const { physicianId, reqTypes, message } = body;
   try {
     const [newPatientMedReq, create] =
       await models.PatientMedicalReq.findOrCreate({
@@ -9,6 +9,7 @@ const createPatientMedReq = async (body, patientId) => {
         defaults: {
           physicianId,
           reqTypes,
+          message,
         },
       });
     return newPatientMedReq;

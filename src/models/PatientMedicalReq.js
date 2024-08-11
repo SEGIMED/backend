@@ -55,6 +55,11 @@ const model = (sequelize) => {
         field: "update_at",
         default: DataTypes.NOW,
       },
+      message: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        field: "message",
+      },
     },
     {
       tableName: "patient_medical_req",

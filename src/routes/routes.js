@@ -541,5 +541,4 @@ export {
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
-  centerAttRouter,
 };
