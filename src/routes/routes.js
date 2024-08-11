@@ -2,7 +2,7 @@ import { Router } from "express";
 import getPatientsController from "../controllers/patient/getPatientsController.js";
 import getPatientsFilterController from "../controllers/patient/getPatientsFilterController.js";
 import getPatientController from "../controllers/patient/getPatientController.js";
-import postPatientController from "../controllers/patient/postPatientController.js";
+// import postPatientController from "../controllers/patient/postPatientController.js";
 import patchPatientController from "../controllers/patient/patchPatientController.js";
 import deletePatientController from "../controllers/patient/deletePatientController.js";
 import getPhysicianInformationController from "../controllers/physician/getPhysicianInformationController.js";
@@ -38,7 +38,6 @@ import getAllReviewsMadeByPatientController from "../controllers/physician/revie
 import patchPhysicianReviewController from "../controllers/physician/reviewPhysician/patchPhysicianReviewController.js";
 import createDiagnosticTestController from "../controllers/diagnosticTest/createDiagnosticTestController.js";
 import createPatientDiagnosticController from "../controllers/patient/createPatientDiagnosticController.js";
-import getPatientDiagnosticByIdController from "../controllers/patient/getPatientDiagnosticByIdController.js";
 import patchDiagnosticTestController from "../controllers/diagnosticTest/patchDiagnosticTestController.js";
 import getGenderDistributionController from "../controllers/statisticalCenter/getGenderDistributionController.js";
 import getPatientActivityDistributionController from "../controllers/statisticalCenter/getPatientActivityDistributionController.js";
@@ -158,7 +157,7 @@ userRouter
   .patch(updateUserInformationController);
 
 //* Patient
-patientRouter.route("/patient").post(postPatientController);
+// patientRouter.route("/patient").post(postPatientController);
 
 patientRouter
   .route("/patient/:id")
@@ -168,9 +167,7 @@ patientRouter
 patientRouter.route("/patch-patient").patch(patchPatientController);
 
 patientRouter.route("/patient-details").get(getPatientDetailsController);
-patientRouter
-  .route("/patient-diagnostic-byId")
-  .get(getPatientDiagnosticByIdController);
+
 patientRouter
   .route("/patient-diagnostic")
   .post(createPatientDiagnosticController);
@@ -498,9 +495,10 @@ statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 //* Onboarding
 onbordingRouter.patch("/onboarding", createOnboardingController);
 
-centerAttRouter.route("/center-attention")
-.post(createCenterAtt)
-.get(getCenterAtt);
+centerAttRouter
+  .route("/center-attention")
+  .post(createCenterAtt)
+  .get(getCenterAtt);
 
 //* Notifications
 getAllNotificationsPatienRouter.get(
