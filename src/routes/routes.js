@@ -503,10 +503,10 @@ statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 onbordingRouter.patch("/onboarding", createOnboardingController);
 
 // esto lo subieron con conflicto.
-centerAttRouter
-  .route("/center-attention")
-  .post(createCenterAtt)
-  .get(getCenterAtt);
+// centerAttRouter
+//   .route("/center-attention")
+//   .post(createCenterAtt)
+//   .get(getCenterAtt);
 
 
 //* Notifications
