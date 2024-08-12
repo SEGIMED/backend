@@ -70,6 +70,11 @@ const model = (sequelize) => {
         allowNull: false,
         field: "reason_for_consultation",
       },
+      medicalOpinion: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        field: "medical_opinion",
+      },
     },
     {
       tableName: "medical_interconsultation",

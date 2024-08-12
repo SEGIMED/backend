@@ -6,6 +6,7 @@ import {
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import { Op } from "sequelize"; // Asegúrate de importar Op para las consultas con Sequelize
 import contextService from "request-context";
+import moment from "moment-timezone";
 
 const createOrUpdateMedicalInterconsultationHandler = async (data) => {
   const physicianRequester = contextService.get("request:user").userId;
@@ -81,6 +82,9 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
       interconsultation = await MedicalInterconsultations.create({
         ...data,
         physicianRequester,
+        interconsultationStartTimestamp: moment().format(
+          "YYYY-MM-DD HH:mm:ss z"
+        ),
       });
     }
 
