@@ -84,6 +84,12 @@ import PhysicianFavoritePatientModel from "./models/PhysicianFavoritePatient.js"
 import RefreshTokenModel from "./models/RefreshToken.js";
 import RequestFollowModel from "./models/RequestFollow.js";
 import PhysicianOnboardingModel from "./models/PhysicianOnboarding.js";
+import CatRouteOfAdministrationModel from "./models/CatRouteOfAdministration.js";
+import CatCommercialNameDrugModel from "./models/CatCommercialNameDrug.js";
+import DrugDetailPresentationModel from "./models/DrugDetailPresentation.js"
+import MedicationPrescriptionModel from "./models/MedicationPrescription.js"
+import PrescriptionMofidicationsHistoryModel from "./models/PrescriptionModificationsHistory.js"
+
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
 // import { config } from "dotenv";
@@ -199,6 +205,11 @@ PhysicianFavoritePatientModel(sequelize);
 RefreshTokenModel(sequelize);
 RequestFollowModel(sequelize);
 PhysicianOnboardingModel(sequelize);
+CatRouteOfAdministrationModel(sequelize);
+CatCommercialNameDrugModel(sequelize);
+DrugDetailPresentationModel(sequelize)
+MedicationPrescriptionModel(sequelize)
+PrescriptionMofidicationsHistoryModel(sequelize)
 
 export const {
   DiagnosticTest,
@@ -284,6 +295,11 @@ export const {
   RefreshToken,
   RequestFollow,
   PhysicianOnboarding,
+  CatRouteOfAdministration,
+  CatCommercialNameDrug,
+  DrugDetailPresentation,
+  MedicationPrescription,
+  PrescriptionMofidicationsHistory
 } = sequelize.models;
 
 DiagnosticTest.belongsTo(AppointmentScheduling, {
@@ -1194,6 +1210,42 @@ AlarmEvent.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
 User.hasOne(RefreshToken, { foreignKey: "userId", as: "refreshToken" });
 RefreshToken.belongsTo(User, { foreignKey: "userId", as: "user" });
 
+CatDrug.hasMany(CatCommercialNameDrug, {foreignKey: "drugId", as:"commercialDrugsName"})
+CatCommercialNameDrug.belongsTo(CatDrug, {foreignKey: "drugId", as:"drugNames"})
+
+DrugDetailPresentation.belongsTo(CatDrug, {foreignKey:"drugId",as:"drugName"})
+CatDrug.hasMany(DrugDetailPresentation,{foreignKey:"drugId",as:"drugDetailPresentation"})
+
+DrugDetailPresentation.belongsTo(CatDrugPresentation,{foreignKey:"presentationId", as:"presentation"})
+CatDrugPresentation.hasMany(DrugDetailPresentation,{foreignKey:"presentationId", as:"presentation"})
+
+DrugDetailPresentation.belongsTo(CatMeasureUnit,{foreignKey:"measureUnitId", as:"measureUnit"})
+CatMeasureUnit.hasMany(DrugDetailPresentation,{foreignKey:"measureUnitId", as:"measureUnit"})
+
+DrugDetailPresentation.belongsTo(CatRouteOfAdministration,{foreignKey:"routeOfAdministrationId", as:"routeOfAdministration"})
+CatRouteOfAdministration.hasMany(DrugDetailPresentation,{foreignKey:"routeOfAdministrationId",as:"routeOfAdministration"})
+
+MedicationPrescription.belongsTo(MedicalEvent,{foreignKey:"medicalEventId", as:"medicalEvent"})
+MedicalEvent.hasMany(MedicationPrescription,{foreignKey:"medicalEventId", as:"prescriptions"})
+
+MedicationPrescription.belongsTo(User,{foreignKey:"patientId", as:"patient"})
+User.hasMany(MedicationPrescription,{foreignKey:"patientId",as:"patientPrescriptions"})
+
+MedicationPrescription.belongsTo(User,{foreignKey:"physicianId", as:"physician"})
+User.hasMany(MedicationPrescription,{foreignKey:"physicianId", as:"physicianPrescription"})
+
+PrescriptionMofidicationsHistory.belongsTo(MedicationPrescription,{foreignKey:"medicationPrescriptionId", as:"prescriptionModificationHistory"})
+MedicationPrescription.hasMany(PrescriptionMofidicationsHistory,{foreignKey:"medicationPrescriptionId",as:"medicationPrescription"})
+
+PrescriptionMofidicationsHistory.belongsTo(MedicalEvent,{foreignKey:"medicalEventId", as:"prescriptionHistory"})
+MedicalEvent.hasMany(PrescriptionMofidicationsHistory,{foreignKey:"medicalEventId", as:"prescriptionHistory"})
+
+PrescriptionMofidicationsHistory.belongsTo(User,{foreignKey:"physicianId",as:"physicianModification"})
+User.hasMany(PrescriptionMofidicationsHistory,{foreignKey:"physicianId", as:"prescriptionModified"})
+
+PrescriptionMofidicationsHistory.belongsTo(DrugDetailPresentation,{foreignKey:"drugDetailPresentationId", as:"drugDetailPresentation"})
+DrugDetailPresentation.hasMany(PrescriptionMofidicationsHistory,{foreignKey:"drugDetailPresentationId", as:"drugDetailPresentation"})
+
 const models = {
   AnthropometricDetails,
   AppointmentScheduling,
@@ -1277,6 +1329,11 @@ const models = {
   RefreshToken,
   RequestFollow,
   PhysicianOnboarding,
+  CatRouteOfAdministration,
+  CatCommercialNameDrug,
+  DrugDetailPresentation,
+  MedicationPrescription,
+  PrescriptionMofidicationsHistory
 };
 
 export default models;
