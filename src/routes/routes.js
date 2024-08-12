@@ -571,7 +571,7 @@ export {
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
-  centerAttRouter,
+  // centerAttRouter,
   interconsultationRouter,
   interconsultationDetailsRouter,
 };
