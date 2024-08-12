@@ -27,8 +27,13 @@ export class Room{
        this.key=obj.users.sort().join("-"); 
        this.id=obj.id
        this.users=obj.users
-
+       this.patient = {...obj.patient,state:false}
+       this.physician = {...obj.physician,state:false}
     };
+
+    setUserState(id,value){
+        this.patient.id === id ? this.patient.state = value : this.physician.state = value;
+    }
 
 
 
