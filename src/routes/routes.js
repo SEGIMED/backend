@@ -109,8 +109,10 @@ import { getRequestController } from "../controllers/requestFollow/getReqFollowC
 import { createRequestController } from "../controllers/requestFollow/createReqFollowCtrl.js";
 import getAllSchedulesByUserController from "../controllers/scheduling/getAllSchedulesByUserController.js";
 import createOnboardingController from "../controllers/onbording/createOnbording.js";
-import createCenterAtt from "../controllers/catCenterAtt/createCenterAtt.js";
-import getCenterAtt from "../controllers/catCenterAtt/getCenterAtt.js";
+import createPatientMedReqCtrl from "../controllers/patient/patientMedicaReq/createPatientMedReqCtrl.js";
+import getPatientMedReqCtrl from "../controllers/patient/patientMedicaReq/getPatientMedReqCtrl.js";
+import updatePatientMedReqCtrl from "../controllers/patient/patientMedicaReq/updatePatientMedReqCtrl.js";
+import deletePatientMedReqCtrl from "../controllers/patient/patientMedicaReq/deletePatientMedReqCtrl.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -141,7 +143,6 @@ const getAllNotificationsPatienRouter = Router();
 const getAllNotificationsPhysicianRouter = Router();
 const notificationsRouter = Router();
 const doctorScheduleRouter = Router();
-const centerAttRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -181,6 +182,12 @@ patientRouter
   .route("/patient-physical-examination")
   .patch(updatePatientPhysicalExaminationController);
 patientRouter.route("/update-full-patient").patch(updateFullPatientController);
+patientRouter
+  .route("/patient-medical-request")
+  .post(createPatientMedReqCtrl)
+  .get(getPatientMedReqCtrl)
+  .patch(updatePatientMedReqCtrl)
+  .delete(deletePatientMedReqCtrl);
 
 //* cardiovascular risk
 patientRouter
@@ -495,11 +502,14 @@ statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 //* Onboarding
 onbordingRouter.patch("/onboarding", createOnboardingController);
 
+<<<<<<< HEAD
+=======
 centerAttRouter
   .route("/center-attention")
   .post(createCenterAtt)
   .get(getCenterAtt);
 
+>>>>>>> f04ae5481830617ca0b2511918052bbb321b3bfd
 //* Notifications
 getAllNotificationsPatienRouter.get(
   "/all-notifications-patient",
@@ -540,5 +550,4 @@ export {
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
-  centerAttRouter,
 };
