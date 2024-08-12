@@ -13,8 +13,8 @@ export default (io,socket) => {
             const dataRoom = await ListVideoCall.findOrCreateRoom(data.id);
             ListVideoCall.setAswRoomById(data.id);
             const {userId} = socket.decoded
-            const targetID = dataRoom.users.find(id => id !== userId);
-            if(io.users[targetID]) io.users[targetID].emit("onAsw",data.asw);
+            const targetID = dataRoom.users.find(user => user.id !== userId);
+            if(io.users[targetID.id]) io.users[targetID.id].emit("onAsw",data.asw);
     }
 
     const userState = async (data) => {
@@ -38,24 +38,30 @@ export default (io,socket) => {
         socket.emit("updateRoom",findRoom);
     }
     const newCandidate = async(data) => {
+        console.log(data)
         const dataRoom = await ListVideoCall.findOrCreateRoom(data.id);
-        const idRoom = data.id;
+        console.log(dataRoom)
         const candidate = data.candidate;
         const {userId} = socket.decoded
-        ListVideoCall.setNewCandidate(idRoom,{userId,candidate});
-        const targetID = dataRoom.users.find(id => id !== userId);
-        if(io.users[targetID]){
-            io.users[targetID].emit("newCandidate",candidate);
+        const targetID = dataRoom.users.find(user => user.id !== userId);
+        if(io.users[targetID.id]){
+            io.users[targetID.id].emit("newCandidate",candidate);
         }
 
     }
-    const joinRoom = async (consultId, cb) => {
-        console.log('entro a la funcion',consultId)
+    const joinRoom = async (consultId) => {
 
         try {
             if(!consultId) throw new Error('Error, no recibio el id de la consulta');
-            const data = await ListVideoCall.findOrCreateRoom(consultId) 
-            if(data ) cb(data)
+            const data = await ListVideoCall.findOrCreateRoom(consultId);
+            const myId = socket.decoded.userId;
+            data.setUserState(myId,true);
+            const target = data.users.find(user => user.id !== myId);
+            console.log('el valor de targetId',target);
+            if(io.users[target.id]){
+                io.users[target.id].emit('dataRoom',data);
+            }
+            socket.emit('dataRoom',data)
         } catch (error) {
             console.log(error.message);
         }
