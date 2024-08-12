@@ -18,7 +18,6 @@ export default (io,socket) => {
     }
 
     const userState = async (data) => {
-        console.log('entro a la funcion')
         const {consultId,state} = data; 
         const {userId,role} = socket.decoded
         const findRoom = await ListVideoCall.findOrCreateRoom(consultId);
@@ -30,7 +29,6 @@ export default (io,socket) => {
             findRoom.patient.state = state;
             targetId = findRoom.physician.id
         }
-        console.log(findRoom)
 
         if(io.users[targetId]){
             io.users[targetId].emit("updateRoom",findRoom)
@@ -38,9 +36,7 @@ export default (io,socket) => {
         socket.emit("updateRoom",findRoom);
     }
     const newCandidate = async(data) => {
-        console.log(data)
         const dataRoom = await ListVideoCall.findOrCreateRoom(data.id);
-        console.log(dataRoom)
         const candidate = data.candidate;
         const {userId} = socket.decoded
         const targetID = dataRoom.users.find(user => user.id !== userId);
@@ -57,7 +53,6 @@ export default (io,socket) => {
             const myId = socket.decoded.userId;
             data.setUserState(myId,true);
             const target = data.users.find(user => user.id !== myId);
-            console.log('el valor de targetId',target);
             if(io.users[target.id]){
                 io.users[target.id].emit('dataRoom',data);
             }
