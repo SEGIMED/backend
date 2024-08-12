@@ -31,16 +31,17 @@ const model = (sequelize) => {
       },
       reqTypes: {
         type: DataTypes.ENUM(
-          "receta_médica",
-          "resumen_clinico",
-          "autorizacion_medicamentos",
-          "apto_fisico",
-          "incapacidades",
-          "certificados",
-          "otros"
+          "Receta médica",
+          "Resumen de historia clínica",
+          "Autorización de medicamentos",
+          "Autorización de estudios",
+          "Aptos físicos",
+          "Incapacidades",
+          "Certificados",
+          "Otro"
         ),
         allowNull: true,
-        defaultValue: "otros",
+        defaultValue: "Otro",
         field: "req_types",
       },
       createdAt: {
