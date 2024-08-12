@@ -502,14 +502,13 @@ statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 //* Onboarding
 onbordingRouter.patch("/onboarding", createOnboardingController);
 
-<<<<<<< HEAD
-=======
+// esto lo subieron con conflicto.
 centerAttRouter
   .route("/center-attention")
   .post(createCenterAtt)
   .get(getCenterAtt);
 
->>>>>>> f04ae5481830617ca0b2511918052bbb321b3bfd
+
 //* Notifications
 getAllNotificationsPatienRouter.get(
   "/all-notifications-patient",
