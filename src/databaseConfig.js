@@ -89,6 +89,7 @@ import CatCommercialNameDrugModel from "./models/CatCommercialNameDrug.js";
 import DrugDetailPresentationModel from "./models/DrugDetailPresentation.js"
 import MedicationPrescriptionModel from "./models/MedicationPrescription.js"
 import PrescriptionMofidicationsHistoryModel from "./models/PrescriptionModificationsHistory.js"
+import PatiendMedReqModel from "./models/PatientMedicalReq.js";
 
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
@@ -210,6 +211,7 @@ CatCommercialNameDrugModel(sequelize);
 DrugDetailPresentationModel(sequelize)
 MedicationPrescriptionModel(sequelize)
 PrescriptionMofidicationsHistoryModel(sequelize)
+PatiendMedReqModel(sequelize);
 
 export const {
   DiagnosticTest,
@@ -299,7 +301,8 @@ export const {
   CatCommercialNameDrug,
   DrugDetailPresentation,
   MedicationPrescription,
-  PrescriptionMofidicationsHistory
+  PrescriptionMofidicationsHistory,
+  PatientMedicalReq,
 } = sequelize.models;
 
 DiagnosticTest.belongsTo(AppointmentScheduling, {
@@ -1245,6 +1248,16 @@ User.hasMany(PrescriptionMofidicationsHistory,{foreignKey:"physicianId", as:"pre
 
 PrescriptionMofidicationsHistory.belongsTo(DrugDetailPresentation,{foreignKey:"drugDetailPresentationId", as:"drugDetailPresentation"})
 DrugDetailPresentation.hasMany(PrescriptionMofidicationsHistory,{foreignKey:"drugDetailPresentationId", as:"drugDetailPresentation"})
+User.hasMany(PatientMedicalReq, { foreignKey: "patientId", as: "patient" });
+User.hasMany(PatientMedicalReq, { foreignKey: "physicianId", as: "physician" });
+PatientMedicalReq.belongsTo(User, {
+  foreignKey: "patientId",
+  as: "patientReq",
+});
+PatientMedicalReq.belongsTo(User, {
+  foreignKey: "physicianId",
+  as: "physicianReq",
+});
 
 const models = {
   AnthropometricDetails,
@@ -1333,7 +1346,8 @@ const models = {
   CatCommercialNameDrug,
   DrugDetailPresentation,
   MedicationPrescription,
-  PrescriptionMofidicationsHistory
+  PrescriptionMofidicationsHistory,
+  PatientMedicalReq,
 };
 
 export default models;

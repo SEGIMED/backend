@@ -1,4 +1,4 @@
-import { PatientDiagnostic } from "../../databaseConfig.js";
+import { PatientDiagnostic, User } from "../../databaseConfig.js";
 import contextService from "request-context";
 import moment from "moment-timezone";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
@@ -18,8 +18,31 @@ const createPatientDiagnosticHandler = async (body) => {
     therapyPrescription: therapyDescription,
     quantityDrug,
   } = body;
+  const role = contextService.get("request:user.role");
 
   try {
+    // verificar que sea un medico el que este registrado.
+    if (role !== "Médico") {
+      throw new SegimedAPIError(
+        "El usuario no esta autorizado para crear un diagnóstico.",
+        403
+      );
+    }
+    // Obtener el rol del paciente
+    const userPatient = await User.findByPk(patientId);
+
+    if (!userPatient) {
+      throw new SegimedAPIError("El paciente no existe.", 404);
+    }
+    //verificar si el paciente es realmente "Paciente"
+
+    if (userPatient.role !== 3) {
+      throw new SegimedAPIError(
+        "El usuario no es un paciente, no puede para crear un diagnóstico.",
+        403
+      );
+    }
+
     // Verificar si ya existe un diagnóstico con el mismo medicalEvent
     const existingDiagnostic = await PatientDiagnostic.findOne({
       where: { medicalEvent: medicalEventId },
