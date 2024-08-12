@@ -1,10 +1,10 @@
 import {
   MedicalInterconsultations,
   MedicalInterconsultationFile,
-  User, // Asegúrate de importar el modelo User desde tu configuración de base de datos
+  User,
 } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
-import { Op } from "sequelize"; // Asegúrate de importar Op para las consultas con Sequelize
+import { Op } from "sequelize";
 import contextService from "request-context";
 import moment from "moment-timezone";
 
@@ -12,94 +12,119 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
   const physicianRequester = contextService.get("request:user").userId;
 
   try {
-    // Validaciones
-    if (physicianRequester === data.physicianQueried) {
-      throw new SegimedAPIError(
-        "Physicians cannot make interconsultation requests to themselves",
-        400
-      );
-    }
-    if (!data.patient || !physicianRequester || !data.physicianQueried) {
-      throw new SegimedAPIError(
-        "patient, physicianRequester, and physicianQueried fields are required.",
-        400
-      );
-    }
+    // Validations
+    if (!data.medicalOpinion) {
+      if (physicianRequester === data.physicianQueried) {
+        throw new SegimedAPIError(
+          "Physicians cannot make interconsultation requests to themselves",
+          400
+        );
+      }
+      if (!data.patient || !data.physicianQueried) {
+        throw new SegimedAPIError(
+          "Patient, physicianRequester, and physicianQueried fields are required.",
+          400
+        );
+      }
 
-    // Validar roles
-    const users = await User.findAll({
-      where: {
-        id: {
-          [Op.in]: [data.patient, physicianRequester, data.physicianQueried],
+      // Validate roles
+      const users = await User.findAll({
+        where: {
+          id: {
+            [Op.in]: [data.patient, physicianRequester, data.physicianQueried],
+          },
         },
-      },
-    });
+      });
 
-    const userRoles = {};
-    users.forEach((user) => {
-      userRoles[user.id] = user.role;
-    });
+      const userRoles = {};
+      users.forEach((user) => {
+        userRoles[user.id] = user.role;
+      });
 
-    if (userRoles[physicianRequester] !== 2) {
-      throw new SegimedAPIError("Physician Requester must have role=3.", 400);
-    }
+      if (userRoles[physicianRequester] !== 2) {
+        throw new SegimedAPIError("Physician Requester must have role=2.", 400);
+      }
 
-    if (userRoles[data.physicianQueried] !== 2) {
-      throw new SegimedAPIError("Physician Queried must have role=3.", 400);
-    }
+      if (userRoles[data.physicianQueried] !== 2) {
+        throw new SegimedAPIError("Physician Queried must have role=2.", 400);
+      }
 
-    if (userRoles[data.patient] !== 3) {
-      throw new SegimedAPIError("Patient must have role=2.", 400);
-    }
+      if (userRoles[data.patient] !== 3) {
+        throw new SegimedAPIError("Patient must have role=3.", 400);
+      }
 
-    // Validar que los campos no sean null
-    const requiredFields = [
-      "patient",
-      "physicianQueried",
-      "medicalSpecialty",
-      "interconsultationStatus",
-      "reasonForConsultation",
-    ];
+      // Validate that required fields are not null
+      const requiredFields = [
+        "patient",
+        "physicianQueried",
+        "medicalSpecialty",
+        "interconsultationStatus",
+        "reasonForConsultation",
+      ];
 
-    for (const field of requiredFields) {
-      if (data[field] === null || data[field] === undefined) {
-        throw new SegimedAPIError(`${field} cannot be null.`, 400);
+      for (const field of requiredFields) {
+        if (data[field] === null || data[field] === undefined) {
+          throw new SegimedAPIError(`${field} cannot be null.`, 400);
+        }
       }
     }
 
     let interconsultation;
 
     if (data.id) {
-      // Actualización de la interconsulta médica existente
-      const [rowsUpdated, [updatedInterconsultation]] =
-        await MedicalInterconsultations.update(data, {
-          where: { id: data.id },
-          returning: true,
-        });
-      interconsultation = updatedInterconsultation;
+      // Find existing interconsultation
+      interconsultation = await MedicalInterconsultations.findByPk(data.id);
+      console.log(interconsultation.dataValues);
+      if (!interconsultation) {
+        throw new SegimedAPIError("Interconsultation not found", 404);
+      }
+
+      // Check if medicalOpinion is being updated
+      if (data.medicalOpinion !== undefined) {
+        if (
+          interconsultation.physicianQueried !==
+          contextService.get("request:user").userId
+        ) {
+          throw new SegimedAPIError(
+            "Only the queried physician can respond to the interconsultation",
+            400
+          );
+        }
+        // If verification passes, update end timestamp and status
+        data.interconsultationEndTimestamp = moment().format(
+          "YYYY-MM-DD HH:mm:ss z"
+        );
+        data.interconsultationStatus = 7; // corresponds to Resolved status
+      }
+
+      // Update the interconsultation
+      [, [interconsultation]] = await MedicalInterconsultations.update(data, {
+        where: { id: data.id },
+        returning: true,
+      });
     } else {
-      // Creación de una nueva interconsulta médica
+      // Create a new medical interconsultation
       interconsultation = await MedicalInterconsultations.create({
         ...data,
         physicianRequester,
         interconsultationStartTimestamp: moment().format(
           "YYYY-MM-DD HH:mm:ss z"
         ),
+        interconsultationStatus: 6, // corresponds to Requested status
       });
     }
 
-    // Manejo de los archivos relacionados
+    // Handle related files
     if (data.files && Array.isArray(data.files)) {
-      // Elimina los archivos existentes si estás actualizando
+      // Delete existing files if updating
       if (data.id) {
         await MedicalInterconsultationFile.destroy({
           where: { medicalInterconsultationId: interconsultation.id },
         });
       }
 
-      // Crea o actualiza los nuevos archivos
+      // Create or update new files
       for (const fileURL of data.files) {
-        console.log("add", fileURL);
         await MedicalInterconsultationFile.create({
           medicalInterconsultationId: interconsultation.id,
           fileURL: fileURL,
@@ -109,9 +134,9 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
 
     return interconsultation;
   } catch (error) {
-    // Lanza un error con el mensaje y código de estado definidos
+    // Throw error with defined message and status code
     if (error instanceof SegimedAPIError) {
-      throw error; // Lanza el error personalizado
+      throw error; // Throw custom error
     } else {
       throw new SegimedAPIError(
         "Error handling interconsultation: " + error.message,
