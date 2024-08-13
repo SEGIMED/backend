@@ -12,18 +12,19 @@ const model = (sequelize) => {
         allowNull: false,
         primaryKey: true,
       },
-      medicationPrescriptionId:{
-        type:DataTypes.BIGINT,
-        allowNull:false,
-        field:"prescription_id",
+      medicationPrescriptionId: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+        field: "medication_prescription_id",
         references: {
-            model: "medication_prescription",
-            key:"id"
-        }
+          model: "medication_prescription",
+          key: "id",
+        },
       },
       modificationTimestamp: {
         type: DataTypes.DATE,
         allowNull: false,
+        field: "modification_timestamp",
       },
       medicalEventId: {
         type: DataTypes.BIGINT,
@@ -43,42 +44,45 @@ const model = (sequelize) => {
         },
       },
       observations: {
-        type:DataTypes.TEXT,
-        allowNull:true,
+        type: DataTypes.TEXT,
+        allowNull: true,
       },
       indications: {
-        type:DataTypes.TEXT,
-        allowNull:true,
+        type: DataTypes.TEXT,
+        allowNull: true,
       },
-      doseMeasure:{
-        type:DataTypes.ENUM('1','1/2','1/3','1/4','1/8','0.5'),
-        allowNull:false
+      doseMeasure: {
+        type: DataTypes.ENUM("1", "1/2", "1/3", "1/4", "1/8", "0.5"),
+        allowNull: false,
+        field: "dose_measure",
       },
-      timeMeasure:{
+      timeMeasure: {
         type: DataTypes.NUMBER,
-        allowNull:false
+        allowNull: false,
+        field: "time_measure",
       },
-      timeMeasureType:{
-        type: DataTypes.ENUM('Hs','Min'),
-        allowNull:false
+      timeMeasureType: {
+        type: DataTypes.ENUM("Hs", "Min"),
+        allowNull: false,
+        field: "time_measure_type",
       },
-      drugDetailPresentationId:{
+      drugDetailPresentationId: {
         type: DataTypes.BIGINT,
-        allowNull:false,
+        allowNull: false,
         field: "drug_detail_presentation_id",
-        references:{
-            model: "drug_detail_presentation",
-            key: "id"
-        }
-      }
+        references: {
+          model: "drug_detail_presentation",
+          key: "id",
+        },
+      },
     },
     {
-      tableName: "prescription",
+      tableName: "prescription_modifications_history",
       schema: "public",
       timestamps: false,
       indexes: [
         {
-          name: "prescription_pk",
+          name: "prescription_modifications_history_pk",
           unique: true,
           fields: [{ name: "id" }],
         },

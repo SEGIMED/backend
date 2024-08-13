@@ -634,14 +634,6 @@ CatDisease.hasMany(PatientMedicalBackground, {
   as: "patientMedicalBackgrounds",
   foreignKey: "disease",
 });
-CatDrug.belongsTo(CatDrugPresentation, {
-  as: "catDrugPresentation",
-  foreignKey: "presentation",
-});
-CatDrugPresentation.hasMany(CatDrug, {
-  as: "catDrugs",
-  foreignKey: "presentation",
-});
 PatientMedicalBackground.belongsTo(CatMedicalBackgroundType, {
   as: "medicalBackgroundType",
   foreignKey: "backgroundType",

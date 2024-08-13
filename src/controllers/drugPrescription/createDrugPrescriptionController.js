@@ -1,15 +1,37 @@
+import { sequelize } from "../../databaseConfig.js";
 import createDrugPrescriptionHandler from "../../handlers/drugPrescription/createDrugPrescriptionHandler.js";
-
+import drugCreationHandler from "../../handlers/drugPrescription/drugCreationHandler.js";
 
 const createDrugPrescriptionController = async (req, res) => {
-    try {
-        const newPrescription = req.body;
-        const drug = await createDrugPrescriptionHandler(newPrescription);
-        return res.status(200).json(drug);
-
-    } catch (error) {
-        return res.status(500).json({error: error.message});
+  const transaction = await sequelize.transaction();
+  try {
+    const { drugDetailPresentationId, drugCreation, prescriptionCreation } =
+      req.body;
+    let drugDetailId = drugDetailPresentationId;
+    if (!drugDetailId) {
+      const createdDrugDetail = await drugCreationHandler(
+        drugCreation,
+        transaction
+      );
+      drugDetailId = createdDrugDetail.id;
     }
-}
+    const newPrescription = await createDrugPrescriptionHandler(
+      {
+        ...prescriptionCreation,
+        drugDetailPresentationId: drugDetailId,
+      },
+      transaction
+    );
+    await transaction.commit();
+    return res.status(201).json(newPrescription);
+  } catch (error) {
+    console.log(error)
+    if (transaction) {
+      await transaction.rollback();
+    }
+
+    return res.status(500).json({ error: error.message });
+  }
+};
 
 export default createDrugPrescriptionController;

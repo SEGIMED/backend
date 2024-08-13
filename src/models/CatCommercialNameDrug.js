@@ -27,12 +27,12 @@ const model = (sequelize) => {
       },
     },
     {
-      tableName: "cat_comercial_name_drug",
+      tableName: "cat_commercial_name_drug",
       schema: "public",
       timestamps: false,
       indexes: [
         {
-          name: "cat_comercial_name_drug_pk",
+          name: "cat_commercial_name_drug_pk",
           unique: true,
           fields: [{ name: "id" }],
         },

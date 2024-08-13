@@ -15,6 +15,7 @@ const model = (sequelize) => {
       startTimestamp: {
         type: DataTypes.DATE,
         allowNull: false,
+        field: "start_timestamp",
       },
       medicalEventId: {
         type: DataTypes.BIGINT,
@@ -48,16 +49,17 @@ const model = (sequelize) => {
       },
       endTimestamp: {
         type: DataTypes.DATE,
-        allowNull:true
+        allowNull:true,
+        field: "end_timestamp",
       }
     },
     {
-      tableName: "prescription",
+      tableName: "medication_prescription",
       schema: "public",
       timestamps: false,
       indexes: [
         {
-          name: "prescription_pk",
+          name: "medication_prescription_pk",
           unique: true,
           fields: [{ name: "id" }],
         },

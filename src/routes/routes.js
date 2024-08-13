@@ -411,10 +411,10 @@ diagnosticTestRouter
 
 //* Drug Prescription
 drugPrescriptionRouter
-  .route("/drug-prescription/deprecated-create-drug-prescription")
+  .route("/drug-prescription/create-drug-prescription")
   .post(createDrugPrescriptionController);
 drugPrescriptionRouter
-  .route("/drug-prescription/deprecated-update-drug-prescription")
+  .route("/drug-prescription/update-drug-prescription")
   .patch(updateDrugPrescriptionController);
 
 //* medical Procedure Prescription
