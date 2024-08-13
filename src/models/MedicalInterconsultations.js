@@ -26,7 +26,7 @@ const model = (sequelize) => {
           model: "user",
           key: "id",
         },
-        field: "physician_requester", // Nombre de la columna en la base de datos
+        field: "physician_requester",
       },
       physicianQueried: {
         type: DataTypes.INTEGER,
@@ -35,7 +35,7 @@ const model = (sequelize) => {
           model: "user",
           key: "id",
         },
-        field: "physician_queried", // Nombre de la columna en la base de datos
+        field: "physician_queried",
       },
       medicalSpecialty: {
         type: DataTypes.INTEGER,
@@ -74,6 +74,12 @@ const model = (sequelize) => {
         type: DataTypes.TEXT,
         allowNull: true,
         field: "medical_opinion",
+      },
+      isPriority: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+        field: "is_priority",
       },
     },
     {

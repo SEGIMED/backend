@@ -60,6 +60,7 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
         "medicalSpecialty",
         "interconsultationStatus",
         "reasonForConsultation",
+        "isPriority",
       ];
 
       for (const field of requiredFields) {
