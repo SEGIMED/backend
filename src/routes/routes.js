@@ -524,16 +524,6 @@ interconsultationRouter.patch(
 //* Onboarding
 onbordingRouter.patch("/onboarding", createOnboardingController);
 
-<<<<<<< HEAD
-=======
-// esto lo subieron con conflicto.
-// centerAttRouter
-//
-//   .route("/center-attention")
-//     .post(createCenterAtt)
-//     .get(getCenterAtt);
-
->>>>>>> d91a33ed0232c07cd54a421a18ee0237dd901b58
 //* Notifications
 getAllNotificationsPatienRouter.get(
   "/all-notifications-patient",
