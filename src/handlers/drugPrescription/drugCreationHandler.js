@@ -41,8 +41,6 @@ const drugCreationHandler = async (body, transaction) => {
       );
     }
 
-    const [commercialDrug, commercialDrugCreated] = commercialDrugResult;
-
     // Buscar o crear el detalle de presentación
     const drugDetailPresentationResult =
       await models.DrugDetailPresentation.findOrCreate({
@@ -69,10 +67,8 @@ const drugCreationHandler = async (body, transaction) => {
     const [drugDetailPresentation, drugDetailCreated] =
       drugDetailPresentationResult;
 
-    console.log("asdasda");
     return drugDetailPresentation;
   } catch (error) {
-    console.log(error);
     throw new SegimedAPIError("Hubo un error durante en la prescripción.", 500);
   }
 };

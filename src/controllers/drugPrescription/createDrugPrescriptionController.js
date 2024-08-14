@@ -1,10 +1,15 @@
 import { sequelize } from "../../databaseConfig.js";
 import createDrugPrescriptionHandler from "../../handlers/drugPrescription/createDrugPrescriptionHandler.js";
 import drugCreationHandler from "../../handlers/drugPrescription/drugCreationHandler.js";
+import validateDrugCreationData from "../../validations/validateDrugCreation.js";
+import { validateDrugPrescriptionInput } from "../../validations/validateDrugPrescriptionInput.js";
 
 const createDrugPrescriptionController = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
+    validateDrugPrescriptionInput(req.body);
+    validateDrugCreationData(req.body.drugCreation);
+
     const { drugDetailPresentationId, drugCreation, prescriptionCreation } =
       req.body;
     let drugDetailId = drugDetailPresentationId;
@@ -25,7 +30,6 @@ const createDrugPrescriptionController = async (req, res) => {
     await transaction.commit();
     return res.status(201).json(newPrescription);
   } catch (error) {
-    console.log(error)
     if (transaction) {
       await transaction.rollback();
     }
