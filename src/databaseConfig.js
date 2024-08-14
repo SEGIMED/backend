@@ -84,6 +84,8 @@ import PhysicianFavoritePatientModel from "./models/PhysicianFavoritePatient.js"
 import RefreshTokenModel from "./models/RefreshToken.js";
 import RequestFollowModel from "./models/RequestFollow.js";
 import PhysicianOnboardingModel from "./models/PhysicianOnboarding.js";
+import MedicalInterconsultationsModel from "./models/MedicalInterconsultations.js";
+import MedicalInterconsultationFileModel from "./models/MedicalInterconsultationFile.js";
 import PatiendMedReqModel from "./models/PatientMedicalReq.js";
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
@@ -200,6 +202,8 @@ PhysicianFavoritePatientModel(sequelize);
 RefreshTokenModel(sequelize);
 RequestFollowModel(sequelize);
 PhysicianOnboardingModel(sequelize);
+MedicalInterconsultationsModel(sequelize);
+MedicalInterconsultationFileModel(sequelize);
 PatiendMedReqModel(sequelize);
 
 export const {
@@ -286,6 +290,8 @@ export const {
   RefreshToken,
   RequestFollow,
   PhysicianOnboarding,
+  MedicalInterconsultations,
+  MedicalInterconsultationFile,
   PatientMedicalReq,
 } = sequelize.models;
 
@@ -381,6 +387,18 @@ CatSchedulingStatus.hasMany(AppointmentScheduling, {
   as: "appointment_schedulings",
   foreignKey: "scheduling_status",
 });
+// En el modelo MedicalInterconsultations
+MedicalInterconsultations.belongsTo(CatSchedulingStatus, {
+  as: "statusCategory", // Cambiado de "interconsultationStatus" a "statusCategory"
+  foreignKey: "interconsultation_status",
+});
+
+// En el modelo CatSchedulingStatus
+CatSchedulingStatus.hasMany(MedicalInterconsultations, {
+  as: "interconsultations",
+  foreignKey: "interconsultation_status",
+});
+
 VitalSignDetails.belongsTo(CatVitalSignMeasureType, {
   as: "vitalSignMeasureType",
   foreignKey: "measure_type",
@@ -1192,6 +1210,40 @@ PhysicianOnboarding.belongsTo(CatGenre, { foreignKey: "genre" });
 PhysicianOnboarding.belongsTo(CatCenterAttention, {
   foreignKey: "centerAttention",
 });
+// Relaciones del modelo MedicalInterconsultations
+
+User.hasOne(MedicalInterconsultations, {
+  foreignKey: "physicianRequester",
+  as: "requestingPhysician",
+});
+MedicalInterconsultations.belongsTo(User, {
+  foreignKey: "physicianRequester",
+  as: "requestingPhysician",
+});
+User.hasOne(MedicalInterconsultations, {
+  foreignKey: "patient",
+  as: "patientDetails",
+});
+MedicalInterconsultations.belongsTo(User, {
+  foreignKey: "patient",
+  as: "patientDetails",
+});
+User.hasOne(MedicalInterconsultations, {
+  foreignKey: "physicianQueried",
+  as: "queriedPhysician",
+});
+MedicalInterconsultations.belongsTo(User, {
+  foreignKey: "physicianQueried",
+  as: "queriedPhysician",
+});
+MedicalInterconsultations.hasMany(MedicalInterconsultationFile, {
+  foreignKey: "medicalInterconsultationId",
+  as: "files",
+});
+MedicalInterconsultationFile.belongsTo(MedicalInterconsultations, {
+  foreignKey: "medicalInterconsultationId",
+});
+
 AlarmEvent.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
 
 User.hasOne(RefreshToken, { foreignKey: "userId", as: "refreshToken" });
@@ -1291,6 +1343,8 @@ const models = {
   RefreshToken,
   RequestFollow,
   PhysicianOnboarding,
+  MedicalInterconsultations,
+  MedicalInterconsultationFile,
   PatientMedicalReq,
 };
 
