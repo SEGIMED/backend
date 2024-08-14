@@ -7,13 +7,19 @@ const createPatientMedReq = async (body, patientId) => {
   const { physicianId, reqTypes, message } = body;
 
   try {
-    const newPatientMedReq = await models.PatientMedicalReq.create({
-      patientId,
-      physicianId,
-      reqTypes,
-      message,
-      status: false,
+    const [newPatientMedReq, create] = await models.PatientMedicalReq.findOrCreate({ 
+      where: { patientId, physicianId, reqTypes, status: false },
+      defaults: {
+        patientId,
+        physicianId,
+        reqTypes,
+        message,
+        status: false,
+      },
     });
+    if (!create) {
+      throw new SegimedAPIError("The medical request already exists");
+    }
     return newPatientMedReq;
   } catch (error) {
     throw new SegimedAPIError(error);
