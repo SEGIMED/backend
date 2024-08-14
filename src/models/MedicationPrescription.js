@@ -42,16 +42,21 @@ const model = (sequelize) => {
           model: "user",
         },
       },
-      active:{
-        type:DataTypes.BOOLEAN,
-        allowNull:false,
-        defaultValue:true,
+      active: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
       },
       endTimestamp: {
         type: DataTypes.DATE,
-        allowNull:true,
+        allowNull: true,
         field: "end_timestamp",
-      }
+      },
+      deleted: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     },
     {
       tableName: "medication_prescription",

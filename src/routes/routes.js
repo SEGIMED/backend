@@ -113,6 +113,7 @@ import createPatientMedReqCtrl from "../controllers/patient/patientMedicaReq/cre
 import getPatientMedReqCtrl from "../controllers/patient/patientMedicaReq/getPatientMedReqCtrl.js";
 import updatePatientMedReqCtrl from "../controllers/patient/patientMedicaReq/updatePatientMedReqCtrl.js";
 import deletePatientMedReqCtrl from "../controllers/patient/patientMedicaReq/deletePatientMedReqCtrl.js";
+import deleteDrugPrescriptionController from "../controllers/drugPrescription/deleteDrugPrescriptionController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -411,11 +412,10 @@ diagnosticTestRouter
 
 //* Drug Prescription
 drugPrescriptionRouter
-  .route("/drug-prescription/create-drug-prescription")
-  .post(createDrugPrescriptionController);
-drugPrescriptionRouter
-  .route("/drug-prescription/update-drug-prescription")
-  .patch(updateDrugPrescriptionController);
+  .route("/drug-prescription")
+  .post(createDrugPrescriptionController)
+  .patch(updateDrugPrescriptionController)
+  .delete(deleteDrugPrescriptionController)
 
 //* medical Procedure Prescription
 procedurePrescriptionRouter
