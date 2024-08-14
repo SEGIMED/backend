@@ -1,19 +1,33 @@
-import { DrugPrescription } from "../../databaseConfig.js";
-import SegimedAPIError from "../../error/SegimedAPIError.js";
-import createDrugPrescriptionHandler from "./createDrugPrescriptionHandler.js"; // Importa la función de creación
-import deleteDrugPrescriptionsHandler from "./deleteDrugPrescriptionsHandler.js";
+import models from "../../databaseConfig";
+import SegimedAPIError from "../../error/SegimedAPIError";
 
 const updateDrugPrescriptionHandler = async (body) => {
-  const {
-    //id,
-    patientId,
-    drugId,
-    drugName,
-    // prescribedDose,
-    quantity,
-    medicalEventId,
-  } = body;
-  // deleteDrugPrescriptionsHandler(medicalEventId);
+  try {
+    const {
+      medicationPrescriptionId,
+      medicalEventId,
+      observations,
+      indications,
+      doseMeasure,
+      timeMeasure,
+      timeMeasureType
+    } = body
+
+    const newPrescriptionModificationsHistory = await models.PrescriptionMofidicationsHistory.create({
+      medicationPrescriptionId,
+      physicianId: contextService.get("request:user").userId,
+      modificationTimestamp: moment().tz(TZ).format(),
+      medicalEventId,
+      observations,
+      indications,
+      doseMeasure,
+      timeMeasure,
+      timeMeasureType,
+    })
+    return newPrescriptionModificationsHistory
+  } catch (error) {
+    throw new SegimedAPIError("Hubo un error al modificar la prescripción",500)
+  }
 };
 
 export default updateDrugPrescriptionHandler;

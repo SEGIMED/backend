@@ -2,9 +2,10 @@ import updateDrugPrescriptionHandler from "../../handlers/drugPrescription/updat
 
 const updateDrugPrescriptionController = async (req, res) => {
   try {
-    const updateDrugPrescription = req.body;
-    const drug = await updateDrugPrescriptionHandler(updateDrugPrescription);
-    return res.status(200).json(drug);
+    const { prescriptionCreation } = req.body;
+
+    await updateDrugPrescriptionHandler(prescriptionCreation);
+    return res.status(200).json("Prescripción actualizada correctamente");
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
