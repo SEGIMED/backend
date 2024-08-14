@@ -9,12 +9,12 @@ const getPatientMedReq = async (field, userId) => {
         {
           model: models.User,
           as: "patientReq",
-          attributes: ["name"],
+          attributes: ["name", "lastname"],
         },
         {
           model: models.User,
           as: "physicianReq",
-          attributes: ["name"],
+          attributes: ["name", "lastname"],
         },
       ],
     });

@@ -1,6 +1,9 @@
 import models from "../../../databaseConfig.js";
+import { validationPatientMedReq } from "../../../validations/validationPatientMedReq.js";
+import SegimedAPIError from "../../../error/SegimedAPIError.js";
 
 const createPatientMedReq = async (body, patientId) => {
+  validationPatientMedReq(body);
   const { physicianId, reqTypes, message } = body;
 
   try {
@@ -13,7 +16,7 @@ const createPatientMedReq = async (body, patientId) => {
     });
     return newPatientMedReq;
   } catch (error) {
-    throw new Error(error);
+    throw new SegimedAPIError(error);
   }
 };
 
