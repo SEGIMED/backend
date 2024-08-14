@@ -286,6 +286,7 @@ const getMedicalEventHistoryHandler = async (patientId, physicianId) => {
     const medicalEvent = medicalEventHistory.map((medicalEvent) =>
       mapMedicalEvent(medicalEvent)
     );
+
     return medicalEvent;
   } catch (error) {
     throw new Error("Error loading physician: " + error.message);
