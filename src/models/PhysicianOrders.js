@@ -1,7 +1,7 @@
 import sequelize from "sequelize";
 import moment from "moment";
 
-import { DataTypes } from "sequelize";
+const DataTypes = sequelize.DataTypes;
 
 const model = (sequelize) => {
   sequelize.define(
