@@ -17,7 +17,7 @@ const updateDrugPrescriptionHandler = async (body) => {
     } = body;
 
     const drugDetailPresentation =
-      await models.PrescriptionMofidicationsHistory.findOne({
+      await models.PrescriptionModificationsHistory.findOne({
         where: { medicationPrescriptionId },
       });
 
@@ -27,17 +27,17 @@ const updateDrugPrescriptionHandler = async (body) => {
       });
 
     if (
-      !medicationPresciptionCheck.active ||
-      medicationPresciptionCheck.deleted
+      !medicationPresciptionCheck?.active ||
+      medicationPresciptionCheck?.deleted
     ) {
       throw new SegimedAPIError(
         "No es posible modificar una prescripción desactivada o eliminada",
         500
       );
     }
-    console.log(drugDetailPresentation);
+
     const newPrescriptionModificationsHistory =
-      await models.PrescriptionMofidicationsHistory.create({
+      await models.PrescriptionModificationsHistory.create({
         medicationPrescriptionId,
         physicianId: contextService.get("request:user").userId,
         modificationTimestamp: moment().tz(TZ).toISOString(),

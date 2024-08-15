@@ -4,7 +4,7 @@ const DataTypes = sequelize.DataTypes;
 
 const model = (sequelize) => {
   sequelize.define(
-    "PrescriptionMofidicationsHistory",
+    "PrescriptionModificationsHistory",
     {
       id: {
         autoIncrement: true,

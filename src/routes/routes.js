@@ -420,12 +420,14 @@ diagnosticTestRouter
 //* Drug Prescription
 drugPrescriptionRouter
   .route("/drug-prescription")
-  .get(searchDrugsController)
   .get(getDrugPrescriptionController)
   .post(createDrugPrescriptionController)
   .patch(updateDrugPrescriptionController)
-  .delete(deleteDrugPrescriptionController)
-
+  .delete(deleteDrugPrescriptionController);
+drugPrescriptionRouter
+  .route("/drug-prescription/search")
+  .get(searchDrugsController);
+  
 //* medical Procedure Prescription
 procedurePrescriptionRouter
   .route("/procedure/create-procedure-prescription")

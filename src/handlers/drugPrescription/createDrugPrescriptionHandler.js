@@ -31,7 +31,7 @@ const createDrugPrescriptionHandler = async (body, transaction) => {
     );
     //Con la nueva instancia se hace la primera entrada para la historia clinica del medicamento
     const prescriptionModificationHistory =
-      await models.PrescriptionMofidicationsHistory.create(
+      await models.PrescriptionModificationsHistory.create(
         {
           medicationPrescriptionId: newPrescription.id,
           physicianId: contextService.get("request:user").userId,

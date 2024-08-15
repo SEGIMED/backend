@@ -88,7 +88,7 @@ import CatRouteOfAdministrationModel from "./models/CatRouteOfAdministration.js"
 import CatCommercialNameDrugModel from "./models/CatCommercialNameDrug.js";
 import DrugDetailPresentationModel from "./models/DrugDetailPresentation.js";
 import MedicationPrescriptionModel from "./models/MedicationPrescription.js";
-import PrescriptionMofidicationsHistoryModel from "./models/PrescriptionModificationsHistory.js";
+import PrescriptionModificationsHistoryModel from "./models/PrescriptionModificationsHistory.js";
 import MedicalInterconsultationsModel from "./models/MedicalInterconsultations.js";
 import MedicalInterconsultationFileModel from "./models/MedicalInterconsultationFile.js";
 import PatiendMedReqModel from "./models/PatientMedicalReq.js";
@@ -212,7 +212,7 @@ CatRouteOfAdministrationModel(sequelize);
 CatCommercialNameDrugModel(sequelize);
 DrugDetailPresentationModel(sequelize);
 MedicationPrescriptionModel(sequelize);
-PrescriptionMofidicationsHistoryModel(sequelize);
+PrescriptionModificationsHistoryModel(sequelize);
 MedicalInterconsultationsModel(sequelize);
 MedicalInterconsultationFileModel(sequelize);
 PatiendMedReqModel(sequelize);
@@ -305,7 +305,7 @@ export const {
   CatCommercialNameDrug,
   DrugDetailPresentation,
   MedicationPrescription,
-  PrescriptionMofidicationsHistory,
+  PrescriptionModificationsHistory,
   MedicalInterconsultations,
   MedicalInterconsultationFile,
   PatientMedicalReq,
@@ -1329,46 +1329,46 @@ User.hasMany(MedicationPrescription, {
   as: "physicianPrescription",
 });
 
-PrescriptionMofidicationsHistory.belongsTo(MedicationPrescription, {
+PrescriptionModificationsHistory.belongsTo(MedicationPrescription, {
   foreignKey: "medicationPrescriptionId",
   as: "prescriptionModificationHistory",
 });
-MedicationPrescription.hasMany(PrescriptionMofidicationsHistory, {
+MedicationPrescription.hasMany(PrescriptionModificationsHistory, {
   foreignKey: "medicationPrescriptionId",
   as: "medicationPrescription",
 });
 
-PrescriptionMofidicationsHistory.belongsTo(MedicalEvent, {
+PrescriptionModificationsHistory.belongsTo(MedicalEvent, {
   foreignKey: "medicalEventId",
   as: "prescriptionHistory",
 });
-MedicalEvent.hasMany(PrescriptionMofidicationsHistory, {
+MedicalEvent.hasMany(PrescriptionModificationsHistory, {
   foreignKey: "medicalEventId",
   as: "prescriptionHistory",
 });
 
-PrescriptionMofidicationsHistory.belongsTo(User, {
+PrescriptionModificationsHistory.belongsTo(User, {
   foreignKey: "physicianId",
   as: "physicianModification",
 });
-User.hasMany(PrescriptionMofidicationsHistory, {
+User.hasMany(PrescriptionModificationsHistory, {
   foreignKey: "physicianId",
   as: "prescriptionModified",
 });
 
-PrescriptionMofidicationsHistory.belongsTo(DrugDetailPresentation, {
+PrescriptionModificationsHistory.belongsTo(DrugDetailPresentation, {
   foreignKey: "drugDetailPresentationId",
   as: "drugDetailPresentation",
 });
-DrugDetailPresentation.hasMany(PrescriptionMofidicationsHistory, {
+DrugDetailPresentation.hasMany(PrescriptionModificationsHistory, {
   foreignKey: "drugDetailPresentationId",
   as: "drugDetailPresentation",
 });
-PrescriptionMofidicationsHistory.belongsTo(CatCommercialNameDrug, {
+PrescriptionModificationsHistory.belongsTo(CatCommercialNameDrug, {
   foreignKey: "commercialNameDrugId",
   as: "commercialName",
 });
-CatCommercialNameDrug.hasMany(PrescriptionMofidicationsHistory, {
+CatCommercialNameDrug.hasMany(PrescriptionModificationsHistory, {
   foreignKey:"commercialNameDrugId",
   as:"CommercialNamePrescription"
 })
@@ -1470,7 +1470,7 @@ const models = {
   CatCommercialNameDrug,
   DrugDetailPresentation,
   MedicationPrescription,
-  PrescriptionMofidicationsHistory,
+  PrescriptionModificationsHistory,
   MedicalInterconsultations,
   MedicalInterconsultationFile,
   PatientMedicalReq,
