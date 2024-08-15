@@ -114,6 +114,7 @@ import getPatientMedReqCtrl from "../controllers/patient/patientMedicaReq/getPat
 import updatePatientMedReqCtrl from "../controllers/patient/patientMedicaReq/updatePatientMedReqCtrl.js";
 import deletePatientMedReqCtrl from "../controllers/patient/patientMedicaReq/deletePatientMedReqCtrl.js";
 import deleteDrugPrescriptionController from "../controllers/drugPrescription/deleteDrugPrescriptionController.js";
+import getDrugPrescriptionController from "../controllers/drugPrescription/getDrugPrescriptionController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -413,6 +414,7 @@ diagnosticTestRouter
 //* Drug Prescription
 drugPrescriptionRouter
   .route("/drug-prescription")
+  .get(getDrugPrescriptionController)
   .post(createDrugPrescriptionController)
   .patch(updateDrugPrescriptionController)
   .delete(deleteDrugPrescriptionController)

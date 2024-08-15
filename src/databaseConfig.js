@@ -1312,6 +1312,14 @@ DrugDetailPresentation.hasMany(PrescriptionMofidicationsHistory, {
   foreignKey: "drugDetailPresentationId",
   as: "drugDetailPresentation",
 });
+PrescriptionMofidicationsHistory.belongsTo(CatCommercialNameDrug, {
+  foreignKey: "commercialNameDrugId",
+  as: "commercialName",
+});
+CatCommercialNameDrug.hasMany(PrescriptionMofidicationsHistory, {
+  foreignKey:"commercialNameDrugId",
+  as:"CommercialNamePrescription"
+})
 User.hasMany(PatientMedicalReq, { foreignKey: "patientId", as: "patient" });
 User.hasMany(PatientMedicalReq, { foreignKey: "physicianId", as: "physician" });
 PatientMedicalReq.belongsTo(User, {

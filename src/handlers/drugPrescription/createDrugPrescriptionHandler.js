@@ -13,6 +13,7 @@ const createDrugPrescriptionHandler = async (body, transaction) => {
     timeMeasure,
     timeMeasureType,
     drugDetailPresentationId,
+    commercialNameDrugId
   } = body;
 
   try {
@@ -42,6 +43,7 @@ const createDrugPrescriptionHandler = async (body, transaction) => {
           timeMeasure,
           timeMeasureType,
           drugDetailPresentationId,
+          commercialNameDrugId
         },
         { transaction }
       );

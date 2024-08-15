@@ -10,7 +10,7 @@ const createDrugPrescriptionController = async (req, res) => {
     validateDrugPrescriptionInput(req.body);
     validateDrugCreationData(req.body.drugCreation);
 
-    const { drugDetailPresentationId, drugCreation, prescriptionCreation } =
+    const { drugDetailPresentationId,commercialNameDrugId, drugCreation, prescriptionCreation } =
       req.body;
     let drugDetailId = drugDetailPresentationId;
     if (!drugDetailId) {
@@ -19,11 +19,13 @@ const createDrugPrescriptionController = async (req, res) => {
         transaction
       );
       drugDetailId = createdDrugDetail.id;
+      commercialNameDrugId =createdDrugDetail.commercialNameDrugId
     }
     const newPrescription = await createDrugPrescriptionHandler(
       {
         ...prescriptionCreation,
         drugDetailPresentationId: drugDetailId,
+        commercialNameDrugId
       },
       transaction
     );

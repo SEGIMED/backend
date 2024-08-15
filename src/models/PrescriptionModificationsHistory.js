@@ -75,6 +75,15 @@ const model = (sequelize) => {
           key: "id",
         },
       },
+      commercialNameDrugId: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+        field: "commercial_name_drug_id",
+        references: {
+          model: "cat_commercial_name_drug",
+          key: "id",
+        },
+      },
     },
     {
       tableName: "prescription_modifications_history",
