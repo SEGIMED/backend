@@ -10,27 +10,34 @@ const createDrugPrescriptionController = async (req, res) => {
     validateDrugPrescriptionInput(req.body);
     validateDrugCreationData(req.body.drugCreation);
 
-    const { drugDetailPresentationId,commercialNameDrugId, drugCreation, prescriptionCreation } =
-      req.body;
+    const {
+      drugDetailPresentationId,
+      commercialNameDrugId,
+      drugCreation,
+      prescriptionCreation,
+    } = req.body;
     let drugDetailId = drugDetailPresentationId;
+    let commercialNameId;
     if (!drugDetailId) {
       const createdDrugDetail = await drugCreationHandler(
         drugCreation,
         transaction
       );
+
       drugDetailId = createdDrugDetail.id;
-      commercialNameDrugId =createdDrugDetail.commercialNameDrugId
+      commercialNameId = createdDrugDetail.commercialNameDrugId;
     }
+
     const newPrescription = await createDrugPrescriptionHandler(
       {
         ...prescriptionCreation,
         drugDetailPresentationId: drugDetailId,
-        commercialNameDrugId
+        commercialNameDrugId: commercialNameId,
       },
       transaction
     );
     await transaction.commit();
-    return res.status(201).json({message:"Prescripción creada con éxito"});
+    return res.status(201).json({ message: "Prescripción creada con éxito" });
   } catch (error) {
     if (transaction) {
       await transaction.rollback();

@@ -67,6 +67,8 @@ const drugCreationHandler = async (body, transaction) => {
     const [drugDetailPresentation, drugDetailCreated] =
       drugDetailPresentationResult;
 
+    drugDetailPresentation.commercialNameDrugId  = commercialDrugResult[0].id
+
     return drugDetailPresentation;
   } catch (error) {
     throw new SegimedAPIError("Hubo un error durante en la prescripción.", 500);
