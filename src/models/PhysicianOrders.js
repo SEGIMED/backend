@@ -1,4 +1,5 @@
 import sequelize from "sequelize";
+import moment from "moment";
 
 import { DataTypes } from "sequelize";
 
@@ -44,6 +45,25 @@ const model = (sequelize) => {
         defaultValue: "Otro",
         field: "req_types",
       },
+      medicalPrescriptionId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "medication_prescription",
+          key: "id",
+        },
+        field: "medical_prescription_id",
+      },
+      prescription_modifications_hist_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "prescription_modifications_hist",
+          key: "id",
+        },
+        field: "prescription_modifications_hist_id",
+      },
+
       indications: {
         type: DataTypes.TEXT,
         allowNull: false,
@@ -63,13 +83,13 @@ const model = (sequelize) => {
         type: DataTypes.DATE,
         allowNull: false,
         field: "date",
-        defaultValue: DataTypes.NOW,
+        defaultValue: new Date().moment().format("YYYY-MM-DD HH:mm:ss z"),
       },
       updateAt: {
         type: DataTypes.DATE,
         allowNull: true,
         field: "update_at",
-        defaultValue: DataTypes.NOW,
+        defaultValue: new Date().moment().format("YYYY-MM-DD HH:mm:ss z"),
       },
     },
     {
