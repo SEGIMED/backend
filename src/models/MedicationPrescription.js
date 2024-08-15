@@ -19,7 +19,7 @@ const model = (sequelize) => {
       },
       medicalEventId: {
         type: DataTypes.BIGINT,
-        allowNull: false,
+        allowNull: true,
         field: "medical_event_id",
         references: {
           model: "medical_event",
