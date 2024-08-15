@@ -21,23 +21,23 @@ const model = (sequelize) => {
         },
         field: "medical_event",
       },
-      // patient: {
-      //   type: DataTypes.INTEGER,
-      //   allowNull: true,
-      //   references: {
-      //     model: "user",
-      //     key: "id",
-      //   },
-      // },
-      // prescribedPhysician: {
-      //   type: DataTypes.INTEGER,
-      //   allowNull: true,
-      //   references: {
-      //     model: "user",
-      //     key: "id",
-      //   },
-      //   field: "prescribed_physician",
-      // },
+       patient: {
+         type: DataTypes.INTEGER,
+         allowNull: true,
+         references: {
+           model: "user",
+           key: "id",
+         },
+       },
+       prescribedPhysician: {
+         type: DataTypes.INTEGER,
+         allowNull: true,
+         references: {
+           model: "user",
+           key: "id",
+         },
+         field: "prescribed_physician",
+       },
       prescriptionTimestamp: {
         type: DataTypes.DATE,
         allowNull: false,

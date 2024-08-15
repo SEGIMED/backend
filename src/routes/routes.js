@@ -113,6 +113,9 @@ import createPatientMedReqCtrl from "../controllers/patient/patientMedicaReq/cre
 import getPatientMedReqCtrl from "../controllers/patient/patientMedicaReq/getPatientMedReqCtrl.js";
 import updatePatientMedReqCtrl from "../controllers/patient/patientMedicaReq/updatePatientMedReqCtrl.js";
 import deletePatientMedReqCtrl from "../controllers/patient/patientMedicaReq/deletePatientMedReqCtrl.js";
+import deleteDrugPrescriptionController from "../controllers/drugPrescription/deleteDrugPrescriptionController.js";
+import getDrugPrescriptionController from "../controllers/drugPrescription/getDrugPrescriptionController.js";
+import searchDrugsController from "../controllers/drugPrescription/searchDrugsController.js";
 import createOrUpdateMedicalInterconsultation from "../controllers/interconsultation/MedicalInterconsultations.js";
 import getMedicalInterconsultationController from "../controllers/interconsultation/getMedicalInterconsultation.js";
 import getMedicalInterconsultationDetailsController from "../controllers/interconsultation/getMedicalInterconsultationDetailsController.js";
@@ -416,12 +419,15 @@ diagnosticTestRouter
 
 //* Drug Prescription
 drugPrescriptionRouter
-  .route("/drug-prescription/deprecated-create-drug-prescription")
-  .post(createDrugPrescriptionController);
+  .route("/drug-prescription")
+  .get(getDrugPrescriptionController)
+  .post(createDrugPrescriptionController)
+  .patch(updateDrugPrescriptionController)
+  .delete(deleteDrugPrescriptionController);
 drugPrescriptionRouter
-  .route("/drug-prescription/deprecated-update-drug-prescription")
-  .patch(updateDrugPrescriptionController);
-
+  .route("/drug-prescription/search")
+  .get(searchDrugsController);
+  
 //* medical Procedure Prescription
 procedurePrescriptionRouter
   .route("/procedure/create-procedure-prescription")
