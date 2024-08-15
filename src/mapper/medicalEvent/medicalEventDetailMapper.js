@@ -112,8 +112,7 @@ export const mapMedicalEventDetail = (medicalEvent) => {
     treatmentPlan: medicalEvent?.pendingDiagnosticTest ?? null,
 
     //Tratamiento no farmacológico
-    medicalIndications:
-      medicalEvent?.medicalIndications[0].dataValues.description,
+    medicalIndications: medicalEvent?.medicalIndications[0]?.description,
 
     //Pauta de alarma
     alarmPattern: medicalEvent?.alarmPattern ?? null,

@@ -37,7 +37,7 @@ const formatAlarms = (alarms) => {
     return alarms.map((alarm) => ({
         ...alarm,
         highestPriority: getHighestPriority(
-            alarm.questionsPriority.map((p) => p.split(": ")[1])
+            (alarm.questionsPriority || []).map((p) => p.split(": ")[1])
         ),
     }));
 };
@@ -48,13 +48,34 @@ const getAllAlarmsForPatientHandler = async (patientId) => {
             const allAlarmsForPatient = await AlarmEvent.findAll({
                 where: {
                     patient: patientId
-                }
+                },
+                include: [
+                    {
+                        model: User,
+                        as: 'AlarmForPatient',
+                        attributes: { exclude: ['password'] },
+                        include: [{
+                            model: PatientPulmonaryHypertensionGroup,
+                            as: 'userHpGroups',
+                            include: {
+                                model: CatPulmonaryHypertensionGroup,
+                                as: 'catHpGroup',
+                                attributes: ['name']
+                            }
+                        }],
+                    }]
             });
 
             const formattedAlarms = formatAlarms(allAlarmsForPatient.map(alarm => ({
+
                 id: alarm.id,
                 patient: alarm.patient,
                 alarmDescription: alarm.alarmDescription,
+                solved: alarm.solved,
+                fecha: new Date(alarm.createdAt).toLocaleDateString(),
+                hora: new Date(alarm.createdAt).toLocaleTimeString(),
+                name: alarm.AlarmForPatient ? alarm.AlarmForPatient.name : null,
+                lastname: alarm.AlarmForPatient ? alarm.AlarmForPatient.lastname : null,
                 questionsPriority: mapquestionsPriority(alarm.questionsPriority)
             })));
 
