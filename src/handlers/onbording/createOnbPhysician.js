@@ -2,10 +2,10 @@ import models, { AttendentPlace } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import { PhysicianSpecialty } from "../../databaseConfig.js";
 import { PhysicianMedicalRegistry } from "../../databaseConfig.js";
-import { where } from "sequelize";
+import contextService from "request-context"
 
-export const createOnbPhysician = async (body, userId) => {
-  const convertUserid = parseInt(userId, 10);
+export const createOnbPhysician = async (body) => {
+const userId = contextService.get('request:user').userId
   const {
     genre,
     birthDate,
@@ -16,9 +16,35 @@ export const createOnbPhysician = async (body, userId) => {
     provincialRegistration,
   } = body;
   try {
+
+    // verificamos que se mande un elemento dentro del array de centros de atención
+    if(centerAttention.length === 0){
+      throw new SegimedAPIError(400, "Debe seleccionar al menos un centro de atención");
+    };
+
+    // verificar si el médico ya está registrado en el centro de atención
+    const verifyAttendentPlace = await centerAttention.forEach(element => {
+      const response = AttendentPlace.findOne({
+        where: { idPhysician: userId, idCenterAttention: element },
+      });
+      if (response) {
+        throw new SegimedAPIError(400, "El médico ya está registrado en el centro de atención");
+      }
+    });
+
+    // Crear un nuevo registro médico en el centro de atención
+    const attendentPlaceRegister = await centerAttention.forEach(async (element) => {
+      const newAttendentPlace = await AttendentPlace.create({
+        idPhysician: userId,
+        idCenterAttention: element,
+      });
+      return newAttendentPlace;
+    });
+
+    // Crear un nuevo registro médico en el onboarding del médico
     const [newOnbPhysician, createdOnb] =
       await models.PhysicianOnboarding.findOrCreate({
-        where: { idPhysician: convertUserid },
+        where: { idPhysician: userId },
         defaults: {
           genre,
           birthDate,
@@ -26,31 +52,17 @@ export const createOnbPhysician = async (body, userId) => {
         },
       });
 
-    const centerAttentionArray = Array.isArray(centerAttention)
-      ? centerAttention
-      : [centerAttention];
-
-    const attendentPlaceRegister = await Promise.all(
-      centerAttention.map(async (element) => {
-        const [newAttendentPlace, createdPlace] =
-          await AttendentPlace.findOrCreate({
-            where: {
-              idPhysician: convertUserid,
-              idCenterAttention: element,
-            },
-          });
-        return newAttendentPlace;
-      })
-    );
-
+    
+ // Crear un nuevo registro médico en la especialidad del médico
     const [newSpecialty, created] = await PhysicianSpecialty.findOrCreate({
-      where: { physician: convertUserid, medicalSpecialty: specialty },
+      where: { physician: userId, medicalSpecialty: specialty },
     });
 
+    // Crear un nuevo registro médico provincial
     const [newMedicalRegistryProvincial, createdProvincial] =
       await PhysicianMedicalRegistry.findOrCreate({
         where: {
-          physician: convertUserid,
+          physician: userId,
           registryType: 1,
           registryId: provincialRegistration,
         },
@@ -61,7 +73,7 @@ export const createOnbPhysician = async (body, userId) => {
     const [newMedicalRegistryNacional, createdNacional] =
       await PhysicianMedicalRegistry.findOrCreate({
         where: {
-          physician: convertUserid,
+          physician: userId,
           registryType: 2,
           registryId: nacionalRegistration,
         },
