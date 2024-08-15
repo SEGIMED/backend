@@ -13,8 +13,8 @@ export default (io,socket) => {
             const dataRoom = await ListVideoCall.findOrCreateRoom(data.id);
             ListVideoCall.setAswRoomById(data.id);
             const {userId} = socket.decoded
-            const targetID = dataRoom.users.find(user => user.id !== userId);
-            if(io.users[targetID.id]) io.users[targetID.id].emit("onAsw",data.asw);
+            const targetID = dataRoom.users.find(user => user !== userId);
+            if(io.users[targetID]) io.users[targetID].emit("onAsw",data.asw);
     }
 
     const userState = async (data) => {
@@ -39,9 +39,9 @@ export default (io,socket) => {
         const dataRoom = await ListVideoCall.findOrCreateRoom(data.id);
         const candidate = data.candidate;
         const {userId} = socket.decoded
-        const targetID = dataRoom.users.find(user => user.id !== userId);
-        if(io.users[targetID.id]){
-            io.users[targetID.id].emit("newCandidate",candidate);
+        const targetID = dataRoom.users.find(user => user !== userId);
+        if(io.users[targetID]){
+            io.users[targetID].emit("newCandidate",candidate);
         }
 
     }
@@ -52,9 +52,9 @@ export default (io,socket) => {
             const data = await ListVideoCall.findOrCreateRoom(consultId);
             const myId = socket.decoded.userId;
             data.setUserState(myId,true);
-            const target = data.users.find(user => user.id !== myId);
-            if(io.users[target.id]){
-                io.users[target.id].emit('dataRoom',data);
+            const target = data.users.find(user => user !== myId);
+            if(io.users[target]){
+                io.users[target].emit('dataRoom',data);
             }
             socket.emit('dataRoom',data)
         } catch (error) {
