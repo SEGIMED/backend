@@ -116,6 +116,9 @@ import deletePatientMedReqCtrl from "../controllers/patient/patientMedicaReq/del
 import deleteDrugPrescriptionController from "../controllers/drugPrescription/deleteDrugPrescriptionController.js";
 import getDrugPrescriptionController from "../controllers/drugPrescription/getDrugPrescriptionController.js";
 import searchDrugsController from "../controllers/drugPrescription/searchDrugsController.js";
+import createOrUpdateMedicalInterconsultation from "../controllers/interconsultation/MedicalInterconsultations.js";
+import getMedicalInterconsultationController from "../controllers/interconsultation/getMedicalInterconsultation.js";
+import getMedicalInterconsultationDetailsController from "../controllers/interconsultation/getMedicalInterconsultationDetailsController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -146,6 +149,8 @@ const getAllNotificationsPatienRouter = Router();
 const getAllNotificationsPhysicianRouter = Router();
 const notificationsRouter = Router();
 const doctorScheduleRouter = Router();
+const interconsultationRouter = Router();
+const interconsultationDetailsRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -496,22 +501,32 @@ requestFollowRouter
   .get(getRequestController)
   .post(createRequestController);
 
-statisticsRouter.get("/statistics-genre", getGenderDistributionController);
 statisticsRouter.get(
-  "/statistics-patient-activity",
+  "/deprecatedstatistics-genre",
+  getGenderDistributionController
+);
+statisticsRouter.get(
+  "/deprecatedstatistics-patient-activity",
   getPatientActivityDistributionController
 );
 statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 
+//* INTERCONSULTAS
+interconsultationDetailsRouter
+  .route("/interconsultation/:id")
+  .get(getMedicalInterconsultationDetailsController);
+
+interconsultationRouter.get(
+  "/interconsultations",
+  getMedicalInterconsultationController
+);
+interconsultationRouter.patch(
+  "/interconsultations",
+  createOrUpdateMedicalInterconsultation
+);
+
 //* Onboarding
 onbordingRouter.patch("/onboarding", createOnboardingController);
-
-// esto lo subieron con conflicto.
-// centerAttRouter
-//   .route("/center-attention")
-//   .post(createCenterAtt)
-//   .get(getCenterAtt);
-
 
 //* Notifications
 getAllNotificationsPatienRouter.get(
@@ -553,4 +568,7 @@ export {
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
+  // centerAttRouter,
+  interconsultationRouter,
+  interconsultationDetailsRouter,
 };

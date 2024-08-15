@@ -16,7 +16,6 @@ const getAllAlarmsForPatientController = async (req, res) => {
       return res.status(200).json(allAlarmsForPatientId);
     } else {
       const allAlarmsForPatient = await getAllAlarmsForPatientHandler(
-        patientId
       );
       return res.status(200).json(allAlarmsForPatient);
     }

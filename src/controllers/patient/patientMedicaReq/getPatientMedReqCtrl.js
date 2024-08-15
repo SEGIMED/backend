@@ -4,7 +4,7 @@ const getPatientMedReqCtrl = async (req, res) => {
   let response = {};
   try {
     if (!req.query) {
-      return res.status(400).send("Falta proporcionar el id del paciente");
+      return res.status(400).send("Falta proporcionar el query");
     }
     if (req.query.patientId) {
       const { patientId } = req.query;
