@@ -5,7 +5,8 @@ const TZ = process.env.TZ
 
 const getDrugPrescriptionHandler = async (id) => {
   try {
-    // 1. Obtener la lista de MedicationPrescriptions
+
+  
     const medicationPrescriptions = await models.MedicationPrescription.findAll({
       where: {
         patient_id: id,
@@ -22,7 +23,7 @@ const getDrugPrescriptionHandler = async (id) => {
       ],
     });
 
-    // 2. Iterar sobre cada prescripción para obtener la última modificación
+
     for (const prescription of medicationPrescriptions) {
       const lastModification = await models.PrescriptionModificationsHistory.findOne({
         where: {
@@ -60,7 +61,7 @@ const getDrugPrescriptionHandler = async (id) => {
         ],
       });
       
-      // 3. Asociar la última modificación a la prescripción
+
       prescription.setDataValue("lastModification", lastModification);
     }
 
