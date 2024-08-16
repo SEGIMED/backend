@@ -2,10 +2,10 @@ import models from "../../../databaseConfig.js";
 import { validationPatientMedReq } from "../../../validations/validationPatientMedReq.js";
 import moment from "moment";
 import SegimedAPIError from "../../../error/SegimedAPIError.js";
+const TZ = process.env.TZ;
 
 const createPatientMedReq = async (body, patientId) => {
   validationPatientMedReq(body);
-  const date = new Date();
   const { physicianId, reqTypes, message } = body;
 
   try {
@@ -16,10 +16,11 @@ const createPatientMedReq = async (body, patientId) => {
           patientId,
           physicianId,
           reqTypes,
-          createdAt: moment(date).format("YYYY-MM-DD HH:mm:ss"),
+          createdAt: moment().tz(TZ).format("YYYY-MM-DD HH:mm:ss"),
           message,
           status: false,
         },
+        raw: true,
       });
     if (!create) {
       throw new SegimedAPIError("The medical request already exists");
