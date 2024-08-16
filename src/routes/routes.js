@@ -2,7 +2,7 @@ import { Router } from "express";
 import getPatientsController from "../controllers/patient/getPatientsController.js";
 import getPatientsFilterController from "../controllers/patient/getPatientsFilterController.js";
 import getPatientController from "../controllers/patient/getPatientController.js";
-import postPatientController from "../controllers/patient/postPatientController.js";
+// import postPatientController from "../controllers/patient/postPatientController.js";
 import patchPatientController from "../controllers/patient/patchPatientController.js";
 import deletePatientController from "../controllers/patient/deletePatientController.js";
 import getPhysicianInformationController from "../controllers/physician/getPhysicianInformationController.js";
@@ -38,7 +38,6 @@ import getAllReviewsMadeByPatientController from "../controllers/physician/revie
 import patchPhysicianReviewController from "../controllers/physician/reviewPhysician/patchPhysicianReviewController.js";
 import createDiagnosticTestController from "../controllers/diagnosticTest/createDiagnosticTestController.js";
 import createPatientDiagnosticController from "../controllers/patient/createPatientDiagnosticController.js";
-import getPatientDiagnosticByIdController from "../controllers/patient/getPatientDiagnosticByIdController.js";
 import patchDiagnosticTestController from "../controllers/diagnosticTest/patchDiagnosticTestController.js";
 import getGenderDistributionController from "../controllers/statisticalCenter/getGenderDistributionController.js";
 import getPatientActivityDistributionController from "../controllers/statisticalCenter/getPatientActivityDistributionController.js";
@@ -110,9 +109,16 @@ import { getRequestController } from "../controllers/requestFollow/getReqFollowC
 import { createRequestController } from "../controllers/requestFollow/createReqFollowCtrl.js";
 import getAllSchedulesByUserController from "../controllers/scheduling/getAllSchedulesByUserController.js";
 import createOnboardingController from "../controllers/onbording/createOnbording.js";
-import createCenterAtt from "../controllers/catCenterAtt/createCenterAtt.js";
-import getCenterAtt from "../controllers/catCenterAtt/getCenterAtt.js";
-import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js"
+import createPatientMedReqCtrl from "../controllers/patient/patientMedicaReq/createPatientMedReqCtrl.js";
+import getPatientMedReqCtrl from "../controllers/patient/patientMedicaReq/getPatientMedReqCtrl.js";
+import updatePatientMedReqCtrl from "../controllers/patient/patientMedicaReq/updatePatientMedReqCtrl.js";
+import deletePatientMedReqCtrl from "../controllers/patient/patientMedicaReq/deletePatientMedReqCtrl.js";
+import deleteDrugPrescriptionController from "../controllers/drugPrescription/deleteDrugPrescriptionController.js";
+import getDrugPrescriptionController from "../controllers/drugPrescription/getDrugPrescriptionController.js";
+import searchDrugsController from "../controllers/drugPrescription/searchDrugsController.js";
+import createOrUpdateMedicalInterconsultation from "../controllers/interconsultation/MedicalInterconsultations.js";
+import getMedicalInterconsultationController from "../controllers/interconsultation/getMedicalInterconsultation.js";
+import getMedicalInterconsultationDetailsController from "../controllers/interconsultation/getMedicalInterconsultationDetailsController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -143,7 +149,8 @@ const getAllNotificationsPatienRouter = Router();
 const getAllNotificationsPhysicianRouter = Router();
 const notificationsRouter = Router();
 const doctorScheduleRouter = Router();
-const centerAttRouter = Router();
+const interconsultationRouter = Router();
+const interconsultationDetailsRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -159,7 +166,7 @@ userRouter
   .patch(updateUserInformationController);
 
 //* Patient
-patientRouter.route("/patient").post(postPatientController);
+// patientRouter.route("/patient").post(postPatientController);
 
 patientRouter
   .route("/patient/:id")
@@ -169,9 +176,7 @@ patientRouter
 patientRouter.route("/patch-patient").patch(patchPatientController);
 
 patientRouter.route("/patient-details").get(getPatientDetailsController);
-patientRouter
-  .route("/patient-diagnostic-byId")
-  .get(getPatientDiagnosticByIdController);
+
 patientRouter
   .route("/patient-diagnostic")
   .post(createPatientDiagnosticController);
@@ -185,6 +190,12 @@ patientRouter
   .route("/patient-physical-examination")
   .patch(updatePatientPhysicalExaminationController);
 patientRouter.route("/update-full-patient").patch(updateFullPatientController);
+patientRouter
+  .route("/patient-medical-request")
+  .post(createPatientMedReqCtrl)
+  .get(getPatientMedReqCtrl)
+  .patch(updatePatientMedReqCtrl)
+  .delete(deletePatientMedReqCtrl);
 
 //*Patient studies
 patientRouter.route("/create-patient-studies").post(postPatientStudiesController);
@@ -411,12 +422,15 @@ diagnosticTestRouter
 
 //* Drug Prescription
 drugPrescriptionRouter
-  .route("/drug-prescription/deprecated-create-drug-prescription")
-  .post(createDrugPrescriptionController);
+  .route("/drug-prescription")
+  .get(getDrugPrescriptionController)
+  .post(createDrugPrescriptionController)
+  .patch(updateDrugPrescriptionController)
+  .delete(deleteDrugPrescriptionController);
 drugPrescriptionRouter
-  .route("/drug-prescription/deprecated-update-drug-prescription")
-  .patch(updateDrugPrescriptionController);
-
+  .route("/drug-prescription/search")
+  .get(searchDrugsController);
+  
 //* medical Procedure Prescription
 procedurePrescriptionRouter
   .route("/procedure/create-procedure-prescription")
@@ -492,19 +506,32 @@ requestFollowRouter
   .get(getRequestController)
   .post(createRequestController);
 
-statisticsRouter.get("/statistics-genre", getGenderDistributionController);
 statisticsRouter.get(
-  "/statistics-patient-activity",
+  "/deprecatedstatistics-genre",
+  getGenderDistributionController
+);
+statisticsRouter.get(
+  "/deprecatedstatistics-patient-activity",
   getPatientActivityDistributionController
 );
 statisticsRouter.get("/statistics-general", getGeneralStatisticsController);
 
+//* INTERCONSULTAS
+interconsultationDetailsRouter
+  .route("/interconsultation/:id")
+  .get(getMedicalInterconsultationDetailsController);
+
+interconsultationRouter.get(
+  "/interconsultations",
+  getMedicalInterconsultationController
+);
+interconsultationRouter.patch(
+  "/interconsultations",
+  createOrUpdateMedicalInterconsultation
+);
+
 //* Onboarding
 onbordingRouter.patch("/onboarding", createOnboardingController);
-
-centerAttRouter.route("/center-attention")
-.post(createCenterAtt)
-.get(getCenterAtt);
 
 //* Notifications
 getAllNotificationsPatienRouter.get(
@@ -546,5 +573,7 @@ export {
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
-  centerAttRouter,
+  // centerAttRouter,
+  interconsultationRouter,
+  interconsultationDetailsRouter,
 };

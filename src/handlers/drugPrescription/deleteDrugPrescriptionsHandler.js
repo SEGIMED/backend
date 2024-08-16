@@ -1,36 +1,38 @@
-/*
-No son buenas practicas pero si quiero cambiar las drugs de un medical Event necesito eliminar las que
-fueron cargadas anteriormente.
-*/
-import { DrugPrescription } from "../../databaseConfig.js"; // Asegúrate de importar correctamente tu modelo
-import SegimedAPIError from "../../error/SegimedAPIError.js"; // Importa tu clase de error personalizada si tienes una
+import models from "../../databaseConfig.js";
+import SegimedAPIError from "../../error/SegimedAPIError.js";
 
-const deleteDrugPrescriptionsHandler = async (medicalEventId) => {
+const deleteDrugPrescriptionsHandler = async (id, deactivate) => {
   try {
-    // Verificar si existen prescripciones para el medicalEventId
-    const prescriptionCount = await DrugPrescription.count({
-      where: {
-        medicalEvent: medicalEventId,
-      },
-    });
+    const medicationPrescription = await models.MedicationPrescription.findByPk(
+      id
+    );
 
-    if (prescriptionCount === 0) {
-      return { message: `no tenemos registros para eliminar.` };
+    if (!medicationPrescription) {
+      throw new SegimedAPIError("No se encontró la prescripción indicada.", 500);
     }
 
-    // Eliminar las prescripciones si existen
-    const deletedCount = await DrugPrescription.destroy({
-      where: {
-        medicalEvent: medicalEventId,
-      },
-    });
+    if (medicationPrescription.deleted) {
+      throw new SegimedAPIError(
+        "No se puede desactivar una prescripción eliminada.",
+        500
+      );
+    }
+    if (!medicationPrescription.active) {
+      throw new SegimedAPIError("La prescripción esta desactivada.", 500);
+    }
 
-    return { message: `${deletedCount} registros eliminados correctamente.` };
+    if (deactivate) {
+      await medicationPrescription.update({
+        active: false,
+      });
+    } else {
+      await medicationPrescription.update({
+        deleted: true,
+        active: false,
+      });
+    }
   } catch (error) {
-    throw new SegimedAPIError(
-      "Error al eliminar los registros: " + error.message,
-      500
-    );
+    throw new SegimedAPIError(`Hubo un error al eliminar la prescripción: ${error.message}`, 500);
   }
 };
 

@@ -1,4 +1,4 @@
-# SEGIMED-server
+# SEGIMED-SERVER
 This repository contains the backend of Segimed project
 
 ## Git flow
