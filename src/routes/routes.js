@@ -112,6 +112,7 @@ import getAllSchedulesByUserController from "../controllers/scheduling/getAllSch
 import createOnboardingController from "../controllers/onbording/createOnbording.js";
 import createCenterAtt from "../controllers/catCenterAtt/createCenterAtt.js";
 import getCenterAtt from "../controllers/catCenterAtt/getCenterAtt.js";
+import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js"
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -184,6 +185,9 @@ patientRouter
   .route("/patient-physical-examination")
   .patch(updatePatientPhysicalExaminationController);
 patientRouter.route("/update-full-patient").patch(updateFullPatientController);
+
+//*Patient studies
+patientRouter.route("/create-patient-studies").post(postPatientStudiesController);
 
 //* cardiovascular risk
 patientRouter

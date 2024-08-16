@@ -84,6 +84,10 @@ import PhysicianFavoritePatientModel from "./models/PhysicianFavoritePatient.js"
 import RefreshTokenModel from "./models/RefreshToken.js";
 import RequestFollowModel from "./models/RequestFollow.js";
 import PhysicianOnboardingModel from "./models/PhysicianOnboarding.js";
+import CatStudyTypeModel from "./models/CatStudyType.js"
+import PatientStudiesModel from "./models/PatientStudies.js"
+
+// import 
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
 // import { config } from "dotenv";
@@ -199,6 +203,8 @@ PhysicianFavoritePatientModel(sequelize);
 RefreshTokenModel(sequelize);
 RequestFollowModel(sequelize);
 PhysicianOnboardingModel(sequelize);
+CatStudyTypeModel(sequelize);
+PatientStudiesModel(sequelize);
 
 export const {
   DiagnosticTest,
@@ -284,6 +290,8 @@ export const {
   RefreshToken,
   RequestFollow,
   PhysicianOnboarding,
+  CatStudyType,
+  PatientStudies,
 } = sequelize.models;
 
 DiagnosticTest.belongsTo(AppointmentScheduling, {
@@ -1193,6 +1201,15 @@ AlarmEvent.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
 
 User.hasOne(RefreshToken, { foreignKey: "userId", as: "refreshToken" });
 RefreshToken.belongsTo(User, { foreignKey: "userId", as: "user" });
+CatStudyType.hasMany(PatientStudies,{
+  as:"CatStudyTypePatientStudies", 
+  foreignKey:"studyType"
+});
+PatientStudies.belongsTo(CatStudyType,{
+  as:"CatStudyTypePatientStudies", 
+  foreignKey:"studyType"
+});
+
 
 const models = {
   AnthropometricDetails,
@@ -1277,6 +1294,8 @@ const models = {
   RefreshToken,
   RequestFollow,
   PhysicianOnboarding,
+  CatStudyType,
+  PatientStudies,
 };
 
 export default models;
