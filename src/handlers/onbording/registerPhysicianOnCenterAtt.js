@@ -5,16 +5,16 @@ export const createRegisterPhysicianOnCenterAtt = async (
   newCenterAttention
 ) => {
   try {
-    const newRegisterPhysicianOnCenterAtt = await models.AttendentPlace.create({
-      idPhysician: userId,
-      idCenterAttention: newCenterAttention.idCenterAttention,
-    });
+    const newRegisterPhysicianOnCenterAtt = await models.AttendentPlace.create(
+      newCenterAttention
+    );
+    console.log(newRegisterPhysicianOnCenterAtt);
     return newRegisterPhysicianOnCenterAtt;
   } catch (error) {
     throw new SegimedAPIError(
       500,
       "Error en la operación de registro: ",
-      error
+      error.message
     );
   }
 };

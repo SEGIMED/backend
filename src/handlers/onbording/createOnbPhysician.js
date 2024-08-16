@@ -36,40 +36,24 @@ export const createOnbPhysician = async (body) => {
       );
     }
 
-    // verificar si el médico ya está registrado en el centro de atención
-    const verifyAttendentPlace = await centerAttention.forEach((element) => {
-      const response = models.AttendentPlace.findOne({
-        where: { idPhysician: userId, idCenterAttention: element },
-      });
-      if (response) {
-        throw new SegimedAPIError(
-          400,
-          "El médico ya está registrado en el centro de atención"
-        );
-      }
-    });
-
     // Crear un nuevo registro médico en el centro de atención
-    const attendentPlaceRegister = await centerAttention.forEach(
-      async (element) => {
+    const attendentPlaceRegister = await Promise.all(
+      centerAttention.map(async (element) => {
         const newAttendentPlace = {
           idPhysician: userId,
           idCenterAttention: element,
         };
-        await createRegisterPhysicianOnCenterAtt(newAttendentPlace);
-      }
+        return createRegisterPhysicianOnCenterAtt(newAttendentPlace);
+      })
     );
 
     // Crear un nuevo registro médico en el onboarding del médico
-    const [newOnbPhysician, createdOnb] =
-      await models.PhysicianOnboarding.findOrCreate({
-        where: { idPhysician: userId },
-        defaults: {
-          genre,
-          birthDate,
-          address,
-        },
-      });
+    const newOnbPhysician = await models.PhysicianOnboarding.create({
+      idPhysician: userId,
+      genre,
+      birthDate,
+      address,
+    });
 
     // Crear un nuevo registro médico en la especialidad del médico
     const [newSpecialty, created] = await PhysicianSpecialty.findOrCreate({

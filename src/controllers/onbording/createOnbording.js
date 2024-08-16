@@ -5,11 +5,11 @@ const createOnboardingController = async (req, res) => {
   if (!req.query.tipo) {
     return res.status(400).json({ error: "Tipo de onbording no informado" });
   }
-  const { tipo, id } = req.query;
+  const { tipo } = req.query;
   if (tipo === "2") {
     try {
       const newOnbPhysician = req.body;
-      const onbording = await createOnbPhysician(newOnbPhysician, id);
+      const onbording = await createOnbPhysician(newOnbPhysician);
       return res.status(200).json(onbording);
     } catch (error) {
       return res.status(500).json({ error: error.message });

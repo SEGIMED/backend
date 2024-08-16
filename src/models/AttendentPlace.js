@@ -9,7 +9,6 @@ const model = (sequelize) => {
       idPhysician: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        primaryKey: true,
         references: {
           model: "user",
           key: "id",
@@ -19,7 +18,6 @@ const model = (sequelize) => {
       idCenterAttention: {
         type: DataTypes.BIGINT,
         allowNull: false,
-        primaryKey: true,
         references: {
           model: "center_attention",
           key: "id",

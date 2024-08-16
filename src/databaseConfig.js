@@ -84,9 +84,7 @@ import PhysicianFavoritePatientModel from "./models/PhysicianFavoritePatient.js"
 import RefreshTokenModel from "./models/RefreshToken.js";
 import RequestFollowModel from "./models/RequestFollow.js";
 import PhysicianOnboardingModel from "./models/PhysicianOnboarding.js";
-<<<<<<< HEAD
 import AttendentPlaceModel from "./models/AttendentPlace.js";
-=======
 import CatRouteOfAdministrationModel from "./models/CatRouteOfAdministration.js";
 import CatCommercialNameDrugModel from "./models/CatCommercialNameDrug.js";
 import DrugDetailPresentationModel from "./models/DrugDetailPresentation.js";
@@ -96,7 +94,6 @@ import MedicalInterconsultationsModel from "./models/MedicalInterconsultations.j
 import MedicalInterconsultationFileModel from "./models/MedicalInterconsultationFile.js";
 import PatiendMedReqModel from "./models/PatientMedicalReq.js";
 
->>>>>>> bb28a6baf9a078c77a4bd11c7d76c8ae59deea22
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
 // import { config } from "dotenv";
@@ -212,9 +209,7 @@ PhysicianFavoritePatientModel(sequelize);
 RefreshTokenModel(sequelize);
 RequestFollowModel(sequelize);
 PhysicianOnboardingModel(sequelize);
-<<<<<<< HEAD
 AttendentPlaceModel(sequelize);
-=======
 CatRouteOfAdministrationModel(sequelize);
 CatCommercialNameDrugModel(sequelize);
 DrugDetailPresentationModel(sequelize);
@@ -223,7 +218,6 @@ PrescriptionModificationsHistoryModel(sequelize);
 MedicalInterconsultationsModel(sequelize);
 MedicalInterconsultationFileModel(sequelize);
 PatiendMedReqModel(sequelize);
->>>>>>> bb28a6baf9a078c77a4bd11c7d76c8ae59deea22
 
 export const {
   DiagnosticTest,
@@ -1386,9 +1380,9 @@ PrescriptionModificationsHistory.belongsTo(CatCommercialNameDrug, {
   as: "commercialName",
 });
 CatCommercialNameDrug.hasMany(PrescriptionModificationsHistory, {
-  foreignKey:"commercialNameDrugId",
-  as:"CommercialNamePrescription"
-})
+  foreignKey: "commercialNameDrugId",
+  as: "CommercialNamePrescription",
+});
 User.hasMany(PatientMedicalReq, { foreignKey: "patientId", as: "patient" });
 User.hasMany(PatientMedicalReq, { foreignKey: "physicianId", as: "physician" });
 PatientMedicalReq.belongsTo(User, {
