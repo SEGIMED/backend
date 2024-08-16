@@ -9,7 +9,7 @@ const getInterconsultationsForPatientHandler = async (patientId) => {
 
     // Consulta para obtener las interconsultas de un paciente específico
     const interconsultations = await MedicalInterconsultations.findAll({
-      where: { patient: patientId },
+      where: { patient: patientId, interconsultationStatus: 7 },
       include: [
         {
           model: User,
