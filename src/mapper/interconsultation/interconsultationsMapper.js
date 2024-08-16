@@ -1,6 +1,5 @@
 const interconsultationsMapper = (interconsultations) => {
   return interconsultations.map((interconsultation) => {
-    console.log(interconsultation);
     return {
       timestamp: interconsultation.interconsultationEndTimestamp,
       chiefComplaint: interconsultation.reasonForConsultation,
@@ -8,11 +7,18 @@ const interconsultationsMapper = (interconsultations) => {
         name: interconsultation.queriedPhysician.name,
         lastname: interconsultation.queriedPhysician.lastname,
       },
+      physicianRequested: {
+        name: interconsultation.requestingPhysician.name,
+        lastname: interconsultation.requestingPhysician.lastname,
+      },
       attendancePlace: {
-        alias: "Segimed Interconsulta Online",
+        alias: "Interconsulta Online",
       },
       physicianComments: `requestingPhysician: ${interconsultation.medicalOpinion}`,
-      historyOfPresentIllness: `Resumen del problema: ${interconsultation.problemResume}. Opinion del especialista: ${interconsultation.medicalOpinion}`,
+      historyOfPresentIllness: `Consultante Dr: ${interconsultation.queriedPhysician.lastname} ${interconsultation.queriedPhysician.name} 
+      Resumen del problema: ${interconsultation.problemResume}. 
+      Opinion del especialista Dr. ${interconsultation.requestingPhysician.lastname} ${interconsultation.requestingPhysician.name}:
+      ${interconsultation.medicalOpinion}`,
     };
   });
 };

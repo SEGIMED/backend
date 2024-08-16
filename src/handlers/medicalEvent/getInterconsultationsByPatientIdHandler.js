@@ -35,7 +35,6 @@ const getInterconsultationsForPatientHandler = async (patientId) => {
     //     404
     //   );
     // }
-
     return interconsultations;
   } catch (error) {
     if (error instanceof SegimedAPIError) {
