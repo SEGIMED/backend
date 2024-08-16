@@ -119,6 +119,7 @@ import searchDrugsController from "../controllers/drugPrescription/searchDrugsCo
 import createOrUpdateMedicalInterconsultation from "../controllers/interconsultation/MedicalInterconsultations.js";
 import getMedicalInterconsultationController from "../controllers/interconsultation/getMedicalInterconsultation.js";
 import getMedicalInterconsultationDetailsController from "../controllers/interconsultation/getMedicalInterconsultationDetailsController.js";
+import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js"
 
 const patientRouter = Router();
 const userRouter = Router();
