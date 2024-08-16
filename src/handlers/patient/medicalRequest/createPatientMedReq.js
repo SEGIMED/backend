@@ -27,7 +27,11 @@ const createPatientMedReq = async (body, patientId) => {
     }
     return newPatientMedReq;
   } catch (error) {
-    throw new SegimedAPIError(error);
+    throw new SegimedAPIError(
+      500,
+      "Error durante el proceso de registro",
+      error.message
+    );
   }
 };
 

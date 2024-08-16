@@ -58,7 +58,7 @@ const model = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "prescription_modifications_hist",
+          model: "prescription_modifications_history",
           key: "id",
         },
         field: "prescription_modifications_hist_id",
