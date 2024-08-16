@@ -29,12 +29,12 @@ const getInterconsultationsForPatientHandler = async (patientId) => {
       ],
     });
 
-    if (!interconsultations || interconsultations.length === 0) {
-      throw new SegimedAPIError(
-        "No interconsultations found for the specified patient.",
-        404
-      );
-    }
+    // if (!interconsultations || interconsultations.length === 0) {
+    //   throw new SegimedAPIError(
+    //     "No interconsultations found for the specified patient.",
+    //     404
+    //   );
+    // }
 
     return interconsultations;
   } catch (error) {

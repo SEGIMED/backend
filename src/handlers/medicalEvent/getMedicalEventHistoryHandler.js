@@ -293,9 +293,10 @@ const getMedicalEventHistoryHandler = async (patientId, physicianId) => {
     const interconsultations = await getInterconsultationsByPatientIdHandler(
       patientId
     );
-    const interconsultasArray = interconsultationsMapper(interconsultations);
 
-    return medicalEvent.concat(interconsultasArray);
+    // const interconsultasArray = interconsultationsMapper(interconsultations);
+    // medicalEvent.concat(interconsultasArray);
+    return medicalEvent;
   } catch (error) {
     throw new Error("Error loading physician: " + error.message);
   }
