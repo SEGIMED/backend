@@ -1,5 +1,4 @@
 import sequelize from "sequelize";
-import moment from "moment";
 
 const DataTypes = sequelize.DataTypes;
 
