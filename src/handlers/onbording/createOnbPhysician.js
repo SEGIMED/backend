@@ -33,24 +33,23 @@ export const createOnbPhysician = async (body, userId) => {
     await createRegisterPhysicianOnCenterAtt(attendentPlaceRegister);
 
     // Crear un nuevo registro médico en el onboarding del médico
-    const [newOnbPhysician, createPhysician] =
-      await models.PhysicianOnboarding.findOrCreate({
-        where: { idPhysician: userId },
-        defaults: {
-          idPhysician: userId,
-          genre,
-          birthDate,
-          address,
-        },
-      });
+    const [newOnbPhysician] = await models.PhysicianOnboarding.findOrCreate({
+      where: { idPhysician: userId },
+      defaults: {
+        idPhysician: userId,
+        genre,
+        birthDate,
+        address,
+      },
+    });
 
     // Crear un nuevo registro médico en la especialidad del médico
-    const [newSpecialty, created] = await PhysicianSpecialty.findOrCreate({
+    const [newSpecialty] = await PhysicianSpecialty.findOrCreate({
       where: { physician: userId, medicalSpecialty: specialty },
     });
 
     // Crear un nuevo registro médico provincial
-    const [newMedicalRegistryProvincial, createdProvincial] =
+    const [newMedicalRegistryProvincial] =
       await PhysicianMedicalRegistry.findOrCreate({
         where: {
           physician: userId,
@@ -61,7 +60,7 @@ export const createOnbPhysician = async (body, userId) => {
       });
 
     // Crear un nuevo registro médico nacional
-    const [newMedicalRegistryNacional, createdNacional] =
+    const [newMedicalRegistryNacional] =
       await PhysicianMedicalRegistry.findOrCreate({
         where: {
           physician: userId,
