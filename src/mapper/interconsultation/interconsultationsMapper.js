@@ -16,10 +16,10 @@ const interconsultationsMapper = (interconsultations) => {
           alias: "Interconsulta Online",
         },
         physicianComments: `requestingPhysician: ${interconsultation.medicalOpinion}`,
-        historyOfPresentIllness: `Consultante Dr: ${interconsultation.queriedPhysician.lastname} ${interconsultation.queriedPhysician.name} 
-      Resumen del problema: ${interconsultation.problemResume}. 
-      Opinion del especialista Dr. ${interconsultation.requestingPhysician.lastname} ${interconsultation.requestingPhysician.name}:
-      ${interconsultation.medicalOpinion}`,
+        historyOfPresentIllness: `Consultante Dr: ${interconsultation.queriedPhysician.lastname} ${interconsultation.queriedPhysician.name}
+        Resumen del problema: ${interconsultation.problemResume}.
+        Opinion del especialista Dr. ${interconsultation.requestingPhysician.lastname} ${interconsultation.requestingPhysician.name}:
+        ${interconsultation.medicalOpinion}`,
       };
     }
   });
