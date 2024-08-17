@@ -5,16 +5,25 @@ export const createRegisterPhysicianOnCenterAtt = async (
   newCenterAttention
 ) => {
   try {
-    const newRegisterPhysicianOnCenterAtt = await models.AttendentPlace.create(
-      newCenterAttention
+    const [newRegister, created] = await newCenterAttention.map(
+      async (centerAttention) => {
+        await models.AttendentPlace.findOrCreate({
+          where: {
+            idPhysician: centerAttention.idPhysician,
+            idCenterAttention: centerAttention.idCenterAttention,
+          },
+          defaults: {
+            idPhysician: centerAttention.idPhysician,
+            idCenterAttention: centerAttention.idCenterAttention,
+          },
+        });
+      }
     );
-    console.log(newRegisterPhysicianOnCenterAtt);
-    return newRegisterPhysicianOnCenterAtt;
+    return newRegister;
   } catch (error) {
     throw new SegimedAPIError(
       500,
-      "Error en la operación de registro: ",
-      error.message
+      error.message || "Error al registrar el médico en el centro de atención"
     );
   }
 };

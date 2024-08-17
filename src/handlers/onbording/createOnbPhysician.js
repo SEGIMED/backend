@@ -17,17 +17,6 @@ export const createOnbPhysician = async (body) => {
     provincialRegistration,
   } = body;
   try {
-    // Verificar que el médico no esté registrado en el onboarding
-    const physicianOnboarding = await models.PhysicianOnboarding.findOne({
-      where: { idPhysician: userId },
-    });
-    if (physicianOnboarding) {
-      throw new SegimedAPIError(
-        400,
-        "El médico ya está registrado en el onboarding"
-      );
-    }
-
     // verificamos que se mande un elemento dentro del array de centros de atención
     if (centerAttention.length === 0) {
       throw new SegimedAPIError(
@@ -37,23 +26,25 @@ export const createOnbPhysician = async (body) => {
     }
 
     // Crear un nuevo registro médico en el centro de atención
-    const attendentPlaceRegister = await Promise.all(
-      centerAttention.map(async (element) => {
-        const newAttendentPlace = {
-          idPhysician: userId,
-          idCenterAttention: element,
-        };
-        return createRegisterPhysicianOnCenterAtt(newAttendentPlace);
-      })
-    );
+    const attendentPlaceRegister = centerAttention.map((centerid) => {
+      return {
+        idPhysician: userId,
+        idCenterAttention: centerid,
+      };
+    });
+    await createRegisterPhysicianOnCenterAtt(attendentPlaceRegister);
 
     // Crear un nuevo registro médico en el onboarding del médico
-    const newOnbPhysician = await models.PhysicianOnboarding.create({
-      idPhysician: userId,
-      genre,
-      birthDate,
-      address,
-    });
+    const [newOnbPhysician, createPhysician] =
+      await models.PhysicianOnboarding.findOrCreate({
+        where: { idPhysician: userId },
+        defaults: {
+          idPhysician: userId,
+          genre,
+          birthDate,
+          address,
+        },
+      });
 
     // Crear un nuevo registro médico en la especialidad del médico
     const [newSpecialty, created] = await PhysicianSpecialty.findOrCreate({
@@ -83,7 +74,9 @@ export const createOnbPhysician = async (body) => {
       });
 
     return {
-      newOnbPhysician,
+      newOnbPhysician: createPhysician
+        ? newOnbPhysician
+        : "Ya existe un registro de onboarding para este médico",
       newMedicalRegistryNacional,
       newMedicalRegistryProvincial,
       newSpecialty,
