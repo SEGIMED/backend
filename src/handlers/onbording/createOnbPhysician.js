@@ -2,11 +2,9 @@ import models from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import { PhysicianSpecialty } from "../../databaseConfig.js";
 import { PhysicianMedicalRegistry } from "../../databaseConfig.js";
-import contextService from "request-context";
 import { createRegisterPhysicianOnCenterAtt } from "./registerPhysicianOnCenterAtt.js";
 
-export const createOnbPhysician = async (body) => {
-  const userId = contextService.get("request:user").userId;
+export const createOnbPhysician = async (body, userId) => {
   const {
     genre,
     birthDate,
@@ -74,9 +72,7 @@ export const createOnbPhysician = async (body) => {
       });
 
     return {
-      newOnbPhysician: createPhysician
-        ? newOnbPhysician
-        : "Ya existe un registro de onboarding para este médico",
+      newOnbPhysician,
       newMedicalRegistryNacional,
       newMedicalRegistryProvincial,
       newSpecialty,
