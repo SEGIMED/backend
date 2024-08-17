@@ -92,6 +92,7 @@ import PrescriptionModificationsHistoryModel from "./models/PrescriptionModifica
 import MedicalInterconsultationsModel from "./models/MedicalInterconsultations.js";
 import MedicalInterconsultationFileModel from "./models/MedicalInterconsultationFile.js";
 import PatiendMedReqModel from "./models/PatientMedicalReq.js";
+import PhysicianOrdersModel from "./models/PhysicianOrders.js";
 
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
@@ -216,6 +217,7 @@ PrescriptionModificationsHistoryModel(sequelize);
 MedicalInterconsultationsModel(sequelize);
 MedicalInterconsultationFileModel(sequelize);
 PatiendMedReqModel(sequelize);
+PhysicianOrdersModel(sequelize);
 
 export const {
   DiagnosticTest,
@@ -309,6 +311,7 @@ export const {
   MedicalInterconsultations,
   MedicalInterconsultationFile,
   PatientMedicalReq,
+  PhysicianOrders,
 } = sequelize.models;
 
 DiagnosticTest.belongsTo(AppointmentScheduling, {
@@ -1383,6 +1386,11 @@ PatientMedicalReq.belongsTo(User, {
   as: "physicianReq",
 });
 
+User.hasMany(PhysicianOrders, { foreignKey: "physicianId", as: "OrdersPhysician" });
+PhysicianOrders.belongsTo(User, { foreignKey: "physicianId", as: "physician" });
+User.hasMany(PhysicianOrders, { foreignKey: "patientId", as: "OrdersPatient" });
+PhysicianOrders.belongsTo(User, { foreignKey: "patientId", as: "patient" });
+
 const models = {
   AnthropometricDetails,
   AppointmentScheduling,
@@ -1474,6 +1482,7 @@ const models = {
   MedicalInterconsultations,
   MedicalInterconsultationFile,
   PatientMedicalReq,
+  PhysicianOrders,
 };
 
 export default models;
