@@ -18,6 +18,7 @@ const createNewOrderHandler = async (body, userId) => {
   // validamos el body de la solicitud
   validationBodyOrderPhysician(body);
   try {
+    
     const newEntry = await models.PhysicianOrders.create({
       patientId,
       physicianId: userId,

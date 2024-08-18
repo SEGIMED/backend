@@ -67,7 +67,7 @@ export const validationBodyOrderPhysician = (body) => {
 };
 
 // Function to validate the request type
-function validationReqTypes(reqTypes) {
+export function validationReqTypes(reqTypes) {
   const reqTypesValidation = arrayReqTypes.includes(reqTypes);
   if (!reqTypesValidation) {
     throw new SegimedAPIError("Invalid Request Type");
