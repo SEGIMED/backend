@@ -119,6 +119,7 @@ import searchDrugsController from "../controllers/drugPrescription/searchDrugsCo
 import createOrUpdateMedicalInterconsultation from "../controllers/interconsultation/MedicalInterconsultations.js";
 import getMedicalInterconsultationController from "../controllers/interconsultation/getMedicalInterconsultation.js";
 import getMedicalInterconsultationDetailsController from "../controllers/interconsultation/getMedicalInterconsultationDetailsController.js";
+import createNewOrderPhysicianCtrl from "../controllers/physician/ordersCtrl/createOrderPhysicianCtrl.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -327,6 +328,8 @@ physicianRouter
 physicianRouter
   .route("/edit-physician-review/:id")
   .patch(patchPhysicianReviewController);
+
+physicianRouter.route("/physician-order").post(createNewOrderPhysicianCtrl);
 
 //* Catalogs
 catalogsRouter.get("/catalog/get-catalog", getCatalogController);
