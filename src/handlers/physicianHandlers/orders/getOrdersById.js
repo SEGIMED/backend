@@ -7,38 +7,42 @@ const getOrdersByIdHandlersPhysician = async (userId) => {
       where: {
         physicianId: userId,
       },
+      include: [
+        {
+          model: models.User,
+          as: "patient",
+          attributes: ["name", "lastname"],
+        },
+        {
+          model: models.User,
+          as: "physician",
+          attributes: ["name", "lastname"],
+        },
+        {
+          model: models.MedicationPrescription,
+          as: "medicationPrescription",
+          attributes: ["id", "startTimestamp", "endTimestamp"],
+        },
+        {
+          model: models.PrescriptionModificationsHistory,
+          as: "prescriptionModificationOnOrders",
+          attributes: ["id"],
+          include: [
+            {
+              model: models.CatCommercialNameDrug,
+              as: "commercialName",
+              attributes: ["name"],
+            },
+            {
+              model: models.DrugDetailPresentation,
+              as: "drugDetailPresentation",
+            },
+          ],
+        },
+      ],
+      raw: true,
     });
-    const response = orders.map(
-      ({
-        id,
-        patientId,
-        physicianId,
-        reqTypes,
-        medicalPrescriptionId,
-        prescription_modifications_hist_id,
-        indications,
-        diagnostic,
-        additionalText,
-        date,
-        updateAt,
-      }) => {
-        return {
-          id,
-          patientId,
-          physicianId,
-          reqTypes,
-          medicalPrescriptionId,
-          prescription_modifications_hist_id,
-          indications,
-          diagnostic,
-          additionalText,
-          date,
-          updateAt:
-            updateAt === null ? "Todavia no sufrio actualizacion" : updateAt,
-        };
-      }
-    );
-    return response;
+    return orders;
   } catch (error) {
     throw new SegimedAPIError(500, error.message);
   }

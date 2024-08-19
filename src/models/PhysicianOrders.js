@@ -46,8 +46,9 @@ const model = (sequelize) => {
         field: "order_types",
       },
       medicalPrescriptionId: {
+        // con esta ya traer la precscription modifications history
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "medication_prescription",
           key: "id",
@@ -56,7 +57,7 @@ const model = (sequelize) => {
       },
       prescription_modifications_hist_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "prescription_modifications_history",
           key: "id",

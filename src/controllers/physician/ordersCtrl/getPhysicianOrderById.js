@@ -10,7 +10,7 @@ const getPhysicianOrderById = async (req, res) => {
     }
     res.status(200).json(orders);
   } catch (error) {
-    res.status(error.statusCode).json(error.message);
+    res.status(500).json(error.message);
   }
 };
 
