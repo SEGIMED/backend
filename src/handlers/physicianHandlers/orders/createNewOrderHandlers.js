@@ -27,7 +27,7 @@ const createNewOrderHandler = async (body, userId) => {
       indications,
       diagnostic,
       additionalText,
-      date: moment(date).tz(TZ).format("YYYY-MM-DD"),
+      date: moment(date).tz(TZ).format("YYYY-MM-DD HH:mm:ss"),
       updateAt: null,
     });
 

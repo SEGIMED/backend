@@ -1,11 +1,12 @@
 import SegimedAPIError from "../../../error/SegimedAPIError.js";
 import models from "../../../databaseConfig.js";
+import { Op, literal } from "sequelize";
 
-const getOrdersByIdHandlersPhysician = async (userId) => {
+const getOrdersByIdHandlersPhysician = async (orderId) => {
   try {
     const orders = await models.PhysicianOrders.findAll({
       where: {
-        physicianId: userId,
+        id: orderId,
       },
       include: [
         {
@@ -21,26 +22,18 @@ const getOrdersByIdHandlersPhysician = async (userId) => {
         {
           model: models.MedicationPrescription,
           as: "medicationPrescription",
-          attributes: ["id", "startTimestamp", "endTimestamp"],
-        },
-        {
-          model: models.PrescriptionModificationsHistory,
-          as: "prescriptionModificationOnOrders",
-          attributes: ["id"],
+          attributes: ["id", "startTimestamp"],
           include: [
             {
-              model: models.CatCommercialNameDrug,
-              as: "commercialName",
-              attributes: ["name"],
-            },
-            {
-              model: models.DrugDetailPresentation,
-              as: "drugDetailPresentation",
+              model: models.PrescriptionModificationsHistory,
+              as: "medicationPrescription",
+              attributes: ["id"],
+              order: [["id", "DESC"]],
+              limit: 1,
             },
           ],
         },
       ],
-      raw: true,
     });
     return orders;
   } catch (error) {

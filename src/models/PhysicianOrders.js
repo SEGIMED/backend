@@ -81,13 +81,13 @@ const model = (sequelize) => {
         field: "additional_text",
       },
       date: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DATE,
         allowNull: false,
         field: "date",
         defaultValue: DataTypes.NOW,
       },
       updateAt: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DATE,
         allowNull: true,
         field: "update_at",
         defaultValue: DataTypes.NOW,
