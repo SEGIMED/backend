@@ -9,7 +9,7 @@ const createNewOrderHandler = async (body, userId) => {
     patientId,
     reqTypes,
     medicalPrescriptionId,
-    prescriptionModificationsHistId,
+    prescription_modifications_hist_id,
     indications,
     diagnostic,
     additionalText,
@@ -18,13 +18,12 @@ const createNewOrderHandler = async (body, userId) => {
   // validamos el body de la solicitud
   validationBodyOrderPhysician(body);
   try {
-    
     const newEntry = await models.PhysicianOrders.create({
       patientId,
       physicianId: userId,
       reqTypes,
       medicalPrescriptionId,
-      prescriptionModificationsHistId,
+      prescription_modifications_hist_id,
       indications,
       diagnostic,
       additionalText,

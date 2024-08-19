@@ -1,3 +1,4 @@
+import { Schema } from "mongoose";
 import sequelize from "sequelize";
 
 const DataTypes = sequelize.DataTypes;
