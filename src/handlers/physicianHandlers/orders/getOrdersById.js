@@ -1,6 +1,5 @@
 import SegimedAPIError from "../../../error/SegimedAPIError.js";
 import models from "../../../databaseConfig.js";
-import { Op, literal } from "sequelize";
 
 const getOrdersByIdHandlersPhysician = async (orderId) => {
   try {
@@ -30,6 +29,20 @@ const getOrdersByIdHandlersPhysician = async (orderId) => {
               attributes: ["id"],
               order: [["id", "DESC"]],
               limit: 1,
+              include: [
+                {
+                  model: models.DrugDetailPresentation,
+                  as: "drugDetailPresentation",
+                  attributes: ["id", "dose"],
+                  include: [
+                    {
+                      model: models.CatDrug,
+                      as: "drugName",
+                      attributes: ["id", "name"],
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },
