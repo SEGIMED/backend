@@ -8,11 +8,6 @@ const getOrdersByIdHandlersPhysician = async (userId) => {
         physicianId: userId,
       },
     });
-
-    if (!orders) {
-      throw new SegimedAPIError(404, "Orders not found");
-    }
-
     return orders;
   } catch (error) {
     throw new SegimedAPIError(500, error.message);

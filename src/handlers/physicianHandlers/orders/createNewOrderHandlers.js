@@ -18,7 +18,6 @@ const createNewOrderHandler = async (body, userId) => {
   // validamos el body de la solicitud
   validationBodyOrderPhysician(body);
   try {
-    
     const newEntry = await models.PhysicianOrders.create({
       patientId,
       physicianId: userId,
@@ -28,7 +27,7 @@ const createNewOrderHandler = async (body, userId) => {
       indications,
       diagnostic,
       additionalText,
-      date: moment(date).tz(TZ).format("YYYY-MM-DD HH:mm:ss"),
+      date: moment(date).tz(TZ).format("YYYY-MM-DD"),
       updateAt: null,
     });
 
