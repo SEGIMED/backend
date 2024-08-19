@@ -1,5 +1,4 @@
 import getOrdersByIdHandlersPhysician from "../../../handlers/physicianHandlers/orders/getOrdersById.js";
-import SegimedAPIError from "../../../error/SegimedAPIError.js";
 import contextService from "request-context";
 
 const getPhysicianOrderById = async (req, res) => {

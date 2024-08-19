@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "set NODE_OPTIONS= --no-warnings --experimental-vm-modules && jest --detectOpenHandles",
+    "test": "set NODE_OPTIONS=--no-warnings --experimental-vm-modules && jest --detectOpenHandles",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js"
   },

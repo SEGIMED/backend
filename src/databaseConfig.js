@@ -1372,9 +1372,9 @@ PrescriptionModificationsHistory.belongsTo(CatCommercialNameDrug, {
   as: "commercialName",
 });
 CatCommercialNameDrug.hasMany(PrescriptionModificationsHistory, {
-  foreignKey:"commercialNameDrugId",
-  as:"CommercialNamePrescription"
-})
+  foreignKey: "commercialNameDrugId",
+  as: "CommercialNamePrescription",
+});
 User.hasMany(PatientMedicalReq, { foreignKey: "patientId", as: "patient" });
 User.hasMany(PatientMedicalReq, { foreignKey: "physicianId", as: "physician" });
 PatientMedicalReq.belongsTo(User, {
@@ -1386,10 +1386,29 @@ PatientMedicalReq.belongsTo(User, {
   as: "physicianReq",
 });
 
-User.hasMany(PhysicianOrders, { foreignKey: "physicianId", as: "OrdersPhysician" });
+User.hasMany(PhysicianOrders, {
+  foreignKey: "physicianId",
+  as: "OrdersPhysician",
+});
 PhysicianOrders.belongsTo(User, { foreignKey: "physicianId", as: "physician" });
 User.hasMany(PhysicianOrders, { foreignKey: "patientId", as: "OrdersPatient" });
 PhysicianOrders.belongsTo(User, { foreignKey: "patientId", as: "patient" });
+PhysicianOrders.hasOne(MedicationPrescription, {
+  foreignKey: "medicalPrescriptionId",
+  as: "medicationPrescription",
+});
+MedicationPrescription.belongsTo(PhysicianOrders, {
+  foreignKey: "medicalPrescriptionId",
+  as: "physicianOrdersMedication",
+});
+PhysicianOrders.hasOne(PrescriptionModificationsHistory, {
+  foreignKey: "prescription_modifications_hist_id",
+  as: "prescriptionModificationOnOrders",
+});
+PrescriptionModificationsHistory.belongsTo(PhysicianOrders, {
+  foreignKey: "prescription_modifications_hist_id",
+  as: "physicianOrdersPrescriptionModification",
+});
 
 const models = {
   AnthropometricDetails,

@@ -6,10 +6,10 @@ const createOrderPhysicianCtrl = async (req, res) => {
     const userId = contextService.get("request:user").userId;
     const { body } = req;
     const newOrder = await createNewOrderHandler(body, userId);
-    res.status(201).json(newOrder);
+    res.status(200).json(newOrder);
   } catch (error) {
-    res.status(error.statusCode).json(error.message);
+    res.status(500).json(error.message);
   }
-}
+};
 
 export default createOrderPhysicianCtrl;

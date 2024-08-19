@@ -32,12 +32,12 @@ export const validationBodyOrderPhysician = (body) => {
   if (typeof body.medicalPrescriptionId !== "number") {
     throw new SegimedAPIError("Medical Prescription ID must be a number");
   }
-  if (!body.prescriptionModificationsHistId) {
+  if (!body.prescription_modifications_hist_id) {
     throw new SegimedAPIError(
       "Prescription Modifications History ID is required"
     );
   }
-  if (typeof body.prescriptionModificationsHistId !== "number") {
+  if (typeof body.prescription_modifications_hist_id !== "number") {
     throw new SegimedAPIError(
       "Prescription Modifications History ID must be a number"
     );
