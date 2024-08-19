@@ -75,6 +75,11 @@ const model = (sequelize) => {
         allowNull: true,
         field: "medical_opinion",
       },
+      problemResume: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        field: "problem_resume",
+      },
       isPriority: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
