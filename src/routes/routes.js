@@ -120,6 +120,7 @@ import createOrUpdateMedicalInterconsultation from "../controllers/interconsulta
 import getMedicalInterconsultationController from "../controllers/interconsultation/getMedicalInterconsultation.js";
 import getMedicalInterconsultationDetailsController from "../controllers/interconsultation/getMedicalInterconsultationDetailsController.js";
 import createNewOrderPhysicianCtrl from "../controllers/physician/ordersCtrl/createOrderPhysicianCtrl.js";
+import getPhysicianOrderById from "../controllers/physician/ordersCtrl/getPhysicianOrderById.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -329,7 +330,10 @@ physicianRouter
   .route("/edit-physician-review/:id")
   .patch(patchPhysicianReviewController);
 
-physicianRouter.route("/physician-order").post(createNewOrderPhysicianCtrl);
+physicianRouter
+  .route("/physician-order")
+  .post(createNewOrderPhysicianCtrl)
+  .get(getPhysicianOrderById);
 
 //* Catalogs
 catalogsRouter.get("/catalog/get-catalog", getCatalogController);
@@ -430,7 +434,7 @@ drugPrescriptionRouter
 drugPrescriptionRouter
   .route("/drug-prescription/search")
   .get(searchDrugsController);
-  
+
 //* medical Procedure Prescription
 procedurePrescriptionRouter
   .route("/procedure/create-procedure-prescription")
@@ -573,7 +577,6 @@ export {
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
-  // centerAttRouter,
   interconsultationRouter,
   interconsultationDetailsRouter,
 };
