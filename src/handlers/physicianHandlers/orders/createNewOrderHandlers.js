@@ -7,7 +7,7 @@ const TZ = process.env.TZ;
 const createNewOrderHandler = async (body, userId) => {
   const {
     patientId,
-    reqTypes,
+    orderTypes,
     medicalPrescriptionId,
     prescription_modifications_hist_id,
     indications,
@@ -21,7 +21,7 @@ const createNewOrderHandler = async (body, userId) => {
     const newEntry = await models.PhysicianOrders.create({
       patientId,
       physicianId: userId,
-      reqTypes,
+      orderTypes,
       medicalPrescriptionId,
       prescription_modifications_hist_id,
       indications,

@@ -30,7 +30,7 @@ const model = (sequelize) => {
         },
         field: "physician_id",
       },
-      reqTypes: {
+      orderTypes: {
         type: DataTypes.ENUM(
           "Receta médica",
           "Resumen de historia clínica",
@@ -43,7 +43,7 @@ const model = (sequelize) => {
         ),
         allowNull: false,
         defaultValue: "Otro",
-        field: "req_types",
+        field: "order_types",
       },
       medicalPrescriptionId: {
         type: DataTypes.INTEGER,
@@ -80,13 +80,13 @@ const model = (sequelize) => {
         field: "additional_text",
       },
       date: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
         field: "date",
         defaultValue: DataTypes.NOW,
       },
       updateAt: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: true,
         field: "update_at",
         defaultValue: DataTypes.NOW,

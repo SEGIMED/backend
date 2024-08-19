@@ -8,7 +8,37 @@ const getOrdersByIdHandlersPhysician = async (userId) => {
         physicianId: userId,
       },
     });
-    return orders;
+    const response = orders.map(
+      ({
+        id,
+        patientId,
+        physicianId,
+        reqTypes,
+        medicalPrescriptionId,
+        prescription_modifications_hist_id,
+        indications,
+        diagnostic,
+        additionalText,
+        date,
+        updateAt,
+      }) => {
+        return {
+          id,
+          patientId,
+          physicianId,
+          reqTypes,
+          medicalPrescriptionId,
+          prescription_modifications_hist_id,
+          indications,
+          diagnostic,
+          additionalText,
+          date,
+          updateAt:
+            updateAt === null ? "Todavia no sufrio actualizacion" : updateAt,
+        };
+      }
+    );
+    return response;
   } catch (error) {
     throw new SegimedAPIError(500, error.message);
   }

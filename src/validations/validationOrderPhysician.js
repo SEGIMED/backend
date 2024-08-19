@@ -1,7 +1,7 @@
 import SegimedAPIError from "../error/SegimedAPIError.js";
 
 // array con los tipos de solicitudes médicas
-const arrayReqTypes = [
+const arrayOrderTypes = [
   "Receta médica",
   "Resumen de historia clínica",
   "Autorización de medicamentos",
@@ -19,13 +19,13 @@ export const validationBodyOrderPhysician = (body) => {
   if (typeof body.patientId !== "number") {
     throw new SegimedAPIError("Patient ID must be a number");
   }
-  if (!body.reqTypes) {
+  if (!body.orderTypes) {
     throw new SegimedAPIError("Request Type is required");
   }
-  if (typeof body.reqTypes !== "string") {
+  if (typeof body.orderTypes !== "string") {
     throw new SegimedAPIError("Request Type must be a string");
   }
-  validationReqTypes(body.reqTypes);
+  validationReqTypes(body.orderTypes);
   if (!body.medicalPrescriptionId) {
     throw new SegimedAPIError("Medical Prescription ID is required");
   }
@@ -67,8 +67,8 @@ export const validationBodyOrderPhysician = (body) => {
 };
 
 // Function to validate the request type
-export function validationReqTypes(reqTypes) {
-  const reqTypesValidation = arrayReqTypes.includes(reqTypes);
+export function validationReqTypes(orderTypes) {
+  const reqTypesValidation = arrayOrderTypes.includes(orderTypes);
   if (!reqTypesValidation) {
     throw new SegimedAPIError("Invalid Request Type");
   }
