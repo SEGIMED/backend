@@ -4,7 +4,6 @@ const universalPaginationHandler = async (data, page = 1, limit = 5) => {
   // Calcula el offset (desplazamiento)
   let offset = (page - 1) * limit;
 
-  offset = parseInt(offset);
   // Extrae el segmento de la data correspondiente a la página solicitada
   const paginatedItems = data.slice(offset, offset + limit);
   // Calcula el número total de páginas
