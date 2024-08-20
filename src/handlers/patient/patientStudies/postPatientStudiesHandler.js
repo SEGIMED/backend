@@ -16,7 +16,7 @@ const postPatientStudiesHandler = async (body) => {
           studyObject.study = file?.url || null;
         }
         return {
-          patient: body.patientId,
+          userId: body.userId,
           schedule: body.scheduleId ?? null,
           study: studyObject.study,
           studyType: studyObject.studyType ?? 10,

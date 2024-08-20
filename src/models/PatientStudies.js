@@ -11,9 +11,10 @@ const model = (sequelize) => {
         allowNull: false,
         primaryKey: true,
       },
-      patient: {
+      userId: {
         type: DataTypes.BIGINT,
         allowNull: false,
+        field: "user_id",
         references: {
           model: "user",
           key: "id",

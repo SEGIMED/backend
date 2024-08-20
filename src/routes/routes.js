@@ -120,6 +120,7 @@ import createOrUpdateMedicalInterconsultation from "../controllers/interconsulta
 import getMedicalInterconsultationController from "../controllers/interconsultation/getMedicalInterconsultation.js";
 import getMedicalInterconsultationDetailsController from "../controllers/interconsultation/getMedicalInterconsultationDetailsController.js";
 import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js"
+import getFilesController from "../controllers/medicalHistory/getFilesController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -199,7 +200,9 @@ patientRouter
   .delete(deletePatientMedReqCtrl);
 
 //*Patient studies
-patientRouter.route("/patient-studies").post(postPatientStudiesController);
+patientRouter.route("/patient-studies")
+.get(getFilesController)
+.post(postPatientStudiesController);
 
 //* cardiovascular risk
 patientRouter
