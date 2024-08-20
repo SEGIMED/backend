@@ -45,9 +45,13 @@ const model = (sequelize) => {
           max: 10,
         },
       },
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       description: {
         type: DataTypes.STRING(500),
-        allowNull: true,
+        allowNull: false,
       },
     },
     {

@@ -199,7 +199,7 @@ patientRouter
   .delete(deletePatientMedReqCtrl);
 
 //*Patient studies
-patientRouter.route("/create-patient-studies").post(postPatientStudiesController);
+patientRouter.route("/patient-studies").post(postPatientStudiesController);
 
 //* cardiovascular risk
 patientRouter

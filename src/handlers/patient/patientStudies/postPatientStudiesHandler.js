@@ -1,12 +1,13 @@
-import { PatientStudies } from "../../../databaseConfig.js";
+import { PatientStudies, sequelize } from "../../../databaseConfig.js";
 import { loadFile } from "../../../utils/cloudinary/cloudinary.js";
+import validateStudiesInput from "../../../validations/validatesStudies.js";
 
 const postPatientStudiesHandler = async (body) => {
+  let transaction;
   try {
-    //TODO meter el transaction
-    //TODO validación de que body si sean los archivos esperados
+     transaction = await sequelize.transaction();
+    validateStudiesInput(body);
 
-    //body.studies must be an [{},{}]
     const mapStudies = await Promise.all(
       body.studies.map(async (studyObject) => {
         if (studyObject.study) {
@@ -19,15 +20,20 @@ const postPatientStudiesHandler = async (body) => {
           schedule: body.scheduleId ?? null,
           study: studyObject.study,
           studyType: studyObject.studyType ?? 10,
-          description: studyObject.description ?? null,
+          description: studyObject.description,
+          title: studyObject.title,
         };
       })
     );
 
-    const studiesCreated = await PatientStudies.bulkCreate(mapStudies);
-
+    const studiesCreated = await PatientStudies.bulkCreate(mapStudies, {
+      transaction,
+    });
+    await transaction.commit();
     return studiesCreated;
   } catch (error) {
+    console.log(error)
+    await transaction.rollback();
     throw new Error(
       "Hubo un error al crear los registros de los estudios: " + error.message
     );
