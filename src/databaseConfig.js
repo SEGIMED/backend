@@ -93,7 +93,10 @@ import PrescriptionModificationsHistoryModel from "./models/PrescriptionModifica
 import MedicalInterconsultationsModel from "./models/MedicalInterconsultations.js";
 import MedicalInterconsultationFileModel from "./models/MedicalInterconsultationFile.js";
 import PatiendMedReqModel from "./models/PatientMedicalReq.js";
+import CatStudyTypeModel from "./models/CatStudyType.js";
+import PatientStudiesModel from "./models/PatientStudies.js";
 
+// import
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
 // import { config } from "dotenv";
@@ -218,6 +221,8 @@ PrescriptionModificationsHistoryModel(sequelize);
 MedicalInterconsultationsModel(sequelize);
 MedicalInterconsultationFileModel(sequelize);
 PatiendMedReqModel(sequelize);
+CatStudyTypeModel(sequelize);
+PatientStudiesModel(sequelize);
 
 export const {
   DiagnosticTest,
@@ -312,6 +317,8 @@ export const {
   MedicalInterconsultations,
   MedicalInterconsultationFile,
   PatientMedicalReq,
+  CatStudyType,
+  PatientStudies,
 } = sequelize.models;
 
 DiagnosticTest.belongsTo(AppointmentScheduling, {
@@ -1393,6 +1400,14 @@ PatientMedicalReq.belongsTo(User, {
   foreignKey: "physicianId",
   as: "physicianReq",
 });
+CatStudyType.hasMany(PatientStudies, {
+  as: "CatStudyTypePatientStudies",
+  foreignKey: "studyType",
+});
+PatientStudies.belongsTo(CatStudyType, {
+  as: "CatStudyTypePatientStudies",
+  foreignKey: "studyType",
+});
 
 const models = {
   AnthropometricDetails,
@@ -1486,6 +1501,8 @@ const models = {
   MedicalInterconsultationFile,
   PatientMedicalReq,
   AttendentPlace,
+  CatStudyType,
+  PatientStudies,
 };
 
 export default models;
