@@ -45,3 +45,5 @@ const updateOrderHandler = async (body, userId) => {
     );
   }
 };
+
+export default updateOrderHandler;
