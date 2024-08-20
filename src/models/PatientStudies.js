@@ -29,11 +29,11 @@ const model = (sequelize) => {
       },
       study: {
         type: DataTypes.STRING(),
-        allowNull: false,
+        allowNull: true,
       },
       studyType: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "cat_study_type",
           key: "id",
@@ -53,6 +53,11 @@ const model = (sequelize) => {
         type: DataTypes.STRING(500),
         allowNull: false,
       },
+      createdAt: {
+        type: DataTypes.DATE,
+        field: "created_at",
+        allowNull: false
+      }
     },
     {
       tableName: "patient_studies",

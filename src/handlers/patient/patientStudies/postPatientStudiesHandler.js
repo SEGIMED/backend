@@ -13,7 +13,7 @@ const postPatientStudiesHandler = async (body) => {
         if (studyObject.study) {
           // let parsetStudy = JSON.parse(studyObject.study);
           const file = await loadFile(studyObject.study); //! SI ya es una URL  se deja así, pero si viene como una cadena de texto toca parsearlo antes y se descomentaría la línea de arriba
-          studyObject.study = file?.url;
+          studyObject.study = file?.url || null;
         }
         return {
           patient: body.patientId,
@@ -22,6 +22,7 @@ const postPatientStudiesHandler = async (body) => {
           studyType: studyObject.studyType ?? 10,
           description: studyObject.description,
           title: studyObject.title,
+          createdAt: new Date().toISOString()
         };
       })
     );
