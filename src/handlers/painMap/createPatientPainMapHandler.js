@@ -1,8 +1,6 @@
 import SegimedAPIError from "../../error/SegimedAPIError.js";
-import contextService from "request-context";
 import moment from "moment-timezone";
 import { PatientPainMap } from "../../databaseConfig.js";
-import validateDuplicatePainArea from "../../validations/validateDuplicatePainArea.js";
 
 const createPatientPainMapHandler = async (body) => {
   const patientPainMapping = mapPainRecord(body);

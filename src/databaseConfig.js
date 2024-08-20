@@ -84,6 +84,7 @@ import PhysicianFavoritePatientModel from "./models/PhysicianFavoritePatient.js"
 import RefreshTokenModel from "./models/RefreshToken.js";
 import RequestFollowModel from "./models/RequestFollow.js";
 import PhysicianOnboardingModel from "./models/PhysicianOnboarding.js";
+import AttendentPlaceModel from "./models/AttendentPlace.js";
 import CatRouteOfAdministrationModel from "./models/CatRouteOfAdministration.js";
 import CatCommercialNameDrugModel from "./models/CatCommercialNameDrug.js";
 import DrugDetailPresentationModel from "./models/DrugDetailPresentation.js";
@@ -212,6 +213,7 @@ PhysicianFavoritePatientModel(sequelize);
 RefreshTokenModel(sequelize);
 RequestFollowModel(sequelize);
 PhysicianOnboardingModel(sequelize);
+AttendentPlaceModel(sequelize);
 CatRouteOfAdministrationModel(sequelize);
 CatCommercialNameDrugModel(sequelize);
 DrugDetailPresentationModel(sequelize);
@@ -308,6 +310,7 @@ export const {
   RefreshToken,
   RequestFollow,
   PhysicianOnboarding,
+  AttendentPlace,
   CatRouteOfAdministration,
   CatCommercialNameDrug,
   DrugDetailPresentation,
@@ -1228,6 +1231,14 @@ PhysicianOnboarding.belongsTo(CatGenre, { foreignKey: "genre" });
 PhysicianOnboarding.belongsTo(CatCenterAttention, {
   foreignKey: "centerAttention",
 });
+PhysicianOnboarding.belongsToMany(CatCenterAttention, {
+  through: AttendentPlace,
+  foreignKey: "idPhysician",
+});
+CatCenterAttention.belongsToMany(PhysicianOnboarding, {
+  through: AttendentPlace,
+  foreignKey: "idCenterAttention",
+});
 // Relaciones del modelo MedicalInterconsultations
 
 User.hasOne(MedicalInterconsultations, {
@@ -1520,6 +1531,7 @@ const models = {
   MedicalInterconsultationFile,
   PatientMedicalReq,
   PhysicianOrders,
+  AttendentPlace,
   CatStudyType,
   PatientStudies,
 };
