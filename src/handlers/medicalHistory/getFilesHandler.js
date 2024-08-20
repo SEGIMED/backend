@@ -1,8 +1,8 @@
 import models from "../../databaseConfig.js";
 import universalPaginationHandler from "../Pagination/universalPaginationHandler.js";
-const getFilesHandler = async (userId, studyType) => {
+const getFilesHandler = async (userId, studyType, limit, page) => {
   try {
-    if (userId) {
+    if (!userId) {
       throw new Error("El id de usuario es obligatorio");
     }
 
@@ -24,7 +24,11 @@ const getFilesHandler = async (userId, studyType) => {
       },
     });
 
-    const pagination = universalPaginationHandler();
+    if (limit && page) {
+      const pagination = universalPaginationHandler( files, page, limit);
+      return pagination;
+    }
+
     return files;
   } catch (error) {
     console.log(error);
