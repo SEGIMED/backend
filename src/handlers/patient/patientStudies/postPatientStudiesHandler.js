@@ -32,7 +32,6 @@ const postPatientStudiesHandler = async (body) => {
     await transaction.commit();
     return studiesCreated;
   } catch (error) {
-    console.log(error)
     await transaction.rollback();
     throw new Error(
       "Hubo un error al crear los registros de los estudios: " + error.message
