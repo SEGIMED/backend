@@ -31,7 +31,6 @@ const getFilesHandler = async (userId, studyType, limit, page) => {
 
     return files;
   } catch (error) {
-    console.log(error);
     throw new Error(error);
   }
 };
