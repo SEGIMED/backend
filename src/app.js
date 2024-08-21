@@ -41,6 +41,7 @@ import {
   // centerAttRouter,
   interconsultationRouter,
   interconsultationDetailsRouter,
+  medicalHistoryRouter
 } from "./routes/routes.js";
 
 const corsOptions = {
@@ -107,6 +108,7 @@ app.use("/api", notificationsRouter);
 
 app.use("/api", interconsultationRouter);
 app.use("/api", interconsultationDetailsRouter);
+app.use("/api/medical-history", medicalHistoryRouter)
 
 app.use("/api/doc", swaggerUI.serve, swaggerUI.setup(swaggerOptions));
 
