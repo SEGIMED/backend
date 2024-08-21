@@ -1,5 +1,4 @@
 import { ProvisionalPreConsultation } from "../../../databaseConfig.js";
-import { loadFile } from "../../../utils/cloudinary/cloudinary.js";
 import postPatientStudiesHandler from "../patientStudies/postPatientStudiesHandler.js";
 import contextService from "request-context";
 
