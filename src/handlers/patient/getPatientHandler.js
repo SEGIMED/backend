@@ -1,4 +1,4 @@
-import {User, UserCurrentLocation} from '../../databaseConfig.js'
+import {CatHeartFailureClassification, PatientHeartFailureClassification, User, UserCurrentLocation} from '../../databaseConfig.js'
 
 const regexPositiveNumbers = /^[1-9][0-9]*$/;
 
@@ -24,6 +24,21 @@ const getPatientHandler = async (id) => {
             exclude: ['id','user']
           }
       },
+/*       {
+        model: PatientHeartFailureClassification,
+        as: "patientHeartFailureClassifications",
+        attributes:{
+          exclude:["patient", "physician","registerTimestamp"]
+        },
+        include:[
+          {
+            model:CatHeartFailureClassification,
+            as: "CatHeartFailureClass"
+          }
+        ]
+      } 
+      Hablarlo con LUCA  
+      */
       ]
     
     });

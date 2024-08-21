@@ -4,9 +4,8 @@ import { validationOnbording } from "../../validations/validationOnbording.js";
 
 export const createOnbordingHandler = async (body, userId) => {
   if (!validationOnbording(body)) {
-    throw new SegimedAPIError(400, "Error en la validacion de datos");
+    throw new SegimedAPIError(400, "Error en la validación de datos");
   }
-  const convertUserid = parseInt(userId, 10);
   const {
     hipertPulm,
     centerAttention,
@@ -18,27 +17,32 @@ export const createOnbordingHandler = async (body, userId) => {
     needsCellphoneAssistance,
   } = body;
 
-
-
   try {
-    const newEntry = await SociodemographicDetails.create({
-      hipertPulm,
-      centerAttention,
-      liveAlone,
-      address,
-      genre,
-      birthDate,
-      hasTechUseDifficulty,
-      needsCellphoneAssistance,
-      patient: convertUserid,
+    const [newEntry] = await SociodemographicDetails.findOrCreate({
+      where: { patient: userId },
+      defaults: {
+        hipertPulm,
+        centerAttention,
+        liveAlone,
+        address,
+        genre,
+        birthDate,
+        hasTechUseDifficulty,
+        needsCellphoneAssistance,
+        patient: userId,
+      },
     });
+
     return newEntry;
   } catch (error) {
+    console.log(error);
+
     throw new SegimedAPIError(
-      "Error en la operacion de registro: ",
-      error,
-      500
+      500,
+      "Error en la operación de registro: ",
+      error
     );
   }
 };
+
 export default createOnbordingHandler;

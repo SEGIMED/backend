@@ -1,37 +1,35 @@
 import sequelize from "sequelize";
 
 const DataTypes = sequelize.DataTypes;
-
 const model = (sequelize) => {
-    sequelize.define('CatDrug', {
+    sequelize.define('CatStudyType', {
         id: {
-            autoIncrement: true,
-            type: DataTypes.BIGINT,
+            type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true
         },
         name: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(255),
             allowNull: false,
-            unique: "cat_medicine_name_uk"
+            unique: "name_study_type_uk"
         }
     }, {
-        tableName: 'cat_drug',
+        tableName: 'cat_study_type',
         schema: 'public',
         timestamps: false,
         indexes: [
             {
-                name: "cat_medicine_name_uk",
-                unique: true,
-                fields: [
-                    {name: "name"},
-                ]
-            },
-            {
-                name: "cat_medicine_pk",
+                name: "cat_study_type_pk",
                 unique: true,
                 fields: [
                     {name: "id"},
+                ]
+            },
+            {
+                name: "name_study_type_uk",
+                unique: true,
+                fields: [
+                    {name: "name"},
                 ]
             },
         ]

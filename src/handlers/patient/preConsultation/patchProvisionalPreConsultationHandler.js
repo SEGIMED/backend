@@ -1,5 +1,6 @@
 import { ProvisionalPreConsultation } from "../../../databaseConfig.js";
-import { loadFile } from "../../../utils/cloudinary/cloudinary.js";
+import postPatientStudiesHandler from "../patientStudies/postPatientStudiesHandler.js";
+import contextService from "request-context";
 
 const patchProvisionalPreConsultationHandler = async (
   body,
@@ -31,53 +32,20 @@ const patchProvisionalPreConsultationHandler = async (
     abnormalGlycemia,
     lastAbnormalGlycemia,
     // physicalExamination,
-    laboratoryResults,
-    laboratoryResultsDescription,
-    electrocardiogram,
-    electrocardiogramDescription,
-    rxThorax,
-    echocardiogram,
-    walkTest,
-    respiratoryFunctional,
-    tomographies,
-    rightHeartCatheterization,
-    ccg,
-    resonance,
-    leftHeartCatheterization,
-    otherStudies,
     pendingStudies,
     consultationReason,
     importantSymptoms,
     currentMedications,
     status,
+    studies,
   } = body;
 
-  let studies = {
-    electrocardiogram,
-    rxThorax,
-    echocardiogram,
-    walkTest,
-    respiratoryFunctional,
-    tomographies,
-    rightHeartCatheterization,
-    ccg,
-    resonance,
-    leftHeartCatheterization,
-    otherStudies,
-    laboratoryResults,
+  const files = {
+    userId: contextService.get("request:user").userId,
+    scheduleId: appointmentSchedule,
+    studies,
   };
-
-  await Promise.all(
-    Object.keys(studies).map(async (studio) => {
-      if (studies[studio]) {
-        // let parsetStudy = JSON.parse(studies[studio]);
-        const file = await loadFile(studies[studio]);
-        studies = { ...studies, [studio]: file?.url };
-        return;
-      }
-    })
-  );
-
+  await postPatientStudiesHandler(files);
   try {
     const existingPreconsultation = await ProvisionalPreConsultation.findOne({
       where: { appointmentSchedule },
@@ -178,59 +146,6 @@ const patchProvisionalPreConsultationHandler = async (
                   .filter((a) => !isNaN(a))
               : existingPreconsultation.lastAbnormalGlycemia,
           // physicalExamination: physicalExamination !== undefined ? physicalExamination : existingPreconsultation.physicalExamination,
-          laboratoryResults:
-            laboratoryResults !== undefined
-              ? studies.laboratoryResults
-              : existingPreconsultation.laboratoryResults,
-          laboratoryResultsDescription:
-            laboratoryResultsDescription !== undefined
-              ? laboratoryResultsDescription
-              : existingPreconsultation.laboratoryResultsDescription,
-          electrocardiogram:
-            electrocardiogram !== undefined
-              ? studies.electrocardiogram
-              : existingPreconsultation.electrocardiogram,
-          electrocardiogramDescription:
-            electrocardiogramDescription !== undefined
-              ? electrocardiogramDescription
-              : existingPreconsultation.electrocardiogramDescription,
-          rxThorax:
-            rxThorax !== undefined
-              ? studies.rxThorax
-              : existingPreconsultation.rxThorax,
-          echocardiogram:
-            echocardiogram !== undefined
-              ? studies.echocardiogram
-              : existingPreconsultation.echocardiogram,
-          walkTest:
-            walkTest !== undefined
-              ? studies.walkTest
-              : existingPreconsultation.walkTest,
-          respiratoryFunctional:
-            respiratoryFunctional !== undefined
-              ? studies.respiratoryFunctional
-              : existingPreconsultation.respiratoryFunctional,
-          tomographies:
-            tomographies !== undefined
-              ? studies.tomographies
-              : existingPreconsultation.tomographies,
-          rightHeartCatheterization:
-            rightHeartCatheterization !== undefined
-              ? studies.rightHeartCatheterization
-              : existingPreconsultation.rightHeartCatheterization,
-          ccg: ccg !== undefined ? studies.ccg : existingPreconsultation.ccg,
-          resonance:
-            resonance !== undefined
-              ? studies.resonance
-              : existingPreconsultation.resonance,
-          leftHeartCatheterization:
-            leftHeartCatheterization !== undefined
-              ? studies.leftHeartCatheterization
-              : existingPreconsultation.leftHeartCatheterization,
-          otherStudies:
-            otherStudies !== undefined
-              ? studies.otherStudies
-              : existingPreconsultation.otherStudies,
           pendingStudies:
             pendingStudies !== undefined
               ? pendingStudies
