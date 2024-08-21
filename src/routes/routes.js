@@ -119,9 +119,14 @@ import searchDrugsController from "../controllers/drugPrescription/searchDrugsCo
 import createOrUpdateMedicalInterconsultation from "../controllers/interconsultation/MedicalInterconsultations.js";
 import getMedicalInterconsultationController from "../controllers/interconsultation/getMedicalInterconsultation.js";
 import getMedicalInterconsultationDetailsController from "../controllers/interconsultation/getMedicalInterconsultationDetailsController.js";
+<<<<<<< HEAD
 import createNewOrderPhysicianCtrl from "../controllers/physician/ordersCtrl/createOrderPhysicianCtrl.js";
 import getPhysicianOrderById from "../controllers/physician/ordersCtrl/getPhysicianOrderById.js";
 import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js";
+=======
+import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js"
+import getFilesController from "../controllers/medicalHistory/getFilesController.js";
+>>>>>>> ed586345095722d92875ee2bb56139cbbfded96c
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -201,9 +206,15 @@ patientRouter
   .delete(deletePatientMedReqCtrl);
 
 //*Patient studies
+<<<<<<< HEAD
 patientRouter
   .route("/create-patient-studies")
   .post(postPatientStudiesController);
+=======
+patientRouter.route("/patient-studies")
+.get(getFilesController)
+.post(postPatientStudiesController);
+>>>>>>> ed586345095722d92875ee2bb56139cbbfded96c
 
 //* cardiovascular risk
 patientRouter

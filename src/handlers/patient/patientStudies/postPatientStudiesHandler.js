@@ -1,33 +1,39 @@
-import { PatientStudies } from "../../../databaseConfig.js";
+import { PatientStudies, sequelize } from "../../../databaseConfig.js";
 import { loadFile } from "../../../utils/cloudinary/cloudinary.js";
+import validateStudiesInput from "../../../validations/validatesStudies.js";
 
 const postPatientStudiesHandler = async (body) => {
+  let transaction;
   try {
-    //TODO meter el transaction
-    //TODO validación de que body si sean los archivos esperados
+     transaction = await sequelize.transaction();
+    validateStudiesInput(body);
 
-    //body.studies must be an [{},{}]
     const mapStudies = await Promise.all(
       body.studies.map(async (studyObject) => {
         if (studyObject.study) {
           // let parsetStudy = JSON.parse(studyObject.study);
           const file = await loadFile(studyObject.study); //! SI ya es una URL  se deja así, pero si viene como una cadena de texto toca parsearlo antes y se descomentaría la línea de arriba
-          studyObject.study = file?.url;
+          studyObject.study = file?.url || null;
         }
         return {
-          patient: body.patientId,
+          userId: body.userId,
           schedule: body.scheduleId ?? null,
           study: studyObject.study,
           studyType: studyObject.studyType ?? 10,
-          description: studyObject.description ?? null,
+          description: studyObject.description,
+          title: studyObject.title,
+          createdAt: new Date().toISOString()
         };
       })
     );
 
-    const studiesCreated = await PatientStudies.bulkCreate(mapStudies);
-
+    const studiesCreated = await PatientStudies.bulkCreate(mapStudies, {
+      transaction,
+    });
+    await transaction.commit();
     return studiesCreated;
   } catch (error) {
+    await transaction.rollback();
     throw new Error(
       "Hubo un error al crear los registros de los estudios: " + error.message
     );

@@ -11,9 +11,10 @@ const model = (sequelize) => {
         allowNull: false,
         primaryKey: true,
       },
-      patient: {
+      userId: {
         type: DataTypes.BIGINT,
         allowNull: false,
+        field: "user_id",
         references: {
           model: "user",
           key: "id",
@@ -29,11 +30,11 @@ const model = (sequelize) => {
       },
       study: {
         type: DataTypes.STRING(),
-        allowNull: false,
+        allowNull: true,
       },
       studyType: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "cat_study_type",
           key: "id",
@@ -45,10 +46,19 @@ const model = (sequelize) => {
           max: 10,
         },
       },
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       description: {
         type: DataTypes.STRING(500),
-        allowNull: true,
+        allowNull: false,
       },
+      createdAt: {
+        type: DataTypes.DATE,
+        field: "created_at",
+        allowNull: false
+      }
     },
     {
       tableName: "patient_studies",
