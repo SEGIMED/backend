@@ -6,11 +6,6 @@ import { validationBodyOrderPhysician } from "../../../validations/validationOrd
 const TZ = process.env.TZ;
 
 const createNewOrderHandler = async (body) => {
-  const { role } = contextService.get("request:user");
-  // Verificamos que el usuario que esta realizando la solicitud sea un médico
-  if (role !== "Médico") {
-    throw new Error("No tienes permisos para realizar esta acción");
-  }
   // Obtenemos el id del usuario que esta realizando la solicitud
   const { userId } = contextService.get("request:user");
   const {
@@ -38,6 +33,7 @@ const createNewOrderHandler = async (body) => {
       indications,
       diagnostic,
       additionalText,
+      // Formateamos la fecha y hora
       date: moment.tz(date + " " + dateTIme, TZ).format(),
       updateAt: null,
     });
