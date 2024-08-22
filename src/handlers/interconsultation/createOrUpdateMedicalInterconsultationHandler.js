@@ -7,6 +7,7 @@ import SegimedAPIError from "../../error/SegimedAPIError.js";
 import { Op } from "sequelize";
 import contextService from "request-context";
 import moment from "moment-timezone";
+import { loadStudiesInterconsultation } from "../../utils/cloudinary/cloudinary.js";
 
 const createOrUpdateMedicalInterconsultationHandler = async (data) => {
   const physicianRequester = contextService.get("request:user").userId;
@@ -45,13 +46,13 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
         throw new SegimedAPIError("Physician Requester must have role=2.", 400);
       }
 
-      if (userRoles[data.physicianQueried] !== 2) {
-        throw new SegimedAPIError("Physician Queried must have role=2.", 400);
-      }
+      // if (userRoles[data.physicianQueried] !== 2) {
+      //   throw new SegimedAPIError("Physician Queried must have role=2.", 400);
+      // }
 
-      if (userRoles[data.patient] !== 3) {
-        throw new SegimedAPIError("Patient must have role=3.", 400);
-      }
+      // if (userRoles[data.patient] !== 3) {
+      //   throw new SegimedAPIError("Patient must have role=3.", 400);
+      // }
 
       // Validate that required fields are not null
       const requiredFields = [
@@ -75,7 +76,6 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
     if (data.id) {
       // Find existing interconsultation
       interconsultation = await MedicalInterconsultations.findByPk(data.id);
-      console.log(interconsultation.dataValues);
       if (!interconsultation) {
         throw new SegimedAPIError("Interconsultation not found", 404);
       }
@@ -116,24 +116,30 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
     }
 
     // Handle related files
-    if (data.files && Array.isArray(data.files)) {
+    const cloudinaryResults = await loadStudiesInterconsultation(data.files);
+    const filesURL = cloudinaryResults.success;
+
+    if (filesURL) {
       // Delete existing files if updating
       if (data.id) {
         await MedicalInterconsultationFile.destroy({
           where: { medicalInterconsultationId: interconsultation.id },
         });
       }
-
-      // Create or update new files
-      for (const fileURL of data.files) {
+      //Create new files
+      for (const fileURL of filesURL) {
         await MedicalInterconsultationFile.create({
           medicalInterconsultationId: interconsultation.id,
           fileURL: fileURL,
         });
       }
     }
-
-    return interconsultation;
+    let result = {
+      ...interconsultation.dataValues,
+      files: filesURL,
+      filesError: cloudinaryResults.failed,
+    };
+    return result;
   } catch (error) {
     // Throw error with defined message and status code
     if (error instanceof SegimedAPIError) {
