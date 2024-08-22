@@ -119,6 +119,8 @@ import searchDrugsController from "../controllers/drugPrescription/searchDrugsCo
 import createOrUpdateMedicalInterconsultation from "../controllers/interconsultation/MedicalInterconsultations.js";
 import getMedicalInterconsultationController from "../controllers/interconsultation/getMedicalInterconsultation.js";
 import getMedicalInterconsultationDetailsController from "../controllers/interconsultation/getMedicalInterconsultationDetailsController.js";
+import createNewOrderPhysicianCtrl from "../controllers/physician/ordersCtrl/createOrderPhysicianCtrl.js";
+import getPhysicianOrderById from "../controllers/physician/ordersCtrl/getPhysicianOrderById.js";
 import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js";
 import getFilesController from "../controllers/medicalHistory/getFilesController.js";
 import getConsultationController from "../controllers/medicalHistory/getConsultationsController.js";
@@ -338,6 +340,11 @@ physicianRouter
 physicianRouter
   .route("/edit-physician-review/:id")
   .patch(patchPhysicianReviewController);
+
+physicianRouter
+  .route("/physician-order")
+  .post(createNewOrderPhysicianCtrl)
+  .get(getPhysicianOrderById);
 
 //* Catalogs
 catalogsRouter.get("/catalog/get-catalog", getCatalogController);
@@ -585,7 +592,6 @@ export {
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
-  // centerAttRouter,
   interconsultationRouter,
   interconsultationDetailsRouter,
   medicalHistoryRouter,
