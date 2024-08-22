@@ -15,6 +15,7 @@ const createNewOrderHandler = async (body, userId) => {
     additionalText,
     date,
   } = body;
+  let dateTIme = moment().tz(TZ).format("HH:mm:ss z");
   // validamos el body de la solicitud
   validationBodyOrderPhysician(body);
   try {
@@ -27,7 +28,7 @@ const createNewOrderHandler = async (body, userId) => {
       indications,
       diagnostic,
       additionalText,
-      date: moment(date).tz(TZ).format("YYYY-MM-DD HH:mm:ss"),
+      date: moment.tz(date + " " + dateTIme, TZ).format(),
       updateAt: null,
     });
 
