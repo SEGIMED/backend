@@ -8,7 +8,6 @@ cloudinary.config({
   cloud_name: API_CLOUDINARY_CLOUDNAME,
   api_key: API_CLOUDINARY_KEY,
   api_secret: API_CLOUDINARY_SECRET, // Click 'View Credentials' below to copy your API secret
-  secure: true,
 });
 
 // Upload an image
@@ -35,9 +34,6 @@ export async function loadFile(url) {
   try {
     const uploadResult = await cloudinary.uploader.upload(
       url,
-      {
-        secure: true,
-      },
       async function (error, result) {
         if (error) {
           return error.message;
