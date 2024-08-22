@@ -123,7 +123,7 @@ import createNewOrderPhysicianCtrl from "../controllers/physician/ordersCtrl/cre
 import getPhysicianOrderById from "../controllers/physician/ordersCtrl/getPhysicianOrderById.js";
 import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js";
 import getFilesController from "../controllers/medicalHistory/getFilesController.js";
-import getAnamnesisCtrl from "../controllers/medicalEvent/Anamnesis/getAnamnesisCtrl.js";
+import getAnamnesisCtrl from "../controllers/medicalHistory/Anamnesis/getAnamnesisCtrl.js";
 
 const patientRouter = Router();
 const userRouter = Router();

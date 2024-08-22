@@ -1,26 +1,36 @@
 import models from "../../../databaseConfig.js";
 import SegimedAPIError from "../../../error/SegimedAPIError.js";
 
-const getAnamnesisHandler = async (medicalEventId) => {
+const getAnamnesisHandler = async (userId) => {
   try {
-    const response = await models.MedicalEvent.findOne({
-      where: {
-        id: medicalEventId,
-      },
+    const response = await models.MedicalEvent.findAll({
       attributes: [
         "chiefComplaint",
         "historyOfPresentIllness",
         "reviewOfSystems",
+      ],
+      include: [
+        {
+          model: models.AppointmentScheduling,
+          as: "appSch",
+          attributes: [
+            "patient",
+            "scheduledStartTimestamp",
+            "scheduledEndTimestamp",
+            "actualEndTimestamp",
+            "actualStartTimestamp",
+          ],
+          where: {
+            patient: userId,
+          },
+        },
       ],
     });
     if (!response) {
       throw new SegimedAPIError("Anamnesis not found");
     }
     // return only the properties that are not null
-    return Object.keys(response.dataValues).reduce((acc, key) => {
-      acc[key] = response[key] ? response[key] : "Property not found";
-      return acc;
-    }, {});
+    return response;
   } catch (error) {
     throw new SegimedAPIError("Error fetching anamnesis", error.message);
   }
