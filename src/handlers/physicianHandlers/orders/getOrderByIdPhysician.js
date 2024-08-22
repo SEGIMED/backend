@@ -1,7 +1,11 @@
 import models from "../../../databaseConfig.js";
 import SegimedAPIError from "../../../error/SegimedAPIError.js";
+import contextService from "request-context";
 
-const getOrderByIdPhysician = async (userId) => {
+const getOrderByIdPhysician = async () => {
+  // Se obtiene el id del usuario que esta realizando la peticion
+  const { userId } = contextService.get("request:user");
+
   try {
     const data = await models.PhysicianOrders.findAll({
       where: {

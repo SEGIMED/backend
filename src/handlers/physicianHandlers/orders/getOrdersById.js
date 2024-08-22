@@ -1,5 +1,6 @@
 import SegimedAPIError from "../../../error/SegimedAPIError.js";
 import models from "../../../databaseConfig.js";
+import { formatterHandler } from "./formatterHandler.js";
 
 const getOrdersByIdHandlersPhysician = async (orderId) => {
   try {
@@ -26,19 +27,28 @@ const getOrdersByIdHandlersPhysician = async (orderId) => {
             {
               model: models.PrescriptionModificationsHistory,
               as: "medicationPrescription",
-              attributes: ["id"],
+              attributes: [
+                "modificationTimestamp",
+                "observations",
+                "indications",
+              ],
               order: [["id", "DESC"]],
               limit: 1,
               include: [
                 {
                   model: models.DrugDetailPresentation,
                   as: "drugDetailPresentation",
-                  attributes: ["id", "dose"],
+                  attributes: ["dose"],
                   include: [
                     {
                       model: models.CatDrug,
                       as: "drugName",
-                      attributes: ["id", "name"],
+                      attributes: ["name"],
+                    },
+                    {
+                      model: models.CatMeasureUnit,
+                      as: "measureUnit",
+                      attributes: ["name"],
                     },
                   ],
                 },
@@ -48,7 +58,8 @@ const getOrdersByIdHandlersPhysician = async (orderId) => {
         },
       ],
     });
-    return orders;
+    const responseMapping = formatterHandler(orders);
+    return responseMapping;
   } catch (error) {
     throw new SegimedAPIError(500, error.message);
   }
