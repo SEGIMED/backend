@@ -87,6 +87,7 @@ import updateHeartFailureClassificationController from "../controllers/patient/p
 import updateCardiovascularRiskController from "../controllers/patient/patientRisk/updateCardiovascularRiskController.js";
 import updateFullPatientController from "../controllers/patient/updateFullPatientController.js";
 import getMedicalEventHistoryController from "../controllers/medicalEvent/getMedicalEventHistoryController.js";
+import getMedicalEventHistoryEvolutionController from "../controllers/medicalHistory/getMedicalEventHistoryEvolution.js";
 import getMedicalEventDetailController from "../controllers/medicalEvent/getMedicalEventDetailController.js";
 import createBackgroundsController from "../controllers/backgrounds/createBackgroundsController.js";
 import updateBackgroundsController from "../controllers/backgrounds/updatebackgroundsController.js";
@@ -119,7 +120,7 @@ import searchDrugsController from "../controllers/drugPrescription/searchDrugsCo
 import createOrUpdateMedicalInterconsultation from "../controllers/interconsultation/MedicalInterconsultations.js";
 import getMedicalInterconsultationController from "../controllers/interconsultation/getMedicalInterconsultation.js";
 import getMedicalInterconsultationDetailsController from "../controllers/interconsultation/getMedicalInterconsultationDetailsController.js";
-import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js"
+import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js";
 import getFilesController from "../controllers/medicalHistory/getFilesController.js";
 
 const patientRouter = Router();
@@ -200,9 +201,10 @@ patientRouter
   .delete(deletePatientMedReqCtrl);
 
 //*Patient studies
-patientRouter.route("/patient-studies")
-.get(getFilesController)
-.post(postPatientStudiesController);
+patientRouter
+  .route("/patient-studies")
+  .get(getFilesController)
+  .post(postPatientStudiesController);
 
 //* cardiovascular risk
 patientRouter
@@ -373,6 +375,9 @@ medicalEventRouter
   .route("/medical-event/get-medical-event-history")
   .get(getMedicalEventHistoryController);
 medicalEventRouter
+  .route("/medical-event/get-medical-event-history-evolution")
+  .get(getMedicalEventHistoryEvolutionController);
+medicalEventRouter
   .route("/medical-event/get-medical-event-detail")
   .get(getMedicalEventDetailController);
 
@@ -434,7 +439,7 @@ drugPrescriptionRouter
 drugPrescriptionRouter
   .route("/drug-prescription/search")
   .get(searchDrugsController);
-  
+
 //* medical Procedure Prescription
 procedurePrescriptionRouter
   .route("/procedure/create-procedure-prescription")
