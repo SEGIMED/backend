@@ -119,8 +119,9 @@ import searchDrugsController from "../controllers/drugPrescription/searchDrugsCo
 import createOrUpdateMedicalInterconsultation from "../controllers/interconsultation/MedicalInterconsultations.js";
 import getMedicalInterconsultationController from "../controllers/interconsultation/getMedicalInterconsultation.js";
 import getMedicalInterconsultationDetailsController from "../controllers/interconsultation/getMedicalInterconsultationDetailsController.js";
-import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js"
+import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js";
 import getFilesController from "../controllers/medicalHistory/getFilesController.js";
+import getAnamnesisCtrl from "../controllers/medicalEvent/Anamnesis/getAnamnesisCtrl.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -200,9 +201,10 @@ patientRouter
   .delete(deletePatientMedReqCtrl);
 
 //*Patient studies
-patientRouter.route("/patient-studies")
-.get(getFilesController)
-.post(postPatientStudiesController);
+patientRouter
+  .route("/patient-studies")
+  .get(getFilesController)
+  .post(postPatientStudiesController);
 
 //* cardiovascular risk
 patientRouter
@@ -335,6 +337,8 @@ physicianRouter
   .route("/edit-physician-review/:id")
   .patch(patchPhysicianReviewController);
 
+physicianRouter.route("/physician-anamnesis").get(getAnamnesisCtrl);
+
 //* Catalogs
 catalogsRouter.get("/catalog/get-catalog", getCatalogController);
 
@@ -434,7 +438,7 @@ drugPrescriptionRouter
 drugPrescriptionRouter
   .route("/drug-prescription/search")
   .get(searchDrugsController);
-  
+
 //* medical Procedure Prescription
 procedurePrescriptionRouter
   .route("/procedure/create-procedure-prescription")
