@@ -35,4 +35,5 @@ function validationReqTypes(reqTypes) {
   if (!reqTypesValidation) {
     throw new SegimedAPIError("Invalid Request Type");
   }
+  return true;
 }

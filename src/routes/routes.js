@@ -119,7 +119,9 @@ import searchDrugsController from "../controllers/drugPrescription/searchDrugsCo
 import createOrUpdateMedicalInterconsultation from "../controllers/interconsultation/MedicalInterconsultations.js";
 import getMedicalInterconsultationController from "../controllers/interconsultation/getMedicalInterconsultation.js";
 import getMedicalInterconsultationDetailsController from "../controllers/interconsultation/getMedicalInterconsultationDetailsController.js";
-import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js"
+import createNewOrderPhysicianCtrl from "../controllers/physician/ordersCtrl/createOrderPhysicianCtrl.js";
+import getPhysicianOrderById from "../controllers/physician/ordersCtrl/getPhysicianOrderById.js";
+import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js";
 import getFilesController from "../controllers/medicalHistory/getFilesController.js";
 
 const patientRouter = Router();
@@ -200,9 +202,13 @@ patientRouter
   .delete(deletePatientMedReqCtrl);
 
 //*Patient studies
-patientRouter.route("/patient-studies")
-.get(getFilesController)
-.post(postPatientStudiesController);
+patientRouter
+  .route("/create-patient-studies")
+  .post(postPatientStudiesController);
+patientRouter
+  .route("/patient-studies")
+  .get(getFilesController)
+  .post(postPatientStudiesController);
 
 //* cardiovascular risk
 patientRouter
@@ -335,6 +341,11 @@ physicianRouter
   .route("/edit-physician-review/:id")
   .patch(patchPhysicianReviewController);
 
+physicianRouter
+  .route("/physician-order")
+  .post(createNewOrderPhysicianCtrl)
+  .get(getPhysicianOrderById);
+
 //* Catalogs
 catalogsRouter.get("/catalog/get-catalog", getCatalogController);
 
@@ -434,7 +445,7 @@ drugPrescriptionRouter
 drugPrescriptionRouter
   .route("/drug-prescription/search")
   .get(searchDrugsController);
-  
+
 //* medical Procedure Prescription
 procedurePrescriptionRouter
   .route("/procedure/create-procedure-prescription")
@@ -577,7 +588,6 @@ export {
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
-  // centerAttRouter,
   interconsultationRouter,
   interconsultationDetailsRouter,
 };
