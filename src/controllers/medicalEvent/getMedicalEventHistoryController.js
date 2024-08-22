@@ -1,5 +1,4 @@
 import getMedicalEventHistoryHandler from "../../handlers/medicalEvent/getMedicalEventHistoryHandler.js";
-import getMedicalEventHistoryAndInterconsultationHandler from "../../handlers/medicalHistory/getMedicalEventHistoryAndInterconsultationHandler.js";
 const getMedicalEventHistoryController = async (req, res) => {
   try {
     const patientId = req.query.patientId;
