@@ -59,7 +59,7 @@ const getOrdersByIdHandlersPhysician = async (orderId) => {
       ],
     });
     const responseMapping = formatterHandler(orders);
-    return responseMapping;
+    return responseMapping[0];
   } catch (error) {
     throw new SegimedAPIError(500, error.message);
   }
