@@ -13,15 +13,20 @@ const createDrugPrescriptionHandler = async (body, transaction) => {
     timeMeasure,
     timeMeasureType,
     drugDetailPresentationId,
-    commercialNameDrugId
+    commercialNameDrugId,
+    medicalOrderId,
   } = body;
 
   try {
+    if (!medicalOrderId && !medicalEventId) {
+      throw new Error("Se necesita el ID de una orden medical o una consulta");
+    }
     //Con la medicacion creada se hace una nueva instancia de presciption
     const newPrescription = await models.MedicationPrescription.create(
       {
         startTimestamp: moment().tz(TZ).format(),
-        medicalEventId,
+        medicalEventId: medicalEventId ?? null,
+        medicalOrderId: medicalOrderId ?? null,
         patientId,
         physicianId: contextService.get("request:user").userId,
       },
@@ -36,20 +41,25 @@ const createDrugPrescriptionHandler = async (body, transaction) => {
           medicationPrescriptionId: newPrescription.id,
           physicianId: contextService.get("request:user").userId,
           modificationTimestamp: moment().tz(TZ).toISOString(),
-          medicalEventId,
+          medicalEventId: medicalEventId ?? null,
+          medicalOrderId: medicalOrderId ?? null,
           observations,
           indications,
           doseMeasure,
           timeMeasure,
           timeMeasureType,
           drugDetailPresentationId,
-          commercialNameDrugId
+          commercialNameDrugId,
         },
         { transaction }
       );
     return { newPrescription, prescriptionModificationHistory };
   } catch (error) {
-    throw new SegimedAPIError("Hubo un error durante en la prescripción.", 500);
+    console.log(error);
+    throw new SegimedAPIError(
+      "Hubo un error durante en la prescripción: " + error.message,
+      500
+    );
   }
 };
 
