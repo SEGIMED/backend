@@ -93,6 +93,7 @@ import PrescriptionModificationsHistoryModel from "./models/PrescriptionModifica
 import MedicalInterconsultationsModel from "./models/MedicalInterconsultations.js";
 import MedicalInterconsultationFileModel from "./models/MedicalInterconsultationFile.js";
 import PatiendMedReqModel from "./models/PatientMedicalReq.js";
+import PhysicianOrdersModel from "./models/PhysicianOrders.js";
 import CatStudyTypeModel from "./models/CatStudyType.js";
 import PatientStudiesModel from "./models/PatientStudies.js";
 
@@ -221,6 +222,7 @@ PrescriptionModificationsHistoryModel(sequelize);
 MedicalInterconsultationsModel(sequelize);
 MedicalInterconsultationFileModel(sequelize);
 PatiendMedReqModel(sequelize);
+PhysicianOrdersModel(sequelize);
 CatStudyTypeModel(sequelize);
 PatientStudiesModel(sequelize);
 
@@ -317,6 +319,7 @@ export const {
   MedicalInterconsultations,
   MedicalInterconsultationFile,
   PatientMedicalReq,
+  PhysicianOrders,
   CatStudyType,
   PatientStudies,
 } = sequelize.models;
@@ -946,7 +949,7 @@ PatientCardiovascularRisk.belongsTo(User, {
   as: "patientUser",
   foreignKey: "patient",
 });
-User.hasMany(PatientCardiovascularRisk, {
+User.hasOne(PatientCardiovascularRisk, {
   as: "ptCvRsks",
   foreignKey: "patient",
 });
@@ -1076,7 +1079,7 @@ PatientPulmonaryHypertensionGroup.belongsTo(User, {
   as: "patientHpGroup",
   foreignKey: "patient",
 });
-User.hasMany(PatientPulmonaryHypertensionGroup, {
+User.hasOne(PatientPulmonaryHypertensionGroup, {
   as: "userHpGroups",
   foreignKey: "patient",
 });
@@ -1092,7 +1095,7 @@ PatientSurgicalRisk.belongsTo(User, {
   as: "patientUser",
   foreignKey: "patient",
 });
-User.hasMany(PatientSurgicalRisk, { as: "patSgRisks", foreignKey: "patient" });
+User.hasOne(PatientSurgicalRisk, { as: "patSgRisks", foreignKey: "patient" });
 PatientSurgicalRisk.belongsTo(User, {
   as: "physicianUser",
   foreignKey: "physician",
@@ -1409,6 +1412,26 @@ PatientStudies.belongsTo(CatStudyType, {
   foreignKey: "studyType",
 });
 
+User.hasMany(PhysicianOrders, {
+  foreignKey: "physicianId",
+  as: "OrdersPhysician",
+});
+PhysicianOrders.belongsTo(User, { foreignKey: "physicianId", as: "physician" });
+
+User.hasMany(PhysicianOrders, { foreignKey: "patientId", as: "OrdersPatient" });
+PhysicianOrders.belongsTo(User, { foreignKey: "patientId", as: "patient" });
+
+PhysicianOrders.belongsTo(MedicationPrescription, {
+  foreignKey: "medicalPrescriptionId",
+  as: "medicationPrescription",
+});
+MedicationPrescription.belongsTo(PhysicianOrders, {
+  foreignKey: "medicalPrescriptionId",
+  as: "physicianOrdersMedication",
+});
+
+
+
 const models = {
   AnthropometricDetails,
   AppointmentScheduling,
@@ -1500,6 +1523,7 @@ const models = {
   MedicalInterconsultations,
   MedicalInterconsultationFile,
   PatientMedicalReq,
+  PhysicianOrders,
   AttendentPlace,
   CatStudyType,
   PatientStudies,

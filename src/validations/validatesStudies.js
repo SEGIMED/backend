@@ -1,21 +1,22 @@
-
 const validateStudiesInput = (body) => {
   if (!Array.isArray(body.studies) || body.studies.length === 0) {
-    throw new Error(
-      "El campo 'studies' debe ser un array con al menos un objeto."
-    );
+    body.studies = [];
   }
 
   body.studies.forEach((studyObject, index) => {
     if (studyObject.study && typeof studyObject.study !== "string") {
       throw new Error(
-        `El campo 'study' en el estudio ${index + 1} debe ser una cadena de texto si está presente.`
+        `El campo 'study' en el estudio ${
+          index + 1
+        } debe ser una cadena de texto si está presente.`
       );
     }
 
     if (studyObject.studyType && typeof studyObject.studyType !== "number") {
       throw new Error(
-        `El campo 'studyType' en el estudio ${index + 1} debe ser un número si está presente.`
+        `El campo 'studyType' en el estudio ${
+          index + 1
+        } debe ser un número si está presente.`
       );
     }
 

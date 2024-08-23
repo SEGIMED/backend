@@ -120,8 +120,12 @@ import searchDrugsController from "../controllers/drugPrescription/searchDrugsCo
 import createOrUpdateMedicalInterconsultation from "../controllers/interconsultation/MedicalInterconsultations.js";
 import getMedicalInterconsultationController from "../controllers/interconsultation/getMedicalInterconsultation.js";
 import getMedicalInterconsultationDetailsController from "../controllers/interconsultation/getMedicalInterconsultationDetailsController.js";
+import createNewOrderPhysicianCtrl from "../controllers/physician/ordersCtrl/createOrderPhysicianCtrl.js";
+import getPhysicianOrderById from "../controllers/physician/ordersCtrl/getPhysicianOrderById.js";
 import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js";
 import getFilesController from "../controllers/medicalHistory/getFilesController.js";
+import getConsultationController from "../controllers/medicalHistory/getConsultationsController.js";
+import getNewPatientDetailsController from "../controllers/medicalHistory/getNewPatientDetailsController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -154,6 +158,7 @@ const notificationsRouter = Router();
 const doctorScheduleRouter = Router();
 const interconsultationRouter = Router();
 const interconsultationDetailsRouter = Router();
+const medicalHistoryRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -336,6 +341,11 @@ physicianRouter
 physicianRouter
   .route("/edit-physician-review/:id")
   .patch(patchPhysicianReviewController);
+
+physicianRouter
+  .route("/physician-order")
+  .post(createNewOrderPhysicianCtrl)
+  .get(getPhysicianOrderById);
 
 //* Catalogs
 catalogsRouter.get("/catalog/get-catalog", getCatalogController);
@@ -553,6 +563,10 @@ getAllNotificationsPhysicianRouter.get(
 );
 notificationsRouter.patch("/notification-seen", patchNotificationsController);
 
+//* Medical History
+medicalHistoryRouter.get("/consultation", getConsultationController);
+medicalHistoryRouter.get("/patient-detail", getNewPatientDetailsController);
+
 export {
   getPatientsRouter,
   patientRouter,
@@ -582,7 +596,7 @@ export {
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
-  // centerAttRouter,
   interconsultationRouter,
   interconsultationDetailsRouter,
+  medicalHistoryRouter,
 };
