@@ -125,6 +125,7 @@ import postPatientStudiesController from "../controllers/patient/patientStudies/
 import getFilesController from "../controllers/medicalHistory/getFilesController.js";
 import getConsultationController from "../controllers/medicalHistory/getConsultationsController.js";
 import getNewPatientDetailsController from "../controllers/medicalHistory/getNewPatientDetailsController.js";
+import physicalSelfEvaluationController from "../controllers/painMap/physicalSelfEvaluationController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -158,6 +159,7 @@ const doctorScheduleRouter = Router();
 const interconsultationRouter = Router();
 const interconsultationDetailsRouter = Router();
 const medicalHistoryRouter = Router();
+const selfEvaluationEventRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -563,6 +565,9 @@ notificationsRouter.patch("/notification-seen", patchNotificationsController);
 medicalHistoryRouter.get("/consultation", getConsultationController);
 medicalHistoryRouter.get("/patient-detail", getNewPatientDetailsController);
 
+//* Self Evaluation
+selfEvaluationEventRouter.post("/pain-map", physicalSelfEvaluationController);
+
 export {
   getPatientsRouter,
   patientRouter,
@@ -595,4 +600,5 @@ export {
   interconsultationRouter,
   interconsultationDetailsRouter,
   medicalHistoryRouter,
+  selfEvaluationEventRouter,
 };
