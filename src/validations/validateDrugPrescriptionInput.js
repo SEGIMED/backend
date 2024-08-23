@@ -17,7 +17,6 @@ export const validateDrugPrescriptionInput = (input) => {
     }
   
     const requiredFields = [
-      "medicalEventId",
       "patientId",
       "doseMeasure",
       "timeMeasure",
