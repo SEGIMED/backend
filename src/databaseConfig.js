@@ -949,7 +949,7 @@ PatientCardiovascularRisk.belongsTo(User, {
   as: "patientUser",
   foreignKey: "patient",
 });
-User.hasMany(PatientCardiovascularRisk, {
+User.hasOne(PatientCardiovascularRisk, {
   as: "ptCvRsks",
   foreignKey: "patient",
 });
@@ -1095,7 +1095,7 @@ PatientSurgicalRisk.belongsTo(User, {
   as: "patientUser",
   foreignKey: "patient",
 });
-User.hasMany(PatientSurgicalRisk, { as: "patSgRisks", foreignKey: "patient" });
+User.hasOne(PatientSurgicalRisk, { as: "patSgRisks", foreignKey: "patient" });
 PatientSurgicalRisk.belongsTo(User, {
   as: "physicianUser",
   foreignKey: "physician",
@@ -1430,14 +1430,7 @@ MedicationPrescription.belongsTo(PhysicianOrders, {
   as: "physicianOrdersMedication",
 });
 
-PhysicianOrders.belongsTo(PrescriptionModificationsHistory, {
-  foreignKey: "prescription_modifications_hist_id",
-  as: "prescriptionModificationOnOrders",
-});
-PrescriptionModificationsHistory.belongsTo(PhysicianOrders, {
-  foreignKey: "prescription_modifications_hist_id",
-  as: "physicianOrdersPrescriptionModification",
-});
+
 
 const models = {
   AnthropometricDetails,

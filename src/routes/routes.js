@@ -124,6 +124,7 @@ import getPhysicianOrderById from "../controllers/physician/ordersCtrl/getPhysic
 import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js";
 import getFilesController from "../controllers/medicalHistory/getFilesController.js";
 import getConsultationController from "../controllers/medicalHistory/getConsultationsController.js";
+import getNewPatientDetailsController from "../controllers/medicalHistory/getNewPatientDetailsController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -560,6 +561,7 @@ notificationsRouter.patch("/notification-seen", patchNotificationsController);
 
 //* Medical History
 medicalHistoryRouter.get("/consultation", getConsultationController);
+medicalHistoryRouter.get("/patient-detail", getNewPatientDetailsController);
 
 export {
   getPatientsRouter,
@@ -592,5 +594,5 @@ export {
   notificationsRouter,
   interconsultationRouter,
   interconsultationDetailsRouter,
-  medicalHistoryRouter
+  medicalHistoryRouter,
 };
