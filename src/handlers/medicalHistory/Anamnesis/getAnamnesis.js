@@ -15,7 +15,7 @@ const getAnamnesisHandler = async (patientId, page, limit) => {
         {
           model: models.AppointmentScheduling,
           as: "appSch",
-          where: { patient: patientId },
+          where: { patient: patientId, schedulingStatus: 2 },
           attributes: ["patient", "scheduledStartTimestamp"],
           include: [
             {
