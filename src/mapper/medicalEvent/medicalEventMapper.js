@@ -7,8 +7,6 @@ import { mapAnthropometricDetail } from "../patient/anthropometricDetailsMapper.
 import { mapVitalSign } from "../patient/vitalSignsMapper.js";
 
 export const mapMedicalEventEvolution = (medicalEvent) => {
-  console.log(medicalEvent.dataValues);
-
   return {
     timestamp: medicalEvent.appSch?.scheduledStartTimestamp, //
     chiefComplaint: medicalEvent.appSch?.reasonForConsultation,
