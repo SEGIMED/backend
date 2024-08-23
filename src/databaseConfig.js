@@ -1422,13 +1422,23 @@ User.hasMany(PhysicianOrders, { foreignKey: "patientId", as: "OrdersPatient" });
 PhysicianOrders.belongsTo(User, { foreignKey: "patientId", as: "patient" });
 
 PhysicianOrders.belongsTo(MedicationPrescription, {
-  foreignKey: "medicalPrescriptionId",
+  foreignKey: "medicalOrderId",
   as: "medicationPrescription",
 });
-MedicationPrescription.belongsTo(PhysicianOrders, {
-  foreignKey: "medicalPrescriptionId",
+MedicationPrescription.hasOne(PhysicianOrders, {
+  foreignKey: "medicalOrderId",
   as: "physicianOrdersMedication",
 });
+
+PhysicianOrders.belongsTo(PrescriptionModificationsHistory, {
+  foreignKey: "medicalOrderId",
+  as:"medicationHistory"
+})
+PrescriptionModificationsHistory.hasOne(PhysicianOrders, {
+  foreignKey: "medicalOrderId",
+  as:"medicalOrder"
+})
+
 
 const models = {
   AnthropometricDetails,
