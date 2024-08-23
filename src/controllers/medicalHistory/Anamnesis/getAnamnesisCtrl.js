@@ -2,8 +2,8 @@ import getAnamnesisHandler from "../../../handlers/medicalHistory/Anamnesis/getA
 
 const getAnamnesisCtrl = async (req, res) => {
   try {
-    const { userId } = req.query;
-    const response = await getAnamnesisHandler(userId);
+    const { userId, page, limit } = req.query;
+    const response = await getAnamnesisHandler(userId, page, limit);
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json(error);

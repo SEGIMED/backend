@@ -1,7 +1,8 @@
 import models from "../../../databaseConfig.js";
 import SegimedAPIError from "../../../error/SegimedAPIError.js";
+import universalPaginationHandler from "../../Pagination/universalPaginationHandler.js";
 
-const getAnamnesisHandler = async (patientId) => {
+const getAnamnesisHandler = async (patientId, page, limit) => {
   try {
     const response = await models.MedicalEvent.findAll({
       attributes: [
@@ -25,7 +26,7 @@ const getAnamnesisHandler = async (patientId) => {
             {
               model: models.User,
               as: "patientUser",
-              attributes: ["id"],
+              attributes: ["id", "name", "lastname"],
               include: {
                 model: models.PatientPulmonaryHypertensionGroup,
                 as: "userHpGroups",
@@ -45,6 +46,10 @@ const getAnamnesisHandler = async (patientId) => {
     });
     if (!response) {
       throw new SegimedAPIError("Anamnesis not found");
+    }
+    if (page && limit) {
+      const paginated = universalPaginationHandler(response, page, limit);
+      return paginated;
     }
     // return only the properties that are not null
     return response;
