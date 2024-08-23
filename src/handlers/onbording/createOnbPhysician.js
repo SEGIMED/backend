@@ -2,9 +2,9 @@ import models from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import { PhysicianSpecialty } from "../../databaseConfig.js";
 import { PhysicianMedicalRegistry } from "../../databaseConfig.js";
+import { createRegisterPhysicianOnCenterAtt } from "./registerPhysicianOnCenterAtt.js";
 
 export const createOnbPhysician = async (body, userId) => {
-  const convertUserid = parseInt(userId, 10);
   const {
     genre,
     birthDate,
@@ -14,36 +14,69 @@ export const createOnbPhysician = async (body, userId) => {
     nacionalRegistration,
     provincialRegistration,
   } = body;
-
-
   try {
-    const newOnbPhysician = await models.PhysicianOnboarding.create({
-      idPhysician: convertUserid,
-      genre,
-      birthDate,
-      address,
-      centerAttention,
+    // verificamos que se mande un elemento dentro del array de centros de atención
+    if (centerAttention.length === 0) {
+      throw new SegimedAPIError(
+        400,
+        "Debe seleccionar al menos un centro de atención"
+      );
+    }
+
+    // Crear un nuevo registro médico en el centro de atención
+    const attendentPlaceRegister = centerAttention.map((centerid) => {
+      return {
+        idPhysician: userId,
+        idCenterAttention: centerid,
+      };
+    });
+    await createRegisterPhysicianOnCenterAtt(attendentPlaceRegister);
+
+    // Crear un nuevo registro médico en el onboarding del médico
+    const [newOnbPhysician] = await models.PhysicianOnboarding.findOrCreate({
+      where: { idPhysician: userId },
+      defaults: {
+        idPhysician: userId,
+        genre,
+        birthDate,
+        address,
+      },
     });
 
-    const [newSpecialty, created] = await PhysicianSpecialty.findOrCreate({
-      where: { physician: convertUserid, medicalSpecialty: specialty },
-
+    // Crear un nuevo registro médico en la especialidad del médico
+    const [newSpecialty] = await PhysicianSpecialty.findOrCreate({
+      where: { physician: userId, medicalSpecialty: specialty },
     });
 
-    const [newMedicalRegistryProvincial, createdProvincial] = await PhysicianMedicalRegistry.findOrCreate({
-      where: { physician: convertUserid, registryType: 1, registryId: provincialRegistration },
-      defaults: { registryId: provincialRegistration }
-    });
+    // Crear un nuevo registro médico provincial
+    const [newMedicalRegistryProvincial] =
+      await PhysicianMedicalRegistry.findOrCreate({
+        where: {
+          physician: userId,
+          registryType: 1,
+          registryId: provincialRegistration,
+        },
+        defaults: { registryId: provincialRegistration },
+      });
 
     // Crear un nuevo registro médico nacional
-    const [newMedicalRegistryNacional, createdNacional] = await PhysicianMedicalRegistry.findOrCreate({
-      where: { physician: convertUserid, registryType: 2, registryId: nacionalRegistration },
-      defaults: { registryId: nacionalRegistration }
-    });
+    const [newMedicalRegistryNacional] =
+      await PhysicianMedicalRegistry.findOrCreate({
+        where: {
+          physician: userId,
+          registryType: 2,
+          registryId: nacionalRegistration,
+        },
+        defaults: { registryId: nacionalRegistration },
+      });
 
-
-
-    return { newOnbPhysician, newMedicalRegistryNacional, newMedicalRegistryProvincial, newSpecialty };
+    return {
+      newOnbPhysician,
+      newMedicalRegistryNacional,
+      newMedicalRegistryProvincial,
+      newSpecialty,
+      attendentPlaceRegister,
+    };
   } catch (error) {
     console.log(error);
 

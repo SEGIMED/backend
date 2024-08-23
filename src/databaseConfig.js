@@ -84,6 +84,7 @@ import PhysicianFavoritePatientModel from "./models/PhysicianFavoritePatient.js"
 import RefreshTokenModel from "./models/RefreshToken.js";
 import RequestFollowModel from "./models/RequestFollow.js";
 import PhysicianOnboardingModel from "./models/PhysicianOnboarding.js";
+import AttendentPlaceModel from "./models/AttendentPlace.js";
 import CatRouteOfAdministrationModel from "./models/CatRouteOfAdministration.js";
 import CatCommercialNameDrugModel from "./models/CatCommercialNameDrug.js";
 import DrugDetailPresentationModel from "./models/DrugDetailPresentation.js";
@@ -92,7 +93,11 @@ import PrescriptionModificationsHistoryModel from "./models/PrescriptionModifica
 import MedicalInterconsultationsModel from "./models/MedicalInterconsultations.js";
 import MedicalInterconsultationFileModel from "./models/MedicalInterconsultationFile.js";
 import PatiendMedReqModel from "./models/PatientMedicalReq.js";
+import PhysicianOrdersModel from "./models/PhysicianOrders.js";
+import CatStudyTypeModel from "./models/CatStudyType.js";
+import PatientStudiesModel from "./models/PatientStudies.js";
 
+// import
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';
 // import { config } from "dotenv";
@@ -208,6 +213,7 @@ PhysicianFavoritePatientModel(sequelize);
 RefreshTokenModel(sequelize);
 RequestFollowModel(sequelize);
 PhysicianOnboardingModel(sequelize);
+AttendentPlaceModel(sequelize);
 CatRouteOfAdministrationModel(sequelize);
 CatCommercialNameDrugModel(sequelize);
 DrugDetailPresentationModel(sequelize);
@@ -216,6 +222,9 @@ PrescriptionModificationsHistoryModel(sequelize);
 MedicalInterconsultationsModel(sequelize);
 MedicalInterconsultationFileModel(sequelize);
 PatiendMedReqModel(sequelize);
+PhysicianOrdersModel(sequelize);
+CatStudyTypeModel(sequelize);
+PatientStudiesModel(sequelize);
 
 export const {
   DiagnosticTest,
@@ -301,6 +310,7 @@ export const {
   RefreshToken,
   RequestFollow,
   PhysicianOnboarding,
+  AttendentPlace,
   CatRouteOfAdministration,
   CatCommercialNameDrug,
   DrugDetailPresentation,
@@ -309,6 +319,9 @@ export const {
   MedicalInterconsultations,
   MedicalInterconsultationFile,
   PatientMedicalReq,
+  PhysicianOrders,
+  CatStudyType,
+  PatientStudies,
 } = sequelize.models;
 
 DiagnosticTest.belongsTo(AppointmentScheduling, {
@@ -936,7 +949,7 @@ PatientCardiovascularRisk.belongsTo(User, {
   as: "patientUser",
   foreignKey: "patient",
 });
-User.hasMany(PatientCardiovascularRisk, {
+User.hasOne(PatientCardiovascularRisk, {
   as: "ptCvRsks",
   foreignKey: "patient",
 });
@@ -1066,7 +1079,7 @@ PatientPulmonaryHypertensionGroup.belongsTo(User, {
   as: "patientHpGroup",
   foreignKey: "patient",
 });
-User.hasMany(PatientPulmonaryHypertensionGroup, {
+User.hasOne(PatientPulmonaryHypertensionGroup, {
   as: "userHpGroups",
   foreignKey: "patient",
 });
@@ -1082,7 +1095,7 @@ PatientSurgicalRisk.belongsTo(User, {
   as: "patientUser",
   foreignKey: "patient",
 });
-User.hasMany(PatientSurgicalRisk, { as: "patSgRisks", foreignKey: "patient" });
+User.hasOne(PatientSurgicalRisk, { as: "patSgRisks", foreignKey: "patient" });
 PatientSurgicalRisk.belongsTo(User, {
   as: "physicianUser",
   foreignKey: "physician",
@@ -1217,6 +1230,14 @@ PhysicianOnboarding.belongsTo(User, { foreignKey: "idPhysician" });
 PhysicianOnboarding.belongsTo(CatGenre, { foreignKey: "genre" });
 PhysicianOnboarding.belongsTo(CatCenterAttention, {
   foreignKey: "centerAttention",
+});
+PhysicianOnboarding.belongsToMany(CatCenterAttention, {
+  through: AttendentPlace,
+  foreignKey: "idPhysician",
+});
+CatCenterAttention.belongsToMany(PhysicianOnboarding, {
+  through: AttendentPlace,
+  foreignKey: "idCenterAttention",
 });
 // Relaciones del modelo MedicalInterconsultations
 
@@ -1369,9 +1390,9 @@ PrescriptionModificationsHistory.belongsTo(CatCommercialNameDrug, {
   as: "commercialName",
 });
 CatCommercialNameDrug.hasMany(PrescriptionModificationsHistory, {
-  foreignKey:"commercialNameDrugId",
-  as:"CommercialNamePrescription"
-})
+  foreignKey: "commercialNameDrugId",
+  as: "CommercialNamePrescription",
+});
 User.hasMany(PatientMedicalReq, { foreignKey: "patientId", as: "patient" });
 User.hasMany(PatientMedicalReq, { foreignKey: "physicianId", as: "physician" });
 PatientMedicalReq.belongsTo(User, {
@@ -1382,6 +1403,34 @@ PatientMedicalReq.belongsTo(User, {
   foreignKey: "physicianId",
   as: "physicianReq",
 });
+CatStudyType.hasMany(PatientStudies, {
+  as: "CatStudyTypePatientStudies",
+  foreignKey: "studyType",
+});
+PatientStudies.belongsTo(CatStudyType, {
+  as: "CatStudyTypePatientStudies",
+  foreignKey: "studyType",
+});
+
+User.hasMany(PhysicianOrders, {
+  foreignKey: "physicianId",
+  as: "OrdersPhysician",
+});
+PhysicianOrders.belongsTo(User, { foreignKey: "physicianId", as: "physician" });
+
+User.hasMany(PhysicianOrders, { foreignKey: "patientId", as: "OrdersPatient" });
+PhysicianOrders.belongsTo(User, { foreignKey: "patientId", as: "patient" });
+
+PhysicianOrders.belongsTo(MedicationPrescription, {
+  foreignKey: "medicalPrescriptionId",
+  as: "medicationPrescription",
+});
+MedicationPrescription.belongsTo(PhysicianOrders, {
+  foreignKey: "medicalPrescriptionId",
+  as: "physicianOrdersMedication",
+});
+
+
 
 const models = {
   AnthropometricDetails,
@@ -1474,6 +1523,10 @@ const models = {
   MedicalInterconsultations,
   MedicalInterconsultationFile,
   PatientMedicalReq,
+  PhysicianOrders,
+  AttendentPlace,
+  CatStudyType,
+  PatientStudies,
 };
 
 export default models;

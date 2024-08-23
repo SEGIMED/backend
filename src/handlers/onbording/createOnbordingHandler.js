@@ -6,8 +6,6 @@ export const createOnbordingHandler = async (body, userId) => {
   if (!validationOnbording(body)) {
     throw new SegimedAPIError(400, "Error en la validación de datos");
   }
-
-  const convertUserId = parseInt(userId, 10);
   const {
     hipertPulm,
     centerAttention,
@@ -20,18 +18,19 @@ export const createOnbordingHandler = async (body, userId) => {
   } = body;
 
   try {
-    const newEntry = await SociodemographicDetails.upsert({
-      hipertPulm,
-      centerAttention,
-      liveAlone,
-      address,
-      genre,
-      birthDate,
-      hasTechUseDifficulty,
-      needsCellphoneAssistance,
-      patient: convertUserId,
-    }, {
-      where: { patient: convertUserId }
+    const [newEntry] = await SociodemographicDetails.findOrCreate({
+      where: { patient: userId },
+      defaults: {
+        hipertPulm,
+        centerAttention,
+        liveAlone,
+        address,
+        genre,
+        birthDate,
+        hasTechUseDifficulty,
+        needsCellphoneAssistance,
+        patient: userId,
+      },
     });
 
     return newEntry;
