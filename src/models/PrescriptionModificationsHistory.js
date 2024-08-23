@@ -84,6 +84,15 @@ const model = (sequelize) => {
           key: "id",
         },
       },
+      medicalOrderId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        field: "medical_order_id",
+        references: {
+          model: "physician_orders",
+          key: "id",
+        },
+      },
     },
     {
       tableName: "prescription_modifications_history",

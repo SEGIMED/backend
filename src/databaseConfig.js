@@ -1425,11 +1425,11 @@ User.hasMany(PhysicianOrders, { foreignKey: "patientId", as: "OrdersPatient" });
 PhysicianOrders.belongsTo(User, { foreignKey: "patientId", as: "patient" });
 
 PhysicianOrders.belongsTo(MedicationPrescription, {
-  foreignKey: "medicalPrescriptionId",
+  foreignKey: "medicalOrderId",
   as: "medicationPrescription",
 });
-MedicationPrescription.belongsTo(PhysicianOrders, {
-  foreignKey: "medicalPrescriptionId",
+MedicationPrescription.hasOne(PhysicianOrders, {
+  foreignKey: "medicalOrderId",
   as: "physicianOrdersMedication",
 });
 // SelEvaluation
@@ -1438,6 +1438,14 @@ User.hasMany(SelfEvaluationEvent, {
   as: "selfEvaluations",
 });
 
+PhysicianOrders.belongsTo(PrescriptionModificationsHistory, {
+  foreignKey: "medicalOrderId",
+  as: "medicationHistory",
+});
+PrescriptionModificationsHistory.hasOne(PhysicianOrders, {
+  foreignKey: "medicalOrderId",
+  as: "medicalOrder",
+});
 SelfEvaluationEvent.belongsTo(User, {
   foreignKey: "patient",
   as: "patientUser",

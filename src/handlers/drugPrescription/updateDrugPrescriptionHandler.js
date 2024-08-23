@@ -14,7 +14,12 @@ const updateDrugPrescriptionHandler = async (body) => {
       doseMeasure,
       timeMeasure,
       timeMeasureType,
+      medicalOrderId,
     } = body;
+
+    if (!medicalOrderId && !medicalEventId) {
+      throw new Error("Se necesita el ID de una orden medical o una consulta");
+    }
 
     const drugDetailPresentation =
       await models.PrescriptionModificationsHistory.findOne({
@@ -41,7 +46,8 @@ const updateDrugPrescriptionHandler = async (body) => {
         medicationPrescriptionId,
         physicianId: contextService.get("request:user").userId,
         modificationTimestamp: moment().tz(TZ).toISOString(),
-        medicalEventId,
+        medicalEventId: medicalEventId ?? null,
+        medicalOrderId: medicalOrderId ?? null ,
         observations,
         indications,
         doseMeasure,

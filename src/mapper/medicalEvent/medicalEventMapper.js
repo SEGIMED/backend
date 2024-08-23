@@ -7,8 +7,6 @@ import { mapAnthropometricDetail } from "../patient/anthropometricDetailsMapper.
 import { mapVitalSign } from "../patient/vitalSignsMapper.js";
 
 export const mapMedicalEventEvolution = (medicalEvent) => {
-  console.log(medicalEvent.dataValues);
-
   return {
     timestamp: medicalEvent.appSch?.scheduledStartTimestamp, //
     chiefComplaint: medicalEvent.appSch?.reasonForConsultation,
@@ -39,14 +37,10 @@ export const mapMedicalEvent = (medicalEvent) => {
     status: medicalEvent.appSch.schedulingStatus,
 
     // grupo HTP hipertensión pulmonar
-    patientHpGroups: medicalEvent.appSch.patientUser.userHpGroups.map(
-      (hpGroup) => {
-        return {
-          group: hpGroup.catHpGroup.name,
-          timestamp: hpGroup.timestamp,
-        };
-      }
-    ),
+    patientHpGroups:{
+      group: medicalEvent.appSch.patientUser.userHpGroups.catHpGroup.name,
+      timestamp: medicalEvent.appSch.patientUser.userHpGroups.timestamp
+    },
     /// especialidad médica
     medicalSpecialty: medicalEvent.appSch.specialty.name,
     patient: {
