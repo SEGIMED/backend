@@ -384,9 +384,7 @@ medicalEventRouter
 medicalEventRouter
   .route("/medical-event/get-medical-event-history")
   .get(getMedicalEventHistoryController);
-medicalEventRouter
-  .route("/medical-event/get-medical-event-history-evolution")
-  .get(getMedicalEventHistoryEvolutionController);
+medicalEventRouter.route("/medical-event/get-medical-event-history-evolution");
 medicalEventRouter
   .route("/medical-event/get-medical-event-detail")
   .get(getMedicalEventDetailController);
@@ -566,6 +564,10 @@ notificationsRouter.patch("/notification-seen", patchNotificationsController);
 //* Medical History
 medicalHistoryRouter.get("/consultation", getConsultationController);
 medicalHistoryRouter.get("/patient-detail", getNewPatientDetailsController);
+medicalHistoryRouter.get(
+  "/evolution",
+  getMedicalEventHistoryEvolutionController
+);
 
 export {
   getPatientsRouter,
