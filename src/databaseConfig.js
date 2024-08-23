@@ -949,7 +949,7 @@ PatientCardiovascularRisk.belongsTo(User, {
   as: "patientUser",
   foreignKey: "patient",
 });
-User.hasMany(PatientCardiovascularRisk, {
+User.hasOne(PatientCardiovascularRisk, {
   as: "ptCvRsks",
   foreignKey: "patient",
 });
@@ -1079,7 +1079,7 @@ PatientPulmonaryHypertensionGroup.belongsTo(User, {
   as: "patientHpGroup",
   foreignKey: "patient",
 });
-User.hasMany(PatientPulmonaryHypertensionGroup, {
+User.hasOne(PatientPulmonaryHypertensionGroup, {
   as: "userHpGroups",
   foreignKey: "patient",
 });
@@ -1095,7 +1095,7 @@ PatientSurgicalRisk.belongsTo(User, {
   as: "patientUser",
   foreignKey: "patient",
 });
-User.hasMany(PatientSurgicalRisk, { as: "patSgRisks", foreignKey: "patient" });
+User.hasOne(PatientSurgicalRisk, { as: "patSgRisks", foreignKey: "patient" });
 PatientSurgicalRisk.belongsTo(User, {
   as: "physicianUser",
   foreignKey: "physician",

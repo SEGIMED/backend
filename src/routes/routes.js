@@ -124,6 +124,8 @@ import getPhysicianOrderById from "../controllers/physician/ordersCtrl/getPhysic
 import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js";
 import getFilesController from "../controllers/medicalHistory/getFilesController.js";
 import getAnamnesisCtrl from "../controllers/medicalHistory/Anamnesis/getAnamnesisCtrl.js";
+import getConsultationController from "../controllers/medicalHistory/getConsultationsController.js";
+import getNewPatientDetailsController from "../controllers/medicalHistory/getNewPatientDetailsController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -156,6 +158,7 @@ const notificationsRouter = Router();
 const doctorScheduleRouter = Router();
 const interconsultationRouter = Router();
 const interconsultationDetailsRouter = Router();
+const medicalHistoryRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -203,9 +206,6 @@ patientRouter
   .delete(deletePatientMedReqCtrl);
 
 //*Patient studies
-patientRouter
-  .route("/create-patient-studies")
-  .post(postPatientStudiesController);
 patientRouter
   .route("/patient-studies")
   .get(getFilesController)
@@ -342,7 +342,6 @@ physicianRouter
   .route("/edit-physician-review/:id")
   .patch(patchPhysicianReviewController);
 
-physicianRouter.route("/physician-anamnesis").get(getAnamnesisCtrl);
 physicianRouter
   .route("/physician-order")
   .post(createNewOrderPhysicianCtrl)
@@ -561,6 +560,11 @@ getAllNotificationsPhysicianRouter.get(
 );
 notificationsRouter.patch("/notification-seen", patchNotificationsController);
 
+//* Medical History
+medicalHistoryRouter.get("/consultation", getConsultationController);
+medicalHistoryRouter.get("/patient-detail", getNewPatientDetailsController);
+medicalHistoryRouter.get("/anamnesis", getAnamnesisCtrl);
+
 export {
   getPatientsRouter,
   patientRouter,
@@ -592,4 +596,5 @@ export {
   notificationsRouter,
   interconsultationRouter,
   interconsultationDetailsRouter,
+  medicalHistoryRouter,
 };
