@@ -123,6 +123,7 @@ import createNewOrderPhysicianCtrl from "../controllers/physician/ordersCtrl/cre
 import getPhysicianOrderById from "../controllers/physician/ordersCtrl/getPhysicianOrderById.js";
 import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js";
 import getFilesController from "../controllers/medicalHistory/getFilesController.js";
+import getAnamnesisCtrl from "../controllers/medicalHistory/Anamnesis/getAnamnesisCtrl.js";
 import getConsultationController from "../controllers/medicalHistory/getConsultationsController.js";
 import getNewPatientDetailsController from "../controllers/medicalHistory/getNewPatientDetailsController.js";
 
@@ -562,6 +563,7 @@ notificationsRouter.patch("/notification-seen", patchNotificationsController);
 //* Medical History
 medicalHistoryRouter.get("/consultation", getConsultationController);
 medicalHistoryRouter.get("/patient-detail", getNewPatientDetailsController);
+medicalHistoryRouter.get("/anamnesis", getAnamnesisCtrl);
 
 export {
   getPatientsRouter,
