@@ -67,12 +67,12 @@ const model = (sequelize) => {
 
       indications: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
         field: "indications",
       },
       diagnostic: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
         field: "diagnostic",
       },
       additionalText: {
@@ -82,7 +82,7 @@ const model = (sequelize) => {
       },
       date: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
         field: "date",
       },
       updateAt: {

@@ -1430,8 +1430,6 @@ MedicationPrescription.belongsTo(PhysicianOrders, {
   as: "physicianOrdersMedication",
 });
 
-
-
 const models = {
   AnthropometricDetails,
   AppointmentScheduling,
