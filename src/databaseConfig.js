@@ -1430,15 +1430,6 @@ MedicationPrescription.belongsTo(PhysicianOrders, {
   as: "physicianOrdersMedication",
 });
 
-PhysicianOrders.belongsTo(PrescriptionModificationsHistory, {
-  foreignKey: "prescription_modifications_hist_id",
-  as: "prescriptionModificationOnOrders",
-});
-PrescriptionModificationsHistory.belongsTo(PhysicianOrders, {
-  foreignKey: "prescription_modifications_hist_id",
-  as: "physicianOrdersPrescriptionModification",
-});
-
 const models = {
   AnthropometricDetails,
   AppointmentScheduling,
