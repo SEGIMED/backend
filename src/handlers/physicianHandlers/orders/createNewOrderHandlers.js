@@ -11,6 +11,7 @@ const createNewOrderHandler = async (body) => {
   const {
     patientId,
     orderTypes,
+    requestPatientId,
     medicalPrescriptionId,
     prescription_modifications_hist_id,
     indications,
@@ -28,6 +29,7 @@ const createNewOrderHandler = async (body) => {
       patientId,
       physicianId: userId,
       orderTypes,
+      requestPatientId,
       medicalPrescriptionId,
       prescription_modifications_hist_id,
       indications,
@@ -42,7 +44,7 @@ const createNewOrderHandler = async (body) => {
   } catch (error) {
     console.log(error);
 
-    throw new SegimedAPIError("Error en la operación de registro: " + error);
+    throw new SegimedAPIError("Error en la operación de registro: ", error);
   }
 };
 

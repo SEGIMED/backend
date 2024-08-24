@@ -573,7 +573,6 @@ medicalHistoryRouter.get(
 );
 medicalHistoryRouter.get("/anamnesis", getAnamnesisCtrl);
 
-
 //* Self Evaluation
 selfEvaluationEventRouter.post("/pain-map", physicalSelfEvaluationController);
 

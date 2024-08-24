@@ -12,6 +12,7 @@ export const formatterHandler = (array) => {
       date,
       patient,
       physician,
+      medicalReq,
       medicationPrescription, // La primera instancia de medicationPrescription
     }) => {
       const {
@@ -31,6 +32,7 @@ export const formatterHandler = (array) => {
         date,
         patient: `${patient.name} ${patient.lastname}`,
         physician: `${physician.name} ${physician.lastname}`,
+        medicalReq: medicalReq.reqTypes,
         startTimestamp,
         prescriptionModifications: prescriptionModifications.map(
           (modification) => ({

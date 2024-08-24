@@ -20,6 +20,11 @@ const getOrdersByIdHandlersPhysician = async (orderId) => {
           attributes: ["name", "lastname"],
         },
         {
+          model: models.PatientMedicalReq,
+          as: "medicalReq",
+          attributes: ["id", "reqTypes"],
+        },
+        {
           model: models.MedicationPrescription,
           as: "medicationPrescription",
           attributes: ["id", "startTimestamp"],

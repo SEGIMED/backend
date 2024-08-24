@@ -45,6 +45,15 @@ const model = (sequelize) => {
         defaultValue: "Otro",
         field: "order_types",
       },
+      requestPatientId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: "patient_medical_req",
+          key: "id",
+        },
+        field: "request_patient_id",
+      },
       medicalPrescriptionId: {
         // con esta ya traer la precscription modifications history
         type: DataTypes.INTEGER,
