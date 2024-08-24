@@ -87,6 +87,7 @@ import updateHeartFailureClassificationController from "../controllers/patient/p
 import updateCardiovascularRiskController from "../controllers/patient/patientRisk/updateCardiovascularRiskController.js";
 import updateFullPatientController from "../controllers/patient/updateFullPatientController.js";
 import getMedicalEventHistoryController from "../controllers/medicalEvent/getMedicalEventHistoryController.js";
+import getMedicalEventHistoryEvolutionController from "../controllers/medicalHistory/getMedicalEventHistoryEvolution.js";
 import getMedicalEventDetailController from "../controllers/medicalEvent/getMedicalEventDetailController.js";
 import createBackgroundsController from "../controllers/backgrounds/createBackgroundsController.js";
 import updateBackgroundsController from "../controllers/backgrounds/updatebackgroundsController.js";
@@ -119,8 +120,13 @@ import searchDrugsController from "../controllers/drugPrescription/searchDrugsCo
 import createOrUpdateMedicalInterconsultation from "../controllers/interconsultation/MedicalInterconsultations.js";
 import getMedicalInterconsultationController from "../controllers/interconsultation/getMedicalInterconsultation.js";
 import getMedicalInterconsultationDetailsController from "../controllers/interconsultation/getMedicalInterconsultationDetailsController.js";
-import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js"
+import createNewOrderPhysicianCtrl from "../controllers/physician/ordersCtrl/createOrderPhysicianCtrl.js";
+import getPhysicianOrderById from "../controllers/physician/ordersCtrl/getPhysicianOrderById.js";
+import postPatientStudiesController from "../controllers/patient/patientStudies/postPatientStudiesController.js";
 import getFilesController from "../controllers/medicalHistory/getFilesController.js";
+import getAnamnesisCtrl from "../controllers/medicalHistory/Anamnesis/getAnamnesisCtrl.js";
+import getConsultationController from "../controllers/medicalHistory/getConsultationsController.js";
+import getNewPatientDetailsController from "../controllers/medicalHistory/getNewPatientDetailsController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -153,6 +159,7 @@ const notificationsRouter = Router();
 const doctorScheduleRouter = Router();
 const interconsultationRouter = Router();
 const interconsultationDetailsRouter = Router();
+const medicalHistoryRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -200,9 +207,10 @@ patientRouter
   .delete(deletePatientMedReqCtrl);
 
 //*Patient studies
-patientRouter.route("/patient-studies")
-.get(getFilesController)
-.post(postPatientStudiesController);
+patientRouter
+  .route("/patient-studies")
+  .get(getFilesController)
+  .post(postPatientStudiesController);
 
 //* cardiovascular risk
 patientRouter
@@ -335,6 +343,11 @@ physicianRouter
   .route("/edit-physician-review/:id")
   .patch(patchPhysicianReviewController);
 
+physicianRouter
+  .route("/physician-order")
+  .post(createNewOrderPhysicianCtrl)
+  .get(getPhysicianOrderById);
+
 //* Catalogs
 catalogsRouter.get("/catalog/get-catalog", getCatalogController);
 
@@ -372,6 +385,7 @@ medicalEventRouter
 medicalEventRouter
   .route("/medical-event/get-medical-event-history")
   .get(getMedicalEventHistoryController);
+medicalEventRouter.route("/medical-event/get-medical-event-history-evolution");
 medicalEventRouter
   .route("/medical-event/get-medical-event-detail")
   .get(getMedicalEventDetailController);
@@ -434,7 +448,7 @@ drugPrescriptionRouter
 drugPrescriptionRouter
   .route("/drug-prescription/search")
   .get(searchDrugsController);
-  
+
 //* medical Procedure Prescription
 procedurePrescriptionRouter
   .route("/procedure/create-procedure-prescription")
@@ -548,6 +562,16 @@ getAllNotificationsPhysicianRouter.get(
 );
 notificationsRouter.patch("/notification-seen", patchNotificationsController);
 
+//* Medical History
+medicalHistoryRouter.get("/consultation", getConsultationController);
+medicalHistoryRouter.get("/patient-detail", getNewPatientDetailsController);
+
+medicalHistoryRouter.get(
+  "/evolution",
+  getMedicalEventHistoryEvolutionController
+);
+medicalHistoryRouter.get("/anamnesis", getAnamnesisCtrl);
+
 export {
   getPatientsRouter,
   patientRouter,
@@ -577,7 +601,7 @@ export {
   getAllNotificationsPatienRouter,
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
-  // centerAttRouter,
   interconsultationRouter,
   interconsultationDetailsRouter,
+  medicalHistoryRouter,
 };
