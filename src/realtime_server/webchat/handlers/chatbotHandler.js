@@ -25,6 +25,14 @@ export const registerChatbotHandler = (io, socket) => {
       chatbot.resetMessageCount();
     }, 15000);
   };
+  // Enviar informacion de un paciente
+  const sendPatientInfo = async (payload) => {
+    console.log("llego", payload);
+
+    const { message } = payload;
+    const chatbot = getOrCreateChatbot(socket.decoded);
+    chatbot.sendPatientInfo(message);
+  };
 
   const destroyChatbot = async () => {
     removeChatbot(socket.decoded);
@@ -34,4 +42,5 @@ export const registerChatbotHandler = (io, socket) => {
   socket.on(ServerListenners.createChatBot, createChatbot);
   socket.on(ServerListenners.destroyChatBot, destroyChatbot);
   socket.on(ServerListenners.resetMessageCount, resetMessageCount);
+  socket.on(ServerListenners.sendPatientInfo, sendPatientInfo);
 };

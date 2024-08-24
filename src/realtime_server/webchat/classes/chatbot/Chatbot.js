@@ -135,11 +135,11 @@ ${formatCategory("Médico-Paciente", data.medico_paciente)}`;
     }
   }
 
-  async handleMessage(message) {
+  async handleMessage(message, countMessage = true) {
     if (!this.chat) {
       await this.startChat();
     }
-    if (this.messageCount >= this.messageLimit) {
+    if (this.messageCount >= this.messageLimit && countMessage) {
       return "Has alcanzado el límite de mensajes. Por favor, intenta nuevamente en unos segundos.";
     }
     try {
@@ -147,7 +147,10 @@ ${formatCategory("Médico-Paciente", data.medico_paciente)}`;
 
       const result = await this.chat.sendMessage(messageToSend);
 
-      this.messageCount++;
+      if (countMessage) {
+        this.messageCount++;
+      }
+
       const response = result.response.text();
       return response;
     } catch (error) {
@@ -168,9 +171,16 @@ ${formatCategory("Médico-Paciente", data.medico_paciente)}`;
     }
   }
   //Paciente
-  async getClinicalHistory() {
+  async getClinicalHistory(id) {
     try {
-      const result = await getMedicalEventHistoryHandler(this.user.userId);
+      let userId;
+      if (id) {
+        userId = id;
+      } else {
+        userId = this.user.userId;
+      }
+
+      const result = await getMedicalEventHistoryHandler(id);
       return `El historial clínico del paciente es:\n${JSON.stringify(result)}`;
     } catch (error) {
       console.error("Error fetching clinical history:", error);
@@ -215,6 +225,24 @@ ${formatCategory("Médico-Paciente", data.medico_paciente)}`;
   //resetear contador de mensajes
   async resetMessageCount() {
     this.messageCount = 0;
+  }
+  async sendPatientInfo(id) {
+    try {
+      console.log(id);
+      const patientDetails = await getPatientDetailsHandler(id);
+      const patientHistory = await this.getClinicalHistory(id);
+      const patientInfo = `Enfoca tu atencion y sigueintes preguntas en esta informacion que te dare sobre un paciente:${JSON.stringify(
+        patientDetails
+      )}
+        ${patientHistory}`;
+
+      // Enviamos la informacion del pacietne sin contar el mensaje en intentos
+      const response = await this.handleMessage(patientInfo, false);
+      console.log(patientHistory, patientDetails);
+    } catch (error) {
+      console.log(error);
+      return "No se pudo obtener la información del paciente.";
+    }
   }
 }
 
