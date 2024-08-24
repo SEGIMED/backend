@@ -1451,6 +1451,16 @@ SelfEvaluationEvent.belongsTo(User, {
   as: "patientUser",
 });
 
+SelfEvaluationEvent.hasOne(PatientPainMap, {
+  foreignKey: "selfEvaluationEvent",
+  as: "patientPainMap",
+});
+
+PatientPainMap.belongsTo(SelfEvaluationEvent, {
+  foreignKey: "selfEvaluationEvent",
+  as: "selfEvaluation",
+});
+
 const models = {
   AnthropometricDetails,
   AppointmentScheduling,
