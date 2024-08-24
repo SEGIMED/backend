@@ -8,6 +8,7 @@ const getOrdersByIdHandlersPhysician = async (orderId) => {
       where: {
         id: orderId,
       },
+      exclude: ["prescription_modifications_hist_id"],
       include: [
         {
           model: models.User,
@@ -33,6 +34,7 @@ const getOrdersByIdHandlersPhysician = async (orderId) => {
               model: models.PrescriptionModificationsHistory,
               as: "medicationPrescription",
               attributes: [
+                "id",
                 "modificationTimestamp",
                 "observations",
                 "indications",

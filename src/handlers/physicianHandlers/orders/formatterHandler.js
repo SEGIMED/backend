@@ -5,7 +5,6 @@ export const formatterHandler = (array) => {
       physicianId,
       orderTypes,
       medicalPrescriptionId,
-      prescription_modifications_hist_id,
       indications,
       diagnostic,
       additionalText,
@@ -25,7 +24,6 @@ export const formatterHandler = (array) => {
         physicianId,
         orderTypes,
         medicalPrescriptionId,
-        prescription_modifications_hist_id,
         indications,
         diagnostic,
         additionalText,
@@ -36,6 +34,7 @@ export const formatterHandler = (array) => {
         startTimestamp,
         prescriptionModifications: prescriptionModifications.map(
           (modification) => ({
+            modificacionId: modification.id,
             modificationTimestamp: modification.modificationTimestamp,
             observations: modification.observations,
             indications: modification.indications,
