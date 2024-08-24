@@ -115,6 +115,15 @@ const model = (sequelize) => {
         field: "is_there_pain",
         default: true,
       },
+      selfEvaluationEvent: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        field: "self_evaluation_event",
+        references: {
+          model: "self_evaluation_event",
+          key: "id",
+        },
+      },
     },
     {
       sequelize,
