@@ -6,6 +6,24 @@ import { mapProcedurePrescription } from "../patient/procedurePrescriptionMapper
 import { mapAnthropometricDetail } from "../patient/anthropometricDetailsMapper.js";
 import { mapVitalSign } from "../patient/vitalSignsMapper.js";
 
+export const mapMedicalEventEvolution = (medicalEvent) => {
+  return {
+    timestamp: medicalEvent.appSch?.scheduledStartTimestamp, //
+    chiefComplaint: medicalEvent.appSch?.reasonForConsultation,
+    physician: {
+      id: medicalEvent.appSch?.physicianThatAttend?.id,
+      name: medicalEvent.appSch?.physicianThatAttend?.name,
+      lastname: medicalEvent.appSch?.physicianThatAttend?.lastname,
+    },
+    attendancePlace: {
+      id: medicalEvent?.appSch?.attendancePlace?.id,
+      alias: medicalEvent?.appSch?.attendancePlace?.alias,
+    },
+    physicianComments: medicalEvent?.medicalOpinion || "",
+    historyOfPresentIllness: medicalEvent?.historyOfPresentIllness,
+  };
+};
+
 export const mapMedicalEvent = (medicalEvent) => {
   const painMapArray = (medicalEvent?.patientPainMaps ?? [])
     .concat(medicalEvent?.appSch?.patientPainMaps ?? [])

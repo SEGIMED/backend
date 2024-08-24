@@ -96,6 +96,7 @@ import PatiendMedReqModel from "./models/PatientMedicalReq.js";
 import PhysicianOrdersModel from "./models/PhysicianOrders.js";
 import CatStudyTypeModel from "./models/CatStudyType.js";
 import PatientStudiesModel from "./models/PatientStudies.js";
+import SelfEvaluationEventModel from "./models/SelfEvaluationEvent.js";
 
 // import
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
@@ -225,6 +226,7 @@ PatiendMedReqModel(sequelize);
 PhysicianOrdersModel(sequelize);
 CatStudyTypeModel(sequelize);
 PatientStudiesModel(sequelize);
+SelfEvaluationEventModel(sequelize);
 
 export const {
   DiagnosticTest,
@@ -322,6 +324,7 @@ export const {
   PhysicianOrders,
   CatStudyType,
   PatientStudies,
+  SelfEvaluationEvent,
 } = sequelize.models;
 
 DiagnosticTest.belongsTo(AppointmentScheduling, {
@@ -1429,16 +1432,24 @@ MedicationPrescription.hasOne(PhysicianOrders, {
   foreignKey: "medicalOrderId",
   as: "physicianOrdersMedication",
 });
+// SelEvaluation
+User.hasMany(SelfEvaluationEvent, {
+  foreignKey: "patient",
+  as: "selfEvaluations",
+});
 
 PhysicianOrders.belongsTo(PrescriptionModificationsHistory, {
   foreignKey: "medicalOrderId",
-  as:"medicationHistory"
-})
+  as: "medicationHistory",
+});
 PrescriptionModificationsHistory.hasOne(PhysicianOrders, {
   foreignKey: "medicalOrderId",
-  as:"medicalOrder"
-})
-
+  as: "medicalOrder",
+});
+SelfEvaluationEvent.belongsTo(User, {
+  foreignKey: "patient",
+  as: "patientUser",
+});
 
 const models = {
   AnthropometricDetails,
@@ -1535,6 +1546,7 @@ const models = {
   AttendentPlace,
   CatStudyType,
   PatientStudies,
+  SelfEvaluationEvent,
 };
 
 export default models;

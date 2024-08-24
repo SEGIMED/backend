@@ -87,6 +87,7 @@ import updateHeartFailureClassificationController from "../controllers/patient/p
 import updateCardiovascularRiskController from "../controllers/patient/patientRisk/updateCardiovascularRiskController.js";
 import updateFullPatientController from "../controllers/patient/updateFullPatientController.js";
 import getMedicalEventHistoryController from "../controllers/medicalEvent/getMedicalEventHistoryController.js";
+import getMedicalEventHistoryEvolutionController from "../controllers/medicalHistory/getMedicalEventHistoryEvolution.js";
 import getMedicalEventDetailController from "../controllers/medicalEvent/getMedicalEventDetailController.js";
 import createBackgroundsController from "../controllers/backgrounds/createBackgroundsController.js";
 import updateBackgroundsController from "../controllers/backgrounds/updatebackgroundsController.js";
@@ -384,6 +385,7 @@ medicalEventRouter
 medicalEventRouter
   .route("/medical-event/get-medical-event-history")
   .get(getMedicalEventHistoryController);
+medicalEventRouter.route("/medical-event/get-medical-event-history-evolution");
 medicalEventRouter
   .route("/medical-event/get-medical-event-detail")
   .get(getMedicalEventDetailController);
@@ -563,6 +565,11 @@ notificationsRouter.patch("/notification-seen", patchNotificationsController);
 //* Medical History
 medicalHistoryRouter.get("/consultation", getConsultationController);
 medicalHistoryRouter.get("/patient-detail", getNewPatientDetailsController);
+
+medicalHistoryRouter.get(
+  "/evolution",
+  getMedicalEventHistoryEvolutionController
+);
 medicalHistoryRouter.get("/anamnesis", getAnamnesisCtrl);
 
 export {
