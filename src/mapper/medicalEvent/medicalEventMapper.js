@@ -38,8 +38,8 @@ export const mapMedicalEvent = (medicalEvent) => {
 
     // grupo HTP hipertensión pulmonar
     patientHpGroups:{
-      group: medicalEvent.appSch.patientUser.userHpGroups.catHpGroup.name,
-      timestamp: medicalEvent.appSch.patientUser.userHpGroups.timestamp
+      group: medicalEvent.appSch.patientUser?.userHpGroups?.catHpGroup?.name,
+      timestamp: medicalEvent.appSch.patientUser?.userHpGroups?.timestamp
     },
     /// especialidad médica
     medicalSpecialty: medicalEvent.appSch.specialty.name,
