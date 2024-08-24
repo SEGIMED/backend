@@ -8,7 +8,9 @@ const getFilesController = async (req, res) => {
 
     return res.status(200).json(files);
   } catch (error) {
-    throw new Error(`Hubo un error al recuperar los archivos: ${error}`);
+    return res
+      .status(500)
+      .send(`Hubo un error al recuperar los archivos: ${error}`);
   }
 };
 
