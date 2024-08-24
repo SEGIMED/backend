@@ -62,7 +62,7 @@ export async function loadStudiesInterconsultation(
     for (let i = 0; i < files.length; i++) {
       const data = files[i];
       const uploadPromise = loadFile(data)
-        .then((result) => resultURLs.push(result.url))
+        .then((result) => resultURLs.push(result.secure_url))
         .catch((error) => {
           failedUploads.push("File " + (i + 1) + " " + error.message);
         });
