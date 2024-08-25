@@ -8,7 +8,6 @@ const getOrdersByIdHandlersPhysician = async (orderId) => {
       where: {
         id: orderId,
       },
-      exclude: ["prescription_modifications_hist_id"],
       include: [
         {
           model: models.User,
@@ -68,7 +67,7 @@ const getOrdersByIdHandlersPhysician = async (orderId) => {
     const responseMapping = formatterHandler(orders);
     return responseMapping[0];
   } catch (error) {
-    throw new SegimedAPIError(500, error.message);
+    throw new SegimedAPIError(error);
   }
 };
 

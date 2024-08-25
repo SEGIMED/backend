@@ -40,7 +40,7 @@ const createDrugPrescriptionHandler = async (body, transaction) => {
         {
           medicationPrescriptionId: newPrescription.id,
           physicianId: contextService.get("request:user").userId,
-          modificationTimestamp: moment().tz(TZ).toISOString(),
+          modificationTimestamp: moment().tz(TZ).format(),
           medicalEventId: medicalEventId ?? null,
           medicalOrderId: medicalOrderId ?? null,
           observations,

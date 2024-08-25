@@ -1433,9 +1433,8 @@ PhysicianOrders.belongsTo(PatientMedicalReq, {
   as: "medicalReq",
   foreignKey: "requestPatientId",
 });
-
-PhysicianOrders.belongsTo(MedicationPrescription, {
-  foreignKey: "medicalPrescriptionId",
+PhysicianOrders.hasMany(MedicationPrescription, {
+  foreignKey: "medicalOrderId",
   as: "medicationPrescription",
 });
 MedicationPrescription.belongsTo(PhysicianOrders, {
@@ -1448,10 +1447,6 @@ User.hasMany(SelfEvaluationEvent, {
   as: "selfEvaluations",
 });
 
-PhysicianOrders.belongsTo(PrescriptionModificationsHistory, {
-  foreignKey: "prescription_modifications_hist_id",
-  as: "medicationHistory",
-});
 PrescriptionModificationsHistory.belongsTo(PhysicianOrders, {
   foreignKey: "medicalOrderId",
   as: "medicalOrder",
