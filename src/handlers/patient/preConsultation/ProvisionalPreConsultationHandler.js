@@ -64,15 +64,16 @@ const createPreConsultationHandler = async (body) => {
     laboratoryResults,
   };
 
-  await Promise.all(Object.keys(studies).map(async studio => {
-    if (studies[studio]) {
-      // let parsetStudy = JSON.parse(studies[studio]);
-      const file = await loadFile(studies[studio]);
-      studies = { ...studies, [studio]: file?.url }
-      return;
-    }
-  }));
-  
+  await Promise.all(
+    Object.keys(studies).map(async (studio) => {
+      if (studies[studio]) {
+        // let parsetStudy = JSON.parse(studies[studio]);
+        const file = await loadFile(studies[studio]);
+        studies = { ...studies, [studio]: file?.url };
+        return;
+      }
+    })
+  );
 
   try {
     const PreConsultation = await ProvisionalPreConsultation.create({

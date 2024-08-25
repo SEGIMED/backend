@@ -64,10 +64,9 @@ export const validateSelfEvaluation = async (
     throw new Error("El campo 'painAreas' debe ser un array.");
   }
 
-  if (isTakingAnalgesic && !doesAnalgesicWorks ) {
+  if (isTakingAnalgesic && !doesAnalgesicWorks) {
     throw new Error(
       "El campo 'doesAnalgesicWorks' debe especificarse cuando 'isTakingAnalgesic' es verdadero."
     );
   }
-
 };

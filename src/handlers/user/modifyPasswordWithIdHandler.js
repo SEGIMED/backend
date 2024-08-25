@@ -21,25 +21,28 @@ const modifyPasswordWithIdHandler = async (body) => {
         "Este usuario no se encuentra registrado"
       );
 
-
-    if(databaseUser.verified === false){
-    const hashedPassword = await bcrypt.hash(userPassword, 12);
-    databaseUser = await User.update(
-      {
-        password: hashedPassword,
-        cellphone: cellphone,
-        //TODO send a text message with link to verify or auto-fill when text message arrives
-        verified: true,
-      },
-      { where: { idNumber: idNumber } }
+    if (databaseUser.verified === false) {
+      const hashedPassword = await bcrypt.hash(userPassword, 12);
+      databaseUser = await User.update(
+        {
+          password: hashedPassword,
+          cellphone: cellphone,
+          //TODO send a text message with link to verify or auto-fill when text message arrives
+          verified: true,
+        },
+        { where: { idNumber: idNumber } }
+      );
+      return databaseUser;
+    }
+    throw new Error(
+      "No es posible cambiar la contraseña. La cuenta ya ha sido verificada"
     );
-    return databaseUser;
-}
-    throw new Error ("No es posible cambiar la contraseña. La cuenta ya ha sido verificada")
-
   } catch (error) {
     console.error(error);
-    throw new SegimedAPIError("Hubo un error procesando la solicitud :" + error.message, 500);
+    throw new SegimedAPIError(
+      "Hubo un error procesando la solicitud :" + error.message,
+      500
+    );
   }
 };
 
@@ -50,4 +53,3 @@ async function inputValidation(body) {
 }
 
 export default modifyPasswordWithIdHandler;
-

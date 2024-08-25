@@ -1,6 +1,10 @@
 import { AlarmEvent } from "../../databaseConfig.js";
 import { mapquestionsPriority } from "../../mapper/alarmEvent/alarmEventMapper.js";
-import { User, CatPulmonaryHypertensionGroup, PatientPulmonaryHypertensionGroup } from "../../databaseConfig.js";
+import {
+  User,
+  CatPulmonaryHypertensionGroup,
+  PatientPulmonaryHypertensionGroup,
+} from "../../databaseConfig.js";
 
 const getAlarmByIdHandler = async (alarmId) => {
   try {
@@ -8,23 +12,25 @@ const getAlarmByIdHandler = async (alarmId) => {
       include: [
         {
           model: User,
-          as: 'AlarmForPatient',
-          attributes: { exclude: ['password'] },
-          include: [{
-            model: PatientPulmonaryHypertensionGroup,
-            as: 'userHpGroups',
-            include: {
-              model: CatPulmonaryHypertensionGroup,
-              as: 'catHpGroup',
-              attributes: ['name']
-            }
-          }]
-        }
-      ]
+          as: "AlarmForPatient",
+          attributes: { exclude: ["password"] },
+          include: [
+            {
+              model: PatientPulmonaryHypertensionGroup,
+              as: "userHpGroups",
+              include: {
+                model: CatPulmonaryHypertensionGroup,
+                as: "catHpGroup",
+                attributes: ["name"],
+              },
+            },
+          ],
+        },
+      ],
     });
 
     if (!alarm) {
-      throw new Error('Alarma no encontrada');
+      throw new Error("Alarma no encontrada");
     }
 
     return {
@@ -37,7 +43,7 @@ const getAlarmByIdHandler = async (alarmId) => {
       name: alarm.AlarmForPatient ? alarm.AlarmForPatient.name : null,
       lastname: alarm.AlarmForPatient ? alarm.AlarmForPatient.lastname : null,
       HTP: alarm.AlarmForPatient?.userHpGroups,
-      questionsPriority: mapquestionsPriority(alarm.questionsPriority)
+      questionsPriority: mapquestionsPriority(alarm.questionsPriority),
     };
   } catch (error) {
     throw new Error("Ha habido un error al cargar la alarma: " + error.message);

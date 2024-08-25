@@ -25,7 +25,7 @@ const getFilesHandler = async (userId, studyType, limit, page) => {
     });
 
     if (limit && page) {
-      const pagination = universalPaginationHandler( files, page, limit);
+      const pagination = universalPaginationHandler(files, page, limit);
       return pagination;
     }
 

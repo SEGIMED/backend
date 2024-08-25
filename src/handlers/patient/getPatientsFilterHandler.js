@@ -2,7 +2,6 @@ import models from "../../databaseConfig.js";
 import { Op } from "sequelize";
 
 const getPatientsFilterHandler = async (filters) => {
-
   try {
     const validFilterTypes = [
       "id",
@@ -11,7 +10,7 @@ const getPatientsFilterHandler = async (filters) => {
       "name",
       "lastname",
       "role",
-      "email"
+      "email",
     ];
 
     const invalidFilterTypes = filters.filter(
@@ -36,28 +35,25 @@ const getPatientsFilterHandler = async (filters) => {
 
       if (key === "name" || key === "lastname") {
         whereClause["role"] = 3;
-        whereClause[key] = {[Op.iLike]: `%${value}%` };
+        whereClause[key] = { [Op.iLike]: `%${value}%` };
       } else if (key === "idNumber") {
-        whereClause["role"] = 3
-        whereClause[key] = {[Op.iLike]: `${value}` };
-      } else if (key === "email"){
-        whereClause[key] = {[Op.iLike]: `${value}`};
+        whereClause["role"] = 3;
+        whereClause[key] = { [Op.iLike]: `${value}` };
+      } else if (key === "email") {
+        whereClause[key] = { [Op.iLike]: `${value}` };
       } else {
         whereClause[key] = value;
       }
     });
 
-    const filteredPatients = await models.User.findAll(
-      {
-        where: whereClause,
-        attributes: {
-            exclude: ["password", "cellphone"],
-          },
-        
+    const filteredPatients = await models.User.findAll({
+      where: whereClause,
+      attributes: {
+        exclude: ["password", "cellphone"],
       },
-    );
+    });
 
-    if (filteredPatients.length ===0)
+    if (filteredPatients.length === 0)
       throw new Error("No patients were found in the search");
 
     return filteredPatients;

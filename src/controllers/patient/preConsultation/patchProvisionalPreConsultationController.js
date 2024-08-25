@@ -1,5 +1,5 @@
 import patchProvisionalPreConsultationHandler from "../../../handlers/patient/preConsultation/patchProvisionalPreConsultationHandler.js";
-import updateVitalSignsHandler from "../../../handlers/vitalSigns/updateVitalSignsHandler.js";
+import updateVitalSignsHandler from "../../../handlers/medicalHistory/updateVitalSignsHandler.js";
 import patchPatientPainMapHandler from "../../../handlers/painMap/patchPatientPainMapHandler.js";
 import SegimedAPIError from "../../../error/SegimedAPIError.js";
 import { MedicalEvent, sequelize } from "../../../databaseConfig.js";

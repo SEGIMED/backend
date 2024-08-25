@@ -54,7 +54,7 @@ const getPhysicianFavoritePatientHandler = async (
                     : {}), //filtro de riesgo, si quisiera hacerlo sin paginado, repetir queryopt y pasar propiedad
                 },
               },
-            ], 
+            ],
           },
         ],
         distinct: true,

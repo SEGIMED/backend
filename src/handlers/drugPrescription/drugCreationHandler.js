@@ -19,7 +19,7 @@ const drugCreationHandler = async (body, transaction) => {
       },
       transaction,
     });
-    
+
     const [drug, drugCreated] = drugResult;
 
     if (!Array.isArray(drugResult) || drugResult.length !== 2) {
@@ -27,11 +27,12 @@ const drugCreationHandler = async (body, transaction) => {
     }
 
     //Se busca si existe o no el nombre comercial, si no existe se crea
-    const commercialDrugResult = await models.CatCommercialNameDrug.findOrCreate({
-      where: { name: commercialDrugName, drugId: drug.id },
-      defaults: { name: commercialDrugName, drugId: drug.id },
-      transaction,
-    });
+    const commercialDrugResult =
+      await models.CatCommercialNameDrug.findOrCreate({
+        where: { name: commercialDrugName, drugId: drug.id },
+        defaults: { name: commercialDrugName, drugId: drug.id },
+        transaction,
+      });
     if (
       !Array.isArray(commercialDrugResult) ||
       commercialDrugResult.length !== 2
@@ -67,7 +68,7 @@ const drugCreationHandler = async (body, transaction) => {
     const [drugDetailPresentation, drugDetailCreated] =
       drugDetailPresentationResult;
 
-    drugDetailPresentation.commercialNameDrugId  = commercialDrugResult[0].id
+    drugDetailPresentation.commercialNameDrugId = commercialDrugResult[0].id;
 
     return drugDetailPresentation;
   } catch (error) {

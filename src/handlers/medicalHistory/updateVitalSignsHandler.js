@@ -3,8 +3,8 @@ import SegimedAPIError from "../../error/SegimedAPIError.js";
 import moment from "moment-timezone";
 import contextService from "request-context";
 
-const updateOrCreateVitalSignsHandler = async (body,{transaction}) => {
-  const { updateVitalSigns, patient, appointmentSchedule, medicalEvent} = body;
+const updateOrCreateVitalSignsHandler = async (body, { transaction }) => {
+  const { updateVitalSigns, patient, appointmentSchedule, medicalEvent } = body;
 
   try {
     //Validación. Si se envía el objeto updateVitalSigns pero es diferente a un array, retorna error
@@ -14,12 +14,11 @@ const updateOrCreateVitalSignsHandler = async (body,{transaction}) => {
         400
       );
     }
-    
+
     //Validación. Si no vienen signos vitales para actualizar, se retorna []
     if (updateVitalSigns?.length !== 0 && updateVitalSigns) {
       const updatedOrCreatedVitalSigns = await Promise.all(
         updateVitalSigns.map(async (vitalSign) => {
-          
           //Verificación de signos vitales en null
           if (vitalSign.measure == null) {
             return;
@@ -30,8 +29,8 @@ const updateOrCreateVitalSignsHandler = async (body,{transaction}) => {
               measureType: vitalSign.measureType,
               scheduling: appointmentSchedule,
             },
-            transaction
-      });
+            transaction,
+          });
 
           if (existingVitalSign) {
             // Si existe, actualizarlo
@@ -41,30 +40,34 @@ const updateOrCreateVitalSignsHandler = async (body,{transaction}) => {
                   measure: vitalSign.measure,
                   measureSource: contextService.get("request:user").userId,
                   measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-                  medicalEvent: medicalEvent?.id??existingVitalSign.medicalEvent
+                  medicalEvent:
+                    medicalEvent?.id ?? existingVitalSign.medicalEvent,
                 },
                 {
                   where: {
                     id: existingVitalSign.id,
                   },
                   returning: true,
-                  transaction
+                  transaction,
                 }
               );
             return updatedVitalSign;
           } else {
             // Si no existe, crearlo
-            const newVitalSign = await VitalSignDetails.create({
-              patient: patient,
-              measure: vitalSign.measure,
-              measureSource: contextService.get("request:user").userId,
-              measureType: vitalSign.measureType,
-              measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-              scheduling: appointmentSchedule,
-              medicalEvent: medicalEvent.id,
-            },{
-              transaction
-            });
+            const newVitalSign = await VitalSignDetails.create(
+              {
+                patient: patient,
+                measure: vitalSign.measure,
+                measureSource: contextService.get("request:user").userId,
+                measureType: vitalSign.measureType,
+                measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
+                scheduling: appointmentSchedule,
+                medicalEvent: medicalEvent.id,
+              },
+              {
+                transaction,
+              }
+            );
             return newVitalSign;
           }
         })
@@ -79,7 +82,8 @@ const updateOrCreateVitalSignsHandler = async (body,{transaction}) => {
     }
   } catch (error) {
     throw new SegimedAPIError(
-      "Hubo un error durante el proceso de actualización o creación de signos vitales: " + error.message,
+      "Hubo un error durante el proceso de actualización o creación de signos vitales: " +
+        error.message,
       500
     );
   }

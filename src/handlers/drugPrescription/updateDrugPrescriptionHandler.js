@@ -47,7 +47,7 @@ const updateDrugPrescriptionHandler = async (body) => {
         physicianId: contextService.get("request:user").userId,
         modificationTimestamp: moment().tz(TZ).toISOString(),
         medicalEventId: medicalEventId ?? null,
-        medicalOrderId: medicalOrderId ?? null ,
+        medicalOrderId: medicalOrderId ?? null,
         observations,
         indications,
         doseMeasure,

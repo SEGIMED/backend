@@ -1,16 +1,16 @@
-import updateVitalSignsHandler from "../../handlers/vitalSigns/updateVitalSignsHandler.js";
-
+import updateVitalSignsHandler from "../../handlers/medicalHistory/updateVitalSignsHandler.js";
 
 const updateVitalSignsController = async (req, res) => {
-    try {
-        const updateVitalSigns = req.body;
-  
-        const vitalSign = await updateVitalSignsHandler(updateVitalSigns.vitalSignsToUpdate);
-        return res.status(200).json(vitalSign);
+  try {
+    const updateVitalSigns = req.body;
 
-    } catch (error) {
-        return res.status(500).json({error: error.message});
-    }
-}
+    const vitalSign = await updateVitalSignsHandler(
+      updateVitalSigns.vitalSignsToUpdate
+    );
+    return res.status(200).json(vitalSign);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
 
 export default updateVitalSignsController;

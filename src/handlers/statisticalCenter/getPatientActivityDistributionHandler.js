@@ -47,4 +47,3 @@ const getPatientActivityDistributionHandler = async (physicianId) => {
 };
 
 export default getPatientActivityDistributionHandler;
-

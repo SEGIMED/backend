@@ -128,7 +128,8 @@ import getAnamnesisCtrl from "../controllers/medicalHistory/Anamnesis/getAnamnes
 import getConsultationController from "../controllers/medicalHistory/getConsultationsController.js";
 import getNewPatientDetailsController from "../controllers/medicalHistory/getNewPatientDetailsController.js";
 import physicalSelfEvaluationController from "../controllers/painMap/physicalSelfEvaluationController.js";
-
+import getVitalSignsController from "../controllers/medicalHistory/getVitalSignsController.js";
+import getVitalSignsDetailController from "../controllers/medicalHistory/getVitalSignsdetailController.js";
 const patientRouter = Router();
 const userRouter = Router();
 const getPatientsRouter = Router();
@@ -572,7 +573,8 @@ medicalHistoryRouter.get(
   getMedicalEventHistoryEvolutionController
 );
 medicalHistoryRouter.get("/anamnesis", getAnamnesisCtrl);
-
+medicalHistoryRouter.get("/vital-signs", getVitalSignsController);
+medicalHistoryRouter.get("/vital-signs-detail", getVitalSignsDetailController);
 
 //* Self Evaluation
 selfEvaluationEventRouter.post("/pain-map", physicalSelfEvaluationController);

@@ -39,7 +39,7 @@ const createDrugPrescriptionController = async (req, res) => {
     await transaction.commit();
     return res.status(201).json({ message: "Prescripción creada con éxito" });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     if (transaction) {
       await transaction.rollback();
     }

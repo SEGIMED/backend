@@ -31,42 +31,42 @@ const validateSchedule = async (physicianId, startTimestamp, endTimestamp) => {
     );
   }
 
-    // Validar que el horario del médico no esté ocupado
-    const overlappingSchedules = await AppointmentScheduling.findAll({
-        where: {
-            physician: physicianId,
-            [Op.or]: [
-                {
-                    // CASO 1: Nueva cita comienza antes de que termine una cita existente y termina después de que comience la cita existente
-                    [Op.and]: [
-                        { scheduledStartTimestamp: { [Op.lt]: end.toISOString() } },
-                        { scheduledEndTimestamp: { [Op.gt]: start.toISOString() } }
-                    ]
-                },
-                {
-                    // CASO 2: Nueva cita comienza durante una cita existente y termina después de que termine la cita existente
-                    [Op.and]: [
-                        { scheduledStartTimestamp: { [Op.lt]: end.toISOString() } },
-                        { scheduledStartTimestamp: { [Op.gt]: start.toISOString() } }
-                    ]
-                },
-                {
-                    // CASO 3: Nueva cita comienza antes de que comience una cita existente y termina durante la cita existente
-                    [Op.and]: [
-                        { scheduledEndTimestamp: { [Op.gt]: start.toISOString() } },
-                        { scheduledEndTimestamp: { [Op.lt]: end.toISOString() } }
-                    ]
-                },
-                {
-                    // CASO 4 : Nueva cita abarca completamente una cita existente
-                    [Op.and]: [
-                        { scheduledStartTimestamp: { [Op.gte]: start.toISOString() } },
-                        { scheduledEndTimestamp: { [Op.lte]: end.toISOString() } }
-                    ]
-                }
-            ]
-        }
-    });
+  // Validar que el horario del médico no esté ocupado
+  const overlappingSchedules = await AppointmentScheduling.findAll({
+    where: {
+      physician: physicianId,
+      [Op.or]: [
+        {
+          // CASO 1: Nueva cita comienza antes de que termine una cita existente y termina después de que comience la cita existente
+          [Op.and]: [
+            { scheduledStartTimestamp: { [Op.lt]: end.toISOString() } },
+            { scheduledEndTimestamp: { [Op.gt]: start.toISOString() } },
+          ],
+        },
+        {
+          // CASO 2: Nueva cita comienza durante una cita existente y termina después de que termine la cita existente
+          [Op.and]: [
+            { scheduledStartTimestamp: { [Op.lt]: end.toISOString() } },
+            { scheduledStartTimestamp: { [Op.gt]: start.toISOString() } },
+          ],
+        },
+        {
+          // CASO 3: Nueva cita comienza antes de que comience una cita existente y termina durante la cita existente
+          [Op.and]: [
+            { scheduledEndTimestamp: { [Op.gt]: start.toISOString() } },
+            { scheduledEndTimestamp: { [Op.lt]: end.toISOString() } },
+          ],
+        },
+        {
+          // CASO 4 : Nueva cita abarca completamente una cita existente
+          [Op.and]: [
+            { scheduledStartTimestamp: { [Op.gte]: start.toISOString() } },
+            { scheduledEndTimestamp: { [Op.lte]: end.toISOString() } },
+          ],
+        },
+      ],
+    },
+  });
 
   if (overlappingSchedules.length > 0) {
     throw new SegimedAPIError(

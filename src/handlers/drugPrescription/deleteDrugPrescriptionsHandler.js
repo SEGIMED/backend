@@ -8,7 +8,10 @@ const deleteDrugPrescriptionsHandler = async (id, deactivate) => {
     );
 
     if (!medicationPrescription) {
-      throw new SegimedAPIError("No se encontró la prescripción indicada.", 500);
+      throw new SegimedAPIError(
+        "No se encontró la prescripción indicada.",
+        500
+      );
     }
 
     if (medicationPrescription.deleted) {
@@ -32,7 +35,10 @@ const deleteDrugPrescriptionsHandler = async (id, deactivate) => {
       });
     }
   } catch (error) {
-    throw new SegimedAPIError(`Hubo un error al eliminar la prescripción: ${error.message}`, 500);
+    throw new SegimedAPIError(
+      `Hubo un error al eliminar la prescripción: ${error.message}`,
+      500
+    );
   }
 };
 

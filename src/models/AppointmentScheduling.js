@@ -95,6 +95,15 @@ const model = (sequelize) => {
         },
         field: "health_center",
       },
+      // healthCenter: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: true,
+      //   references: {
+      //     model: "cat_center_attention",
+      //     key: "id",
+      //   },
+      //   field: "health_center",
+      // },
     },
     {
       tableName: "appointment_scheduling",
