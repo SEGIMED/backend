@@ -6,8 +6,6 @@ import SegimedAPIError from "../../../error/SegimedAPIError.js";
 
 const createMedicamentInOrderCtrl = async (body, newOrderId, transaccion) => {
   try {
-    validateDrugPrescriptionInput(body[0]);
-    validateDrugCreationData(body[0].drugCreation);
     const response = await Promise.all(
       body.map(
         async ({
@@ -15,6 +13,8 @@ const createMedicamentInOrderCtrl = async (body, newOrderId, transaccion) => {
           drugCreation,
           prescriptionCreation,
         }) => {
+          validateDrugPrescriptionInput(body[0]);
+          validateDrugCreationData(body[0].drugCreation);
           prescriptionCreation.medicalOrderId = newOrderId;
           let drugDetailId = drugDetailPresentationId;
           let commercialNameId = drugCreation.commercialDrugName;
