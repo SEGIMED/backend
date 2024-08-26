@@ -23,7 +23,8 @@ const getPhysicianOrderById = async (req, res) => {
     const orders = await getOrderByIdPhysician("patientId", userId);
     res.status(200).json(orders);
   } catch (error) {
-    res.status(500).json(error.message);
+    console.error(error);
+    res.status(500).json({ error: error.message });
   }
 };
 
