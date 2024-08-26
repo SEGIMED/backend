@@ -13,7 +13,9 @@ const getConsultationController = async (req, res) => {
 
     return res.status(200).json(consultations);
   } catch (error) {
-    throw new Error("Hubo un error al recuperar las consultas: " + error);
+    return res
+      .status(500)
+      .send("Hubo un error al recuperar las consultas: " + error);
   }
 };
 
