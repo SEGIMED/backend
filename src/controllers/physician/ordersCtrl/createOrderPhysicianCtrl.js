@@ -1,31 +1,63 @@
 import createDrugPrescriptionHandler from "../../../handlers/drugPrescription/createDrugPrescriptionHandler.js";
 import createNewOrderHandler from "../../../handlers/physicianHandlers/orders/createNewOrderHandlers.js";
+import { sequelize } from "../../../databaseConfig.js";
+import validateDrugCreationData from "../../../validations/validateDrugCreation.js";
+import { validateDrugPrescriptionInput } from "../../../validations/validateDrugPrescriptionInput.js";
+import drugCreationHandler from "../../../handlers/drugPrescription/drugCreationHandler.js";
 
 const createOrderPhysicianCtrl = async (req, res) => {
+  const transaction = await sequelize.transaction();
   try {
+    validateDrugPrescriptionInput(req.body.bodyMedicam);
+    validateDrugCreationData(req.body.bodyMedicam.drugCreation);
     const { body } = req;
-    const { prescriptionCreation, drugDetailPresentationId, drugCreation } =
+    // invocamos el handler de la orden medica
+    const newOrder = await createNewOrderHandler(body, transaction);
+
+    // * destructuramos el objeto de los medicamentos
+    const { drugDetailPresentationId, drugCreation, prescriptionCreation } =
       body.bodyMedicam;
-    console.log(prescriptionCreation);
-    const newOrder = await createNewOrderHandler(body);
-    const { commercialDrugName } = drugCreation;
+
+    // asignamos a al objeto de la prescripcion medica el id de la orden medica
     prescriptionCreation.medicalOrderId = newOrder.id;
-    const newMedicalRegister = await createDrugPrescriptionHandler({
-      ...prescriptionCreation,
-      drugDetailPresentationId: drugDetailPresentationId,
-      commercialNameDrugId: commercialDrugName,
-    });
+
+    let drugDetailId = drugDetailPresentationId;
+    let commercialNameId = drugCreation.commercialDrugName;
+    if (!drugDetailId) {
+      const createdDrugDetail = await drugCreationHandler(
+        drugCreation,
+        transaction
+      );
+
+      drugDetailId = createdDrugDetail.id;
+      commercialNameId = createdDrugDetail.commercialNameDrugId;
+    }
+
+    const newPrescription = await createDrugPrescriptionHandler(
+      {
+        ...prescriptionCreation,
+        drugDetailPresentationId: drugDetailId,
+        commercialNameDrugId: commercialNameId,
+      },
+      transaction
+    );
+    // confirmamos la transaccion
+    await transaction.commit();
+
+    // creamos el objeto de respuesta
     const response = {
       newOrder,
-      newMedicalRegister,
+      newPrescription,
     };
-    res.status(200).json(response);
+
+    return res.status(201).json(response);
   } catch (error) {
-    res.status(500).json(error);
+    console.error(error);
+    if (transaction) {
+      await transaction.rollback();
+    }
+    res.status(500).json({ error: error.message });
   }
 };
-
-// se debe dividir el body para que una parte se mande en el medicamentos
-// y la otra en la orden medica
 
 export default createOrderPhysicianCtrl;
