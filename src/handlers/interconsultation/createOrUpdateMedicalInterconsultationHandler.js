@@ -116,9 +116,21 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
     }
 
     // Handle related files
-    const cloudinaryResults = await loadStudiesInterconsultation(data.files);
+    const cloudinaryResults = await loadStudiesInterconsultation(
+      data.files,
+      data.filesName
+    );
     const filesURL = cloudinaryResults.success;
 
+    if (
+      data.filesName.length !==
+      filesURL.length + cloudinaryResults.failed.length
+    ) {
+      throw new SegimedAPIError(
+        "Error al subir archivos, los nombres no coinciden con el número de archivos.",
+        404
+      );
+    }
     if (filesURL) {
       // Delete existing files if updating
       if (data.id) {
@@ -127,10 +139,13 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
         });
       }
       //Create new files
-      for (const fileURL of filesURL) {
+      for (let i = 0; i < filesURL.length; i++) {
+        const url = filesURL[i].url;
+        const name = filesURL[i].file;
         await MedicalInterconsultationFile.create({
           medicalInterconsultationId: interconsultation.id,
-          fileURL: fileURL,
+          fileURL: url,
+          fileName: name,
         });
       }
     }
