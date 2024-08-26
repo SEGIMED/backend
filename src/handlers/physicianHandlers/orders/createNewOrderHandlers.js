@@ -50,6 +50,7 @@ const createNewOrderHandler = async (body, transaccion) => {
     );
     return newEntry;
   } catch (error) {
+    console.error(error);
     throw new SegimedAPIError(
       "Error en la operación de registro: ",
       error.message

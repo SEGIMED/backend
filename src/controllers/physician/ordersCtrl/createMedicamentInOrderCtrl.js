@@ -4,7 +4,12 @@ import drugCreationHandler from "../../../handlers/drugPrescription/drugCreation
 import createDrugPrescriptionHandler from "../../../handlers/drugPrescription/createDrugPrescriptionHandler.js";
 import SegimedAPIError from "../../../error/SegimedAPIError.js";
 
-const createMedicamentInOrderCtrl = async (body, newOrderId, transaccion) => {
+const createMedicamentInOrderCtrl = async (
+  body,
+  patientId,
+  newOrderId,
+  transaccion
+) => {
   try {
     const response = await Promise.all(
       body.map(
@@ -13,9 +18,14 @@ const createMedicamentInOrderCtrl = async (body, newOrderId, transaccion) => {
           drugCreation,
           prescriptionCreation,
         }) => {
-          validateDrugPrescriptionInput(body[0]);
-          validateDrugCreationData(body[0].drugCreation);
+          validateDrugPrescriptionInput({
+            drugDetailPresentationId,
+            drugCreation,
+            prescriptionCreation,
+          });
+          validateDrugCreationData(drugCreation);
           prescriptionCreation.medicalOrderId = newOrderId;
+          prescriptionCreation.patientId = patientId;
           let drugDetailId = drugDetailPresentationId;
           let commercialNameId = drugCreation.commercialDrugName;
 
