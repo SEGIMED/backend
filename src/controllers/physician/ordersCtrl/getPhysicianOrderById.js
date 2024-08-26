@@ -13,7 +13,6 @@ const getPhysicianOrderById = async (req, res) => {
     // Si no se envia el query orderId se obtienen todas las ordenes del medico
     const { userId } = contextService.get("request:user");
     const { role } = contextService.get("request:user");
-
     // establecemos la condicion para obtener las ordenes segun el rol
     // si el rol es distinto de paciente se obtienen las orden por el medico
     if (role !== "paciente") {
@@ -24,7 +23,8 @@ const getPhysicianOrderById = async (req, res) => {
     const orders = await getOrderByIdPhysician("patientId", userId);
     res.status(200).json(orders);
   } catch (error) {
-    res.status(500).json(error.message);
+    console.error(error);
+    res.status(500).json({ error: error.message });
   }
 };
 
