@@ -132,7 +132,8 @@ const getCatalogHandler = async (catalogName) => {
                 return await CatRouteOfAdministration.findAll()
             case 'STUDY_TYPE':
                 return await CatStudyType.findAll()
-
+            case 'PRESENTATION':
+                return await CatDrugPresentation.findAll()
 
             default:
                 throw new SegimedAPIError("El catálogo solicitado no fue encontrado", 404)
