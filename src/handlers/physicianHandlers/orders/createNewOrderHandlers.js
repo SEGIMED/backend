@@ -12,16 +12,25 @@ const createNewOrderHandler = async (body, transaccion) => {
     patientId,
     orderTypes,
     requestPatientId,
-    indications,
     diagnostic,
     additionalText,
-    date,
   } = body;
-  // Obtenemos la hora actual
-  let dateTIme = moment().tz(TZ).format("HH:mm:ss z");
 
   // validamos el body de la solicitud
   validationBodyOrderPhysician(body);
+  if (requestPatientId) {
+    await models.PatientMedicalReq.update(
+      {
+        status: true,
+      },
+      {
+        where: { id: requestPatientId },
+      },
+      {
+        transaction: transaccion,
+      }
+    );
+  }
   try {
     const newEntry = await models.PhysicianOrders.create(
       {
@@ -29,18 +38,16 @@ const createNewOrderHandler = async (body, transaccion) => {
         physicianId: userId,
         orderTypes,
         requestPatientId,
-        indications,
         diagnostic,
         additionalText,
-        // Formateamos la fecha y hora
-        date: moment.tz(date + " " + dateTIme, TZ).format(),
+        // fecha y hora
+        date: moment().utc(TZ).toISOString(),
         updateAt: null,
       },
       {
         transaction: transaccion,
       }
     );
-
     return newEntry;
   } catch (error) {
     throw new SegimedAPIError(

@@ -7,47 +7,53 @@ import drugCreationHandler from "../../../handlers/drugPrescription/drugCreation
 
 const createOrderPhysicianCtrl = async (req, res) => {
   const transaction = await sequelize.transaction();
+  let mediacalRegister;
+  let requestId;
   try {
-    validateDrugPrescriptionInput(req.body.bodyMedicam);
-    validateDrugCreationData(req.body.bodyMedicam.drugCreation);
     const { body } = req;
     // invocamos el handler de la orden medica
     const newOrder = await createNewOrderHandler(body, transaction);
+    if (body.bodyMedicam) {
+      // validamos el body de la solicitud de medicamentos
+      validateDrugPrescriptionInput(req.body.bodyMedicam);
+      validateDrugCreationData(req.body.bodyMedicam.drugCreation);
 
-    // * destructuramos el objeto de los medicamentos
-    const { drugDetailPresentationId, drugCreation, prescriptionCreation } =
-      body.bodyMedicam;
+      // * destructuramos el objeto de los medicamentos
+      const { drugDetailPresentationId, drugCreation, prescriptionCreation } =
+        body.bodyMedicam;
 
-    // asignamos a al objeto de la prescripcion medica el id de la orden medica
-    prescriptionCreation.medicalOrderId = newOrder.id;
+      // asignamos a al objeto de la prescripcion medica el id de la orden medica
+      prescriptionCreation.medicalOrderId = newOrder.id;
 
-    let drugDetailId = drugDetailPresentationId;
-    let commercialNameId = drugCreation.commercialDrugName;
-    if (!drugDetailId) {
-      const createdDrugDetail = await drugCreationHandler(
-        drugCreation,
+      let drugDetailId = drugDetailPresentationId;
+      let commercialNameId = drugCreation.commercialDrugName;
+      if (!drugDetailId) {
+        const createdDrugDetail = await drugCreationHandler(
+          drugCreation,
+          transaction
+        );
+
+        drugDetailId = createdDrugDetail.id;
+        commercialNameId = createdDrugDetail.commercialNameDrugId;
+      }
+
+      const newPrescription = await createDrugPrescriptionHandler(
+        {
+          ...prescriptionCreation,
+          drugDetailPresentationId: drugDetailId,
+          commercialNameDrugId: commercialNameId,
+        },
         transaction
       );
-
-      drugDetailId = createdDrugDetail.id;
-      commercialNameId = createdDrugDetail.commercialNameDrugId;
+      mediacalRegister;
     }
 
-    const newPrescription = await createDrugPrescriptionHandler(
-      {
-        ...prescriptionCreation,
-        drugDetailPresentationId: drugDetailId,
-        commercialNameDrugId: commercialNameId,
-      },
-      transaction
-    );
     // confirmamos la transaccion
     await transaction.commit();
 
     // creamos el objeto de respuesta
     const response = {
       newOrder,
-      newPrescription,
     };
 
     return res.status(201).json(response);

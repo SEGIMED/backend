@@ -54,12 +54,6 @@ const model = (sequelize) => {
         },
         field: "request_patient_id",
       },
-
-      indications: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        field: "indications",
-      },
       diagnostic: {
         type: DataTypes.TEXT,
         allowNull: true,

@@ -16,9 +16,11 @@ const validateDrugCreationData = (body) => {
     );
   }
 
-  // if (!commercialDrugName || typeof commercialDrugName !== 'string') {
-  //   errors.push("El nombre comercial de la droga es requerido y debe ser una cadena de texto válida.");
-  // }
+  if (!commercialDrugName || typeof commercialDrugName !== "string") {
+    errors.push(
+      "El nombre comercial de la droga es requerido y debe ser una cadena de texto válida."
+    );
+  }
 
   if (!presentationId || typeof presentationId !== "number") {
     errors.push("El ID de la presentación es requerido y debe ser un número.");
