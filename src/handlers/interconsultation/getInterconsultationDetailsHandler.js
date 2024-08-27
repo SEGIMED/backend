@@ -36,7 +36,7 @@ const getInterconsultationDetailsHandler = async (id) => {
         {
           model: MedicalInterconsultationFile,
           as: "files",
-          attributes: ["fileURL"],
+          attributes: ["fileURL", "fileName"],
         },
       ],
     });
@@ -44,7 +44,6 @@ const getInterconsultationDetailsHandler = async (id) => {
     if (!interconsultation) {
       throw new SegimedAPIError("Interconsulta no encontrada", 404);
     }
-    console.log(loggedPhysicianId);
     if (
       interconsultation.physicianRequester !== loggedPhysicianId &&
       interconsultation.physicianQueried !== loggedPhysicianId

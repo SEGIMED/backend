@@ -120,17 +120,21 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
     const filesURL = cloudinaryResults.success;
 
     if (filesURL) {
-      // Delete existing files if updating
-      if (data.id) {
-        await MedicalInterconsultationFile.destroy({
-          where: { medicalInterconsultationId: interconsultation.id },
-        });
-      }
+      // Delete existing files if updating si descomentamos las linea
+      // if (data.id) {
+      //   await MedicalInterconsultationFile.destroy({
+      //     where: { medicalInterconsultationId: interconsultation.id },
+      //   });
+      // }
+
       //Create new files
-      for (const fileURL of filesURL) {
+      for (let i = 0; i < filesURL.length; i++) {
+        const url = filesURL[i].url;
+        const name = filesURL[i].name;
         await MedicalInterconsultationFile.create({
           medicalInterconsultationId: interconsultation.id,
-          fileURL: fileURL,
+          fileURL: url,
+          fileName: name,
         });
       }
     }
