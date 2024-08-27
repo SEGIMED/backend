@@ -1,26 +1,3 @@
-// medicalEventId: medicalEvent.id,
-// timestamp: medicalEvent.appSch.scheduledStartTimestamp,
-//     //motivo de consulta
-//     chiefComplaint: medicalEvent.appSch.reasonForConsultation,
-//     status: medicalEvent.appSch.schedulingStatus,
-//     physician: {
-//       id: medicalEvent.appSch.physicianThatAttend.id,
-//       name: medicalEvent.appSch.physicianThatAttend.name,
-//       lastname: medicalEvent.appSch.physicianThatAttend.lastname,
-//       avatar: medicalEvent.appSch.physicianThatAttend.avatar,
-//     },
-//     // Sitio de atención
-//     attendancePlace: medicalEvent.appSch.attendancePlace
-//       ? {
-//           googleMapsLink: medicalEvent.appSch.attendancePlace.googleMapsLink,
-//           addressDetails: medicalEvent.appSch.attendancePlace.addressDetails,
-//           alias: medicalEvent.appSch.attendancePlace.alias,
-//         }
-//       : null,
-//     //Evoluciones
-//     physicianComments: medicalEvent.physicianComments,
-//     historyOfPresentIllness: medicalEvent.historyOfPresentIllness, // 2. enfermedad actual
-
 import {
   AppointmentScheduling,
   PhysicianAttendancePlace,
@@ -77,7 +54,6 @@ const getMedicalEventHistoryAndInterconsultationHandler = async (
     const medicalEvent = medicalEventHistory.map((event) =>
       mapMedicalEventEvolution(event)
     );
-    console.log(medicalEvent);
     const interconsultations = await getInterconsultationsByPatientIdHandler(
       patientId
     );

@@ -560,6 +560,14 @@ VitalSignDetails.belongsTo(User, {
   as: "measSourceUser",
   foreignKey: "measure_source",
 });
+VitalSignDetails.belongsTo(SelfEvaluationEvent, {
+  as: "measSelfEE",
+  foreignKey: "patient",
+});
+SelfEvaluationEvent.hasMany(VitalSignDetails, {
+  as: "measSelfEE",
+  foreignKey: "selfEvaluationEvent",
+});
 User.hasMany(VitalSignDetails, {
   as: "vital_sign_details",
   foreignKey: "measure_source",
@@ -1069,7 +1077,8 @@ User.hasMany(PatientPainMap, {
 });
 PatientPulmonaryHypertensionGroup.belongsTo(CatPulmonaryHypertensionGroup, {
   as: "catHpGroup",
-  foreignKey: "group",
+  foreignKey: "group", // La columna 'group' en PatientPulmonaryHypertensionGroup
+  targetKey: "id", // La columna 'id' en CatPulmonaryHypertensionGroup
 });
 CatPulmonaryHypertensionGroup.hasMany(PatientPulmonaryHypertensionGroup, {
   as: "hpGroup",

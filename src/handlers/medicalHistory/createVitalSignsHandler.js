@@ -1,55 +1,24 @@
-import { VitalSignDetails, SelfEvaluationEvent } from "../../databaseConfig.js";
+/* este handler cuando le enviamos un array con distintas medidas las crea siempre que no sean para el mismo usuario,
+ * controla que esa medida no haya sido ingresada anteriormentem. Deja la del primer ingreso.
+ * debuelve solo los cambio, si no ha cambios debuelve []
+ *
+ */
+import {
+  VitalSignDetails,
+  SelfEvaluationEvent,
+  sequelize,
+} from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import moment from "moment-timezone";
 import contextService from "request-context";
 
 const newVitalSignHandler = async (body) => {
-  const {
-    vitalSignsToCreate,
-    patient,
-    appointmentSchedule,
-    selfEvaluationEvent,
-    medicalEvent,
-  } = body;
+  const { vitalSignsToCreate, patient, appointmentSchedule, medicalEvent } =
+    body;
+  let selfEvaluationEvent;
 
-  if (
-    (!selfEvaluationEvent && !medicalEvent) ||
-    (selfEvaluationEvent && medicalEvent)
-  ) {
-    throw new SegimedAPIError(
-      "Debe indicar el Medical Event o el Self Evaluation Event asociado, solo uno de los dos.",
-      400
-    );
-  }
-
-  let createdSelfEvaluation;
-  // if (selfEvaluationEvent) {
-  //   try {
-  //     if (
-  //       typeof selfEvaluationEvent === "object" &&
-  //       selfEvaluationEvent !== null
-  //     ) {
-  //       // Si se proporciona un objeto selfEvaluationEvent, lo usamos
-  //       createdSelfEvaluation = await SelfEvaluationEvent.create({
-  //         ...selfEvaluationEvent,
-  //         patient: patient,
-  //       });
-  //     } else {
-  //       // Si no se proporciona un objeto, creamos uno nuevo solo con el paciente
-  //       createdSelfEvaluation = await SelfEvaluationEvent.create({
-  //         patient: patient,
-  //       });
-  //     }
-  //     // console.log(
-  //     //   "selfEvaluation",
-  //     //   selfEvaluationEvent,
-  //     //   createdSelfEvaluation.dataValues.id
-  //     // );
-  //     // selfEvaluationEvent = createdSelfEvaluation.dataValues.id;
-  //   } catch (error) {
-  //     throw new SegimedAPIError("Error al crear el Self Evaluation Event", 500);
-  //   }
-  // }
+  // Iniciar la transacción
+  const transaction = await sequelize.transaction();
 
   try {
     if (medicalEvent) {
@@ -61,9 +30,10 @@ const newVitalSignHandler = async (body) => {
           ),
           scheduling: appointmentSchedule,
         },
+        transaction,
       });
 
-      //Crear un set de measureTypes existentes
+      // Crear un set de measureTypes existentes
       const existingMeasureTypes = new Set(
         existingVitalSigns.map((vitalSign) => vitalSign.measureType)
       );
@@ -72,6 +42,7 @@ const newVitalSignHandler = async (body) => {
       const uniqueVitalSignsToCreate = vitalSignsToCreate.filter(
         (vitalSign) => !existingMeasureTypes.has(vitalSign.measureType)
       );
+
       // Mapear los signos vitales para la creación
       const mappedVitalSignsToCreate = uniqueVitalSignsToCreate.map(
         (vitalSign) => {
@@ -83,39 +54,52 @@ const newVitalSignHandler = async (body) => {
             measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
             scheduling: appointmentSchedule || null,
             medicalEvent: medicalEvent || null,
-            selfEvaluationEvent: selfEvaluationEvent || null,
+            selfEvaluationEvent: null, // Esta columna no la necesitamos cuando está relacionado a un ME
           };
         }
       );
+
       // Crear signos vitales
       const createdVitalSignsME = await VitalSignDetails.bulkCreate(
-        mappedVitalSignsToCreate
+        mappedVitalSignsToCreate,
+        { transaction }
       );
+
+      await transaction.commit();
       return createdVitalSignsME;
+    } else {
+      // Crear SelfEvaluationEvent
+      let createdSelfEvaluation = await SelfEvaluationEvent.create(
+        { patient: patient },
+        { transaction }
+      );
+      selfEvaluationEvent = createdSelfEvaluation.dataValues.id;
+
+      // Mapear los signos vitales para la creación
+      const mappedVitalSignsToCreate = vitalSignsToCreate.map((vitalSign) => {
+        return {
+          patient: patient,
+          measure: vitalSign.measure,
+          measureSource: contextService.get("request:user").userId,
+          measureType: vitalSign.measureType,
+          measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
+          scheduling: appointmentSchedule || null,
+          medicalEvent: null, // Esta columna no la necesitamos cuando está relacionado a un SEE
+          selfEvaluationEvent: selfEvaluationEvent,
+        };
+      });
+
+      // Crear signos vitales
+      const createdVitalSigns = await VitalSignDetails.bulkCreate(
+        mappedVitalSignsToCreate,
+        { transaction }
+      );
+
+      await transaction.commit();
+      return createdVitalSigns;
     }
-
-    // Mapear los signos vitales para la creación
-    const mappedVitalSignsToCreate = vitalSignsToCreate.map((vitalSign) => {
-      return {
-        patient: patient,
-        measure: vitalSign.measure,
-        measureSource: contextService.get("request:user").userId,
-        measureType: vitalSign.measureType,
-        measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-        scheduling: appointmentSchedule || null,
-        medicalEvent: medicalEvent || null,
-        selfEvaluationEvent: selfEvaluationEvent || null,
-      };
-    });
-
-    console.log(mappedVitalSignsToCreate);
-
-    // Crear signos vitales
-    const createdVitalSigns = await VitalSignDetails.bulkCreate(
-      mappedVitalSignsToCreate
-    );
-    return createdVitalSigns;
   } catch (error) {
+    await transaction.rollback();
     throw new SegimedAPIError(
       "Hubo un error durante el proceso de registro: " + error.message,
       500

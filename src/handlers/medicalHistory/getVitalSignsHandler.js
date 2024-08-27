@@ -11,7 +11,31 @@ import {
 } from "../../databaseConfig.js";
 import { Sequelize, Op } from "sequelize";
 import universalPaginationHandler from "../Pagination/universalPaginationHandler.js";
-import { mapVitalSingsME } from "./mapp/mapVitalSingsME.js";
+import { mapVitalSingsME, mapVitalSingsSEE } from "./map/mapVitalSingsME.js";
+import universalOrderByHandler from "../Pagination/universalOrderByHandler.js";
+
+const getHTPGroup = async (patientId) => {
+  const group = await PatientPulmonaryHypertensionGroup.findOne({
+    where: {
+      patient: patientId,
+    },
+    include: [
+      {
+        model: CatPulmonaryHypertensionGroup,
+        as: "catHpGroup",
+        attributes: ["id", "name", "description"], // Asegúrate de que los atributos sean correctos
+      },
+    ],
+  });
+
+  if (!group) {
+    return null;
+  }
+  const groupData = group.catHpGroup
+    ? group.catHpGroup.get({ plain: true })
+    : null;
+  return groupData;
+};
 
 const getMedicalEventsWithVitalSigns = async (patientId) => {
   const medicalEvents = await MedicalEvent.findAll({
@@ -43,38 +67,19 @@ const getMedicalEventsWithVitalSigns = async (patientId) => {
         required: true,
         attributes: ["id"],
         where: { patient: patientId },
-        include: [
-          {
-            model: User,
-            as: "measSourceUser",
-            attributes: ["id", "name", "lastname"],
-            include: [
-              {
-                model: PatientPulmonaryHypertensionGroup,
-                as: "userHpGroups",
-                include: [
-                  {
-                    model: CatPulmonaryHypertensionGroup,
-                    as: "catHpGroup",
-                    attributes: ["id", "name", "description"], // Asegúrate de que los atributos sean correctos
-                  },
-                ],
-              },
-            ],
-          },
-        ],
       },
     ],
   });
-
   return medicalEvents;
 };
 
-const getSelfEvaluationEventsWithVitalSigns = async () => {
+const getSelfEvaluationEventsWithVitalSigns = async (patientId) => {
   const selfEvaluationEvents = await SelfEvaluationEvent.findAll({
     include: [
       {
         model: VitalSignDetails,
+        as: "measSelfEE",
+        where: { patient: patientId },
         required: true, // Esto asegura que solo se incluyan SelfEvaluationEvents con VitalSignDetails
       },
     ],
@@ -84,12 +89,30 @@ const getSelfEvaluationEventsWithVitalSigns = async () => {
 };
 
 const getVitalSignsHandler = async (patientId, page, limit) => {
-  const medicalEventsWithVitalSigns = mapVitalSingsME(
-    await getMedicalEventsWithVitalSigns(patientId)
+  //busco el HTP group
+  const groupHTP = await getHTPGroup(patientId);
+  //ovtengo los medical event
+  const medicalEventsWithVitalSigns = await getMedicalEventsWithVitalSigns(
+    patientId
   );
-
-  //   const selfEvaluationEventsWithVitalSigns = await getSelfEvaluationEventsWithVitalSigns();
-
-  return universalPaginationHandler(medicalEventsWithVitalSigns, page, limit);
+  //mapeo los restutados
+  let mapMedicalEvents = await mapVitalSingsME(
+    medicalEventsWithVitalSigns,
+    groupHTP
+  );
+  //ovtengo los selfevaluation event
+  const selfEvaluationEventsWithVitalSigns =
+    await getSelfEvaluationEventsWithVitalSigns(patientId);
+  //mapeo los restutados
+  let mapSelfEvaluationEvents = await mapVitalSingsSEE(
+    selfEvaluationEventsWithVitalSigns,
+    groupHTP
+  );
+  //primero ordenamos y luego paginamos
+  let result = await universalOrderByHandler(
+    mapMedicalEvents.concat(mapSelfEvaluationEvents)
+  );
+  result = await universalPaginationHandler(result, page, limit);
+  return result;
 };
 export default getVitalSignsHandler;

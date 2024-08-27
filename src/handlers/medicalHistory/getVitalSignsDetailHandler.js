@@ -1,13 +1,11 @@
 import {
   VitalSignDetails,
-  SelfEvaluationEvent,
   CatMeasureUnit,
   CatVitalSignMeasureType,
 } from "../../databaseConfig.js";
-import { Sequelize, Op } from "sequelize";
-import { mapVitalDetailSingsDetail } from "./mapp/mapVitalSingsME.js";
+import { mapVitalDetailSingsDetail } from "./map/mapVitalSingsME.js";
 
-const getVitalSigns = async (eventId) => {
+const getVitalSignsME = async (eventId) => {
   const vitalSigns = await VitalSignDetails.findAll({
     where: {
       medicalEvent: eventId,
@@ -27,32 +25,37 @@ const getVitalSigns = async (eventId) => {
       },
     ],
   });
-
   return vitalSigns;
 };
 
-const getSelfEvaluationEventsWithVitalSigns = async () => {
-  const selfEvaluationEvents = await SelfEvaluationEvent.findAll({
+const getVitalSignsSEE = async (eventId) => {
+  const vitalSigns = await VitalSignDetails.findAll({
+    where: {
+      selfEvaluationEvent: eventId,
+    },
     include: [
       {
-        model: VitalSignDetails,
-        required: true, // Esto asegura que solo se incluyan SelfEvaluationEvents con VitalSignDetails
+        model: CatVitalSignMeasureType,
+        as: "vitalSignMeasureType",
+        attributes: ["id", "name"],
+        include: [
+          {
+            model: CatMeasureUnit,
+            as: "measUnit",
+            attributes: ["id", "name"],
+          },
+        ],
       },
     ],
   });
-
-  return selfEvaluationEvents;
+  return vitalSigns;
 };
 
 const getVitalSignsDetailHandler = async (eventId, isMedicalEvent) => {
   let vitalSigns = {};
-  console.log(eventId, isMedicalEvent);
-  isMedicalEvent
-    ? (vitalSigns = await getVitalSigns(eventId))
-    : console.log("no es un medical event");
-
-  //   const selfEvaluationEventsWithVitalSigns = await getSelfEvaluationEventsWithVitalSigns();
-
+  isMedicalEvent === "true"
+    ? (vitalSigns = await getVitalSignsME(eventId))
+    : (vitalSigns = await getVitalSignsSEE(eventId));
   return mapVitalDetailSingsDetail(vitalSigns);
 };
 export default getVitalSignsDetailHandler;
