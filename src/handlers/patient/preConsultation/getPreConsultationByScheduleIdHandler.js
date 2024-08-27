@@ -3,7 +3,8 @@ import { consultationVitalSignsMapper } from "../../../mapper/patient/consultati
 import contextService from "request-context";
 
 const getPreConsultationByScheduleIdHandler = async (scheduleId, status) => {
-  const userType = contextService.get("request:user").role;
+  
+  const userType = contextService.get('request:user').role
 
   const validStatusesResult =
     await models.CatSchedulingStatus.findAndCountAll();
@@ -18,7 +19,7 @@ const getPreConsultationByScheduleIdHandler = async (scheduleId, status) => {
   try {
     let preConsultation = await models.ProvisionalPreConsultation.findOne({
       where: {
-        appointmentSchedule: scheduleId,
+        appointmentSchedule: scheduleId
       },
       include: [
         {
@@ -100,23 +101,18 @@ const getPreConsultationByScheduleIdHandler = async (scheduleId, status) => {
       ],
     });
     if (!preConsultation) {
-      throw new Error(
-        "No se encontraron preconsultas para el ID de programación proporcionado."
-      );
+      throw new Error("No se encontraron preconsultas para el ID de programación proporcionado.");
     }
 
     preConsultation = preConsultation.get({ plain: true });
-    const preConsultationStatusId =
-      preConsultation.ProvisionalPreConsultationSchedule.status.id;
-
-    if ((userType !== "Médico") & (parseInt(preConsultationStatusId) === 2)) {
+    const preConsultationStatusId = preConsultation.ProvisionalPreConsultationSchedule.status.id;
+    
+    if (userType!=="Médico" & parseInt(preConsultationStatusId) === 2) {
       throw new Error("No está autorizado a ver la preconsulta.");
     }
 
     if (status && preConsultationStatusId !== status) {
-      throw new Error(
-        "El estado de la preconsulta no coincide con el estado proporcionado."
-      );
+      throw new Error("El estado de la preconsulta no coincide con el estado proporcionado.");
     }
 
     const vitalSignDetails =
@@ -132,17 +128,13 @@ const getPreConsultationByScheduleIdHandler = async (scheduleId, status) => {
 
     return preConsultation;
   } catch (error) {
-    if (
-      error.message ===
-        "No se encontraron preconsultas para el ID de programación proporcionado." ||
+    if (error.message === "No se encontraron preconsultas para el ID de programación proporcionado." ||
       error.message === "No está autorizado a ver la preconsulta." ||
-      error.message ===
-        "El estado de la preconsulta no coincide con el estado proporcionado."
-    ) {
-      throw error;
-    } else {
-      throw new Error("Error al cargar los detalles de la preconsulta.");
-    }
+      error.message === "El estado de la preconsulta no coincide con el estado proporcionado.") {
+    throw error; 
+  } else {
+    throw new Error("Error al cargar los detalles de la preconsulta.");
+  }
   }
 };
 

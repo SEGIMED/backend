@@ -25,9 +25,9 @@ export const mapMedicalEventEvolution = (medicalEvent) => {
 };
 
 export const mapMedicalEvent = (medicalEvent) => {
-  const painMapArray = (medicalEvent?.patientPainMaps ?? [])
-    .concat(medicalEvent?.appSch?.patientPainMaps ?? [])
-    .map((painMap) => mapPainMap(painMap));
+
+  const painMapArray = (medicalEvent?.patientPainMap ? mapPainMap(medicalEvent?.patientPainMap) : {})
+  
   return {
     medicalEventId: medicalEvent.id,
     timestamp: medicalEvent.appSch.scheduledStartTimestamp,
@@ -81,7 +81,7 @@ export const mapMedicalEvent = (medicalEvent) => {
       .map((vitalSign) => mapVitalSign(vitalSign)),
 
     ///AUTOEVALUACIONES - mapa del dolor
-    painMap: painMapArray[0],
+    painMap: painMapArray,
 
     //EXAMEN FÍSICO
     physicalExaminations: medicalEvent.patientPhysicalExaminations.map(

@@ -72,6 +72,7 @@ const drugCreationHandler = async (body, transaction) => {
 
     return drugDetailPresentation;
   } catch (error) {
+    console.error(error);
     throw new SegimedAPIError("Hubo un error durante en la prescripción.", 500);
   }
 };

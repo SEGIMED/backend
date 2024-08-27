@@ -37,6 +37,10 @@ const getConsultationHandler = async (patientId, physicianId, page, limit) => {
               ],
             },
           },
+          {
+            model: models.PhysicianAttendancePlace,
+            as: "attendancePlace",
+          },
         ],
       },
     });

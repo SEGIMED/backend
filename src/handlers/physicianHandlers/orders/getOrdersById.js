@@ -20,6 +20,11 @@ const getOrdersByIdHandlersPhysician = async (orderId) => {
           attributes: ["name", "lastname"],
         },
         {
+          model: models.PatientMedicalReq,
+          as: "medicalReq",
+          attributes: ["id", "reqTypes"],
+        },
+        {
           model: models.MedicationPrescription,
           as: "medicationPrescription",
           attributes: ["id", "startTimestamp"],
@@ -28,40 +33,42 @@ const getOrdersByIdHandlersPhysician = async (orderId) => {
               model: models.PrescriptionModificationsHistory,
               as: "medicationPrescription",
               attributes: [
+                "id",
                 "modificationTimestamp",
                 "observations",
                 "indications",
               ],
               order: [["id", "DESC"]],
               limit: 1,
-              include: [
-                {
-                  model: models.DrugDetailPresentation,
-                  as: "drugDetailPresentation",
-                  attributes: ["dose"],
-                  include: [
-                    {
-                      model: models.CatDrug,
-                      as: "drugName",
-                      attributes: ["name"],
-                    },
-                    {
-                      model: models.CatMeasureUnit,
-                      as: "measureUnit",
-                      attributes: ["name"],
-                    },
-                  ],
-                },
-              ],
+              // include: [
+              //   {
+              //     model: models.DrugDetailPresentation,
+              //     as: "drugDetailPresentation",
+              //     attributes: ["dose"],
+              //     include: [
+              //       {
+              //         model: models.CatDrug,
+              //         as: "drugName",
+              //         attributes: ["name"],
+              //       },
+              //       {
+              //         model: models.CatMeasureUnit,
+              //         as: "measureUnit",
+              //         attributes: ["name"],
+              //       },
+              //     ],
+              //   },
+              // ],
             },
           ],
         },
       ],
     });
+    return orders;
     const responseMapping = formatterHandler(orders);
     return responseMapping[0];
   } catch (error) {
-    throw new SegimedAPIError(500, error.message);
+    throw new SegimedAPIError(error);
   }
 };
 
