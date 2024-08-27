@@ -1,5 +1,5 @@
 export const mapPainMap = (painMap) => {
-    
+    console.log(painMap)
     if (!painMap) {
         throw new Error('Pain map object is required.');
     }
@@ -10,11 +10,11 @@ export const mapPainMap = (painMap) => {
         doesAnalgesicWorks: painMap.doesAnalgesicWorks || false,
         isWorstPainEver: painMap.isWorstPainEver || false,
         timestamp: painMap.timestamp || null,
-        painDuration: painMap.catPainDuration ? painMap.catPainDuration.name : '',
+        painDuration: painMap.painDurationDetail ? painMap.painDurationDetail.name : '',
         painAreas: mapPainAreas(painMap.painAreas || []),
-        painType: painMap.catPainType ? painMap.catPainType.name : '',
-        painScale: painMap.catPainScale ? painMap.catPainScale.name : '',
-        painFrequency: painMap.catPainFrequency ? painMap.catPainFrequency.name : '',
+        painType: painMap.painTypeDetail ? painMap.painTypeDetail.name : '',
+        painScale: painMap.painScaleDetail ? painMap.painScaleDetail.name : '',
+        painFrequency: painMap.painFrequencyDetail ? painMap.painFrequencyDetail.name : '',
         painRecorderUser: {
             painRecorderUserId: painMap.painRecorderUser ? painMap.painRecorderUser.id : '',
             painRecorderUserName: painMap.painRecorderUser ? painMap.painRecorderUser.name : '',
@@ -35,7 +35,7 @@ const mapPainAreas = (painAreas) => {
         painNotes: painArea.painNotes || ''
     }));
 };
-const painAreaNameMap = (painArea) => {
+export const painAreaNameMap = (painArea) => {
     switch(painArea) {
         case 1:
             return { painAreaEnglish: "trapezius", painAreaSpanish: "Trapecio" };

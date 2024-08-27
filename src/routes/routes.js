@@ -127,6 +127,8 @@ import getFilesController from "../controllers/medicalHistory/getFilesController
 import getAnamnesisCtrl from "../controllers/medicalHistory/Anamnesis/getAnamnesisCtrl.js";
 import getConsultationController from "../controllers/medicalHistory/getConsultationsController.js";
 import getNewPatientDetailsController from "../controllers/medicalHistory/getNewPatientDetailsController.js";
+import physicalSelfEvaluationController from "../controllers/painMap/physicalSelfEvaluationController.js";
+import getPainMapController from "../controllers/medicalHistory/getPainMapController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -160,6 +162,7 @@ const doctorScheduleRouter = Router();
 const interconsultationRouter = Router();
 const interconsultationDetailsRouter = Router();
 const medicalHistoryRouter = Router();
+const selfEvaluationEventRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -565,12 +568,17 @@ notificationsRouter.patch("/notification-seen", patchNotificationsController);
 //* Medical History
 medicalHistoryRouter.get("/consultation", getConsultationController);
 medicalHistoryRouter.get("/patient-detail", getNewPatientDetailsController);
-
 medicalHistoryRouter.get(
   "/evolution",
   getMedicalEventHistoryEvolutionController
 );
 medicalHistoryRouter.get("/anamnesis", getAnamnesisCtrl);
+
+//* Self Evaluation
+selfEvaluationEventRouter
+  .route("/pain-map")
+  .get(getPainMapController) 
+  .post(physicalSelfEvaluationController);
 
 export {
   getPatientsRouter,
@@ -604,4 +612,5 @@ export {
   interconsultationRouter,
   interconsultationDetailsRouter,
   medicalHistoryRouter,
+  selfEvaluationEventRouter,
 };

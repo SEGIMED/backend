@@ -1001,13 +1001,13 @@ PatientPainMap.belongsTo(AppointmentScheduling, {
   foreignKey: "scheduling",
 });
 AppointmentScheduling.hasMany(PatientPainMap, {
-  as: "patientPainMaps",
+  as: "patientPainMap",
   foreignKey: "scheduling",
 });
 // PatientPainMap.belongsTo(CatPainAreas, { as: "catPainArea", foreignKey: "painArea" });
 // CatPainAreas.hasMany(PatientPainMap, { as: "patientPainMaps", foreignKey: "painArea" });
 PatientPainMap.belongsTo(CatPainDuration, {
-  as: "catPainDuration",
+  as: "painDurationDetail",
   foreignKey: "painDuration",
 });
 CatPainDuration.hasMany(PatientPainMap, {
@@ -1015,7 +1015,7 @@ CatPainDuration.hasMany(PatientPainMap, {
   foreignKey: "painDuration",
 });
 PatientPainMap.belongsTo(CatPainFrequency, {
-  as: "catPainFrequency",
+  as: "painFrequencyDetail",
   foreignKey: "painFrequency",
 });
 CatPainFrequency.hasMany(PatientPainMap, {
@@ -1023,7 +1023,7 @@ CatPainFrequency.hasMany(PatientPainMap, {
   foreignKey: "painFrequency",
 });
 PatientPainMap.belongsTo(CatPainScale, {
-  as: "catPainScale",
+  as: "painScaleDetail",
   foreignKey: "painScale",
 });
 CatPainScale.hasMany(PatientPainMap, {
@@ -1031,7 +1031,7 @@ CatPainScale.hasMany(PatientPainMap, {
   foreignKey: "painScale",
 });
 PatientPainMap.belongsTo(CatPainType, {
-  as: "catPainType",
+  as: "painTypeDetail",
   foreignKey: "painType",
 });
 CatPainType.hasMany(PatientPainMap, {
@@ -1042,8 +1042,8 @@ PatientPainMap.belongsTo(MedicalEvent, {
   as: "medicalEventMedicalEvent",
   foreignKey: "medicalEvent",
 });
-MedicalEvent.hasMany(PatientPainMap, {
-  as: "patientPainMaps",
+MedicalEvent.hasOne(PatientPainMap, {
+  as: "patientPainMap",
   foreignKey: "medicalEvent",
 });
 PatientPainMap.belongsTo(User, {
@@ -1424,11 +1424,20 @@ PhysicianOrders.belongsTo(User, { foreignKey: "physicianId", as: "physician" });
 User.hasMany(PhysicianOrders, { foreignKey: "patientId", as: "OrdersPatient" });
 PhysicianOrders.belongsTo(User, { foreignKey: "patientId", as: "patient" });
 
-PhysicianOrders.belongsTo(MedicationPrescription, {
+PatientMedicalReq.hasOne(PhysicianOrders, {
+  as: "medicalReq",
+  foreignKey: "requestPatientId",
+});
+
+PhysicianOrders.belongsTo(PatientMedicalReq, {
+  as: "medicalReq",
+  foreignKey: "requestPatientId",
+});
+PhysicianOrders.hasMany(MedicationPrescription, {
   foreignKey: "medicalOrderId",
   as: "medicationPrescription",
 });
-MedicationPrescription.hasOne(PhysicianOrders, {
+MedicationPrescription.belongsTo(PhysicianOrders, {
   foreignKey: "medicalOrderId",
   as: "physicianOrdersMedication",
 });
@@ -1438,17 +1447,23 @@ User.hasMany(SelfEvaluationEvent, {
   as: "selfEvaluations",
 });
 
-PhysicianOrders.belongsTo(PrescriptionModificationsHistory, {
-  foreignKey: "medicalOrderId",
-  as: "medicationHistory",
-});
-PrescriptionModificationsHistory.hasOne(PhysicianOrders, {
+PrescriptionModificationsHistory.belongsTo(PhysicianOrders, {
   foreignKey: "medicalOrderId",
   as: "medicalOrder",
 });
 SelfEvaluationEvent.belongsTo(User, {
   foreignKey: "patient",
   as: "patientUser",
+});
+
+SelfEvaluationEvent.hasOne(PatientPainMap, {
+  foreignKey: "selfEvaluationEvent",
+  as: "patientPainMap",
+});
+
+PatientPainMap.belongsTo(SelfEvaluationEvent, {
+  foreignKey: "selfEvaluationEvent",
+  as: "selfEvaluation",
 });
 
 const models = {
