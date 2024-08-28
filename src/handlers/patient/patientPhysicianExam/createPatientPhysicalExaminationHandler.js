@@ -1,5 +1,5 @@
-import models from "../../databaseConfig.js";
-import SegimedAPIError from "../../error/SegimedAPIError.js";
+import models from "../../../databaseConfig.js";
+import SegimedAPIError from "../../../error/SegimedAPIError.js";
 
 const newPhysicalExaminationHandler = async (body) => {
   const { physicalSubsystemId, description, medicalEventId, schedulingId } =
