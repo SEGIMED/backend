@@ -4,7 +4,7 @@ import { mapSociodemographicDetails } from "./sociodemographicDetailsMapper.js";
 import { mapPatientMedicalBackground } from "./patientMedicalBackgroundMapper.js";
 
 export const mapPatient = (patient) => {
-  
+    console.log(patient)
     return {
         userId: patient?.id,
         name: patient?.name,
@@ -19,21 +19,22 @@ export const mapPatient = (patient) => {
         vitalSigns: patient.patientVitalSignDetails ? getLatestVitalSignsMeasures(patient.patientVitalSignDetails.map(vitalSign => mapVitalSign(vitalSign))) : [],
         sociodemographicDetails: patient.socDemDet ? mapSociodemographicDetails(patient.socDemDet) : null,
         backgrounds: patient.backgrounds.length > 0 ? patient.backgrounds[0] : null,
-        patientPulmonaryHypertensionGroups: patient.userHpGroups.length > 0 ? {
-            group: patient.userHpGroups[0].catHpGroup?.name || null,
-            timestamp: patient.userHpGroups[0].timestamp
+        
+        patientPulmonaryHypertensionGroups: patient?.userHpGroups ? {
+            group: patient?.userHpGroups?.catHpGroup?.name || null,
+            timestamp: patient?.userHpGroups?.timestamp
         } : null,
         patientPulmonaryHypertensionRisks: patient.patientPulmonaryHypertensionRisks.length > 0 ? {
             risk: patient.patientPulmonaryHypertensionRisks[0].catHpRisk?.name || null,
             timestamp: patient.patientPulmonaryHypertensionRisks[0].registerTimestamp
         } : null,
-        patientCardiovascularRisks: patient.ptCvRsks.length > 0 ? {
-            risk: patient.ptCvRsks[0].catCvRisk?.name || null,
-            timestamp: patient.ptCvRsks[0].registerTimestamp
+        patientCardiovascularRisks: patient?.ptCvRsks.catCvRisk ? {
+            risk: patient.ptCvRsks.catCvRisk?.name || null,
+            timestamp: patient.ptCvRsks.registerTimestamp
         } : null,
-        patientSurgicalRisks: patient.patSgRisks.length > 0 ? {
-            risk: patient.patSgRisks[0].catSurgicalRisk?.name || null,
-            timestamp: patient.patSgRisks[0].timestamp
+        patientSurgicalRisks: patient?.patSgRisks ? {
+            risk: patient.patSgRisks.catSurgicalRisk?.name || null,
+            timestamp: patient.patSgRisks.timestamp
         } : null,
         lastMedicalEventDate: patient.patientAppScheds.length > 0 ? patient.patientAppScheds[0].scheduledStartTimestamp : null,
         currentPhysician: patient.patientAppScheds.length > 0 ? {
