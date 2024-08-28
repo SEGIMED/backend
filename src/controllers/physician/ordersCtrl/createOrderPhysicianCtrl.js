@@ -1,6 +1,6 @@
 import createNewOrderHandler from "../../../handlers/physicianHandlers/orders/createNewOrderHandlers.js";
 import { sequelize } from "../../../databaseConfig.js";
-import createMedicamentInOrderCtrl from "./createMedicamentInOrderCtrl.js";
+import { createDrugPrescriptions } from "../../drugPrescription/drugPrescriptionHelper.js";
 
 const createOrderPhysicianCtrl = async (req, res) => {
   const transaction = await sequelize.transaction();
@@ -11,14 +11,14 @@ const createOrderPhysicianCtrl = async (req, res) => {
     const newOrder = await createNewOrderHandler(body, transaction);
     if (body.bodyMedicam) {
       // validamos el body de la solicitud de medicamentos
-      const responseMed = await createMedicamentInOrderCtrl(
+      body.bodyMedicam.forEach((med) => {
+        med.prescriptionCreation.medicalOrderId = newOrder.id;
+      });
+      const responseMed = await createDrugPrescriptions(
         body.bodyMedicam,
-        patientId,
-        newOrder.id,
         transaction
       );
-      // imprime la respuesta de la solicitud de medicamentos
-      console.log(JSON.stringify(responseMed, null, 2));
+      console.log(responseMed);
     }
 
     // confirmamos la transaccion
