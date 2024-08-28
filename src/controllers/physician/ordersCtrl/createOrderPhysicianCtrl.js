@@ -17,6 +17,7 @@ const createOrderPhysicianCtrl = async (req, res) => {
         newOrder.id,
         transaction
       );
+      // imprime la respuesta de la solicitud de medicamentos
       console.log(JSON.stringify(responseMed, null, 2));
     }
 

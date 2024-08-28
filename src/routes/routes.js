@@ -48,6 +48,7 @@ import createMedicalReferralController from "../controllers/medicalReferral/crea
 import createTherapyPrescriptionController from "../controllers/therapy/createTherapyPrescriptionController.js";
 import createPatientPhysicalExaminationController from "../controllers/patient/createPatientPhysicalExaminationController.js";
 import updatePatientPhysicalExaminationController from "../controllers/patient/updatePatientPhysicalExaminationController.js";
+import getPatientPhysicianExamCtrl from "../controllers/patient/getPatientPhysicianExamCtrl.js";
 import updateVitalSignsController from "../controllers/vitalSigns/updateVitalSignsController.js";
 import updateTherapyPrescriptionController from "../controllers/therapy/updateTherapyPrescriptionController.js";
 import updateMedicalReferralController from "../controllers/medicalReferral/updateMedicalReferralController.js";
@@ -197,10 +198,10 @@ patientRouter
   .patch(updatePatientDiagnosticController);
 patientRouter
   .route("/patient-physical-examination")
-  .post(createPatientPhysicalExaminationController);
-patientRouter
-  .route("/patient-physical-examination")
-  .patch(updatePatientPhysicalExaminationController);
+  .post(createPatientPhysicalExaminationController)
+  .patch(updatePatientPhysicalExaminationController)
+  .get(getPatientPhysicianExamCtrl);
+
 patientRouter.route("/update-full-patient").patch(updateFullPatientController);
 patientRouter
   .route("/patient-medical-request")
@@ -577,7 +578,7 @@ medicalHistoryRouter.get("/anamnesis", getAnamnesisCtrl);
 //* Self Evaluation
 selfEvaluationEventRouter
   .route("/pain-map")
-  .get(getPainMapController) 
+  .get(getPainMapController)
   .post(physicalSelfEvaluationController);
 
 export {
