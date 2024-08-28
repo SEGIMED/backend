@@ -190,6 +190,7 @@ const getPatientDetailsHandler = async (id) => {
         return mapPatient(patientDetails);
 
     } catch (error) {
+        console.log(error)
         throw new segimedAPIError(error, 500);
     }
 }

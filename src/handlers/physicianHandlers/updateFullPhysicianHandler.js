@@ -109,7 +109,7 @@ const updateFullPhysicianData = async (body) => {
             attendancePlace: newAttendancePlace
         };
     } catch (error) {
-        throw new SegimedAPIError(error, 500);
+        throw new SegimedAPIError(error.message, 500);
     }
 };
 
