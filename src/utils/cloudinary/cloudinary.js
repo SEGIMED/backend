@@ -50,7 +50,7 @@ export async function loadFile(url) {
 }
 
 export async function loadStudiesInterconsultation(
-  files, //array que contiene 1 o mas archivos en base64
+  files, //array que contiene objetos  1 o mas archivos  {data = "archivo en base64", name : "nombredel archivo"}
   maxConcurrentUploads = 5 //define el maximo de upload simultaneo ya que puede traer problemas con cloudinary
 ) {
   let resultURLs = []; // guardo las url exitosas, pueden no estar en orden
@@ -61,10 +61,13 @@ export async function loadStudiesInterconsultation(
 
     for (let i = 0; i < files.length; i++) {
       const data = files[i];
-      const uploadPromise = loadFile(data)
-        .then((result) => resultURLs.push(result.secure_url))
+
+      const uploadPromise = loadFile(data.data)
+        .then((result) => {
+          resultURLs.push({ name: data.name, url: result.secure_url });
+        })
         .catch((error) => {
-          failedUploads.push("File " + (i + 1) + " " + error.message);
+          failedUploads.push({ name: data.name, error: error.message });
         });
 
       uploadPromises.push(uploadPromise);

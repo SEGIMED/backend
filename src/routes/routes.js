@@ -130,6 +130,8 @@ import getNewPatientDetailsController from "../controllers/medicalHistory/getNew
 import physicalSelfEvaluationController from "../controllers/painMap/physicalSelfEvaluationController.js";
 import getVitalSignsController from "../controllers/medicalHistory/getVitalSignsController.js";
 import getVitalSignsDetailController from "../controllers/medicalHistory/getVitalSignsdetailController.js";
+import getPainMapController from "../controllers/medicalHistory/getPainMapController.js";
+
 const patientRouter = Router();
 const userRouter = Router();
 const getPatientsRouter = Router();
@@ -577,7 +579,10 @@ medicalHistoryRouter.get("/vital-signs", getVitalSignsController);
 medicalHistoryRouter.get("/vital-signs-detail", getVitalSignsDetailController);
 
 //* Self Evaluation
-selfEvaluationEventRouter.post("/pain-map", physicalSelfEvaluationController);
+selfEvaluationEventRouter
+  .route("/pain-map")
+  .get(getPainMapController)
+  .post(physicalSelfEvaluationController);
 
 export {
   getPatientsRouter,

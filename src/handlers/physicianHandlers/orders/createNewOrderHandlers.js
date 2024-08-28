@@ -5,44 +5,56 @@ import contextService from "request-context";
 import { validationBodyOrderPhysician } from "../../../validations/validationOrderPhysician.js";
 const TZ = process.env.TZ;
 
-const createNewOrderHandler = async (body) => {
+const createNewOrderHandler = async (body, transaccion) => {
   // Obtenemos el id del usuario que esta realizando la solicitud
   const { userId } = contextService.get("request:user");
   const {
     patientId,
     orderTypes,
-    medicalPrescriptionId,
-    prescription_modifications_hist_id,
-    indications,
+    requestPatientId,
     diagnostic,
     additionalText,
-    date,
   } = body;
-  // Obtenemos la hora actual
-  let dateTIme = moment().tz(TZ).format("HH:mm:ss z");
 
   // validamos el body de la solicitud
   validationBodyOrderPhysician(body);
+  if (requestPatientId) {
+    await models.PatientMedicalReq.update(
+      {
+        status: true,
+      },
+      {
+        where: { id: requestPatientId },
+      },
+      {
+        transaction: transaccion,
+      }
+    );
+  }
   try {
-    const newEntry = await models.PhysicianOrders.create({
-      patientId,
-      physicianId: userId,
-      orderTypes,
-      medicalPrescriptionId,
-      prescription_modifications_hist_id,
-      indications,
-      diagnostic,
-      additionalText,
-      // Formateamos la fecha y hora
-      date: moment.tz(date + " " + dateTIme, TZ).format(),
-      updateAt: null,
-    });
-
+    const newEntry = await models.PhysicianOrders.create(
+      {
+        patientId,
+        physicianId: userId,
+        orderTypes,
+        requestPatientId,
+        diagnostic,
+        additionalText,
+        // fecha y hora
+        date: moment().utc(TZ).toISOString(),
+        updateAt: null,
+      },
+      {
+        transaction: transaccion,
+      }
+    );
     return newEntry;
   } catch (error) {
-    console.log(error);
-
-    throw new SegimedAPIError("Error en la operación de registro: " + error);
+    console.error(error);
+    throw new SegimedAPIError(
+      "Error en la operación de registro: ",
+      error.message
+    );
   }
 };
 

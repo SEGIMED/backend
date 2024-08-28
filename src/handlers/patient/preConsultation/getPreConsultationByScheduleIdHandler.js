@@ -79,19 +79,19 @@ const getPreConsultationByScheduleIdHandler = async (scheduleId, status) => {
       include: [
         {
           model: models.CatPainDuration,
-          as: "catPainDuration",
-        },
-        {
-          model: models.CatPainScale,
-          as: "catPainScale",
+          as: "painDurationDetail",
         },
         {
           model: models.CatPainType,
-          as: "catPainType",
+          as: "painTypeDetail",
+        },
+        {
+          model: models.CatPainScale,
+          as: "painScaleDetail",
         },
         {
           model: models.CatPainFrequency,
-          as: "catPainFrequency",
+          as: "painFrequencyDetail",
         },
         {
           model: models.User,
@@ -141,6 +141,7 @@ const getPreConsultationByScheduleIdHandler = async (scheduleId, status) => {
     ) {
       throw error;
     } else {
+      console.log(error);
       throw new Error("Error al cargar los detalles de la preconsulta.");
     }
   }

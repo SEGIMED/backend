@@ -117,23 +117,23 @@ const getMedicalEventHistoryHandler = async (
             },
             {
               model: PatientPainMap,
-              as: "patientPainMaps",
+              as: "patientPainMap",
               include: [
                 {
                   model: CatPainDuration,
-                  as: "catPainDuration",
+                  as: "painDurationDetail",
                 },
                 {
                   model: CatPainType,
-                  as: "catPainType",
+                  as: "painTypeDetail",
                 },
                 {
                   model: CatPainScale,
-                  as: "catPainScale",
+                  as: "painScaleDetail",
                 },
                 {
                   model: CatPainFrequency,
-                  as: "catPainFrequency",
+                  as: "painFrequencyDetail",
                 },
                 {
                   model: User,
@@ -185,23 +185,23 @@ const getMedicalEventHistoryHandler = async (
         },
         {
           model: PatientPainMap,
-          as: "patientPainMaps",
+          as: "patientPainMap",
           include: [
             {
               model: CatPainDuration,
-              as: "catPainDuration",
+              as: "painDurationDetail",
             },
             {
               model: CatPainType,
-              as: "catPainType",
+              as: "painTypeDetail",
             },
             {
               model: CatPainScale,
-              as: "catPainScale",
+              as: "painScaleDetail",
             },
             {
               model: CatPainFrequency,
-              as: "catPainFrequency",
+              as: "painFrequencyDetail",
             },
             {
               model: User,
