@@ -22,6 +22,11 @@ const model = (sequelize) => {
           key: "id",
         },
       },
+      fileName: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+        field: "file_name",
+      },
       fileURL: {
         type: DataTypes.TEXT,
         allowNull: false,
