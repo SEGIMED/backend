@@ -28,7 +28,7 @@ export const mapPatient = (patient) => {
             risk: patient.patientPulmonaryHypertensionRisks[0].catHpRisk?.name || null,
             timestamp: patient.patientPulmonaryHypertensionRisks[0].registerTimestamp
         } : null,
-        patientCardiovascularRisks: patient?.ptCvRsks.catCvRisk ? {
+        patientCardiovascularRisks: patient?.ptCvRsks?.catCvRisk ? {
             risk: patient.ptCvRsks.catCvRisk?.name || null,
             timestamp: patient.ptCvRsks.registerTimestamp
         } : null,
