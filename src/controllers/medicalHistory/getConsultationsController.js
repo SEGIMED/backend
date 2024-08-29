@@ -2,13 +2,14 @@ import getConsultationHandler from "../../handlers/medicalHistory/getConsultatio
 
 const getConsultationController = async (req, res) => {
   try {
-    const { patientId, physicianId, page, limit } = req.query;
+    const { patientId, physicianId, page, limit, status } = req.query;
 
     const consultations = await getConsultationHandler(
       patientId,
       physicianId,
       page,
-      limit
+      limit,
+      status
     );
 
     return res.status(200).json(consultations);
