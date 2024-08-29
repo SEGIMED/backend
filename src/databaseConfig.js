@@ -1,4 +1,4 @@
-import { Sequelize } from "sequelize";
+import { Sequelize, SequelizeScopeError } from "sequelize";
 import cls from "cls-hooked";
 
 import AnthropometricDetailsModel from "./models/AnthropometricDetails.js";
@@ -340,6 +340,7 @@ MedicalEvent.belongsTo(AppointmentScheduling, {
   foreignKey: "scheduling",
 });
 AppointmentScheduling.hasOne(MedicalEvent, {
+  //creo que esta relacion se puede eliminar
   as: "medicalEvent",
   foreignKey: "scheduling",
 });
@@ -554,6 +555,14 @@ User.hasOne(SociodemographicDetails, {
 VitalSignDetails.belongsTo(User, {
   as: "measSourceUser",
   foreignKey: "measure_source",
+});
+VitalSignDetails.belongsTo(SelfEvaluationEvent, {
+  as: "measSelfEE",
+  foreignKey: "patient",
+});
+SelfEvaluationEvent.hasMany(VitalSignDetails, {
+  as: "vitalSigns",
+  foreignKey: "selfEvaluationEvent",
 });
 User.hasMany(VitalSignDetails, {
   as: "vital_sign_details",
@@ -1064,12 +1073,14 @@ User.hasMany(PatientPainMap, {
 });
 PatientPulmonaryHypertensionGroup.belongsTo(CatPulmonaryHypertensionGroup, {
   as: "catHpGroup",
-  foreignKey: "group",
+  foreignKey: "group", // La columna 'group' en PatientPulmonaryHypertensionGroup
+  targetKey: "id", // La columna 'id' en CatPulmonaryHypertensionGroup
 });
 CatPulmonaryHypertensionGroup.hasMany(PatientPulmonaryHypertensionGroup, {
   as: "hpGroup",
   foreignKey: "group",
 });
+
 PatientSurgicalRisk.belongsTo(CatSurgicalRisk, {
   as: "catSurgicalRisk",
   foreignKey: "risk",
@@ -1219,6 +1230,30 @@ CatCenterAttention.hasMany(SociodemographicDetails, {
   as: "sociodemographicDetails",
   foreignKey: "centerAttention",
 });
+// AppointmentScheduling.belongsTo(CatCenterAttention, {
+//   as: "CenterAttention",
+//   foreignKey: "healthCenter",
+// });
+// CatCenterAttention.hasMany(AppointmentScheduling, {
+//   as: "AppointmentSchedulings",
+//   foreignKey: "healthCenter",
+// });
+
+// Relación entre AppointmentScheduling y CatCenterAttention
+
+AppointmentScheduling.belongsTo(CatCenterAttention, {
+  as: "healthCenterDetails", // Alias para usar en las consultas
+  foreignKey: "healthCenter", // Clave foránea en AppointmentScheduling
+  targetKey: "id", // Clave primaria en CatCenterAttention
+});
+
+// Relación inversa en CatCenterAttention.js (opcional)
+CatCenterAttention.hasMany(AppointmentScheduling, {
+  as: "appointments", // Alias para la relación inversa
+  foreignKey: "healthCenter", // Clave foránea en AppointmentScheduling
+  sourceKey: "id", // Clave primaria en CatCenterAttention
+});
+
 CatCenterAttention.belongsTo(CatCity, { foreignKey: "city" });
 CatCity.hasMany(CatCenterAttention, { foreignKey: "city" });
 
