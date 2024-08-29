@@ -67,6 +67,7 @@ export async function loadStudiesInterconsultation(
           resultURLs.push({ name: data.name, url: result.secure_url });
         })
         .catch((error) => {
+          throw error;
           failedUploads.push({ name: data.name, error: error.message });
         });
 

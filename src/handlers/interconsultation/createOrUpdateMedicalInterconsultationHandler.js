@@ -46,13 +46,13 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
         throw new SegimedAPIError("Physician Requester must have role=2.", 400);
       }
 
-      // if (userRoles[data.physicianQueried] !== 2) {
-      //   throw new SegimedAPIError("Physician Queried must have role=2.", 400);
-      // }
+      if (userRoles[data.physicianQueried] !== 2) {
+        throw new SegimedAPIError("Physician Queried must have role=2.", 400);
+      }
 
-      // if (userRoles[data.patient] !== 3) {
-      //   throw new SegimedAPIError("Patient must have role=3.", 400);
-      // }
+      if (userRoles[data.patient] !== 3) {
+        throw new SegimedAPIError("Patient must have role=3.", 400);
+      }
 
       // Validate that required fields are not null
       const requiredFields = [
@@ -116,16 +116,17 @@ const createOrUpdateMedicalInterconsultationHandler = async (data) => {
     }
 
     // Handle related files
+
     const cloudinaryResults = await loadStudiesInterconsultation(data.files);
     const filesURL = cloudinaryResults.success;
 
     if (filesURL) {
-      // Delete existing files if updating si descomentamos las linea
-      // if (data.id) {
-      //   await MedicalInterconsultationFile.destroy({
-      //     where: { medicalInterconsultationId: interconsultation.id },
-      //   });
-      // }
+      //Delete existing files if updating si descomentamos las linea
+      if (data.id) {
+        await MedicalInterconsultationFile.destroy({
+          where: { medicalInterconsultationId: interconsultation.id },
+        });
+      }
 
       //Create new files
       for (let i = 0; i < filesURL.length; i++) {

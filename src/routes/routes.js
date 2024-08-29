@@ -130,6 +130,8 @@ import getConsultationController from "../controllers/medicalHistory/getConsulta
 import getNewPatientDetailsController from "../controllers/medicalHistory/getNewPatientDetailsController.js";
 import physicalSelfEvaluationController from "../controllers/painMap/physicalSelfEvaluationController.js";
 import getPainMapController from "../controllers/medicalHistory/getPainMapController.js";
+import getVitalSignsDetailController from "../controllers/medicalHistory/getVitalSignsdetailController.js";
+import getVitalSignsController from "../controllers/medicalHistory/getVitalSignsController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -569,6 +571,8 @@ notificationsRouter.patch("/notification-seen", patchNotificationsController);
 //* Medical History
 medicalHistoryRouter.get("/consultation", getConsultationController);
 medicalHistoryRouter.get("/patient-detail", getNewPatientDetailsController);
+medicalHistoryRouter.get("/vital-signs-detail", getVitalSignsDetailController);
+medicalHistoryRouter.get("/vital-signs", getVitalSignsController);
 medicalHistoryRouter.get(
   "/evolution",
   getMedicalEventHistoryEvolutionController
