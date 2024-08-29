@@ -7,6 +7,7 @@ const updateBackgroundsController = async (req, res) => {
     const background = await updateBackgroundsHandler(id, updatedBackground);
     return res.status(200).json(background);
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ error: error.message });
   }
 };
