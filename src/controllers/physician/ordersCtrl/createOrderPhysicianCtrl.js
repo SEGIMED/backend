@@ -6,7 +6,6 @@ const createOrderPhysicianCtrl = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
     const { body } = req;
-    const { patientId } = body;
     // invocamos el handler de la orden medica
     const newOrder = await createNewOrderHandler(body, transaction);
     if (body.bodyMedicam) {
@@ -14,8 +13,11 @@ const createOrderPhysicianCtrl = async (req, res) => {
       body.bodyMedicam.forEach((med) => {
         med.prescriptionCreation.medicalOrderId = newOrder.id;
       });
-      const responseMed = await createDrugPrescriptions(body.bodyMedicam, transaction)
-      console.log(responseMed)
+      const responseMed = await createDrugPrescriptions(
+        body.bodyMedicam,
+        transaction
+      );
+      console.log(responseMed);
     }
 
     // confirmamos la transaccion
