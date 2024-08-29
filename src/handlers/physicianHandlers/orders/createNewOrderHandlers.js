@@ -3,6 +3,7 @@ import SegimedAPIError from "../../../error/SegimedAPIError.js";
 import moment from "moment";
 import contextService from "request-context";
 import { validationBodyOrderPhysician } from "../../../validations/validationOrderPhysician.js";
+import { loadFile } from "../../../utils/cloudinary/cloudinary.js";
 const TZ = process.env.TZ;
 
 const createNewOrderHandler = async (body, transaccion) => {
@@ -14,10 +15,12 @@ const createNewOrderHandler = async (body, transaccion) => {
     requestPatientId,
     diagnostic,
     additionalText,
+    orderPdf,
   } = body;
 
   // validamos el body de la solicitud
   validationBodyOrderPhysician(body);
+  const file = await loadFile(orderPdf);
   if (requestPatientId) {
     await models.PatientMedicalReq.update(
       {
@@ -43,6 +46,8 @@ const createNewOrderHandler = async (body, transaccion) => {
         // fecha y hora
         date: moment().utc(TZ).toISOString(),
         updateAt: null,
+        // archivo
+        orderPdf: file?.secure_url || null,
       },
       {
         transaction: transaccion,

@@ -97,6 +97,8 @@ import PhysicianOrdersModel from "./models/PhysicianOrders.js";
 import CatStudyTypeModel from "./models/CatStudyType.js";
 import PatientStudiesModel from "./models/PatientStudies.js";
 import SelfEvaluationEventModel from "./models/SelfEvaluationEvent.js";
+import CategoryCieDiezModel from "./models/CategoryCieDiez.js";
+import SubcategoriesCieDiezModel from "./models/SubCategoriesCieDiez.js";
 
 // import
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
@@ -227,6 +229,8 @@ PhysicianOrdersModel(sequelize);
 CatStudyTypeModel(sequelize);
 PatientStudiesModel(sequelize);
 SelfEvaluationEventModel(sequelize);
+CategoryCieDiezModel(sequelize);
+SubcategoriesCieDiezModel(sequelize);
 
 export const {
   DiagnosticTest,
@@ -325,6 +329,8 @@ export const {
   CatStudyType,
   PatientStudies,
   SelfEvaluationEvent,
+  CategoryCieDiez,
+  SubCategoriesCieDiez,
 } = sequelize.models;
 
 DiagnosticTest.belongsTo(AppointmentScheduling, {
@@ -1505,6 +1511,15 @@ PatientPainMap.belongsTo(SelfEvaluationEvent, {
   as: "selfEvaluation",
 });
 
+CategoryCieDiez.hasMany(SubCategoriesCieDiez, {
+  foreignKey: "categoryId",
+  as: "subCategories",
+});
+SubCategoriesCieDiez.belongsTo(CategoryCieDiez, {
+  foreignKey: "categoryId",
+  as: "category",
+});
+
 const models = {
   AnthropometricDetails,
   AppointmentScheduling,
@@ -1601,6 +1616,7 @@ const models = {
   CatStudyType,
   PatientStudies,
   SelfEvaluationEvent,
+  CategoryCieDiez,
 };
 
 export default models;
