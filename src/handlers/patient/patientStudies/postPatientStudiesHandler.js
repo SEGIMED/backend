@@ -5,7 +5,7 @@ import validateStudiesInput from "../../../validations/validatesStudies.js";
 const postPatientStudiesHandler = async (body) => {
   let transaction;
   try {
-     transaction = await sequelize.transaction();
+    transaction = await sequelize.transaction();
     validateStudiesInput(body);
 
     const mapStudies = await Promise.all(
@@ -22,7 +22,7 @@ const postPatientStudiesHandler = async (body) => {
           studyType: studyObject.studyType ?? 10,
           description: studyObject.description,
           title: studyObject.title,
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
         };
       })
     );
