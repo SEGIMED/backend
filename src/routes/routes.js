@@ -133,7 +133,7 @@ import getPainMapController from "../controllers/medicalHistory/getPainMapContro
 import getVitalSignsDetailController from "../controllers/medicalHistory/getVitalSignsdetailController.js";
 import getVitalSignsController from "../controllers/medicalHistory/getVitalSignsController.js";
 import createRegisterCie10Ctrl from "../controllers/cieDiezCtrl/createRegisterCie10Ctrl.js";
-import createRegisterCie10SubCategoryCtrl from "../controllers/cieDiezCtrl/createRegisterCie10SubCategoryCtrl.js";
+import getCatAndSubCatCtrl from "../controllers/cieDiezCtrl/getCat&SubCatCie10Ctrl.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -473,10 +473,10 @@ medicalReferralRouter
   .route("/referral/update-medical-referral")
   .patch(updateMedicalReferralController);
 //* Medical CIE10 Register
-medicalReferralRouter.route("/cie10").post(createRegisterCie10Ctrl);
 medicalReferralRouter
-  .route("/cie10-subcategory")
-  .post(createRegisterCie10SubCategoryCtrl);
+  .route("/cie10")
+  .post(createRegisterCie10Ctrl)
+  .get(getCatAndSubCatCtrl);
 
 //* Therapy Prescription
 therapyPrescriptionRouter

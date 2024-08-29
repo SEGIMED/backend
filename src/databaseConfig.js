@@ -1617,6 +1617,7 @@ const models = {
   PatientStudies,
   SelfEvaluationEvent,
   CategoryCieDiez,
+  SubCategoriesCieDiez,
 };
 
 export default models;
