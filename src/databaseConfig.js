@@ -544,10 +544,6 @@ User.hasMany(PhysicianSpecialty, {
   as: "physicianSpecialties",
   foreignKey: "physician",
 });
-User.hasMany(SociodemographicDetails, {
-  as: "SociodemographicDetails",
-  foreignKey: "SociodemographicDetails_id",
-});
 SociodemographicDetails.belongsTo(User, {
   as: "patient_user",
   foreignKey: "patient",

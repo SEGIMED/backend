@@ -2,9 +2,7 @@ import getVitalSignsHandler from "../../handlers/medicalHistory/getVitalSignsHan
 
 const getVitalSignsController = async (req, res) => {
   try {
-    const patientId = req.query.patientId;
-    const page = req.query.page;
-    const limit = req.query.limit;
+    const { patientId, page, limit } = req.query;
 
     if (!patientId) {
       return res
