@@ -1,5 +1,5 @@
 /* este handler cuando le enviamos un array con distintas medidas las crea siempre que no sean para el mismo usuario,
- * controla que esa medida no haya sido ingresada anteriormentem. Deja la del primer ingreso.
+ * controla que esa medida no haya sido ingresada anteriormente. Deja la del primer ingreso.
  * debuelve solo los cambio, si no ha cambios debuelve []
  *
  */
