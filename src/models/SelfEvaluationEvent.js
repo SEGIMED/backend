@@ -25,8 +25,8 @@ const model = (sequelize) => {
       tableName: "self_evaluation_event",
       schema: "public",
       timestamps: true,
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
+      createdAt: "created_at",
+      updatedAt: "updated_at",
       indexes: [
         {
           name: "self_evaluation_event_patient_idx",

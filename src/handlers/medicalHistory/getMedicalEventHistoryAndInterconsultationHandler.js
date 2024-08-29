@@ -1,26 +1,3 @@
-// medicalEventId: medicalEvent.id,
-// timestamp: medicalEvent.appSch.scheduledStartTimestamp,
-//     //motivo de consulta
-//     chiefComplaint: medicalEvent.appSch.reasonForConsultation,
-//     status: medicalEvent.appSch.schedulingStatus,
-//     physician: {
-//       id: medicalEvent.appSch.physicianThatAttend.id,
-//       name: medicalEvent.appSch.physicianThatAttend.name,
-//       lastname: medicalEvent.appSch.physicianThatAttend.lastname,
-//       avatar: medicalEvent.appSch.physicianThatAttend.avatar,
-//     },
-//     // Sitio de atención
-//     attendancePlace: medicalEvent.appSch.attendancePlace
-//       ? {
-//           googleMapsLink: medicalEvent.appSch.attendancePlace.googleMapsLink,
-//           addressDetails: medicalEvent.appSch.attendancePlace.addressDetails,
-//           alias: medicalEvent.appSch.attendancePlace.alias,
-//         }
-//       : null,
-//     //Evoluciones
-//     physicianComments: medicalEvent.physicianComments,
-//     historyOfPresentIllness: medicalEvent.historyOfPresentIllness, // 2. enfermedad actual
-
 import {
   AppointmentScheduling,
   PhysicianAttendancePlace,
@@ -31,6 +8,7 @@ import { mapMedicalEventEvolution } from "../../mapper/medicalEvent/medicalEvent
 import interconsultationsMapper from "../../mapper/interconsultation/interconsultationsMapper.js";
 import getInterconsultationsByPatientIdHandler from "../medicalEvent/getInterconsultationsByPatientIdHandler.js";
 import universalPaginationHandler from "../Pagination/universalPaginationHandler.js";
+import universalOrderByHandler from "../Pagination/universalOrderByHandler.js";
 
 const getMedicalEventHistoryAndInterconsultationHandler = async (
   patientId,
@@ -77,12 +55,13 @@ const getMedicalEventHistoryAndInterconsultationHandler = async (
     const medicalEvent = medicalEventHistory.map((event) =>
       mapMedicalEventEvolution(event)
     );
-    console.log(medicalEvent);
     const interconsultations = await getInterconsultationsByPatientIdHandler(
       patientId
     );
     const interconsultasArray = interconsultationsMapper(interconsultations);
-    let result = medicalEvent.concat(interconsultasArray);
+    let result = await universalOrderByHandler(
+      medicalEvent.concat(interconsultasArray)
+    );
     if (page && limit) {
       return universalPaginationHandler(result, page, limit);
     } else {
