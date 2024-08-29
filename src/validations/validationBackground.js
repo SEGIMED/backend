@@ -1,17 +1,8 @@
 import SegimedAPIError from "../error/SegimedAPIError.js";
 
 export const validateBackground = (body) => {
-  const {
-    surgicalBackground,
-    pathologicBackground,
-    nonPathologicBackground,
-    familyBackground,
-    pediatricBackground,
-    pharmacologicalBackground,
-    vaccinationBackground,
-    allergicBackground,
-  } = body;
-  const arrayString = [
+  // hacemos un array de los arreglos que son los campos requeridos
+  const requiredField = [
     surgicalBackground,
     pathologicBackground,
     nonPathologicBackground,
@@ -21,10 +12,10 @@ export const validateBackground = (body) => {
     vaccinationBackground,
     allergicBackground,
   ];
-  arrayString.forEach((element) => {
-    if (typeof element !== "string") {
-      throw new SegimedAPIError(`El campo ${element} debe ser un string`, 400);
-    }
+  requiredField.forEach((element) => {
+    const value = body[element];
+    if (typeof value !== "string")
+      throw new SegimedAPIError(`${element} debe ser un string`, 400);
   });
 };
 export const cleanBody = (body) => {
