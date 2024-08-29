@@ -130,8 +130,10 @@ import getConsultationController from "../controllers/medicalHistory/getConsulta
 import getNewPatientDetailsController from "../controllers/medicalHistory/getNewPatientDetailsController.js";
 import physicalSelfEvaluationController from "../controllers/painMap/physicalSelfEvaluationController.js";
 import getPainMapController from "../controllers/medicalHistory/getPainMapController.js";
+import patchPatientStudiesController from "../controllers/patient/patientStudies/patchPatientStudiesController.js";
 import getVitalSignsDetailController from "../controllers/medicalHistory/getVitalSignsdetailController.js";
 import getVitalSignsController from "../controllers/medicalHistory/getVitalSignsController.js";
+
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -216,7 +218,8 @@ patientRouter
 patientRouter
   .route("/patient-studies")
   .get(getFilesController)
-  .post(postPatientStudiesController);
+  .post(postPatientStudiesController)
+  .patch(patchPatientStudiesController);
 
 //* cardiovascular risk
 patientRouter

@@ -9,10 +9,6 @@ const universalPaginationHandler = async (data, page = 1, limit = 5) => {
   // Calcula el número total de páginas
   const totalPages = Math.ceil(data.length / limit);
 
-  // Controla si la página solicitada existe
-  if (page > totalPages || page <= 0) {
-    throw new Error("La página solicitada no existe");
-  }
   // Retorna los resultados junto con la información de la paginación
   return {
     currentPage: page,
