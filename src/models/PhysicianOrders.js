@@ -74,6 +74,11 @@ const model = (sequelize) => {
         allowNull: true,
         field: "update_at",
       },
+      orderPdf: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: "order_pdf",
+      },
     },
     {
       tableName: "physician_orders",
