@@ -134,6 +134,7 @@ import getVitalSignsDetailController from "../controllers/medicalHistory/getVita
 import getVitalSignsController from "../controllers/medicalHistory/getVitalSignsController.js";
 import createRegisterCie10Ctrl from "../controllers/cieDiezCtrl/createRegisterCie10Ctrl.js";
 import getCatAndSubCatCtrl from "../controllers/cieDiezCtrl/getCat&SubCatCie10Ctrl.js";
+import updateStatusSchedulingCtrl from "../controllers/scheduling/updateStatusSchedulingCtrl.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -373,7 +374,8 @@ requestUserContactRouter
 schedulingRouter
   .route("/schedules")
   .post(createSchedulingController)
-  .get(getAllSchedulesController);
+  .get(getAllSchedulesController)
+  .patch(updateStatusSchedulingCtrl);
 
 schedulingRouter
   .route("/schedule/:id")
