@@ -1,10 +1,25 @@
 import models from "../../databaseConfig.js";
 import universalPaginationHandler from "../Pagination/universalPaginationHandler.js";
 
-const getConsultationHandler = async (patientId, physicianId, page, limit) => {
+const getConsultationHandler = async (
+  patientId,
+  physicianId,
+  page,
+  limit,
+  status
+) => {
   try {
+    if (
+      patientId &&
+      status !== undefined &&
+      parseInt(status) !== 2 &&
+      parseInt(status) !== 1
+    ) {
+      throw new Error("No estas habilitado para ver esta información");
+    }
+
     const filters = {
-      schedulingStatus: 2, // 2 = atendida
+      schedulingStatus: status || 2, // 2 = atendida
     };
     if (patientId) {
       filters.patient = patientId;
@@ -45,11 +60,24 @@ const getConsultationHandler = async (patientId, physicianId, page, limit) => {
       },
     });
 
+    // Ordena los resultados por scheduledStartTimestamp en orden descendente
+    const sortedConsultations = consultations.sort((a, b) => {
+      return (
+        new Date(b.appSch.scheduledStartTimestamp) -
+        new Date(a.appSch.scheduledStartTimestamp)
+      );
+    });
+
     if (page && limit) {
-      const paginated = universalPaginationHandler(consultations, page, limit);
+      const paginated = universalPaginationHandler(
+        sortedConsultations,
+        page,
+        limit
+      );
       return paginated;
     }
-    return consultations;
+
+    return sortedConsultations;
   } catch (error) {
     console.log(error);
     throw new Error(error);
