@@ -1,9 +1,6 @@
 import { SociodemographicDetails } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 
-import { Sequelize } from "sequelize";
-import SegimedAPIError from "path_to_your_error_class";
-
 const updateSociodemographicDetailsHandler = async (
   patchSociodemographicBody
 ) => {
