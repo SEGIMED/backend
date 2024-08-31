@@ -1099,7 +1099,7 @@ PatientPulmonaryHypertensionGroup.belongsTo(User, {
   as: "patientHpGroup",
   foreignKey: "patient",
 });
-User.hasOne(PatientPulmonaryHypertensionGroup, {
+User.hasMany(PatientPulmonaryHypertensionGroup, {
   as: "userHpGroups",
   foreignKey: "patient",
 });
