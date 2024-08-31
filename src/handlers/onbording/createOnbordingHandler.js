@@ -15,6 +15,7 @@ export const createOnbordingHandler = async (body, userId) => {
     birthDate,
     hasTechUseDifficulty,
     needsCellphoneAssistance,
+    numberOfFamilyAsistence,
   } = body;
 
   try {
@@ -30,6 +31,7 @@ export const createOnbordingHandler = async (body, userId) => {
         hasTechUseDifficulty,
         needsCellphoneAssistance,
         patient: userId,
+        numberOfFamilyAsistence,
       },
     });
 
