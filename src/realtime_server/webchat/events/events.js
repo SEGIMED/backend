@@ -17,7 +17,9 @@ export const ServerListenners = {
   createChatBot: "createChatBot",
   destroyChatBot: "destroyChatBot",
   sendChatBotMessage: "sendChatBotMessage",
+  sendAlarmasBotMessage: "sendAlarmasBotMessage",
   resetMessageCount: "resetMessageCount",
+  sendPatientInfo: "sendPatientInfo",
 };
 
 export const ClientListenners = {
