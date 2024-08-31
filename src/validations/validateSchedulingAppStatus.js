@@ -1,7 +1,7 @@
-import models from "../../databaseConfig.js";
-import SegimedAPIError from "../../error/SegimedAPIError.js";
+import models from "../databaseConfig.js";
+import SegimedAPIError from "../error/SegimedAPIError.js";
 
-const updateStatusSchedulingHandler = async (scheduleId) => {
+const validateSchedulingAppStatus = async (scheduleId) => {
   try {
     const schedule = await models.AppointmentScheduling.findOne({
       where: {
@@ -10,9 +10,6 @@ const updateStatusSchedulingHandler = async (scheduleId) => {
     });
     if (!schedule) {
       throw new SegimedAPIError("No se encontró la cita", 404);
-    }
-    if (schedule.schedulingStatus === 1) {
-      throw new SegimedAPIError("La cita ya fue agendada", 400);
     }
     if (schedule.schedulingStatus === 2) {
       throw new SegimedAPIError("La cita ya fue atendida", 400);
@@ -29,8 +26,10 @@ const updateStatusSchedulingHandler = async (scheduleId) => {
     if (schedule.schedulingStatus === 7) {
       throw new SegimedAPIError("La cita ya fue resuelta", 400);
     }
-    schedule.schedulingStatus = 1;
-    schedule.save();
+    if (schedule.schedulingStatus === 6) {
+      schedule.schedulingStatus = 1;
+      schedule.save();
+    }
     return schedule;
   } catch (error) {
     console.error(error);
@@ -41,4 +40,12 @@ const updateStatusSchedulingHandler = async (scheduleId) => {
   }
 };
 
-export default updateStatusSchedulingHandler;
+/**
+1        "Agendada"
+2        "Atendida"
+3        "Cancelada"
+4        "No atendida"
+5        "Eliminada"
+6        "Solicitada"
+7        "Resuelta"
+     */
