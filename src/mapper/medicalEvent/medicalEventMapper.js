@@ -27,7 +27,7 @@ export const mapMedicalEventEvolution = (medicalEvent) => {
 export const mapMedicalEvent = (medicalEvent) => {
 
   const painMapArray = (medicalEvent?.patientPainMap ? mapPainMap(medicalEvent?.patientPainMap) : {})
-  
+
   return {
     medicalEventId: medicalEvent.id,
     timestamp: medicalEvent.appSch.scheduledStartTimestamp,
@@ -35,12 +35,14 @@ export const mapMedicalEvent = (medicalEvent) => {
     //motivo de consulta
     chiefComplaint: medicalEvent.appSch.reasonForConsultation,
     status: medicalEvent.appSch.schedulingStatus,
-
+    
     // grupo HTP hipertensión pulmonar
-    patientHpGroups:{
-      group: medicalEvent.appSch.patientUser?.userHpGroups?.catHpGroup?.name,
-      timestamp: medicalEvent.appSch.patientUser?.userHpGroups?.timestamp
-    },
+    patientHpGroups: medicalEvent.appSch?.patientUser?.userHpGroups?.map((hpGroup) => {      return {
+          group: hpGroup?.catHpGroup?.name ?? null,
+          timestamp: hpGroup?.timestamp ?? null,
+        };
+      }) ?? [],
+    
     /// especialidad médica
     medicalSpecialty: medicalEvent.appSch.specialty.name,
     patient: {
