@@ -16,7 +16,7 @@ const updateSociodemographicDetailsHandler = async (
     healthCareNumber,
     emergencyContactPhone,
     dateOfDeathReport,
-    NumberOfFamilyAsistence,
+    numberOfFamilyAsistence,
   } = patchSociodemographicBody;
 
   const updateData = {
@@ -30,7 +30,7 @@ const updateSociodemographicDetailsHandler = async (
     healthCareNumber,
     emergencyContactPhone,
     dateOfDeathReport,
-    NumberOfFamilyAsistence,
+    numberOfFamilyAsistence,
   };
 
   try {
