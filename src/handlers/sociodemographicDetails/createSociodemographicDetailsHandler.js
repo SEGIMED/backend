@@ -14,6 +14,7 @@ const createSociodemographicDetailHandler = async (body) => {
     healthCareNumber,
     emergencyContactPhone,
     dateOfDeathReport,
+    NumberOfFamilyAsistence,
   } = body;
 
   try {
@@ -29,6 +30,7 @@ const createSociodemographicDetailHandler = async (body) => {
       healthCareNumber,
       emergencyContactPhone,
       dateOfDeathReport,
+      NumberOfFamilyAsistence,
     });
     return newSociodemographicDetail;
   } catch (error) {

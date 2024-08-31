@@ -137,7 +137,6 @@ import createRegisterCie10Ctrl from "../controllers/cieDiezCtrl/createRegisterCi
 import getCatAndSubCatCtrl from "../controllers/cieDiezCtrl/getCat&SubCatCie10Ctrl.js";
 import updateStatusSchedulingCtrl from "../controllers/scheduling/updateStatusSchedulingCtrl.js";
 
-
 const patientRouter = Router();
 const userRouter = Router();
 const getPatientsRouter = Router();

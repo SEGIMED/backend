@@ -1,48 +1,64 @@
 import { SociodemographicDetails } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 
+import { Sequelize } from "sequelize";
+import SegimedAPIError from "path_to_your_error_class";
+
 const updateSociodemographicDetailsHandler = async (
   patchSociodemographicBody
 ) => {
+  const {
+    patientId,
+    birthDate,
+    genreId,
+    educationalLevelId,
+    profession,
+    civilStatusId,
+    address,
+    healthCarePlanId,
+    healthCareNumber,
+    emergencyContactPhone,
+    dateOfDeathReport,
+    NumberOfFamilyAsistence,
+  } = patchSociodemographicBody;
+
+  const updateData = {
+    birthDate,
+    genreId,
+    educationalLevel: educationalLevelId,
+    profession,
+    civilStatus: civilStatusId,
+    address,
+    healthCarePlan: healthCarePlanId,
+    healthCareNumber,
+    emergencyContactPhone,
+    dateOfDeathReport,
+    NumberOfFamilyAsistence,
+  };
+
   try {
-    const [updateSociodemographicDetail, created] =
-      await SociodemographicDetails.findOrCreate({
-        where: {
-          patient: patchSociodemographicBody.patientId,
-        },
-        defaults: {
-          birthDate: patchSociodemographicBody.birthDate,
-          genre: patchSociodemographicBody.genreId,
-          educationalLevel: patchSociodemographicBody.educationalLevelId,
-          profession: patchSociodemographicBody.profession,
-          civilStatus: patchSociodemographicBody.civilStatusId,
-          address: patchSociodemographicBody.address,
-          healthCarePlan: patchSociodemographicBody.healthCarePlanId,
-          healthCareNumber: patchSociodemographicBody.healthCareNumber,
-          emergencyContactPhone:
-            patchSociodemographicBody.emergencyContactPhone,
-          dateOfDeathReport: patchSociodemographicBody.dateOfDeathReport,
-        },
-      });
+    const result = await Sequelize.transaction(async (t) => {
+      const [sociodemographicDetail, created] =
+        await SociodemographicDetails.findOrCreate({
+          where: { patient: patientId },
+          defaults: updateData,
+          transaction: t,
+        });
 
-    if (!created) {
-      // Si ya existe, actualizar los detalles sociodemográficos
-      await updateSociodemographicDetail.update({
-        birthDate: patchSociodemographicBody.birthDate,
-        genre: patchSociodemographicBody.genreId,
-        educationalLevel: patchSociodemographicBody.educationalLevelId,
-        profession: patchSociodemographicBody.profession,
-        civilStatus: patchSociodemographicBody.civilStatusId,
-        address: patchSociodemographicBody.address,
-        healthCarePlan: patchSociodemographicBody.healthCarePlanId,
-        emergencyContactPhone: patchSociodemographicBody.emergencyContactPhone,
-        dateOfDeathReport: patchSociodemographicBody.dateOfDeathReport,
-      });
-    }
+      if (!created) {
+        await sociodemographicDetail.update(updateData, { transaction: t });
+      }
 
-    return updateSociodemographicDetail;
+      return sociodemographicDetail;
+    });
+
+    return result;
   } catch (error) {
-    throw new SegimedAPIError(error, 500);
+    if (error instanceof Sequelize.ValidationError) {
+      throw new SegimedAPIError("Validation error: " + error.message, 400);
+    } else {
+      throw new SegimedAPIError("Server error: " + error.message, 500);
+    }
   }
 };
 
