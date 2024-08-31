@@ -136,6 +136,7 @@ import getVitalSignsController from "../controllers/medicalHistory/getVitalSigns
 import createRegisterCie10Ctrl from "../controllers/cieDiezCtrl/createRegisterCie10Ctrl.js";
 import getCatAndSubCatCtrl from "../controllers/cieDiezCtrl/getCat&SubCatCie10Ctrl.js";
 import updateStatusSchedulingCtrl from "../controllers/scheduling/updateStatusSchedulingCtrl.js";
+import searchCIEController from "../controllers/cieDiezCtrl/searchCIEController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -480,6 +481,7 @@ medicalReferralRouter
 medicalReferralRouter
   .route("/cie10")
   .post(createRegisterCie10Ctrl)
+  .get(searchCIEController)
   .get(getCatAndSubCatCtrl);
 
 //* Therapy Prescription
