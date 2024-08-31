@@ -130,7 +130,7 @@ const model = (sequelize) => {
         defaultValue: false,
         field: "needs_cell_phone_assistance",
       },
-      NumberOfFamilyAsistence: {
+      numberOfFamilyAsistence: {
         //número de familiares que asisten
         type: DataTypes.STRING,
         allowNull: true,
