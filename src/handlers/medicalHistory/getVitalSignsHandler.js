@@ -1,118 +1,137 @@
-import {
-  MedicalEvent,
-  AppointmentScheduling,
-  VitalSignDetails,
-  SelfEvaluationEvent,
-  User,
-  CatCenterAttention,
-  PatientPulmonaryHypertensionGroup,
-  CatPulmonaryHypertensionGroup,
-  SociodemographicDetails,
-} from "../../databaseConfig.js";
-import { Sequelize, Op } from "sequelize";
-import universalPaginationHandler from "../Pagination/universalPaginationHandler.js";
-import { mapVitalSingsME, mapVitalSingsSEE } from "./map/mapVitalSingsME.js";
+import models from "../../databaseConfig.js";
 import universalOrderByHandler from "../Pagination/universalOrderByHandler.js";
+import universalPaginationHandler from "../Pagination/universalPaginationHandler.js";
 
-const getHTPGroup = async (patientId) => {
-  const group = await PatientPulmonaryHypertensionGroup.findOne({
-    where: {
-      patient: patientId,
-    },
-    include: [
-      {
-        model: CatPulmonaryHypertensionGroup,
-        as: "catHpGroup",
-        attributes: ["id", "name", "description"], // Asegúrate de que los atributos sean correctos
+const getVitalSignsHandler = async (patientId, page, limit) => {
+  try {
+    const filters = {
+      schedulingStatus: 2, // 2 = atendida
+    };
+    if (patientId) {
+      filters.patient = parseInt(patientId);
+    }
+
+    const medicalEvent = await models.MedicalEvent.findAll({
+      attributes: ["id"],
+      include: [
+        {
+          model: models.AppointmentScheduling,
+          as: "appSch",
+          where: filters,
+          attributes: ["scheduledStartTimestamp", "reasonForConsultation"],
+          include: [
+            {
+              model: models.User,
+              as: "patientUser",
+              attributes: ["id"],
+              include: {
+                model: models.PatientPulmonaryHypertensionGroup,
+                as: "userHpGroups",
+                attributes: ["id"],
+                include: [
+                  {
+                    model: models.CatPulmonaryHypertensionGroup,
+                    as: "catHpGroup",
+                    attributes: ["name"],
+                  },
+                ],
+              },
+            },
+            {
+              model: models.PhysicianAttendancePlace,
+              as: "attendancePlace",
+            },
+          ],
+        },
+        {
+          model: models.VitalSignDetails,
+          as: "vitalSignDetailsMedicalEvent",
+          attributes: {
+            exclude: [
+              "patient",
+              "measure_source",
+              "measure_type",
+              "measureType",
+              "selfEvaluationEvent",
+            ],
+          },
+          include: [
+            {
+              model: models.CatVitalSignMeasureType,
+              as: "vitalSignMeasureType",
+              attributes: ["name"],
+              include: {
+                model: models.CatMeasureUnit,
+                as: "measUnit",
+                attributes: ["name"],
+              },
+            },
+          ],
+        },
+      ],
+    });
+
+    const selfEvaluation = await models.SelfEvaluationEvent.findAll({
+      where: { patient: patientId },
+      attributes: {
+        exclude: ["patient", "updated_at"],
       },
-    ],
-  });
-
-  if (!group) {
-    return null;
-  }
-  const groupData = group.catHpGroup
-    ? group.catHpGroup.get({ plain: true })
-    : null;
-  return groupData;
-};
-
-const getMedicalEventsWithVitalSigns = async (patientId) => {
-  const medicalEvents = await MedicalEvent.findAll({
-    where: {
-      "$vitalSignDetailsMedicalEvent.id$": { [Sequelize.Op.ne]: null },
-    },
-    attributes: ["id", "physicianComments"],
-    include: [
-      {
-        model: AppointmentScheduling,
-        as: "appSch",
-        attributes: [
-          "id",
-          "healthCenter",
-          "reasonForConsultation",
-          "scheduledEndTimestamp",
-        ],
+      include: {
+        model: models.VitalSignDetails,
+        as: "vitalSigns",
+        attributes: {
+          exclude: [
+            "patient",
+            "measure_source",
+            "measure_type",
+            "measureType",
+            "medicalEvent",
+            "scheduling",
+          ],
+        },
         include: [
           {
-            model: CatCenterAttention,
-            as: "healthCenterDetails", // Usa el alias correcto definido en el modelo
-            attributes: ["id", "name"],
+            model: models.CatVitalSignMeasureType,
+            as: "vitalSignMeasureType",
+            attributes: ["name"],
+            include: {
+              model: models.CatMeasureUnit,
+              as: "measUnit",
+              attributes: ["name"],
+            },
           },
         ],
       },
-      {
-        model: VitalSignDetails,
-        as: "vitalSignDetailsMedicalEvent",
-        required: true,
-        attributes: ["id"],
-        where: { patient: patientId },
-      },
-    ],
-  });
-  return medicalEvents;
+    });
+
+    const formattedMedicalEvent = medicalEvent.map((me) => ({
+      ...me.toJSON(),
+      date: me.appSch.scheduledStartTimestamp,
+    }));
+    const formattedSelfEvaluations = selfEvaluation
+      .filter((se) => se.vitalSigns && se.vitalSigns.length > 0)
+      .map((se) => ({
+        ...se.toJSON(),
+        date: se.created_at,
+      }));
+
+    const combinedResults = formattedMedicalEvent.concat(
+      formattedSelfEvaluations
+    );
+
+    if (page && limit) {
+      const pagination = await universalOrderByHandler(
+        combinedResults,
+        "date",
+        false
+      );
+      return universalPaginationHandler(pagination, page, limit);
+    }
+    return combinedResults;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Ocurrió un error al recuperar los signos vitales");
+  }
 };
 
-const getSelfEvaluationEventsWithVitalSigns = async (patientId) => {
-  const selfEvaluationEvents = await SelfEvaluationEvent.findAll({
-    include: [
-      {
-        model: VitalSignDetails,
-        as: "vitalSigns",
-        where: { patient: patientId },
-        required: true, // Esto asegura que solo se incluyan SelfEvaluationEvents con VitalSignDetails
-      },
-    ],
-  });
-
-  return selfEvaluationEvents;
-};
-
-const getVitalSignsHandler = async (patientId, page, limit) => {
-  //busco el HTP group
-  const groupHTP = await getHTPGroup(patientId);
-  //ovtengo los medical event
-  const medicalEventsWithVitalSigns = await getMedicalEventsWithVitalSigns(
-    patientId
-  );
-  //mapeo los restutados
-  let mapMedicalEvents = await mapVitalSingsME(
-    medicalEventsWithVitalSigns,
-    groupHTP
-  );
-  //ovtengo los selfevaluation event
-  const selfEvaluationEventsWithVitalSigns =
-    await getSelfEvaluationEventsWithVitalSigns(patientId);
-  //mapeo los restutados
-  let mapSelfEvaluationEvents = await mapVitalSingsSEE(
-    selfEvaluationEventsWithVitalSigns,
-    groupHTP
-  );
-  //primero ordenamos y luego paginamos
-  let result = await universalOrderByHandler(
-    mapMedicalEvents.concat(mapSelfEvaluationEvents)
-  );
-  result = await universalPaginationHandler(result, page, limit);
-  return result;
-};
 export default getVitalSignsHandler;

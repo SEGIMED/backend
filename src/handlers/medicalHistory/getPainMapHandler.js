@@ -134,8 +134,11 @@ const getPainMapHandler = async (patientId, page, limit) => {
         })),
       },
     }));
+    const filteredSelfEvaluations = selfEvaluations.filter(
+      (evaluation) => evaluation.patientPainMap && Object.keys(evaluation.patientPainMap).length > 0
+    );
 
-    const formattedSelfEvaluations = selfEvaluations.map((evaluation) => ({
+    const formattedSelfEvaluations = filteredSelfEvaluations.map((evaluation) => ({
       ...evaluation.toJSON(),
       reasonForConsultation: "Autoevaluación",
       attendancePlace: "En casa",
