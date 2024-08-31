@@ -30,6 +30,8 @@ const updateStatusSchedulingHandler = async (scheduleId) => {
       throw new SegimedAPIError("La cita ya fue resuelta", 400);
     }
     schedule.schedulingStatus = 1;
+    schedule.IsApproved = true;
+
     schedule.save();
     return schedule;
   } catch (error) {
