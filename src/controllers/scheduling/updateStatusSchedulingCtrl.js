@@ -6,6 +6,7 @@ const updateStatusSchedulingCtrl = async (req, res) => {
       throw new Error("Falta el id de la cita");
     }
     const { id } = req.query;
+
     const response = await updateStatusSchedulingHandler(id);
     res
       .status(200)
