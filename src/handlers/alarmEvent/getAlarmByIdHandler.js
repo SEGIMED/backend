@@ -35,8 +35,13 @@ const getAlarmByIdHandler = async (alarmId) => {
 
     return {
       id: alarm.id,
-      patientName: alarm.AlarmForPatient.name,
-      patientLastname: alarm.AlarmForPatient.lastname,
+      patient: {
+        name: alarm.AlarmForPatient.name,
+        lastname: alarm.AlarmForPatient.lastname,
+        avatar: alarm.AlarmForPatient.avatar,
+        id: alarm.AlarmForPatient.id,
+        cellphone: alarm.AlarmForPatient.cellphone,
+      },
       createdAt: alarm.createdAt,
       ia_evaluation: alarm.ia_evaluation,
       ia_priority: alarm.ia_priority,

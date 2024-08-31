@@ -1,4 +1,8 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import {
+  GoogleGenerativeAI,
+  HarmBlockThreshold,
+  HarmCategory,
+} from "@google/generative-ai";
 import Chatbot from "./Chatbot.js";
 import createNewAlarmEventHandler from "../../../../handlers/alarmEvent/createNewAlarmEventHandler.js";
 const API_KEY = process.env.GOOGLE_API_KEY;
@@ -10,7 +14,7 @@ class Alarmas extends Chatbot {
     super(user, {
       modelConfig: {
         maxOutputTokens: 300,
-        temperature: 0.3,
+        temperature: 0.5,
         topP: 0.9,
         topK: 20,
       },
@@ -31,6 +35,24 @@ class Alarmas extends Chatbot {
       model: "models/gemini-1.5-flash-001",
       systemInstruction: this.getSystemInstruction(),
       generationConfig: this.modelConfig,
+      safetySettings: [
+        {
+          category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+          threshold: HarmBlockThreshold.BLOCK_NONE,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+          threshold: HarmBlockThreshold.BLOCK_NONE,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+          threshold: HarmBlockThreshold.BLOCK_NONE,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+          threshold: HarmBlockThreshold.BLOCK_NONE,
+        },
+      ],
     });
 
     try {
@@ -63,11 +85,11 @@ class Alarmas extends Chatbot {
   getSystemInstruction() {
     return `
       Eres un chatbot médico diseñado para evaluar síntomas. Realiza preguntas para identificar la gravedad de los síntomas reportados por el paciente. 
-      No repitas preguntas y trata de ser cortes y de darle forma a las preguntas segun lo que te dice el paciente no solo copies y pegues las preguntas.
-      Finaliza la conversación cuando hayas recopilado suficiente información, o después de un máximo de 12 preguntas.
+      No repitas preguntas y trata de ser cortés y de formular las preguntas según lo que te dice el paciente, no solo copies y pegues las preguntas.
+      Finaliza la conversación cuando hayas recopilado suficiente información, o después de un máximo de 10 preguntas.
       No proporcionas diagnósticos o recomendaciones médicas directas, solo recopilas información que será revisada por un profesional.
-
       Instrucciones para el Chatbot:
+      Trata siempre de preguntar por más síntomas aparte del inicial para hacer un buen diagnóstico. Esto ayudará a formar un cuadro más completo y facilitará una evaluación más precisa.
 
       Inicio de la Conversación:
 
@@ -82,15 +104,14 @@ class Alarmas extends Chatbot {
       Condición 1: Si el paciente responde de manera clara y consistente en las primeras 3 preguntas y el chatbot puede determinar con alta seguridad la situación del paciente, termina la conversación.
       Condición 2: Si después de las primeras 3 preguntas hay algunas dudas o respuestas vagas, el chatbot hace hasta 2 preguntas adicionales para asegurar más detalles (máximo de 8 preguntas).
       Condición 3: Si las respuestas siguen siendo inciertas o contradictorias, el chatbot puede hacer hasta 2 preguntas adicionales (haciendo un total de 10 preguntas).
-      Condición 4: Si la información sigue siendo incierta después de 10 preguntas, el chatbot hace hasta 2 preguntas adicionales (máximo de 12 preguntas).
       Cierre de la Conversación:
 
-      Condición de finalización automática: Cuando el chatbot tiene suficiente información muy clara y concisa para hacer una evaluación preliminar(que luego lo verá un médico así que peudes ser muy descriptivo y usar lenguaje médico) después de cualquier conjunto de preguntas (3, 8, 10 o 12 preguntas), la conversación termina.
+      Condición de finalización automática: Cuando el chatbot tiene suficiente información muy clara y concisa para hacer una evaluación preliminar(que luego lo verá un médico así que puedes ser muy descriptivo y dar recomendaciones) después de cualquier conjunto de preguntas (3, 8, 10preguntas), la conversación termina.
       El formato de salida final debe ser:
       "Resumen de síntomas: [resumen aquí].
       Clasificación de gravedad: [Baja/Media/Alta].
-      Evaluación: [evaluación aquí]
-      Evaluaremos tu caso y te daremos una respuesta en las próximas horas. Gracias por tu paciencia."
+      Evaluación: Los síntomas descritos podrían indicar condiciones tales como [condición(es) posible(s)]. Considere realizar [pruebas diagnósticas específicas] para confirmar el diagnóstico. Evaluar la necesidad de [tratamientos o intervenciones específicas] basado en los resultados obtenidos. Mantener vigilancia para [posibles complicaciones] y ajustar el manejo clínico conforme sea necesario.
+      Evaluaremos tu caso y te daremos una respuesta en las próximas horas. Gracias por tu paciencia.
     `;
   }
 
@@ -239,6 +260,9 @@ class Alarmas extends Chatbot {
     const classificationMatch = response.match(
       /Clasificación de gravedad:\s*(Baja|Media|Alta)\./i
     );
+    const evaluationMatch = response.match(
+      /Evaluación:\s*(.+?)(?=Evaluaremos tu caso)/s
+    );
 
     const summary = summaryMatch
       ? summaryMatch[1].trim()
@@ -246,26 +270,30 @@ class Alarmas extends Chatbot {
     const classification = classificationMatch
       ? classificationMatch[1].trim()
       : "Indefinida";
+    const evaluation = evaluationMatch
+      ? evaluationMatch[1].trim()
+      : "Evaluación no disponible";
 
     // Generar el informe
-    console.log(summary, classification);
-    const report = this.generateAlarm(summary, classification);
+    console.log(summary, classification, evaluation);
+    console.log(response);
+    const report = this.generateAlarm(summary, classification, evaluation);
     await this.saveAlarmReport(report);
 
     // Devolver la respuesta final al usuario
     return `Gracias por responder todas las preguntas. Evaluaremos tu caso cuidadosamente y te daremos una respuesta en las próximas horas. Gracias por tu paciencia.`;
   }
 
-  generateAlarm(summary, classification) {
-    const reportDetails = this.conversationHistory
-      .map((entry, index) => `#${index + 1} (${entry.role}): ${entry.message}`)
-      .join("\n");
+  generateAlarm(summary, classification, evaluation) {
+    // const reportDetails = this.conversationHistory
+    //   .map((entry, index) => `#${index + 1} (${entry.role}): ${entry.message}`)
+    //   .join("\n");
     const report = {
       patient: this.user.userId,
       chat_history: this.conversationHistory,
       alarmDescription: summary,
       ia_priority: classification,
-      ia_evaluation: summary,
+      ia_evaluation: evaluation,
     };
 
     return report;

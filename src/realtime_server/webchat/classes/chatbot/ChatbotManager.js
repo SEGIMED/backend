@@ -17,8 +17,6 @@ export const getOrCreateChatbot = (user, type = "Chatbot") => {
       chatbots[user.userId][type] = new Chatbot(user);
     }
   }
-  console.log(chatbots);
-
   return chatbots[user.userId][type];
 };
 
