@@ -52,8 +52,8 @@ const newVitalSignHandler = async (body) => {
             measureSource: contextService.get("request:user").userId,
             measureType: vitalSign.measureType,
             measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-            scheduling: appointmentSchedule || null,
-            medicalEvent: medicalEvent || null,
+            scheduling: appointmentSchedule,
+            medicalEvent: medicalEvent,
             selfEvaluationEvent: null, // Esta columna no la necesitamos cuando está relacionado a un ME
           };
         }
@@ -83,7 +83,7 @@ const newVitalSignHandler = async (body) => {
           measureSource: contextService.get("request:user").userId,
           measureType: vitalSign.measureType,
           measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-          scheduling: appointmentSchedule || null,
+          scheduling: null,
           medicalEvent: null, // Esta columna no la necesitamos cuando está relacionado a un SEE
           selfEvaluationEvent: selfEvaluationEvent,
         };

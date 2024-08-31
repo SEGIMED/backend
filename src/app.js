@@ -8,6 +8,7 @@ import swaggerOptions from "./swaggerOptions.js";
 import swaggerUI from "swagger-ui-express";
 import { validateJWT } from "./utils/JWTInterceptor.js";
 import contextService from "request-context";
+import './utils/consultationCheck.js';
 
 import {
   patientRouter,
