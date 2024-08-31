@@ -135,12 +135,8 @@ import getVitalSignsDetailController from "../controllers/medicalHistory/getVita
 import getVitalSignsController from "../controllers/medicalHistory/getVitalSignsController.js";
 import createRegisterCie10Ctrl from "../controllers/cieDiezCtrl/createRegisterCie10Ctrl.js";
 import getCatAndSubCatCtrl from "../controllers/cieDiezCtrl/getCat&SubCatCie10Ctrl.js";
-<<<<<<< HEAD
 import updateStatusSchedulingCtrl from "../controllers/scheduling/updateStatusSchedulingCtrl.js";
-=======
 import searchCIEController from "../controllers/cieDiezCtrl/searchCIEController.js";
-
->>>>>>> 9bfc8cba905e3c253989859e59911f635caa7455
 
 const patientRouter = Router();
 const userRouter = Router();

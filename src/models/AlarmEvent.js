@@ -31,7 +31,7 @@ const model = (sequelize) => {
       },
       questionsPriority: {
         type: DataTypes.ARRAY(DataTypes.STRING),
-        allowNull: false,
+        allowNull: true,
         field: "questions_priority",
         validate: {
           max: 21,
@@ -54,6 +54,22 @@ const model = (sequelize) => {
         allowNull: true,
         defaultValue: null,
         field: "solved_date",
+      },
+      ia_priority: {
+        type: DataTypes.ENUM("Alta", "Media", "Baja"),
+        allowNull: true,
+      },
+      physician_priority: {
+        type: DataTypes.ENUM("Alta", "Media", "Baja"),
+        allowNull: true,
+      },
+      ia_evaluation: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      chat_history: {
+        type: DataTypes.JSONB,
+        allowNull: true,
       },
     },
     {

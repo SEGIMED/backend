@@ -3,7 +3,7 @@ import updateStatusSchedulingHandler from "../../handlers/scheduling/updateStatu
 const updateStatusSchedulingCtrl = async (req, res) => {
   try {
     if (!req.query.id) {
-      throw new Error("Falta el id de la cita");
+      res.status(400).json({ message: "Falta el id de la cita" });
     }
     const { id } = req.query;
 
