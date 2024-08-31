@@ -6,38 +6,50 @@ import {
 
 export const registerChatbotHandler = (io, socket) => {
   const sendChatBotMessage = async (payload) => {
-    const { message } = payload;
-    const chatbot = getOrCreateChatbot(socket.decoded);
-    const response = await chatbot.handleMessage(message);
-    socket.emit(ServerListenners.sendChatBotMessage, response);
+    const { message, type = "Chatbot" } = payload;
+    const chatbot = getOrCreateChatbot(socket.decoded, type);
+    const response = await chatbot.handleMessage(message); // Maneja el mensaje
+
+    const emitEvent =
+      type === "Alarmas"
+        ? ServerListenners.sendAlarmasBotMessage
+        : ServerListenners.sendChatBotMessage;
+
+    socket.emit(emitEvent, response);
+
+    // Verifica si la conversación ha terminado (en caso del chatbot de tipo "Alarmas")
+    if (type === "Alarmas" && response.includes("Evaluaremos tu caso")) {
+      removeChatbot(socket.decoded.userId, type);
+    }
   };
 
-  const createChatbot = async () => {
-    const chatbot = getOrCreateChatbot(socket.decoded);
-    await chatbot.startChat(); // Inicializa el chat si no está iniciado
+  const createChatbot = async (payload = {}) => {
+    const { type = "Chatbot" } = payload;
+    const chatbot = getOrCreateChatbot(socket.decoded, type);
+    await chatbot.startChat(); // Inicia el chat
     socket.emit(ClientListenners.updateNewChat, { message: "Chat iniciado." });
-    // Resetea el contador de mensajes cada minuto;
   };
-  // Resetea el contador de mensajes
-  const resetMessageCount = async () => {
-    const chatbot = getOrCreateChatbot(socket.decoded);
+
+  const resetMessageCount = async (payload = {}) => {
+    const { type = "Chatbot" } = payload;
+    const chatbot = getOrCreateChatbot(socket.decoded, type);
     setTimeout(() => {
-      chatbot.resetMessageCount();
+      chatbot.resetMessageCount(); // Resetea el contador de mensajes
     }, 15000);
   };
-  // Enviar informacion de un paciente
+
   const sendPatientInfo = async (payload) => {
-    console.log("llego", payload);
-
-    const { message } = payload;
-    const chatbot = getOrCreateChatbot(socket.decoded);
-    chatbot.sendPatientInfo(message);
+    const { message, type = "Chatbot" } = payload;
+    const chatbot = getOrCreateChatbot(socket.decoded, type);
+    chatbot.sendPatientInfo(message); // Envía la información del paciente al chatbot
   };
 
-  const destroyChatbot = async () => {
-    removeChatbot(socket.decoded);
+  const destroyChatbot = async (payload = {}) => {
+    const { type = "Chatbot" } = payload;
+    removeChatbot(socket.decoded.userId, type); // Elimina solo el chatbot del tipo especificado
   };
 
+  // Registra los eventos de socket
   socket.on(ClientListenners.sendUserChatBotMessage, sendChatBotMessage);
   socket.on(ServerListenners.createChatBot, createChatbot);
   socket.on(ServerListenners.destroyChatBot, destroyChatbot);

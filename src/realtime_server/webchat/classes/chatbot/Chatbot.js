@@ -16,46 +16,86 @@ const formatCategory = (categoryName, categoryData) => {
 };
 
 class Chatbot {
-  constructor(user) {
+  constructor(user, config = {}) {
     this.user = user;
     this.chat = null;
     this.context = "";
     this.messageLimit = 7;
     this.messageCount = 0;
+    this.systemInstruction = config.systemInstruction || null; // Inicialmente puede ser nulo
+    this.modelConfig = config.modelConfig || {
+      maxOutputTokens: 250,
+      temperature: 0.2,
+      topP: 1.0,
+      topK: 15,
+    };
   }
 
   async startChat() {
     if (this.chat) {
       return;
     }
+    // Asegurarse de que el systemInstruction esté construido
+    if (!this.systemInstruction) {
+      await this.buildSystemInstruction();
+    }
+    const genAI = new GoogleGenerativeAI(API_KEY);
+    const genModel = genAI.getGenerativeModel({
+      model: "models/gemini-1.5-flash-001",
+      systemInstruction: this.systemInstruction, // Asegúrate de usar 'this'
+      generationConfig: this.modelConfig,
+    });
+    try {
+      this.chat = genModel.startChat({
+        history: [
+          {
+            role: "user",
+            parts: [
+              {
+                text: `Mi nombre es ${this.user.name}, y soy ${this.user.role}.`,
+              },
+            ],
+          },
+          {
+            role: "model",
+            parts: [{ text: "¡Hola! Soy Segi. ¿En qué puedo ayudarte?" }],
+          },
+        ],
+      });
+    } catch (error) {
+      console.error("Error starting chatbot:", error);
+      throw new Error("Error al iniciar la conversación.");
+    }
+  }
+  async buildSystemInstruction() {
     const consultas = await this.getSchedulings();
     let userInformation = `
-      - **Nombre:** ${this.user.name}
-      - **Rol:** ${this.user.role}
-      - **ID de usuario:** ${this.user.userId}
-      - **Consultas:** ${consultas} Cuando se te pida una consulta siempre da las consultas mas proximas al día actual.
-      - Dia actual: ${new Date().toLocaleDateString()}
+    - **Nombre:** ${this.user.name}
+    - **Rol:** ${this.user.role}
+    - **ID de usuario:** ${this.user.userId}
+    - **Consultas:** ${consultas} Cuando se te pida una consulta siempre da las consultas mas proximas al día actual.
+    - Dia actual: ${new Date().toLocaleDateString()}
     `;
     if (this.user.role === "Paciente") {
       const patientBackground = await this.getClinicalHistory();
       const patientAlarms = await this.getAlarms();
       const patientData = await this.getPatientInformation();
       userInformation += `
-      -  ${patientData}
-        -  ${patientBackground}
-        -  ${patientAlarms}
-        `;
+    -  ${patientData}
+      -  ${patientBackground}
+      -  ${patientAlarms}
+      `;
     } else if (this.user.role === "Médico") {
       const physicianPatients = await this.getPatients();
 
       const physicianInformation = `
-        - **Especialidad:** ${this.user.specialty}
-       - ${physicianPatients}`;
+      - **Especialidad:** ${this.user.specialty}
+     - ${physicianPatients}`;
 
       userInformation += physicianInformation;
     }
-    const systemInstruction = `
-    Eres un asistente virtual para la aplicación Segimed, especializado en proporcionar ayuda según el tipo de usuario: general, paciente, o médico. Tu objetivo es responder preguntas sobre la aplicación, siempre en español, y no exceder el límite de 500 caracteres.
+    this.systemInstruction = `
+  Eres un asistente virtual para la aplicación Segimed, especializado en proporcionar ayuda según el tipo de usuario: general, paciente, o médico. Tu objetivo es responder preguntas sobre la aplicación, siempre en español, y no exceder el límite de 500 caracteres.
 
 **Descripción de la aplicación Segimed:**
 Segimed es una herramienta integral para el manejo de la insuficiencia cardíaca e hipertensión pulmonar. Brinda a los pacientes acceso a una variedad de servicios para mejorar su atención médica y calidad de vida.
@@ -99,42 +139,8 @@ ${formatCategory("Preguntas Generales", data.preguntas_generales)}
 #### Preguntas para Médicos:
 ${formatCategory("Médicos", data.medicos)}
 #### Preguntas Médico-Paciente:
-${formatCategory("Médico-Paciente", data.medico_paciente)}`;
-
-    const genAI = new GoogleGenerativeAI(API_KEY);
-    const genModel = genAI.getGenerativeModel({
-      model: "models/gemini-1.5-flash-001",
-      systemInstruction: systemInstruction,
-      generationConfig: {
-        maxOutputTokens: 250,
-        temperature: 0.2,
-        topP: 1.0,
-        topK: 15,
-      },
-    });
-    try {
-      this.chat = genModel.startChat({
-        history: [
-          {
-            role: "user",
-            parts: [
-              {
-                text: `Mi nombre es ${this.user.name}, y soy ${this.user.role}.`,
-              },
-            ],
-          },
-          {
-            role: "model",
-            parts: [{ text: "¡Hola! Soy Segi. ¿En qué puedo ayudarte?" }],
-          },
-        ],
-      });
-    } catch (error) {
-      console.error("Error starting chatbot:", error);
-      throw new Error("Error al iniciar la conversación.");
-    }
+    ${formatCategory("Médico-Paciente", data.medico_paciente)}`;
   }
-
   async handleMessage(message, countMessage = true) {
     if (!this.chat) {
       await this.startChat();
@@ -228,7 +234,6 @@ ${formatCategory("Médico-Paciente", data.medico_paciente)}`;
   }
   async sendPatientInfo(id) {
     try {
-      console.log(id);
       const patientDetails = await getPatientDetailsHandler(id);
       const patientHistory = await this.getClinicalHistory(id);
       const patientInfo = `Enfoca tu atencion y sigueintes preguntas en esta informacion que te dare sobre un paciente:${JSON.stringify(
@@ -237,8 +242,7 @@ ${formatCategory("Médico-Paciente", data.medico_paciente)}`;
         ${patientHistory}`;
 
       // Enviamos la informacion del pacietne sin contar el mensaje en intentos
-      const response = await this.handleMessage(patientInfo, false);
-      console.log(patientHistory, patientDetails);
+      await this.handleMessage(patientInfo, false);
     } catch (error) {
       console.log(error);
       return "No se pudo obtener la información del paciente.";
