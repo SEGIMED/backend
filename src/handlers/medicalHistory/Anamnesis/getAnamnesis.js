@@ -1,5 +1,6 @@
-import models from "../../../databaseConfig.js";
+import models, { PhysicianAttendancePlace } from "../../../databaseConfig.js";
 import SegimedAPIError from "../../../error/SegimedAPIError.js";
+import { transformData } from "../../../utils/transformClinicalHistory.js";
 import universalPaginationHandler from "../../Pagination/universalPaginationHandler.js";
 
 const getAnamnesisHandler = async (patientId, page, limit) => {
@@ -40,19 +41,37 @@ const getAnamnesisHandler = async (patientId, page, limit) => {
                 ],
               },
             },
+            {
+              model: PhysicianAttendancePlace,
+              as: "attendancePlace",
+              attributes: ["alias"],
+            },
           ],
         },
       ],
     });
+    const data = response.map((anamnesis) => {
+      return {
+        timestamp: anamnesis.appSch.scheduledStartTimestamp,
+        physician: {
+          name: anamnesis.appSch.physicianThatAttend.name,
+          lastname: anamnesis.appSch.physicianThatAttend.lastname,
+        },
+        attendancePlace: anamnesis.appSch.attendancePlace,
+        chiefComplaint: anamnesis.chiefComplaint,
+        reviewOfSystems: anamnesis.reviewOfSystems,
+      };
+    });
+
     if (!response) {
       throw new SegimedAPIError("Anamnesis not found");
     }
     if (page && limit) {
-      const paginated = universalPaginationHandler(response, page, limit);
+      const paginated = universalPaginationHandler(data, page, limit);
       return paginated;
     }
     // return only the properties that are not null
-    return response;
+    return data;
   } catch (error) {
     throw new SegimedAPIError("Error fetching anamnesis", error.message);
   }
