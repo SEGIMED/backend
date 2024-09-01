@@ -300,7 +300,6 @@ class Chatbot {
         patientDetails
       )}
         ${patientHistory}`;
-      console.log(patientHistory);
       // Enviamos la informacion del pacietne sin contar el mensaje en intentos
       await this.handleMessage(patientInfo, false);
     } catch (error) {

@@ -33,12 +33,12 @@ const getConsultationHandler = async (
         model: models.AppointmentScheduling,
         as: "appSch",
         where: filters,
-        attributes: ["scheduledStartTimestamp", "reasonForConsultation"],
+        attributes: ["scheduledStartTimestamp", "reasonForConsultation", "id"],
         include: [
           {
             model: models.User,
             as: "patientUser",
-            attributes: ["id"],
+            attributes: ["id", "name", "lastname"],
             include: {
               model: models.PatientPulmonaryHypertensionGroup,
               as: "userHpGroups",
@@ -67,17 +67,24 @@ const getConsultationHandler = async (
         new Date(a.appSch.scheduledStartTimestamp)
       );
     });
-
+    const data = sortedConsultations.map((consulta) => {
+      return {
+        id: consulta.appSch.id,
+        timestamp: consulta.appSch.scheduledStartTimestamp,
+        patient: consulta.appSch.patientUser,
+        htpGroups: consulta.appSch.patientUser.userHpGroups
+          .map((item) => item.catHpGroup.name)
+          .join(", "),
+        attendancePlace: consulta.appSch.attendancePlace,
+        chiefComplaint: consulta.appSch.reasonForConsultation,
+      };
+    });
     if (page && limit) {
-      const paginated = universalPaginationHandler(
-        sortedConsultations,
-        page,
-        limit
-      );
+      const paginated = universalPaginationHandler(data, page, limit);
       return paginated;
     }
 
-    return sortedConsultations;
+    return data;
   } catch (error) {
     console.log(error);
     throw new Error(error);
