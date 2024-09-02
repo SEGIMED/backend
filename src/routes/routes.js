@@ -17,15 +17,11 @@ import userLoginController from "../controllers/user/userLoginController.js";
 import getAllLoginRecordController from "../controllers/LoginRecord/getLoginRecordController.js";
 import recoverPasswordController from "../controllers/user/recoverPasswordController.js";
 import modifyPasswordWithOtpController from "../controllers/user/modifyPasswordWithOtpController.js";
-import postUserContactController from "../controllers/requestPatientContact/postUserContactController.js";
-import getAllUserContactController from "../controllers/requestPatientContact/getAllUserContactController.js";
 import getCatalogController from "../controllers/catalog/getCatalogController.js";
 import createSchedulingController from "../controllers/scheduling/createSchedulingController.js";
 import createMedicalEventController from "../controllers/medicalEvent/createMedicalEventController.js";
 import getPatientDetailsController from "../controllers/patient/getPatientDetailsController.js";
 import getAllUsersController from "../controllers/user/getAllUsersController.js";
-import patchResolveUserContactController from "../controllers/requestPatientContact/patchResolveUserContactController.js";
-import getUserContactController from "../controllers/requestPatientContact/getUserContactController.js";
 import getAllSchedulesController from "../controllers/scheduling/getAllSchedulesController.js";
 import createVitalSignsController from "../controllers/vitalSigns/createVitalSignsController.js";
 import createAnthropometricDetailController from "../controllers/anthropometricDetails/createAnthropometricDetailController.js";
@@ -107,8 +103,6 @@ import getAllNotificationsPatienController from "../controllers/notifications/ge
 import getAllNotificationsPhysicianController from "../controllers/notifications/getAllNotificationsPhysicianController.js";
 import patchNotificationsController from "../controllers/notifications/patchNotificationsController.js";
 import getSchedules from "../controllers/managementSchedule/getSchedule.js";
-import { getRequestController } from "../controllers/requestFollow/getReqFollowController.js";
-import { createRequestController } from "../controllers/requestFollow/createReqFollowCtrl.js";
 import getAllSchedulesByUserController from "../controllers/scheduling/getAllSchedulesByUserController.js";
 import createOnboardingController from "../controllers/onbording/createOnbording.js";
 import createPatientMedReqCtrl from "../controllers/patient/patientMedicaReq/createPatientMedReqCtrl.js";
@@ -143,7 +137,6 @@ const userRouter = Router();
 const getPatientsRouter = Router();
 const physicianRouter = Router();
 const getPatientsFilterRouter = Router();
-const requestUserContactRouter = Router();
 const catalogsRouter = Router();
 const schedulingRouter = Router();
 const medicalEventRouter = Router();
@@ -161,7 +154,6 @@ const sociodemographicDetailsRouter = Router();
 const backgroundsRouter = Router();
 const alarmRouter = Router();
 const preConsultationRouter = Router();
-const requestFollowRouter = Router();
 const onbordingRouter = Router();
 const getAllNotificationsPatienRouter = Router();
 const getAllNotificationsPhysicianRouter = Router();
@@ -363,16 +355,6 @@ physicianRouter
 //* Catalogs
 catalogsRouter.get("/catalog/get-catalog", getCatalogController);
 
-//* User contact request
-requestUserContactRouter
-  .route("/requestUserContact")
-  .post(postUserContactController)
-  .get(getAllUserContactController);
-requestUserContactRouter
-  .route("/requestUserContact/:id")
-  .patch(patchResolveUserContactController)
-  .get(getUserContactController);
-
 //* Scheduling
 schedulingRouter
   .route("/schedules")
@@ -538,11 +520,6 @@ doctorScheduleRouter
   .patch(updateSchedule)
   .delete(deleteSchedule);
 
-requestFollowRouter
-  .route("/requestFollow")
-  .get(getRequestController)
-  .post(createRequestController);
-
 statisticsRouter.get(
   "/deprecatedstatistics-genre",
   getGenderDistributionController
@@ -605,7 +582,6 @@ export {
   getPatientsFilterRouter,
   userRouter,
   catalogsRouter,
-  requestUserContactRouter,
   schedulingRouter,
   medicalEventRouter,
   vitalSignsRouter,
