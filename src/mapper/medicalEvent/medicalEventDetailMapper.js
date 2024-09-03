@@ -15,11 +15,11 @@ export const mapMedicalEventDetail = (medicalEvent) => {
   const painMapArray = (medicalEvent?.patientPainMaps ?? [])
     .concat(medicalEvent?.appSch?.patientPainMaps ?? [])
     .map((painMap) => mapPainMap(painMap));
-
   return {
     medicalEventId: medicalEvent?.id ?? null,
     // // Datos del paciente
-
+    patientStudies:medicalEvent?.appSch?.appointmentStudies,
+    ProvisionalPreConsultationSchedule:medicalEvent?.appSch?.ProvisionalPreConsultationSchedule,
     // Datos del paciente
     patient: {
       id: medicalEvent?.appSch?.patientUser?.id ?? null,

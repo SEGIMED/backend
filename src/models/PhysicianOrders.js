@@ -55,9 +55,12 @@ const model = (sequelize) => {
         field: "request_patient_id",
       },
       diagnostic: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        field: "diagnostic",
+        type: DataTypes.INTEGER,
+        allowNull:false,
+        references: {
+          model:"sub_categories_cie_diez",
+          key:"id"
+        }
       },
       additionalText: {
         type: DataTypes.TEXT,

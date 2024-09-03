@@ -38,7 +38,9 @@ import {
   PatientPainMap,
   PatientPhysicalExamination,
   PatientPulmonaryHypertensionGroup,
+  PatientStudies,
   PatientSurgicalRisk,
+  ProvisionalPreConsultation,
   SociodemographicDetails,
   TherapyPrescription,
   User,
@@ -47,6 +49,7 @@ import {
 
 import { mapMedicalEventDetail } from "../../mapper/medicalEvent/medicalEventDetailMapper.js";
 import { consultationVitalSignsMapper } from "../../mapper/patient/consultationVitalSignsMapper.js";
+import { model } from "mongoose";
 
 const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
   const query = {
@@ -78,6 +81,14 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
         model: AppointmentScheduling,
         as: "appSch",
         include: [
+          {
+            model: ProvisionalPreConsultation,
+            as: "ProvisionalPreConsultationSchedule",
+          },
+          {
+            model: PatientStudies,
+            as: "appointmentStudies",
+          },
           {
             model: User,
             as: "patientUser",

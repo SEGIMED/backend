@@ -10,6 +10,7 @@ export const mapMedicalEventEvolution = (medicalEvent) => {
   return {
     timestamp: medicalEvent.appSch?.scheduledStartTimestamp, //
     chiefComplaint: medicalEvent.appSch?.reasonForConsultation,
+   
     physician: {
       id: medicalEvent.appSch?.physicianThatAttend?.id,
       name: medicalEvent.appSch?.physicianThatAttend?.name,
@@ -31,11 +32,11 @@ export const mapMedicalEvent = (medicalEvent) => {
   return {
     medicalEventId: medicalEvent.id,
     timestamp: medicalEvent.appSch.scheduledStartTimestamp,
-
+    patientStudies: medicalEvent?.appSch?.appointmentStudies,
     //motivo de consulta
     chiefComplaint: medicalEvent.appSch.reasonForConsultation,
     status: medicalEvent.appSch.schedulingStatus,
-    
+    ProvisionalPreConsultationSchedule:medicalEvent?.appSch?.ProvisionalPreConsultationSchedule,
     // grupo HTP hipertensión pulmonar
     patientHpGroups: medicalEvent.appSch?.patientUser?.userHpGroups?.map((hpGroup) => {      return {
           group: hpGroup?.catHpGroup?.name ?? null,

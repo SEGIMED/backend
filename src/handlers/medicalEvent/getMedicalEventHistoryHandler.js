@@ -33,8 +33,10 @@ import {
   PatientPainMap,
   PatientPhysicalExamination,
   PatientPulmonaryHypertensionGroup,
+  PatientStudies,
   PatientSurgicalRisk,
   PhysicianAttendancePlace,
+  ProvisionalPreConsultation,
   User,
   VitalSignDetails,
 } from "../../databaseConfig.js";
@@ -68,6 +70,14 @@ const getMedicalEventHistoryHandler = async (
           as: "appSch",
           where: filters,
           include: [
+            {
+              model: ProvisionalPreConsultation,
+              as: "ProvisionalPreConsultationSchedule",
+            },
+            {
+              model: PatientStudies,
+              as: "appointmentStudies",
+            },
             {
               model: User,
               as: "patientUser",
