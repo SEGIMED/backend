@@ -39,6 +39,7 @@ import {
   PatientPhysicalExamination,
   PatientPulmonaryHypertensionGroup,
   PatientSurgicalRisk,
+  ProvisionalPreConsultation,
   SociodemographicDetails,
   TherapyPrescription,
   User,
@@ -78,6 +79,10 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
         model: AppointmentScheduling,
         as: "appSch",
         include: [
+          {
+            model: ProvisionalPreConsultation,
+            as: "ProvisionalPreConsultationSchedule",
+          },
           {
             model: User,
             as: "patientUser",
