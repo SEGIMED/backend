@@ -7,7 +7,6 @@ const getAnamnesisHandler = async (patientId, page, limit) => {
     const response = await models.MedicalEvent.findAll({
       attributes: [
         "id",
-        "chiefComplaint",
         "historyOfPresentIllness",
         "reviewOfSystems",
       ],
@@ -16,17 +15,12 @@ const getAnamnesisHandler = async (patientId, page, limit) => {
           model: models.AppointmentScheduling,
           as: "appSch",
           where: { patient: patientId, schedulingStatus: 2 },
-          attributes: ["patient", "scheduledStartTimestamp"],
+          attributes: ["patient", "scheduledStartTimestamp", "reasonForConsultation"],
           include: [
             {
               model: models.User,
-              as: "physicianThatAttend",
-              attributes: ["id", "name", "lastname"],
-            },
-            {
-              model: models.User,
               as: "patientUser",
-              attributes: ["id", "name", "lastname"],
+              attributes: ["id"],
               include: {
                 model: models.PatientPulmonaryHypertensionGroup,
                 as: "userHpGroups",
@@ -39,6 +33,10 @@ const getAnamnesisHandler = async (patientId, page, limit) => {
                   },
                 ],
               },
+            },
+            {
+              model: models.PhysicianAttendancePlace,
+              as: "attendancePlace",
             },
           ],
         },
