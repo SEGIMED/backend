@@ -17,7 +17,6 @@ const createOrderPhysicianCtrl = async (req, res) => {
         body.bodyMedicam,
         transaction
       );
-      console.log(responseMed);
     }
 
     // confirmamos la transaccion

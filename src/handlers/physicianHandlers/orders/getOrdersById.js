@@ -8,11 +8,19 @@ const getOrdersByIdHandlersPhysician = async (orderId) => {
       where: {
         id: orderId,
       },
+      attributes:{
+        exclude:["diagnostic"]
+      },
       include: [
         {
           model: models.User,
           as: "patient",
           attributes: ["name", "lastname"],
+        },
+        {
+          model: models.SubCategoriesCieDiez,
+          as: "orderDiagnostic",
+          attributes:["code", "description"]
         },
         {
           model: models.User,

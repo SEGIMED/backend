@@ -33,7 +33,6 @@ import CatCountryModel from "./models/CatCountry.js";
 import PhysicianAttendancePlaceModel from "./models/PhysicianAttendancePlace.js";
 import PhysicianMedicalRegistryModel from "./models/PhysicianMedicalRegistry.js";
 import CatMedicalRegistrationTypeModel from "./models/CatMedicalRegistrationType.js";
-import RequestPatientContactModel from "./models/RequestPatientContact.js";
 import CatProvinceModel from "./models/CatProvince.js";
 import CatDiseaseModel from "./models/CatDisease.js";
 import CatDrugModel from "./models/CatDrug.js";
@@ -82,7 +81,6 @@ import DoctorScheduleModel from "./models/DoctorSchedule.js";
 import CatCenterAttetionModel from "./models/CatCenterAttention.js";
 import PhysicianFavoritePatientModel from "./models/PhysicianFavoritePatient.js";
 import RefreshTokenModel from "./models/RefreshToken.js";
-import RequestFollowModel from "./models/RequestFollow.js";
 import PhysicianOnboardingModel from "./models/PhysicianOnboarding.js";
 import AttendentPlaceModel from "./models/AttendentPlace.js";
 import CatRouteOfAdministrationModel from "./models/CatRouteOfAdministration.js";
@@ -166,7 +164,6 @@ PhysicianDetailsModel(sequelize);
 PhysicianAttendancePlaceModel(sequelize);
 CatMedicalRegistrationTypeModel(sequelize);
 PhysicianMedicalRegistryModel(sequelize);
-RequestPatientContactModel(sequelize);
 CatDiseaseModel(sequelize);
 CatDrugPresentationModel(sequelize);
 CatDrugModel(sequelize);
@@ -214,7 +211,6 @@ DoctorScheduleModel(sequelize);
 CatCenterAttetionModel(sequelize);
 PhysicianFavoritePatientModel(sequelize);
 RefreshTokenModel(sequelize);
-RequestFollowModel(sequelize);
 PhysicianOnboardingModel(sequelize);
 AttendentPlaceModel(sequelize);
 CatRouteOfAdministrationModel(sequelize);
@@ -265,7 +261,6 @@ export const {
   PhysicianAttendancePlace,
   PhysicianMedicalRegistry,
   CatMedicalRegistrationType,
-  RequestPatientContact,
   CatProvince,
   CatDisease,
   CatDrug,
@@ -314,7 +309,6 @@ export const {
   PhysicianFavoritePatient,
   CatCenterAttention,
   RefreshToken,
-  RequestFollow,
   PhysicianOnboarding,
   AttendentPlace,
   CatRouteOfAdministration,
@@ -618,14 +612,6 @@ User.belongsTo(CatCountry, {
   foreignKey: "nationality",
 });
 // CatCountry.hasMany(User, {as: "users", foreignKey: "nationality"});
-User.hasMany(RequestPatientContact, {
-  as: "requestPatientContact",
-  foreignKey: "requestingUserId",
-});
-RequestPatientContact.belongsTo(User, {
-  as: "requestPatientContact",
-  foreignKey: "requestingUserId",
-});
 PhysicianMedicalRegistry.belongsTo(CatMedicalRegistrationType, {
   as: "medicalRegistrationType",
   foreignKey: "registryType",
@@ -1263,12 +1249,6 @@ CatCenterAttention.hasMany(AppointmentScheduling, {
 CatCenterAttention.belongsTo(CatCity, { foreignKey: "city" });
 CatCity.hasMany(CatCenterAttention, { foreignKey: "city" });
 
-User.hasMany(RequestFollow, { foreignKey: "userSend" });
-User.hasMany(RequestFollow, { foreignKey: "userReceptor" });
-
-RequestFollow.belongsTo(User, { foreignKey: "userSend" });
-RequestFollow.belongsTo(User, { foreignKey: "userReceptor" });
-
 User.hasOne(PhysicianOnboarding, { foreignKey: "idPhysician" });
 PhysicianOnboarding.belongsTo(User, { foreignKey: "idPhysician" });
 PhysicianOnboarding.belongsTo(CatGenre, { foreignKey: "genre" });
@@ -1455,14 +1435,14 @@ PatientStudies.belongsTo(CatStudyType, {
   as: "CatStudyTypePatientStudies",
   foreignKey: "studyType",
 });
-AppointmentScheduling.hasMany(PatientStudies,{
+AppointmentScheduling.hasMany(PatientStudies, {
   as: "appointmentStudies",
-  foreignKey:"schedule"
-})
-PatientStudies.belongsTo(AppointmentScheduling,{
+  foreignKey: "schedule",
+});
+PatientStudies.belongsTo(AppointmentScheduling, {
   as: "patientStudies",
-  foreignKey:"schedule"
-})
+  foreignKey: "schedule",
+});
 User.hasMany(PhysicianOrders, {
   foreignKey: "physicianId",
   as: "OrdersPhysician",
@@ -1499,6 +1479,16 @@ PrescriptionModificationsHistory.belongsTo(PhysicianOrders, {
   foreignKey: "medicalOrderId",
   as: "medicalOrder",
 });
+
+PhysicianOrders.belongsTo(SubCategoriesCieDiez,{
+  foreignKey:"diagnostic",
+  as:"orderDiagnostic"
+})
+SubCategoriesCieDiez.hasOne(PhysicianOrders,{
+  foreignKey:"diagnostic",
+  as:"physicianOrder"
+})
+
 SelfEvaluationEvent.belongsTo(User, {
   foreignKey: "patient",
   as: "patientUser",
@@ -1556,7 +1546,6 @@ const models = {
   PhysicianAttendancePlace,
   PhysicianMedicalRegistry,
   CatMedicalRegistrationType,
-  RequestPatientContact,
   CatProvince,
   CatDisease,
   CatDrug,
@@ -1604,7 +1593,6 @@ const models = {
   PhysicianFavoritePatient,
   CatCenterAttention,
   RefreshToken,
-  RequestFollow,
   PhysicianOnboarding,
   CatRouteOfAdministration,
   CatCommercialNameDrug,
