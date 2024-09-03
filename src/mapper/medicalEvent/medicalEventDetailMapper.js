@@ -18,6 +18,7 @@ export const mapMedicalEventDetail = (medicalEvent) => {
   return {
     medicalEventId: medicalEvent?.id ?? null,
     // // Datos del paciente
+    patientStudies:medicalEvent?.appSch?.appointmentStudies,
     ProvisionalPreConsultationSchedule:medicalEvent?.appSch?.ProvisionalPreConsultationSchedule,
     // Datos del paciente
     patient: {

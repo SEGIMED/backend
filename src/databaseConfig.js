@@ -1455,7 +1455,14 @@ PatientStudies.belongsTo(CatStudyType, {
   as: "CatStudyTypePatientStudies",
   foreignKey: "studyType",
 });
-
+AppointmentScheduling.hasMany(PatientStudies,{
+  as: "appointmentStudies",
+  foreignKey:"schedule"
+})
+PatientStudies.belongsTo(AppointmentScheduling,{
+  as: "patientStudies",
+  foreignKey:"schedule"
+})
 User.hasMany(PhysicianOrders, {
   foreignKey: "physicianId",
   as: "OrdersPhysician",

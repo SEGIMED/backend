@@ -32,7 +32,7 @@ export const mapMedicalEvent = (medicalEvent) => {
   return {
     medicalEventId: medicalEvent.id,
     timestamp: medicalEvent.appSch.scheduledStartTimestamp,
-
+    patientStudies: medicalEvent?.appSch?.appointmentStudies,
     //motivo de consulta
     chiefComplaint: medicalEvent.appSch.reasonForConsultation,
     status: medicalEvent.appSch.schedulingStatus,

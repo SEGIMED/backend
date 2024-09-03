@@ -33,6 +33,7 @@ import {
   PatientPainMap,
   PatientPhysicalExamination,
   PatientPulmonaryHypertensionGroup,
+  PatientStudies,
   PatientSurgicalRisk,
   PhysicianAttendancePlace,
   ProvisionalPreConsultation,
@@ -72,6 +73,10 @@ const getMedicalEventHistoryHandler = async (
             {
               model: ProvisionalPreConsultation,
               as: "ProvisionalPreConsultationSchedule",
+            },
+            {
+              model: PatientStudies,
+              as: "appointmentStudies",
             },
             {
               model: User,
