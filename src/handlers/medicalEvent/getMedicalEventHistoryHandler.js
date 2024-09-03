@@ -39,9 +39,17 @@ import {
   VitalSignDetails,
 } from "../../databaseConfig.js";
 import { mapMedicalEvent } from "../../mapper/medicalEvent/medicalEventMapper.js";
+import interconsultationsMapper from "../../mapper/interconsultation/interconsultationsMapper.js";
 import { consultationVitalSignsMapper } from "../../mapper/patient/consultationVitalSignsMapper.js";
+import getInterconsultationsByPatientIdHandler from "./getInterconsultationsByPatientIdHandler.js";
+import universalPaginationHandler from "../Pagination/universalPaginationHandler.js";
 
-const getMedicalEventHistoryHandler = async (patientId, physicianId) => {
+const getMedicalEventHistoryHandler = async (
+  patientId,
+  physicianId,
+  page,
+  limit
+) => {
   try {
     const filters = {
       schedulingStatus: 2, // 2 = atendida
@@ -109,23 +117,23 @@ const getMedicalEventHistoryHandler = async (patientId, physicianId) => {
             },
             {
               model: PatientPainMap,
-              as: "patientPainMaps",
+              as: "patientPainMap",
               include: [
                 {
                   model: CatPainDuration,
-                  as: "catPainDuration",
+                  as: "painDurationDetail",
                 },
                 {
                   model: CatPainType,
-                  as: "catPainType",
+                  as: "painTypeDetail",
                 },
                 {
                   model: CatPainScale,
-                  as: "catPainScale",
+                  as: "painScaleDetail",
                 },
                 {
                   model: CatPainFrequency,
-                  as: "catPainFrequency",
+                  as: "painFrequencyDetail",
                 },
                 {
                   model: User,
@@ -177,23 +185,23 @@ const getMedicalEventHistoryHandler = async (patientId, physicianId) => {
         },
         {
           model: PatientPainMap,
-          as: "patientPainMaps",
+          as: "patientPainMap",
           include: [
             {
               model: CatPainDuration,
-              as: "catPainDuration",
+              as: "painDurationDetail",
             },
             {
               model: CatPainType,
-              as: "catPainType",
+              as: "painTypeDetail",
             },
             {
               model: CatPainScale,
-              as: "catPainScale",
+              as: "painScaleDetail",
             },
             {
               model: CatPainFrequency,
-              as: "catPainFrequency",
+              as: "painFrequencyDetail",
             },
             {
               model: User,
@@ -283,10 +291,24 @@ const getMedicalEventHistoryHandler = async (patientId, physicianId) => {
         },
       ],
     });
+
     const medicalEvent = medicalEventHistory.map((medicalEvent) =>
       mapMedicalEvent(medicalEvent)
     );
-    return medicalEvent;
+
+    const interconsultations = await getInterconsultationsByPatientIdHandler(
+      patientId
+    );
+    const interconsultasArray = interconsultationsMapper(interconsultations);
+    if (page && limit) {
+      return universalPaginationHandler(
+        medicalEvent.concat(interconsultasArray),
+        page,
+        limit
+      );
+    } else {
+      return medicalEvent.concat(interconsultasArray);
+    }
   } catch (error) {
     throw new Error("Error loading physician: " + error.message);
   }

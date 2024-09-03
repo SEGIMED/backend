@@ -6,7 +6,7 @@ const updatePhysicianController = async (req, res) => {
         const updatedFullPhysician = await updateFullPhysicianHandler(req.body)
         return res.status(200).json(updatedFullPhysician);
     } catch (error) {
-        throw new SegimedAPIError(error, 500)
+        throw new SegimedAPIError(error.message, 500)
     }
 };
 

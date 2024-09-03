@@ -15,19 +15,19 @@ const getAllProvisionaPreConsultationHandler = async (patientId) => {
             include: [
               {
                 model: models.CatPainDuration,
-                as: "catPainDuration",
-              },
-              {
-                model: models.CatPainScale,
-                as: "catPainScale",
+                as: "painDurationDetail",
               },
               {
                 model: models.CatPainType,
-                as: "catPainType",
+                as: "painTypeDetail",
+              },
+              {
+                model: models.CatPainScale,
+                as: "painScaleDetail",
               },
               {
                 model: models.CatPainFrequency,
-                as: "catPainFrequency",
+                as: "painFrequencyDetail",
               },
               {
                 model: models.User,

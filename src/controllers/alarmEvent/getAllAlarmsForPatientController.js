@@ -15,12 +15,11 @@ const getAllAlarmsForPatientController = async (req, res) => {
       );
       return res.status(200).json(allAlarmsForPatientId);
     } else {
-      const allAlarmsForPatient = await getAllAlarmsForPatientHandler(
-        patientId
-      );
+      const allAlarmsForPatient = await getAllAlarmsForPatientHandler();
       return res.status(200).json(allAlarmsForPatient);
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: error.message });
   }
 };

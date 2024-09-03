@@ -1,15 +1,17 @@
-# SEGIMED-server
+# SEGIMED-SERVER
 This repository contains the backend of Segimed project
 
 ## Git flow
 Remember to work on your own root and ask for aproval of at least one person, before merge to development root
 
 #### To do a push on my branch
-git checkout -b feature/nueva-funcionalidad        I creates a new branch
-git pull origin development                        It brings all changes from development branch to this new branch
+
+git checkout development
+git pull origin development                        It brings all changes from development branch 
+git checkout -b feature/nueva-funcionalidad        I creates a new branch from development
 git add .                                                                 
 git commit -m “message here”
-git push                                           It createsthis new branch in the remote repo at github
+git push                                           It creates this new branch in the remote repo at github
 
 ## Git branch naming conventions
 **bugfix**: used when the commit fixes a bug in the application code.

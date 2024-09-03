@@ -8,6 +8,7 @@ import swaggerOptions from "./swaggerOptions.js";
 import swaggerUI from "swagger-ui-express";
 import { validateJWT } from "./utils/JWTInterceptor.js";
 import contextService from "request-context";
+import './utils/consultationCheck.js';
 
 import {
   patientRouter,
@@ -38,7 +39,11 @@ import {
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
   doctorScheduleRouter,
-  centerAttRouter
+  // centerAttRouter,
+  interconsultationRouter,
+  interconsultationDetailsRouter,
+  medicalHistoryRouter,
+  selfEvaluationEventRouter
 } from "./routes/routes.js";
 
 const corsOptions = {
@@ -102,7 +107,11 @@ app.use("/api", onbordingRouter);
 app.use("/api", getAllNotificationsPatienRouter);
 app.use("/api", getAllNotificationsPhysicianRouter);
 app.use("/api", notificationsRouter);
-app.use("/api", centerAttRouter);
+
+app.use("/api", interconsultationRouter);
+app.use("/api", interconsultationDetailsRouter);
+app.use("/api/medical-history", medicalHistoryRouter)
+app.use("/api/self-evaluation-event", selfEvaluationEventRouter)
 
 app.use("/api/doc", swaggerUI.serve, swaggerUI.setup(swaggerOptions));
 

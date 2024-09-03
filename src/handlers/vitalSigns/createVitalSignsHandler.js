@@ -2,7 +2,8 @@ import { VitalSignDetails } from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import moment from "moment-timezone";
 import contextService from "request-context";
-
+/* ya no se usa mas en la ruta /vital-signs/create-vital-sign
+buscar /handlers/medicalHistory/createVitalSignsHandler.js */
 const newVitalSignHandler = async (body) => {
   const { vitalSignsToCreate, patient, appointmentSchedule } = body;
 
@@ -10,7 +11,9 @@ const newVitalSignHandler = async (body) => {
     // Verificar si ya existen signos vitales para los measureType y appointmentSchedule proporcionados
     const existingVitalSigns = await VitalSignDetails.findAll({
       where: {
-        measureType: vitalSignsToCreate.map((vitalSign) => vitalSign.measureType),
+        measureType: vitalSignsToCreate.map(
+          (vitalSign) => vitalSign.measureType
+        ),
         scheduling: appointmentSchedule,
       },
     });
@@ -34,20 +37,24 @@ const newVitalSignHandler = async (body) => {
     }
 
     // Mapear los signos vitales para la creación
-    const mappedVitalSignsToCreate = uniqueVitalSignsToCreate.map((vitalSign) => {
-      return {
-        patient: patient,
-        measure: vitalSign.measure,
-        measureSource: contextService.get("request:user").userId,
-        measureType: vitalSign.measureType,
-        measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-        scheduling: appointmentSchedule,
-        medicalEvent: vitalSign.medicalEventId,
-      };
-    });
+    const mappedVitalSignsToCreate = uniqueVitalSignsToCreate.map(
+      (vitalSign) => {
+        return {
+          patient: patient,
+          measure: vitalSign.measure,
+          measureSource: contextService.get("request:user").userId,
+          measureType: vitalSign.measureType,
+          measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
+          scheduling: appointmentSchedule,
+          medicalEvent: vitalSign.medicalEventId,
+        };
+      }
+    );
 
     // Crear signos vitales
-    const createdVitalSigns = await VitalSignDetails.bulkCreate(mappedVitalSignsToCreate);
+    const createdVitalSigns = await VitalSignDetails.bulkCreate(
+      mappedVitalSignsToCreate
+    );
     return createdVitalSigns;
   } catch (error) {
     throw new SegimedAPIError(

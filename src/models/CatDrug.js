@@ -14,27 +14,6 @@ const model = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
             unique: "cat_medicine_name_uk"
-        },
-        composition: {
-            type: DataTypes.TEXT,
-            allowNull: true
-        },
-        presentation: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'cat_drug_presentation',
-                key: 'id'
-            }
-        },
-        defaultDose: {
-            type: DataTypes.STRING(255),
-            allowNull: true,
-            field: 'default_dose'
-        },
-        laboratory: {
-            type: DataTypes.STRING(255),
-            allowNull: true
         }
     }, {
         tableName: 'cat_drug',

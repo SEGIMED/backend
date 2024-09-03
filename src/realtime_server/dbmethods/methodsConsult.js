@@ -16,7 +16,7 @@ export async function getDataConsult(id){
               {
                 model: User,
                 as: "patientUser",
-                attributes: ["name", "lastname", "avatar"],
+                attributes: ["name", "lastname", "avatar","role","id"],
                 include: [
                   {
                     model: PatientPulmonaryHypertensionRisk,
@@ -33,14 +33,13 @@ export async function getDataConsult(id){
               {
                 model: User,
                 as: "physicianThatAttend",
-                attributes: ["name", "lastname", "avatar"],
+                attributes: ["name", "lastname", "avatar","role","id"],
               },
             ],
           });
-         
           const {patient, physician} = consultData.dataValues
 
-          return {id, users:[patient,physician]}
+          return {id, users:[patient,physician], patient:consultData.dataValues.patientUser.dataValues, physician:consultData.dataValues.physicianThatAttend.dataValues}
         
     } catch (error) {
         console.log(error.message)

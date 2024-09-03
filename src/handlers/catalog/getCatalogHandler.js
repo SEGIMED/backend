@@ -37,6 +37,10 @@ import {
     CatPainType,
     CatSurgicalRisk,
     CatPulmonaryHypertensionGroup,
+    CatCenterAttention,
+    CatRouteOfAdministration,
+    CatStudyType,
+
 
 } from "../../databaseConfig.js";
 
@@ -122,7 +126,14 @@ const getCatalogHandler = async (catalogName) => {
                 return await CatSurgicalRisk.findAll()
             case 'HP_GROUPS':
                 return await CatPulmonaryHypertensionGroup.findAll()
-
+            case 'CENTER_ATT':
+                return await CatCenterAttention.findAll()
+            case 'ROUTE_OF_ADMINISTRATION':
+                return await CatRouteOfAdministration.findAll()
+            case 'STUDY_TYPE':
+                return await CatStudyType.findAll()
+            case 'PRESENTATION':
+                return await CatDrugPresentation.findAll()
 
             default:
                 throw new SegimedAPIError("El catálogo solicitado no fue encontrado", 404)

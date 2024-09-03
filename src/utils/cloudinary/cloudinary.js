@@ -36,8 +36,7 @@ export async function loadFile(url) {
       url,
       async function (error, result) {
         if (error) {
-          console.log(error);
-          return error;
+          return error.message;
         } else {
           return result;
         }
@@ -45,9 +44,53 @@ export async function loadFile(url) {
     );
     return uploadResult;
   } catch (error) {
-    console.log(error);
-    return error;
+    console.log("ERROR", error.message);
+    throw error;
   }
+}
+
+export async function loadStudiesInterconsultation(
+  files, //array que contiene objetos  1 o mas archivos  {data = "archivo en base64", name : "nombredel archivo"}
+  maxConcurrentUploads = 5 //define el maximo de upload simultaneo ya que puede traer problemas con cloudinary
+) {
+  let resultURLs = []; // guardo las url exitosas, pueden no estar en orden
+  let failedUploads = []; // guardo los problemas que puedan surgir por si algun archivo no sube.
+
+  if (files && Array.isArray(files)) {
+    const uploadPromises = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const data = files[i];
+
+      const uploadPromise = loadFile(data.data)
+        .then((result) => {
+          resultURLs.push({ name: data.name, url: result.secure_url });
+        })
+        .catch((error) => {
+          throw error;
+          failedUploads.push({ name: data.name, error: error.message });
+        });
+
+      uploadPromises.push(uploadPromise);
+
+      // Control de concurrencia
+      if (uploadPromises.length >= maxConcurrentUploads) {
+        await Promise.all(uploadPromises); // Espera a que se completen las subidas actuales
+        uploadPromises.length = 0; // Vacía el array para la siguiente tanda de subidas
+      }
+    }
+
+    // Subir los archivos restantes si quedaron promesas pendientes
+    if (uploadPromises.length > 0) {
+      await Promise.all(uploadPromises);
+    }
+  }
+
+  // Devolver las URLs exitosas y los errores de subida
+  return {
+    success: resultURLs,
+    failed: failedUploads,
+  };
 }
 
 // Optimize delivery by resizing and applying auto-format and auto-quality
