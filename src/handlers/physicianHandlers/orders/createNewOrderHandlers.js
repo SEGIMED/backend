@@ -20,7 +20,12 @@ const createNewOrderHandler = async (body, transaccion) => {
 
   // validamos el body de la solicitud
   validationBodyOrderPhysician(body);
-  const file = await loadFile(orderPdf);
+  let file;
+
+  // Validamos si existe un orderPdf antes de intentar cargar el archivo
+  if (orderPdf) {
+    file = await loadFile(orderPdf);
+  }
   if (requestPatientId) {
     await models.PatientMedicalReq.update(
       {
