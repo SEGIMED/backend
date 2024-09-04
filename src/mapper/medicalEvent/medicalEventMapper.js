@@ -96,9 +96,7 @@ export const mapMedicalEvent = (medicalEvent) => {
 
     ///DIAGNÓSTICOS Y TRATAMIENTOS
     //Diagnósticos
-    diagnostics: medicalEvent.patientDiagnostics.map((diagnostic) =>
-      mapPatientDiagnostic(diagnostic)
-    ),
+    diagnostics: medicalEvent.diagnosedDisease,
 
     // Medicamentos recetados
     drugPrescriptions: medicalEvent.drugPrescriptions.map((drugPrescription) =>
