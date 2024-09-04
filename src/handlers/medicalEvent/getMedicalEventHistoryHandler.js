@@ -37,6 +37,7 @@ import {
   PatientSurgicalRisk,
   PhysicianAttendancePlace,
   ProvisionalPreConsultation,
+  SubCategoriesCieDiez,
   User,
   VitalSignDetails,
 } from "../../databaseConfig.js";
@@ -261,7 +262,7 @@ const getMedicalEventHistoryHandler = async (
           as: "patientDiagnostics",
           separate: true,
           include: {
-            model: CatDisease,
+            model: SubCategoriesCieDiez,
             as: "diagnosedDisease",
           },
         },
