@@ -131,6 +131,10 @@ import createRegisterCie10Ctrl from "../controllers/cieDiezCtrl/createRegisterCi
 import getCatAndSubCatCtrl from "../controllers/cieDiezCtrl/getCat&SubCatCie10Ctrl.js";
 import updateStatusSchedulingCtrl from "../controllers/scheduling/updateStatusSchedulingCtrl.js";
 import searchCIEController from "../controllers/cieDiezCtrl/searchCIEController.js";
+import { updateTreatingPhysicianController } from "../controllers/requestTreatingPhysician/updateTreatingPhysicianController.js";
+import { createRequestController } from "../controllers/requestTreatingPhysician/requestTreatingPhysicianController.js";
+import { deleteRequestController } from "../controllers/requestTreatingPhysician/deleteTreatingPhysicianController.js";
+import { getRequestController } from "../controllers/requestTreatingPhysician/getTreatingPhysicianCOntroller.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -163,6 +167,7 @@ const interconsultationRouter = Router();
 const interconsultationDetailsRouter = Router();
 const medicalHistoryRouter = Router();
 const selfEvaluationEventRouter = Router();
+const treatingPhysicianRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -575,6 +580,15 @@ selfEvaluationEventRouter
   .get(getPainMapController)
   .post(physicalSelfEvaluationController);
 
+
+  //* Treating Physician Request
+  treatingPhysicianRouter
+  .route("/request")
+  .get(getRequestController)
+  .post(createRequestController)
+  .patch(updateTreatingPhysicianController)
+  .delete(deleteRequestController)
+
 export {
   getPatientsRouter,
   patientRouter,
@@ -607,4 +621,5 @@ export {
   interconsultationDetailsRouter,
   medicalHistoryRouter,
   selfEvaluationEventRouter,
+  treatingPhysicianRouter
 };
