@@ -67,6 +67,10 @@ const getMedicalEventHistoryHandler = async (
     const medicalEventHistory = await MedicalEvent.findAll({
       include: [
         {
+          model: SubCategoriesCieDiez,
+          as: "diagnosedDisease",
+        },
+        {
           model: AppointmentScheduling,
           as: "appSch",
           where: filters,
@@ -255,15 +259,6 @@ const getMedicalEventHistoryHandler = async (
           include: {
             model: CatDiagnosticTestType,
             as: "catDiagnosticTestType",
-          },
-        },
-        {
-          model: PatientDiagnostic,
-          as: "patientDiagnostics",
-          separate: true,
-          include: {
-            model: SubCategoriesCieDiez,
-            as: "diagnosedDisease",
           },
         },
         {
