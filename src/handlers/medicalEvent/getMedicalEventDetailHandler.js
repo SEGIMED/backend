@@ -42,6 +42,7 @@ import {
   PatientSurgicalRisk,
   ProvisionalPreConsultation,
   SociodemographicDetails,
+  SubCategoriesCieDiez,
   TherapyPrescription,
   User,
   VitalSignDetails,
@@ -58,13 +59,8 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
     },
     include: [
       {
-        model: PatientDiagnostic,
-        as: "patientDiagnostics",
-        separate: true,
-        include: {
-          model: CatDisease,
-          as: "diagnosedDisease",
-        },
+        model: SubCategoriesCieDiez,
+        as: "diagnosedDisease",
       },
       {
         model: DrugPrescription,
@@ -333,6 +329,7 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
       },
     ],
   };
+
   try {
     if (typeof medicalEventId !== "undefined") {
       query.where[Op.or].push({ id: medicalEventId });

@@ -56,6 +56,14 @@ const model = (sequelize) => {
         allowNull: true,
         field: "alarm_pattern",
       },
+      diagnostic: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "subcategories_cie_diez",
+          key: "id",
+        },
+      },
     },
     {
       tableName: "medical_event",

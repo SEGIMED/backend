@@ -37,6 +37,7 @@ import {
   PatientSurgicalRisk,
   PhysicianAttendancePlace,
   ProvisionalPreConsultation,
+  SubCategoriesCieDiez,
   User,
   VitalSignDetails,
 } from "../../databaseConfig.js";
@@ -65,6 +66,10 @@ const getMedicalEventHistoryHandler = async (
 
     const medicalEventHistory = await MedicalEvent.findAll({
       include: [
+        {
+          model: SubCategoriesCieDiez,
+          as: "diagnosedDisease",
+        },
         {
           model: AppointmentScheduling,
           as: "appSch",
@@ -254,15 +259,6 @@ const getMedicalEventHistoryHandler = async (
           include: {
             model: CatDiagnosticTestType,
             as: "catDiagnosticTestType",
-          },
-        },
-        {
-          model: PatientDiagnostic,
-          as: "patientDiagnostics",
-          separate: true,
-          include: {
-            model: CatDisease,
-            as: "diagnosedDisease",
           },
         },
         {
