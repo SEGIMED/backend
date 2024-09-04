@@ -42,6 +42,7 @@ import {
   PatientSurgicalRisk,
   ProvisionalPreConsultation,
   SociodemographicDetails,
+  SubCategoriesCieDiez,
   TherapyPrescription,
   User,
   VitalSignDetails,
@@ -62,7 +63,7 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
         as: "patientDiagnostics",
         separate: true,
         include: {
-          model: CatDisease,
+          model: SubCategoriesCieDiez,
           as: "diagnosedDisease",
         },
       },
