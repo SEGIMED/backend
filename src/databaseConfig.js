@@ -653,13 +653,13 @@ CatProvince.belongsTo(CatCountry, {
   foreignKey: "country",
 });
 CatProvince.hasMany(CatCity, { as: "catCities", foreignKey: "province" });
-PatientDiagnostic.belongsTo(CatDisease, {
+MedicalEvent.belongsTo(SubCategoriesCieDiez, {
   as: "diagnosedDisease",
-  foreignKey: "disease",
+  foreignKey: "diagnostic",
 });
-CatDisease.hasMany(PatientDiagnostic, {
+SubCategoriesCieDiez.hasMany(MedicalEvent, {
   as: "patientDiagnostics",
-  foreignKey: "disease",
+  foreignKey: "diagnostic",
 });
 PatientMedicalBackground.belongsTo(CatDisease, {
   as: "catDisease",
