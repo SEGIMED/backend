@@ -57,7 +57,11 @@ const getDrugPrescriptionHandler = async (id) => {
             model: models.CatCommercialNameDrug,
             as: "commercialName",
             attributes: ["name"],
-          },
+          },{
+            model: models.PhysicianOrders,
+            as:"medicalOrder",
+            attributes: ["orderPdf"]
+          }
         ],
       });
       
