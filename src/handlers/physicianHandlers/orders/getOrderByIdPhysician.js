@@ -7,7 +7,7 @@ const getOrderByIdPhysician = async (rol, userId) => {
       where: {
         [rol]: userId,
       },
-      attributes: ["id", "orderTypes", "date", "orderPdf"],
+      attributes: ["id", "orderTypes", "date"],
       include: [
         {
           model: models.User,

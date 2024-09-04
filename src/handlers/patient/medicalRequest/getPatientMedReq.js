@@ -1,18 +1,10 @@
 import models from "../../../databaseConfig.js";
 import SegimedAPIError from "../../../error/SegimedAPIError.js";
 
-const getPatientMedReq = async (field, userId, status) => {
+const getPatientMedReq = async (field, userId) => {
   try {
-    // Construir el objeto where dinámicamente
-    const whereClause = { [field]: userId };
-
-    // Agregar el filtro de status si se proporciona
-    if (status !== undefined) {
-      whereClause.status = status;
-    }
-
     const patientMedReq = await models.PatientMedicalReq.findAll({
-      where: whereClause,
+      where: { [field]: userId },
       include: [
         {
           model: models.User,
@@ -26,7 +18,6 @@ const getPatientMedReq = async (field, userId, status) => {
         },
       ],
     });
-
     return patientMedReq;
   } catch (error) {
     throw new SegimedAPIError("Error fetching patient medical request", 500);
