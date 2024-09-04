@@ -97,6 +97,7 @@ import PatientStudiesModel from "./models/PatientStudies.js";
 import SelfEvaluationEventModel from "./models/SelfEvaluationEvent.js";
 import CategoryCieDiezModel from "./models/CategoryCieDiez.js";
 import SubcategoriesCieDiezModel from "./models/SubCategoriesCieDiez.js";
+import RequestTreatingPhysicianModel from "./models/requestTreatingPhysician.js";
 
 // import
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
@@ -227,6 +228,7 @@ PatientStudiesModel(sequelize);
 SelfEvaluationEventModel(sequelize);
 CategoryCieDiezModel(sequelize);
 SubcategoriesCieDiezModel(sequelize);
+RequestTreatingPhysicianModel(sequelize);
 
 export const {
   DiagnosticTest,
@@ -325,6 +327,7 @@ export const {
   SelfEvaluationEvent,
   CategoryCieDiez,
   SubCategoriesCieDiez,
+  RequestTreatingPhysician,
 } = sequelize.models;
 
 DiagnosticTest.belongsTo(AppointmentScheduling, {
@@ -1249,7 +1252,7 @@ CatCenterAttention.hasMany(AppointmentScheduling, {
 CatCenterAttention.belongsTo(CatCity, { foreignKey: "city" });
 CatCity.hasMany(CatCenterAttention, { foreignKey: "city" });
 
-User.hasOne(PhysicianOnboarding, { foreignKey: "idPhysician" });
+User.hasOne(PhysicianOnboarding, { foreignKey: "idPhysician", as:"physicianOnboarding" });
 PhysicianOnboarding.belongsTo(User, { foreignKey: "idPhysician" });
 PhysicianOnboarding.belongsTo(CatGenre, { foreignKey: "genre" });
 PhysicianOnboarding.belongsTo(CatCenterAttention, {
@@ -1263,6 +1266,14 @@ CatCenterAttention.belongsToMany(PhysicianOnboarding, {
   through: AttendentPlace,
   foreignKey: "idCenterAttention",
 });
+AttendentPlace.belongsTo(User,{
+  as:"attendancePlace",
+  foreignKey:"id_physician"
+})
+User.hasMany(AttendentPlace,{
+    as:"attendancePlace",
+  foreignKey:"id_physician"
+})
 // Relaciones del modelo MedicalInterconsultations
 
 User.hasOne(MedicalInterconsultations, {
@@ -1480,14 +1491,14 @@ PrescriptionModificationsHistory.belongsTo(PhysicianOrders, {
   as: "medicalOrder",
 });
 
-PhysicianOrders.belongsTo(SubCategoriesCieDiez,{
-  foreignKey:"diagnostic",
-  as:"orderDiagnostic"
-})
-SubCategoriesCieDiez.hasOne(PhysicianOrders,{
-  foreignKey:"diagnostic",
-  as:"physicianOrder"
-})
+PhysicianOrders.belongsTo(SubCategoriesCieDiez, {
+  foreignKey: "diagnostic",
+  as: "orderDiagnostic",
+});
+SubCategoriesCieDiez.hasOne(PhysicianOrders, {
+  foreignKey: "diagnostic",
+  as: "physicianOrder",
+});
 
 SelfEvaluationEvent.belongsTo(User, {
   foreignKey: "patient",
@@ -1511,6 +1522,25 @@ CategoryCieDiez.hasMany(SubCategoriesCieDiez, {
 SubCategoriesCieDiez.belongsTo(CategoryCieDiez, {
   foreignKey: "categoryId",
   as: "category",
+});
+
+RequestTreatingPhysician.belongsTo(User, {
+  foreignKey: "physician",
+  as: "physicianRequest",
+});
+
+RequestTreatingPhysician.belongsTo(User, {
+  foreignKey: "patient",
+  as: "patientRequest",
+});
+User.hasMany(RequestTreatingPhysician, {
+  foreignKey: "patient",
+  as: "patientRequest",
+});
+
+User.hasMany(RequestTreatingPhysician, {
+  foreignKey: "physician",
+  as: "physicianRequest",
 });
 
 const models = {
@@ -1609,6 +1639,7 @@ const models = {
   SelfEvaluationEvent,
   CategoryCieDiez,
   SubCategoriesCieDiez,
+  RequestTreatingPhysician,
 };
 
 export default models;

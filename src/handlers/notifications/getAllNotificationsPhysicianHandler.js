@@ -5,12 +5,10 @@ const getAllNotificationsPhysicianHandler = async (physicianId) => {
     let unseenNotifications;
     if (physicianId) {
       unseenNotifications = await Notify.find({
-        state: false,
         target: physicianId,
       }).exec();
     } else {
       unseenNotifications = await Notify.find({
-        state: false,
       }).exec();
     }
     if (unseenNotifications.length === 0) {
