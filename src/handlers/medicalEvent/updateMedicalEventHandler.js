@@ -5,6 +5,7 @@ import SegimedAPIError from "../../error/SegimedAPIError.js";
 const updateMedicalEventHandler = async (body) => {
     const {id} = body
     try {
+        console.log(body)
         const updateMedicalEvent = await MedicalEvent.update(
             {
                 physicianComments: body.physicianComments,
@@ -14,7 +15,8 @@ const updateMedicalEventHandler = async (body) => {
                 treatmentPlan: body.treatmentPlan,
                 pendingDiagnosticTest: body.pendingDiagnosticTest,
                 alarmPattern: body.alarmPattern,
-                diagnostic: body.diagnostic
+                diagnostic: body.diagnostic,
+                diagnostic_notes: body.diagnosticNotes
             },
             {
                 where: {

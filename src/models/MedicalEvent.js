@@ -64,6 +64,11 @@ const model = (sequelize) => {
           key: "id",
         },
       },
+      diagnosticNotes: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: "diagnostic_notes"
+      },
     },
     {
       tableName: "medical_event",
