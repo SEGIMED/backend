@@ -2,6 +2,8 @@ import { Op } from "sequelize";
 import { AppointmentScheduling, User } from "../../databaseConfig.js";
 import { sendMail } from "../sendMail.js";
 import Notify from "../../realtime_server/models/Notify.js";
+import { appointmentReminderHtml } from "../emailTemplates/appointmentReminderHtml.js";
+
 
 const scheduleReminderEmails = async () => {
   const tomorrow = new Date(); // Get base date for tomorrow
@@ -28,11 +30,7 @@ const scheduleReminderEmails = async () => {
     const patientEmail = patient.email;
     const appointmentStart = new Date(appointment.scheduledStartTimestamp);
     const appointmentSubject = "Recordatorio de cita";
-    const appointmentBody = `
-      <p>Este es un recordatorio para su próxima cita:</p>
-      <p>Fecha: ${appointmentStart.toLocaleDateString()}</p>
-      <p>Hora: ${appointmentStart.toLocaleTimeString()}</p>
-    `;
+    const appointmentBody = appointmentReminderHtml(appointmentStart)
 
     const newNotification = new Notify({
       // It sends notification for every patient to web app
