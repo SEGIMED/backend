@@ -114,6 +114,4 @@ app.use("/api/self-evaluation-event", selfEvaluationEventRouter)
 
 app.use("/api/doc", swaggerUI.serve, swaggerUI.setup(swaggerOptions));
 
-scheduleReminderEmails()
-
 export default app;

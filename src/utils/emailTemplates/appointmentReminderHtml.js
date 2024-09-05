@@ -1,5 +1,9 @@
-export const appointmentReminderHtml = (appointmentStart) =>{
-    return `<!DOCTYPE html>
+export const appointmentReminderHtml = (
+  appointmentStart,
+  physicianName,
+  attendancePlace
+) => {
+  return `<!DOCTYPE html>
 <html>
   <head>
     <title>Confirmar email</title>
@@ -128,6 +132,18 @@ export const appointmentReminderHtml = (appointmentStart) =>{
             <tr>
               <td class="content">
                 <h1>Recordatorio de cita</h1>
+
+  <p>Tenés una cita médica con el médico: ${physicianName?.name || ""} ${
+    physicianName?.lastname || ""
+  }</p>
+  ${
+    attendancePlace
+      ? `<p>en el centro ${attendancePlace.alias || ""} en la dirección ${
+          attendancePlace.addressDetails || ""
+        }</p>`
+      : `<p></p>`
+  }
+
                 <p>Fecha: ${appointmentStart.toLocaleDateString()}</p>
                 <p>Hora: ${appointmentStart.toLocaleTimeString()}</p>
               </br>
@@ -165,5 +181,5 @@ export const appointmentReminderHtml = (appointmentStart) =>{
       </tr>
     </table>
   </body>
-</html>`
-}
+</html>`;
+};
