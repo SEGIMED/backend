@@ -131,6 +131,7 @@ import getCatAndSubCatCtrl from "../controllers/cieDiezCtrl/getCat&SubCatCie10Ct
 import updateStatusSchedulingCtrl from "../controllers/scheduling/updateStatusSchedulingCtrl.js";
 import searchCIEController from "../controllers/cieDiezCtrl/searchCIEController.js";
 import getPatientPhysicianExamCtrl from "../controllers/medicalHistory/getPatientPhysicianExamCtrl.js";
+import getDiagnosticController from "../controllers/medicalHistory/getDiagnosticsController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -569,6 +570,8 @@ medicalHistoryRouter.get(
 );
 medicalHistoryRouter.get("/anamnesis", getAnamnesisCtrl);
 medicalHistoryRouter.get("/physical-examination", getPatientPhysicianExamCtrl)
+medicalHistoryRouter.get("/diagnostics", getDiagnosticController)
+
 
 //* Self Evaluation
 selfEvaluationEventRouter

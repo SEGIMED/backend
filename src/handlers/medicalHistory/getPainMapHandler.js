@@ -33,16 +33,6 @@ const getPainMapHandler = async (patientId, page, limit) => {
                     },
                   ],
                 },
-                {
-                  model: models.PatientPulmonaryHypertensionGroup,
-                  as: "userHpGroups",
-                  attributes: ["id"],
-                  include: {
-                    model: models.CatPulmonaryHypertensionGroup,
-                    as: "catHpGroup",
-                    attributes: ["name"],
-                  },
-                },
               ],
             },
             {
