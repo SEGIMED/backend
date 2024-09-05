@@ -44,6 +44,7 @@ import {
   medicalHistoryRouter,
   selfEvaluationEventRouter
 } from "./routes/routes.js";
+import scheduleReminderEmails from "./utils/emailReminders/appointmentReminder.js";
 
 const corsOptions = {
   origin: "*", // Asegúrate de que este origen coincida con el de tu aplicación cliente
@@ -112,5 +113,7 @@ app.use("/api/medical-history", medicalHistoryRouter)
 app.use("/api/self-evaluation-event", selfEvaluationEventRouter)
 
 app.use("/api/doc", swaggerUI.serve, swaggerUI.setup(swaggerOptions));
+
+scheduleReminderEmails()
 
 export default app;

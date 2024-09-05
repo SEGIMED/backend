@@ -58,7 +58,7 @@ const model = (sequelize) => {
       },
       diagnostic: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "subcategories_cie_diez",
           key: "id",
