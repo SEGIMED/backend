@@ -43,61 +43,31 @@ const createPatientDiagnosticHandler = async (body) => {
       );
     }
 
-    // Verificar si ya existe un diagnóstico con el mismo medicalEvent
-    const existingDiagnostic = await PatientDiagnostic.findOne({
-      where: { medicalEvent: medicalEventId },
-    });
-
-    if (existingDiagnostic) {
-      throw new SegimedAPIError(
-        "Ya existe un diagnóstico para el mismo evento médico.",
-        400
-      );
-    }
-
-    const newDiagnostic = await PatientDiagnostic.create({
-      patient: patientId,
-      diagnosedBy: contextService.get("request:user").userId,
-      timestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-      disease: diseaseId,
-      diagnosticNotes,
-      medicalEvent: medicalEventId,
-    });
-    //guardo las drugsPrescriptions
-    if (drugName) {
-      drugName.forEach((drug) => {
-        const drugPrescription = {
-          patientId,
-          drugId,
-          drugName: drug,
-          quantity: quantityDrug,
-          medicalEventId,
-        };
-        createDrugPrescriptionHandler(drugPrescription);
+    if (body.medicalProcedureName) {
+      //guardo procedure prescription
+      createMedicalProcedurePrescriptionHandler({
+        medicalEventId,
+        medicalProcedureName: body.medicalProcedureName,
       });
     }
-    //guardo procedure prescription
-    createMedicalProcedurePrescriptionHandler({
-      medicalEventId,
-      medicalProcedureName: body.medicalProcedureName,
-    });
-    //guardo therapy prescription
-    createTherapyPrescriptionHandler({
-      medicalEventId,
-      therapyDescription: body.descriptionTherapy,
-    });
-    //actualizar o crear el Indicaciones Medicas NO FARMACOLOGICAS
-    createOrUpdateMedicalIndicationsHandler({
-      medicalEventId,
-      description: body.descriptionIndication,
-    });
+    if (body.descriptionTherapy) {
+      //guardo therapy prescription
+      createTherapyPrescriptionHandler({
+        medicalEventId,
+        therapyDescription: body.descriptionTherapy,
+      });
+    }
+    if (body.descriptionIndication) {
+      //actualizar o crear el Indicaciones Medicas NO FARMACOLOGICAS
+      createOrUpdateMedicalIndicationsHandler({
+        medicalEventId,
+        description: body.descriptionIndication,
+      });
+    }
 
-    return newDiagnostic;
+    return "Datos actualizados";
   } catch (error) {
-    throw new SegimedAPIError(
-      "Hubo un error durante el proceso: " + error.message,
-      500
-    );
+    throw new Error("Hubo un error durante el proceso: " + error.message);
   }
 };
 

@@ -14,7 +14,8 @@ const updateMedicalEventHandler = async (body) => {
                 treatmentPlan: body.treatmentPlan,
                 pendingDiagnosticTest: body.pendingDiagnosticTest,
                 alarmPattern: body.alarmPattern,
-                diagnostic: body.diagnostic
+                diagnostic: body.diagnostic,
+                diagnostic_notes: body.diagnosticNotes
             },
             {
                 where: {

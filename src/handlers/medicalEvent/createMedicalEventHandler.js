@@ -16,6 +16,8 @@ const createMedicalEventHandler = async (body) => {
     treatmentPlan,
     pendingDiagnosticTest,
     alarmPattern,
+    diagnostic,
+    diagnostic_notes
   } = body;
   try {
     return await sequelize.transaction(async (t) => {
@@ -28,6 +30,8 @@ const createMedicalEventHandler = async (body) => {
         treatmentPlan,
         pendingDiagnosticTest,
         alarmPattern,
+        diagnostic,
+        diagnostic_notes
       });
       const medicalEventScheduling = await AppointmentScheduling.findOne({
         where: {
