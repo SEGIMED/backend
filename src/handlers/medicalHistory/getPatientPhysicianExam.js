@@ -1,5 +1,6 @@
-import models from "../../../databaseConfig.js";
-import SegimedAPIError from "../../../error/SegimedAPIError.js";
+import models from "../../databaseConfig.js";
+import SegimedAPIError from "../../error/SegimedAPIError.js";
+import universalPaginationHandler from "../Pagination/universalPaginationHandler.js";
 
 const getPatientPhysicalExamination = async (patientId, page, limit) => {
   try {
@@ -21,6 +22,16 @@ const getPatientPhysicalExamination = async (patientId, page, limit) => {
               model: models.User,
               as: "physicianThatAttend",
               attributes: ["id", "name", "lastname"],
+            },
+            {
+              model: models.PatientPhysicalExamination,
+              as: "physicalAppointment",
+              attributes:["description"],
+              include: {
+                model: models.CatPhysicalSubsystem,
+                as: "catPhysicalSubsystem",
+                attributes:["name"]
+              },
             },
             {
               model: models.User,
@@ -53,6 +64,7 @@ const getPatientPhysicalExamination = async (patientId, page, limit) => {
     // return only the properties that are not null
     return response;
   } catch (error) {
+    console.log(error);
     throw new SegimedAPIError("Error fetching patientExam", error.message);
   }
 };

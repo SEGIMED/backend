@@ -1,4 +1,4 @@
-import getPatientPhysicalExamination from "../../../handlers/patient/patientPhysicianExam/getPatientPhysicianExam.js";
+import getPatientPhysicalExamination from "../../handlers/medicalHistory/getPatientPhysicianExam.js";
 
 const getPatientPhysicianExamCtrl = async (req, res) => {
   try {
