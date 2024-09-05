@@ -44,7 +44,6 @@ import createMedicalReferralController from "../controllers/medicalReferral/crea
 import createTherapyPrescriptionController from "../controllers/therapy/createTherapyPrescriptionController.js";
 import createPatientPhysicalExaminationController from "../controllers/patient/patientPhysicianExamCtrls/createPatientPhysicalExaminationController.js";
 import updatePatientPhysicalExaminationController from "../controllers/patient/patientPhysicianExamCtrls/updatePatientPhysicalExaminationController.js";
-import getPatientPhysicianExamCtrl from "../controllers/patient/patientPhysicianExamCtrls/getPatientPhysicianExamCtrl.js";
 import updateVitalSignsController from "../controllers/vitalSigns/updateVitalSignsController.js";
 import updateTherapyPrescriptionController from "../controllers/therapy/updateTherapyPrescriptionController.js";
 import updateMedicalReferralController from "../controllers/medicalReferral/updateMedicalReferralController.js";
@@ -131,6 +130,7 @@ import createRegisterCie10Ctrl from "../controllers/cieDiezCtrl/createRegisterCi
 import getCatAndSubCatCtrl from "../controllers/cieDiezCtrl/getCat&SubCatCie10Ctrl.js";
 import updateStatusSchedulingCtrl from "../controllers/scheduling/updateStatusSchedulingCtrl.js";
 import searchCIEController from "../controllers/cieDiezCtrl/searchCIEController.js";
+import getPatientPhysicianExamCtrl from "../controllers/medicalHistory/getPatientPhysicianExamCtrl.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -568,6 +568,7 @@ medicalHistoryRouter.get(
   getMedicalEventHistoryEvolutionController
 );
 medicalHistoryRouter.get("/anamnesis", getAnamnesisCtrl);
+medicalHistoryRouter.get("/physical-examination", getPatientPhysicianExamCtrl)
 
 //* Self Evaluation
 selfEvaluationEventRouter
