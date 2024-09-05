@@ -6,20 +6,17 @@ import { mapDiagnosticTest } from "../patient/diagnosticTestMapper.js";
 import { mapPatientDiagnostic } from "../patient/patientDiagnosticMapper.js";
 import { mapDrugPrescription } from "../patient/drugPrescriptionMapper.js";
 import { mapProcedurePrescription } from "../patient/procedurePrescriptionMapper.js";
-import {
-  SociodemographicDetails,
-  TherapyPrescription,
-} from "../../databaseConfig.js";
+
 
 export const mapMedicalEventDetail = (medicalEvent) => {
   const painMapArray = (medicalEvent?.patientPainMaps ?? [])
     .concat(medicalEvent?.appSch?.patientPainMaps ?? [])
     .map((painMap) => mapPainMap(painMap));
-
   return {
     medicalEventId: medicalEvent?.id ?? null,
     // // Datos del paciente
-
+    patientStudies:medicalEvent?.appSch?.appointmentStudies,
+    ProvisionalPreConsultationSchedule:medicalEvent?.appSch?.ProvisionalPreConsultationSchedule,
     // Datos del paciente
     patient: {
       id: medicalEvent?.appSch?.patientUser?.id ?? null,
@@ -87,10 +84,7 @@ export const mapMedicalEventDetail = (medicalEvent) => {
     physicianComments: medicalEvent?.physicianComments ?? null,
 
     //Diagnosticos
-    diagnostics:
-      medicalEvent?.patientDiagnostics?.map((diagnostic) =>
-        mapPatientDiagnostic(diagnostic)
-      ) ?? [],
+    diagnostics: medicalEvent.diagnosedDisease ?? null,
 
     // Medicamentos recetados
     drugPrescriptions:

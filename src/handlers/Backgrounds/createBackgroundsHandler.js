@@ -51,7 +51,18 @@ const createBackgroundsHandler = async (body) => {
     if (createdBackground) {
       return newBackground;
     } else {
-      return `Ya existe un registro de antecedentes para el evento médico con id ${medicalEventId}`;
+      await newBackground.update({
+        surgicalBackground,
+        pathologicBackground,
+        nonPathologicBackground,
+        familyBackground,
+        pediatricBackground,
+        pharmacologicalBackground,
+        allergicBackground,
+        vaccinationBackground,
+        timestamp: now.format("YYYY-MM-DD HH:mm:ss z"),
+      });
+      return "Se han actualizado los antecedentes del paciente"
     }
   } catch (error) {
     throw new SegimedAPIError(

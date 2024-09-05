@@ -4,23 +4,32 @@ import contextService from "request-context";
 import moment from "moment-timezone";
 
 const updateHpRiskHandler = async (body) => {
-  const { patientId } = body;
+  const { patientId, pulmonaryHypertensionRiskId } = body;
 
   try {
-    const [updateHpRisk, created] =
+    const [hpRisk, created] =
       await PatientPulmonaryHypertensionRisk.findOrCreate({
         where: {
           patient: patientId,
         },
-        defaults:{
-            pulmonaryHypertensionRisk: body.pulmonaryHypertensionRiskId,
-            physician: contextService.get('request:user').userId,
-            registerTimestamp: moment().toISOString()
+        defaults: {
+          pulmonaryHypertensionRisk: pulmonaryHypertensionRiskId,
+          physician: contextService.get("request:user").userId,
+          registerTimestamp: moment().toISOString(),
         },
         returning: true,
         plain: true,
       });
-    return updateHpRisk;
+
+    if (!created) {
+      await hpRisk.update({
+        pulmonaryHypertensionRisk: pulmonaryHypertensionRiskId,
+        physician: contextService.get("request:user").userId,
+        registerTimestamp: moment().toISOString(),
+      });
+    }
+
+    return hpRisk;
   } catch (error) {
     console.log(error);
     throw new SegimedAPIError(

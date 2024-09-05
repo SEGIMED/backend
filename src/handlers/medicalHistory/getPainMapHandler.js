@@ -20,18 +20,30 @@ const getPainMapHandler = async (patientId, page, limit) => {
               model: models.User,
               as: "patientUser",
               attributes: ["id"],
-              include: {
-                model: models.PatientPulmonaryHypertensionGroup,
-                as: "userHpGroups",
-                attributes: ["id"],
-                include: [
-                  {
+              include: [
+                {
+                  model: models.PatientPulmonaryHypertensionGroup,
+                  as: "userHpGroups",
+                  attributes: ["id"],
+                  include: [
+                    {
+                      model: models.CatPulmonaryHypertensionGroup,
+                      as: "catHpGroup",
+                      attributes: ["name"],
+                    },
+                  ],
+                },
+                {
+                  model: models.PatientPulmonaryHypertensionGroup,
+                  as: "userHpGroups",
+                  attributes: ["id"],
+                  include: {
                     model: models.CatPulmonaryHypertensionGroup,
                     as: "catHpGroup",
                     attributes: ["name"],
                   },
-                ],
-              },
+                },
+              ],
             },
             {
               model: models.PhysicianAttendancePlace,
@@ -84,43 +96,62 @@ const getPainMapHandler = async (patientId, page, limit) => {
         patient: patientId,
       },
       attributes: ["created_at"],
-      include: {
-        model: models.PatientPainMap,
-        as: "patientPainMap",
-        attributes: {
-          exclude: [
-            "id",
-            "painScale",
-            "painDuration",
-            "painType",
-            "painFrequency",
-            "medicalEvent",
-            "scheduling",
+      include: [
+        {
+          model: models.PatientPainMap,
+          as: "patientPainMap",
+          attributes: {
+            exclude: [
+              "id",
+              "painScale",
+              "painDuration",
+              "painType",
+              "painFrequency",
+              "medicalEvent",
+              "scheduling",
+            ],
+          },
+          include: [
+            {
+              model: models.CatPainDuration,
+              as: "painDurationDetail",
+              attributes: ["name"],
+            },
+            {
+              model: models.CatPainType,
+              as: "painTypeDetail",
+              attributes: ["name"],
+            },
+            {
+              model: models.CatPainScale,
+              as: "painScaleDetail",
+              attributes: ["name"],
+            },
+            {
+              model: models.CatPainFrequency,
+              as: "painFrequencyDetail",
+              attributes: ["name"],
+            },
           ],
         },
-        include: [
-          {
-            model: models.CatPainDuration,
-            as: "painDurationDetail",
-            attributes: ["name"],
+        {
+          model: models.User,
+          as: "patientUser",
+          attributes: ["id"],
+          include: {
+            model: models.PatientPulmonaryHypertensionGroup,
+            as: "userHpGroups",
+            attributes: ["id"],
+            include: [
+              {
+                model: models.CatPulmonaryHypertensionGroup,
+                as: "catHpGroup",
+                attributes: ["name"],
+              },
+            ],
           },
-          {
-            model: models.CatPainType,
-            as: "painTypeDetail",
-            attributes: ["name"],
-          },
-          {
-            model: models.CatPainScale,
-            as: "painScaleDetail",
-            attributes: ["name"],
-          },
-          {
-            model: models.CatPainFrequency,
-            as: "painFrequencyDetail",
-            attributes: ["name"],
-          },
-        ],
-      },
+        },
+      ],
     });
 
     const formattedConsultations = consultations.map((consultation) => ({
@@ -135,22 +166,26 @@ const getPainMapHandler = async (patientId, page, limit) => {
       },
     }));
     const filteredSelfEvaluations = selfEvaluations.filter(
-      (evaluation) => evaluation.patientPainMap && Object.keys(evaluation.patientPainMap).length > 0
+      (evaluation) =>
+        evaluation.patientPainMap &&
+        Object.keys(evaluation.patientPainMap).length > 0
     );
 
-    const formattedSelfEvaluations = filteredSelfEvaluations.map((evaluation) => ({
-      ...evaluation.toJSON(),
-      reasonForConsultation: "Autoevaluación",
-      attendancePlace: "En casa",
-      date: evaluation.created_at,
-      patientPainMap: {
-        ...evaluation.patientPainMap.toJSON(),
-        painAreas: evaluation.patientPainMap.painAreas.map((area) => ({
-          painArea: painAreaNameMap(parseInt(area.painArea)),
-          painNotes: area.painNotes,
-        })),
-      },
-    }));
+    const formattedSelfEvaluations = filteredSelfEvaluations.map(
+      (evaluation) => ({
+        ...evaluation.toJSON(),
+        reasonForConsultation: "Autoevaluación",
+        attendancePlace: "En casa",
+        date: evaluation.created_at,
+        patientPainMap: {
+          ...evaluation.patientPainMap.toJSON(),
+          painAreas: evaluation.patientPainMap.painAreas.map((area) => ({
+            painArea: painAreaNameMap(parseInt(area.painArea)),
+            painNotes: area.painNotes,
+          })),
+        },
+      })
+    );
 
     const combinedResults = [
       ...formattedConsultations,

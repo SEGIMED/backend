@@ -38,8 +38,11 @@ import {
   PatientPainMap,
   PatientPhysicalExamination,
   PatientPulmonaryHypertensionGroup,
+  PatientStudies,
   PatientSurgicalRisk,
+  ProvisionalPreConsultation,
   SociodemographicDetails,
+  SubCategoriesCieDiez,
   TherapyPrescription,
   User,
   VitalSignDetails,
@@ -47,6 +50,7 @@ import {
 
 import { mapMedicalEventDetail } from "../../mapper/medicalEvent/medicalEventDetailMapper.js";
 import { consultationVitalSignsMapper } from "../../mapper/patient/consultationVitalSignsMapper.js";
+import { model } from "mongoose";
 
 const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
   const query = {
@@ -55,13 +59,8 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
     },
     include: [
       {
-        model: PatientDiagnostic,
-        as: "patientDiagnostics",
-        separate: true,
-        include: {
-          model: CatDisease,
-          as: "diagnosedDisease",
-        },
+        model: SubCategoriesCieDiez,
+        as: "diagnosedDisease",
       },
       {
         model: DrugPrescription,
@@ -78,6 +77,14 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
         model: AppointmentScheduling,
         as: "appSch",
         include: [
+          {
+            model: ProvisionalPreConsultation,
+            as: "ProvisionalPreConsultationSchedule",
+          },
+          {
+            model: PatientStudies,
+            as: "appointmentStudies",
+          },
           {
             model: User,
             as: "patientUser",
@@ -322,6 +329,7 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
       },
     ],
   };
+
   try {
     if (typeof medicalEventId !== "undefined") {
       query.where[Op.or].push({ id: medicalEventId });

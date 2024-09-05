@@ -23,6 +23,7 @@ const model = (sequelize) => {
       schedule: {
         type: DataTypes.BIGINT,
         allowNull: true,
+        field:"schedule",
         references: {
           model: "appointment_scheduling",
           key: "id",

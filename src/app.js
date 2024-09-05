@@ -16,7 +16,6 @@ import {
   physicianRouter,
   getPatientsFilterRouter,
   userRouter,
-  requestUserContactRouter,
   catalogsRouter,
   medicalEventRouter,
   schedulingRouter,
@@ -45,6 +44,7 @@ import {
   medicalHistoryRouter,
   selfEvaluationEventRouter
 } from "./routes/routes.js";
+import scheduleReminderEmails from "./utils/emailReminders/appointmentReminder.js";
 
 const corsOptions = {
   origin: "*", // Asegúrate de que este origen coincida con el de tu aplicación cliente
@@ -85,7 +85,6 @@ app.use("/api", physicianRouter);
 app.use("/api", getPatientsFilterRouter);
 app.use("/api", userRouter);
 app.use("/api", catalogsRouter);
-app.use("/api", requestUserContactRouter);
 app.use("/api", schedulingRouter);
 app.use("/api", medicalEventRouter);
 app.use("/api", vitalSignsRouter);
