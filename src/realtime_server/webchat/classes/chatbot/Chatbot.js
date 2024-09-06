@@ -20,7 +20,7 @@ class Chatbot {
     this.user = user;
     this.chat = null;
     this.context = "";
-    this.messageLimit = 7;
+    this.messageLimit = 10;
     this.messageCount = 0;
     this.systemInstruction = config.systemInstruction || null; // Inicialmente puede ser nulo
     this.modelConfig = config.modelConfig || {
