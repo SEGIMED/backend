@@ -16,8 +16,12 @@ const getPatientPhysicalExamination = async (patientId, page, limit) => {
           model: models.AppointmentScheduling,
           as: "appSch",
           where: { patient: patientId, schedulingStatus: 2 },
-          attributes: ["patient", "scheduledStartTimestamp"],
+          attributes: ["scheduledStartTimestamp","reasonForConsultation"],
           include: [
+            {
+              model: models.PhysicianAttendancePlace,
+              as: "attendancePlace",
+            },
             {
               model: models.User,
               as: "physicianThatAttend",
@@ -26,29 +30,32 @@ const getPatientPhysicalExamination = async (patientId, page, limit) => {
             {
               model: models.PatientPhysicalExamination,
               as: "physicalAppointment",
-              attributes:["description"],
+              attributes: ["description"],
               include: {
                 model: models.CatPhysicalSubsystem,
                 as: "catPhysicalSubsystem",
-                attributes:["name"]
+                attributes: ["name"],
               },
             },
             {
               model: models.User,
               as: "patientUser",
               attributes: ["id", "name", "lastname"],
-              include: {
-                model: models.PatientPulmonaryHypertensionGroup,
-                as: "userHpGroups",
-                attributes: ["id"],
-                include: [
-                  {
-                    model: models.CatPulmonaryHypertensionGroup,
-                    as: "catHpGroup",
-                    attributes: ["name"],
-                  },
-                ],
-              },
+              include: 
+
+                {
+                  model: models.PatientPulmonaryHypertensionGroup,
+                  as: "userHpGroups",
+                  attributes: ["id"],
+                  include: [
+                    {
+                      model: models.CatPulmonaryHypertensionGroup,
+                      as: "catHpGroup",
+                      attributes: ["name"],
+                    },
+                  ],
+                },
+              
             },
           ],
         },
@@ -64,8 +71,7 @@ const getPatientPhysicalExamination = async (patientId, page, limit) => {
     // return only the properties that are not null
     return response;
   } catch (error) {
-    console.log(error);
-    throw new SegimedAPIError("Error fetching patientExam", error.message);
+    throw new Error("Error fetching patientExam: "+ error.message);
   }
 };
 
