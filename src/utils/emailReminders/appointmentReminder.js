@@ -33,7 +33,7 @@ const scheduleReminderEmails = async () => {
     const patientEmail = patient.email;
     const appointmentStart = new Date(appointment.scheduledStartTimestamp);
     const appointmentSubject = "Recordatorio de cita";
-    const appointmentBody = appointmentReminderHtml(appointmentStart, physiciainName, attendancePlace)
+    const appointmentBody = appointmentReminderHtml(appointmentStart, physiciainName, patient)
 
     const newNotification = new Notify({
       // It sends notification for every patient to web app
