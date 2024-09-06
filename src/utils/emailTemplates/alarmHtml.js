@@ -1,12 +1,8 @@
-export const appointmentReminderHtml = (
-  appointmentStart,
-  physicianName,
-  patient
-) => {
+export const alarmHtml = (patient, date) => {
   return `<!DOCTYPE html>
 <html>
   <head>
-    <title>Recordatorio de cita</title>
+    <title>Se ha generado una nueva alarma</title>
     <meta
       name="viewport"
       content="width=device-width,initial-scale=1,maximum-scale=2,shrink-to-fit=no"
@@ -76,7 +72,7 @@ export const appointmentReminderHtml = (
         margin: 0 auto;
       }
       .footer {
-        padding: 0px 0px 40px 0;
+        padding:  40px 0;
         font-size: 14px;
         color: #808080;
         width: 60%;
@@ -98,7 +94,7 @@ export const appointmentReminderHtml = (
           padding: 30px 10px 10px 10px;
           font-size: 18px;
           width: 100%;
-          box-shadow: 1px 1px 1px 1px black;
+
         }
         .content h1 {
           font-size: 28px;
@@ -135,27 +131,41 @@ export const appointmentReminderHtml = (
           >
             <tr>
               <td class="content">
-                <h1>Recordatorio de cita</h1>
-
+                <h1>Se ha generado una nueva alarma</h1>
+                <p style="color: #487ffa">Prioridad: <span style="color: #ea5757;">Alta</span></p>
                 <p>
-                  Hola ${ patient.name }, recordá que tenes una cita con el
-                  médico ${ physicianName?.name || "" }
-                  ${physicianName?.lastname || ""}
+                  <span style="color: #487ffa">Paciente: </span>${patient.name} ${patient.lastname}
                 </p>
-
-                <p style="color: #487ffa">
-                  Fecha: ${appointmentStart.toLocaleDateString()}
-                </p>
-                <p style="color: #487ffa">
-                  Hora: ${appointmentStart.toLocaleTimeString()}
+                <p>
+                  <span style="color: #487ffa">Fecha de creación: </span>${date}
                 </p>
               </td>
             </tr>
 
             <tr>
+              <td class="button">
+                <a
+                  href="https://app.segimed.com"
+                  style="
+                    padding: 15px 20px;
+                    border-radius: 10px;
+                    text-decoration: none;
+                    background: #487ffa;
+                    color: white;
+                    font-weight: 700;
+                  "
+                >
+                  Ver en Segimed
+                </a>
+              </td>
+            </tr>
+            <tr>
               <td class="footer">
                 <p>
-                  Si no solicitaste una cita médica, puedes ignorar este correo.
+                  Si no te redirecciona presionando algún botón, podes
+                  visualizarla haciendo
+                  <a href="https://app.segimed.com">click acá</a> o descargarla
+                  presionando <a href="https://app.segimed.com">acá</a>.
                 </p>
               </td>
             </tr>

@@ -4,7 +4,7 @@ import models from "../databaseConfig.js";
 import { Op } from "sequelize";
 import scheduleReminderEmails from "./emailReminders/appointmentReminder.js";
 
-cron.schedule("0 7 * * *", async () => { 
+cron.schedule("*/30 * * * * *", async () => { 
   try {
     console.log("Enviando recordatorios de citas...");
     await scheduleReminderEmails();
