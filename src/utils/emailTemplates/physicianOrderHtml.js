@@ -1,12 +1,8 @@
-export const appointmentReminderHtml = (
-  appointmentStart,
-  physicianName,
-  patient
-) => {
+export const physicianOrderHtml = (link) => {
   return `<!DOCTYPE html>
 <html>
   <head>
-    <title>Recordatorio de cita</title>
+    <title>Ya tenés tu órden médica</title>
     <meta
       name="viewport"
       content="width=device-width,initial-scale=1,maximum-scale=2,shrink-to-fit=no"
@@ -69,20 +65,34 @@ export const appointmentReminderHtml = (
         margin-bottom: 20px;
       }
       .button {
-        text-align: center;
-        color: #808080;
+        text-align: center; /* Centra el texto dentro del botón */
         font-size: 16px;
-        width: 60%;
-        margin: 0 auto;
+        width: 120px; /* Ancho fijo de 120px */
+        padding: 15px 0; /* Ajuste de padding para el ancho fijo */
+        display: inline-block; /* Asegura que el margen funcione */
+        text-decoration: none;
+        border-radius: 10px;
+        background: #487ffa;
+        color: white;
+        font-weight: 700;
+        margin: 0 10px; /* Espacio de 20px entre botones (10px en cada lado) */
       }
       .footer {
-        padding: 0px 0px 40px 0;
+        padding: 40px 0;
         font-size: 14px;
         color: #808080;
         width: 60%;
         margin: 0 auto;
         text-align: center;
       }
+      .button-container {
+        text-align: center; /* Asegura que los botones estén centrados en el contenedor */
+        margin-bottom: 20px;
+      }
+      .button:visited {
+        color: #ffffff; /* Mantiene el color del texto después de visitar el enlace */
+      }
+
       @media only screen and (max-width: 600px) {
         body {
           width: 90%;
@@ -98,14 +108,19 @@ export const appointmentReminderHtml = (
           padding: 30px 10px 10px 10px;
           font-size: 18px;
           width: 100%;
-          box-shadow: 1px 1px 1px 1px black;
         }
         .content h1 {
           font-size: 28px;
         }
         .button {
-          padding-top: 10px;
-          padding-bottom: 25px;
+          padding: 10px 0; /* Ajusta el padding para el ancho fijo en móviles */
+          width: 100%; /* Los botones ocuparán todo el ancho en móviles */
+          max-width: 120px; /* Ancho máximo de 120px */
+          margin: 0 0 10px 0; /* Ajusta el margen en móviles */
+        }
+        .button-container {
+          flex-direction: column; /* Cambia la dirección a columna en móviles */
+          gap: 10px; /* Ajusta el espacio entre botones en móviles */
         }
         .footer {
           padding: 20px 0;
@@ -135,27 +150,54 @@ export const appointmentReminderHtml = (
           >
             <tr>
               <td class="content">
-                <h1>Recordatorio de cita</h1>
+                <h1>Ya tenés tu órden médica</h1>
+                <p>Podes visualizarla o descargarla presionando debajo</p>
+              </td>
+            </tr>
 
-                <p>
-                  Hola ${ patient.name }, recordá que tenes una cita con el
-                  médico ${ physicianName?.name || "" }
-                  ${physicianName?.lastname || ""}
-                </p>
-
-                <p style="color: #487ffa">
-                  Fecha: ${appointmentStart.toLocaleDateString()}
-                </p>
-                <p style="color: #487ffa">
-                  Hora: ${appointmentStart.toLocaleTimeString()}
-                </p>
+            <tr>
+              <td>
+                <div class="button-container">
+                  <a
+                    href="${link}"
+                    class="button"
+                    style="
+                      padding: 15px 20px;
+                      border-radius: 10px;
+                      text-decoration: none;
+                      background: #487ffa;
+                      color: white;
+                      font-weight: 700;
+                    "
+                  >
+                    Visualizar
+                  </a>
+                  <a
+                    href="${link}"
+                    download="orden.pdf"
+                    class="button"
+                    style="
+                      padding: 15px 20px;
+                      border-radius: 10px;
+                      text-decoration: none;
+                      background: #487ffa;
+                      color: white;
+                      font-weight: 700;
+                    "
+                  >
+                    Descargar
+                  </a>
+                </div>
               </td>
             </tr>
 
             <tr>
               <td class="footer">
                 <p>
-                  Si no solicitaste una cita médica, puedes ignorar este correo.
+                  Si no te redirecciona presionando algún botón, podes
+                  visualizarla haciendo
+                  <a href="https://app.segimed.com">click acá</a> o descargarla
+                  presionando <a href="https://app.segimed.com">acá</a>.
                 </p>
               </td>
             </tr>
@@ -165,5 +207,7 @@ export const appointmentReminderHtml = (
     </table>
   </body>
 </html>
+
+
 `;
 };

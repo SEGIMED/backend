@@ -44,7 +44,6 @@ import {
   medicalHistoryRouter,
   selfEvaluationEventRouter
 } from "./routes/routes.js";
-import scheduleReminderEmails from "./utils/emailReminders/appointmentReminder.js";
 
 const corsOptions = {
   origin: "*", // Asegúrate de que este origen coincida con el de tu aplicación cliente
