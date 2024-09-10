@@ -142,18 +142,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
                 model: Backgrounds,
                 as: "backgrounds",
               },
-              // {
-              //   model: AnthropometricDetails,
-              //   as: "patientAnthDet",
-              //   include: {
-              //     model: CatAnthropometricMeasureType,
-              //     as: "anthMeasType",
-              //     include: {
-              //       model: CatMeasureUnit,
-              //       as: "measUnit",
-              //     },
-              //   },
-              // },
             ],
           },
           {
@@ -251,14 +239,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
         model: TherapyPrescription,
         as: "therapyPrescriptions",
         separate: true,
-        // include: {
-        //   model: CatMedicalProcedure,
-        //   as: "catMedicalProcedure",
-        //   include: {
-        //     model: CatMedicalProcedureType,
-        //     as: "catMedicalProcedureType",
-        //   },
-        // },
       },
       {
         model: VitalSignDetails,
