@@ -315,7 +315,7 @@ export const {
   SelfEvaluationEvent,
   CategoryCieDiez,
   SubCategoriesCieDiez,
-  PatientDiagnostics
+  PatientDiagnostics,
 } = sequelize.models;
 
 MedicalEvent.belongsTo(AppointmentScheduling, {
@@ -1328,22 +1328,32 @@ SubCategoriesCieDiez.belongsTo(CategoryCieDiez, {
   foreignKey: "categoryId",
   as: "category",
 });
-PatientDiagnostics.hasOne(MedicalEvent,{
-  foreignKey:"id",
-  as:"medicalEventDiagnostic"
-})
-MedicalEvent.belongsTo(PatientDiagnostics,{
-  foreignKey:"id",
-  as:"medicalEventDiagnostic"
-})
-PatientDiagnostics.hasOne(PhysicianOrders,{
-  foreignKey:"id",
-  as:"physicianOrderDiagnostic"
-})
-PhysicianOrders.belongsTo(PatientDiagnostics,{
-  foreignKey:"physicianOrder",
-  as:"physicianOrderDiagnostic"
-})
+PatientDiagnostics.belongsTo(MedicalEvent, {
+  foreignKey: "medicalEvent",
+  as: "medicalEventDiagnostic",
+});
+
+MedicalEvent.hasMany(PatientDiagnostics, {
+  foreignKey: "medicalEvent",
+  as: "medicalEventDiagnostics",
+});
+PatientDiagnostics.hasOne(PhysicianOrders, {
+  foreignKey: "id",
+  as: "physicianOrderDiagnostic",
+});
+PhysicianOrders.belongsTo(PatientDiagnostics, {
+  foreignKey: "physicianOrder",
+  as: "physicianOrderDiagnostic",
+});
+
+PatientDiagnostics.belongsTo(SubCategoriesCieDiez, {
+  foreignKey: "diagnostic",
+  as: "cie10subCategory",
+});
+SubCategoriesCieDiez.hasMany(PatientDiagnostics, {
+  foreignKey: "diagnostic",
+  as: "diagnostic",
+});
 
 const models = {
   AnthropometricDetails,
@@ -1437,7 +1447,7 @@ const models = {
   SelfEvaluationEvent,
   CategoryCieDiez,
   SubCategoriesCieDiez,
-  PatientDiagnostics
+  PatientDiagnostics,
 };
 
 export default models;
