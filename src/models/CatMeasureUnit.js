@@ -14,6 +14,10 @@ const model = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
             unique: "cat_measure_unit_name_uk"
+        },
+        category: {
+            type: DataTypes.STRING,
+            allownull: false,
         }
     }, {
         tableName: 'cat_measure_unit',
