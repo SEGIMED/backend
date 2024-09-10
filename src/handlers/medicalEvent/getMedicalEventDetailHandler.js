@@ -1,15 +1,12 @@
 import { Op } from "sequelize";
 import {
-  AnthropometricDetails,
   AppointmentScheduling,
   Backgrounds,
-  CatAnthropometricMeasureType,
   CatCardiovascularRisk,
   CatCivilStatus,
   CatDiagnosticTestType,
   CatDisease,
   CatDrug,
-  CatDrugPresentation,
   CatEducationalLevel,
   CatGenre,
   CatHealthCarePlan,
@@ -17,7 +14,6 @@ import {
   CatMedicalBackgroundType,
   CatMedicalProcedure,
   CatMedicalProcedureType,
-  CatPainAreas,
   CatPainDuration,
   CatPainFrequency,
   CatPainScale,
@@ -26,15 +22,11 @@ import {
   CatPulmonaryHypertensionGroup,
   CatSurgicalRisk,
   CatVitalSignMeasureType,
-  DiagnosticTest,
-  DiagnosticTestPrescription,
   DrugPrescription,
   MedicalEvent,
   MedicalIndications,
   MedicalProcedurePrescription,
   PatientCardiovascularRisk,
-  PatientDiagnostic,
-  PatientMedicalBackground,
   PatientPainMap,
   PatientPhysicalExamination,
   PatientPulmonaryHypertensionGroup,
@@ -144,23 +136,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
                 ],
               },
               {
-                model: PatientMedicalBackground,
-                as: "patientMedicalBackgrounds",
-                separate: true,
-                include: [
-                  {
-                    model: CatMedicalBackgroundType,
-                    as: "medicalBackgroundType",
-                    attributes: ["name"],
-                  },
-                  {
-                    model: CatDisease,
-                    as: "catDisease",
-                    attributes: ["name"],
-                  },
-                ],
-              },
-              {
                 model: Backgrounds,
                 as: "backgrounds",
               },
@@ -219,15 +194,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
               },
             ],
           },
-          {
-            model: DiagnosticTest,
-            as: "schDiagnosticTests",
-            separate: true,
-            include: {
-              model: CatDiagnosticTestType,
-              as: "catDiagnosticTestType",
-            },
-          },
         ],
       },
       {
@@ -263,15 +229,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
         include: {
           model: CatPhysicalSubsystem,
           as: "catPhysicalSubsystem",
-        },
-      },
-      {
-        model: DiagnosticTest,
-        as: "diagnosticTests",
-        separate: true,
-        include: {
-          model: CatDiagnosticTestType,
-          as: "catDiagnosticTestType",
         },
       },
       {
@@ -318,10 +275,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
       {
         model: Backgrounds,
         as: "background",
-      },
-      {
-        model: DiagnosticTestPrescription,
-        as: "diagnosticTestExaminationPrescriptions",
       },
       {
         model: MedicalIndications,

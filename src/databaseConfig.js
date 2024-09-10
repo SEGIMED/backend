@@ -17,8 +17,6 @@ import CatWeekDayModel from "./models/CatWeekDay.js";
 import ChatModel from "./models/Chat.js";
 import ChatMessageModel from "./models/ChatMessage.js";
 import ChatUserModel from "./models/ChatUser.js";
-import DiagnosticTestModel from "./models/DiagnosticTest.js";
-import DiagnosticTestPrescriptionModel from "./models/DiagnosticTestPrescription.js";
 import DrugPrescriptionModel from "./models/DrugPrescription.js";
 import MedicalEventModel from "./models/MedicalEvent.js";
 import OneTimePasswordModel from "./models/OneTimePassword.js";
@@ -43,8 +41,6 @@ import CatMedicalProcedureTypeModel from "./models/CatMedicalProcedureType.js";
 import MedicalIndicationsModel from "./models/MedicalIndications.js";
 import MedicalProcedurePrescriptionModel from "./models/MedicalProcedurePrescription.js";
 import MedicalReferralModel from "./models/MedicalReferral.js";
-import PatientDiagnosticModel from "./models/PatientDiagnostic.js";
-import PatientMedicalBackgroundModel from "./models/PatientMedicalBackground.js";
 import TherapyPrescriptionModel from "./models/TherapyPrescription.js";
 import CatTherapyModel from "./models/CatTherapy.js";
 import CatCivilStatusModel from "./models/CatCivilStatus.js";
@@ -150,8 +146,6 @@ CatWeekDayModel(sequelize);
 ChatModel(sequelize);
 ChatMessageModel(sequelize);
 ChatUserModel(sequelize);
-DiagnosticTestModel(sequelize);
-DiagnosticTestPrescriptionModel(sequelize);
 DrugPrescriptionModel(sequelize);
 MedicalEventModel(sequelize);
 OneTimePasswordModel(sequelize);
@@ -173,8 +167,6 @@ CatMedicalProcedureTypeModel(sequelize);
 MedicalIndicationsModel(sequelize);
 MedicalProcedurePrescriptionModel(sequelize);
 MedicalReferralModel(sequelize);
-PatientDiagnosticModel(sequelize);
-PatientMedicalBackgroundModel(sequelize);
 TherapyPrescriptionModel(sequelize);
 CatTherapyModel(sequelize);
 CatCivilStatusModel(sequelize);
@@ -229,7 +221,6 @@ CategoryCieDiezModel(sequelize);
 SubcategoriesCieDiezModel(sequelize);
 
 export const {
-  DiagnosticTest,
   AppointmentScheduling,
   MedicalEvent,
   AnthropometricDetails,
@@ -250,7 +241,6 @@ export const {
   Chat,
   ChatMessage,
   ChatUser,
-  DiagnosticTestPrescription,
   DrugPrescription,
   OneTimePassword,
   SociodemographicDetails,
@@ -271,8 +261,6 @@ export const {
   MedicalIndications,
   MedicalProcedurePrescription,
   MedicalReferral,
-  PatientDiagnostic,
-  PatientMedicalBackground,
   TherapyPrescription,
   CatTherapy,
   CatCivilStatus,
@@ -327,14 +315,6 @@ export const {
   SubCategoriesCieDiez,
 } = sequelize.models;
 
-DiagnosticTest.belongsTo(AppointmentScheduling, {
-  as: "scheduling_appointment_scheduling",
-  foreignKey: "scheduling",
-});
-AppointmentScheduling.hasMany(DiagnosticTest, {
-  as: "schDiagnosticTests",
-  foreignKey: "scheduling",
-});
 MedicalEvent.belongsTo(AppointmentScheduling, {
   as: "appSch",
   foreignKey: "scheduling",
@@ -359,14 +339,6 @@ PhysicianAgendaConfiguration.belongsTo(CatAppointmentModality, {
 CatAppointmentModality.hasMany(PhysicianAgendaConfiguration, {
   as: "physician_agenda_configurations",
   foreignKey: "modality",
-});
-DiagnosticTest.belongsTo(CatDiagnosticTestType, {
-  as: "catDiagnosticTestType",
-  foreignKey: "test_type",
-});
-CatDiagnosticTestType.hasMany(DiagnosticTest, {
-  as: "diagnostic_tests",
-  foreignKey: "test_type",
 });
 User.belongsTo(CatIdType, { as: "userIdType", foreignKey: "id_type" });
 CatIdType.hasMany(User, { as: "users", foreignKey: "id_type" });
@@ -457,14 +429,6 @@ ChatMessage.belongsTo(Chat, { as: "chat_chat", foreignKey: "chat" });
 Chat.hasMany(ChatMessage, { as: "chat_messages", foreignKey: "chat" });
 ChatUser.belongsTo(Chat, { as: "chat_chat", foreignKey: "chat" });
 Chat.hasMany(ChatUser, { as: "chat_users", foreignKey: "chat" });
-DiagnosticTest.belongsTo(DiagnosticTestPrescription, {
-  as: "testPrescription",
-  foreignKey: "diagnosticTestPrescription",
-});
-DiagnosticTestPrescription.hasMany(DiagnosticTest, {
-  as: "diagnosticTests",
-  foreignKey: "diagnosticTestPrescription",
-});
 DrugPrescription.belongsTo(MedicalEvent, {
   as: "medical_event_medical_event",
   foreignKey: "medical_event",
@@ -511,8 +475,6 @@ ChatMessage.belongsTo(User, { as: "sender_user", foreignKey: "sender" });
 User.hasMany(ChatMessage, { as: "sender_chat_messages", foreignKey: "sender" });
 ChatUser.belongsTo(User, { as: "user_user", foreignKey: "user" });
 User.hasMany(ChatUser, { as: "chat_users", foreignKey: "user" });
-DiagnosticTest.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
-User.hasMany(DiagnosticTest, { as: "diagnostic_tests", foreignKey: "patient" });
 DrugPrescription.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
 User.hasMany(DrugPrescription, {
   as: "drug_prescriptions",
@@ -657,26 +619,6 @@ MedicalEvent.belongsTo(SubCategoriesCieDiez, {
   as: "diagnosedDisease",
   foreignKey: "diagnostic",
 });
-SubCategoriesCieDiez.hasMany(MedicalEvent, {
-  as: "patientDiagnostics",
-  foreignKey: "diagnostic",
-});
-PatientMedicalBackground.belongsTo(CatDisease, {
-  as: "catDisease",
-  foreignKey: "disease",
-});
-CatDisease.hasMany(PatientMedicalBackground, {
-  as: "patientMedicalBackgrounds",
-  foreignKey: "disease",
-});
-PatientMedicalBackground.belongsTo(CatMedicalBackgroundType, {
-  as: "medicalBackgroundType",
-  foreignKey: "backgroundType",
-});
-CatMedicalBackgroundType.hasMany(PatientMedicalBackground, {
-  as: "patientMedicalBackgrounds",
-  foreignKey: "backgroundType",
-});
 MedicalProcedurePrescription.belongsTo(CatMedicalProcedure, {
   as: "catMedicalProcedure",
   foreignKey: "medicalProcedure",
@@ -709,14 +651,6 @@ CatTherapy.hasMany(TherapyPrescription, {
   as: "therapyPrescriptions",
   foreignKey: "therapy",
 });
-DiagnosticTestPrescription.belongsTo(MedicalEvent, {
-  as: "medicalEventMedicalEvent",
-  foreignKey: "medicalEvent",
-});
-MedicalEvent.hasMany(DiagnosticTestPrescription, {
-  as: "diagnosticTestExaminationPrescriptions",
-  foreignKey: "medicalEvent",
-});
 MedicalIndications.belongsTo(MedicalEvent, {
   as: "medicalEventMedicalEvent",
   foreignKey: "medicalEvent",
@@ -741,14 +675,6 @@ MedicalEvent.hasMany(MedicalReferral, {
   as: "medicalReferrals",
   foreignKey: "medicalEvent",
 });
-PatientDiagnostic.belongsTo(MedicalEvent, {
-  as: "medicalEventMedicalEvent",
-  foreignKey: "medicalEvent",
-});
-MedicalEvent.hasMany(PatientDiagnostic, {
-  as: "patientDiagnostics",
-  foreignKey: "medicalEvent",
-});
 TherapyPrescription.belongsTo(MedicalEvent, {
   as: "medicalEventMedicalEvent",
   foreignKey: "medicalEvent",
@@ -757,31 +683,7 @@ MedicalEvent.hasMany(TherapyPrescription, {
   as: "therapyPrescriptions",
   foreignKey: "medicalEvent",
 });
-PatientMedicalBackground.belongsTo(PatientDiagnostic, {
-  as: "diagnosticPatientDiagnostic",
-  foreignKey: "diagnostic",
-});
-PatientDiagnostic.hasMany(PatientMedicalBackground, {
-  as: "patientMedicalBackgrounds",
-  foreignKey: "diagnostic",
-});
-DiagnosticTest.belongsTo(User, { as: "patientUser", foreignKey: "patient" });
-DiagnosticTestPrescription.belongsTo(User, {
-  as: "patientUser",
-  foreignKey: "patient",
-});
-User.hasMany(DiagnosticTestPrescription, {
-  as: "diagnosticTestExaminationPrescriptions",
-  foreignKey: "patient",
-});
-DiagnosticTestPrescription.belongsTo(User, {
-  as: "prescribedPhysicianUser",
-  foreignKey: "prescribedPhysician",
-});
-User.hasMany(DiagnosticTestPrescription, {
-  as: "prescribedPhysicianDiagnosticTestPrescriptions",
-  foreignKey: "prescribedPhysician",
-});
+
 // MedicalIndications.belongsTo(User, {
 //   as: "patientUser",
 //   foreignKey: "patient",
@@ -827,27 +729,7 @@ User.hasMany(MedicalReferral, {
   as: "prescribedByMedicalReferrals",
   foreignKey: "prescribedBy",
 });
-PatientDiagnostic.belongsTo(User, {
-  as: "diagnosedByUser",
-  foreignKey: "diagnosedBy",
-});
-User.hasMany(PatientDiagnostic, {
-  as: "patientDiagnostics",
-  foreignKey: "diagnosedBy",
-});
-PatientDiagnostic.belongsTo(User, { as: "patientUser", foreignKey: "patient" });
-User.hasMany(PatientDiagnostic, {
-  as: "patientPatientDiagnostics",
-  foreignKey: "patient",
-});
-PatientMedicalBackground.belongsTo(User, {
-  as: "patientUser",
-  foreignKey: "patient",
-});
-User.hasMany(PatientMedicalBackground, {
-  as: "patientMedicalBackgrounds",
-  foreignKey: "patient",
-});
+
 // TherapyPrescription.belongsTo(User, {
 //   as: "patientUser",
 //   foreignKey: "patient",
@@ -887,14 +769,6 @@ SociodemographicDetails.belongsTo(User, {
 PatientPhysicalExamination.belongsTo(CatPhysicalSubsystem, {
   as: "catPhysicalSubsystem",
   foreignKey: "physicalSubsystem",
-});
-DiagnosticTest.belongsTo(MedicalEvent, {
-  as: "medicalEventMedicalEvent",
-  foreignKey: "medicalEvent",
-});
-MedicalEvent.hasMany(DiagnosticTest, {
-  as: "diagnosticTests",
-  foreignKey: "medicalEvent",
 });
 PatientPhysicalExamination.belongsTo(MedicalEvent, {
   as: "medicalEventMedicalEvent",
@@ -1530,8 +1404,6 @@ const models = {
   Chat,
   ChatMessage,
   ChatUser,
-  DiagnosticTest,
-  DiagnosticTestPrescription,
   DrugPrescription,
   MedicalEvent,
   OneTimePassword,
@@ -1556,8 +1428,6 @@ const models = {
   MedicalIndications,
   MedicalProcedurePrescription,
   MedicalReferral,
-  PatientDiagnostic,
-  PatientMedicalBackground,
   TherapyPrescription,
   CatTherapy,
   CatCivilStatus,

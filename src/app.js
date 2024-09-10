@@ -21,8 +21,6 @@ import {
   schedulingRouter,
   vitalSignsRouter,
   anthropometricDetailsRouter,
-  medicalBackgroundsRouter,
-  diagnosticTestRouter,
   statisticsRouter,
   drugPrescriptionRouter,
   procedurePrescriptionRouter,
@@ -38,7 +36,6 @@ import {
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
   doctorScheduleRouter,
-  // centerAttRouter,
   interconsultationRouter,
   interconsultationDetailsRouter,
   medicalHistoryRouter,
@@ -88,9 +85,7 @@ app.use("/api", schedulingRouter);
 app.use("/api", medicalEventRouter);
 app.use("/api", vitalSignsRouter);
 app.use("/api", anthropometricDetailsRouter);
-app.use("/api", medicalBackgroundsRouter);
 app.use("/api", statisticsRouter);
-app.use("/api", diagnosticTestRouter);
 app.use("/api", drugPrescriptionRouter);
 app.use("/api", procedurePrescriptionRouter);
 app.use("/api", medicalReferralRouter);

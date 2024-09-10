@@ -1,7 +1,6 @@
 import { mapAnthropometricDetail } from "./anthropometricDetailsMapper.js";
 import { mapVitalSign } from "./vitalSignsMapper.js";
 import { mapSociodemographicDetails } from "./sociodemographicDetailsMapper.js";
-import { mapPatientMedicalBackground } from "./patientMedicalBackgroundMapper.js";
 
 export const mapPatient = (patient) => {
   return {
