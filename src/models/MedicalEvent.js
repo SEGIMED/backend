@@ -26,11 +26,6 @@ const model = (sequelize) => {
           key: "id",
         },
       },
-      chiefComplaint: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "chief_complaint",
-      },
       historyOfPresentIllness: {
         type: DataTypes.TEXT,
         allowNull: true,
@@ -56,11 +51,19 @@ const model = (sequelize) => {
         allowNull: true,
         field: "alarm_pattern",
       },
-
+      primaryDiagnostic: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "subcategories_cie_diez",
+          key: "id",
+        },
+        field: "primary_diagnostic",
+      },
       diagnosticNotes: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "diagnostic_notes"
+        field: "diagnostic_notes",
       },
     },
     {

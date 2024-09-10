@@ -6,6 +6,12 @@ const model = (sequelize) => {
   sequelize.define(
     "PatientDiagnostics",
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull:false,
+        autoIncrement: true,
+        primaryKey: true
+      },
       medicalEvent: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -17,12 +23,12 @@ const model = (sequelize) => {
       },
       physicianOrder: {
         type: DataTypes.INTEGER,
-        allowNull:true,
+        allowNull: true,
         references: {
-            model: "physician_orders",
-            key:"id"
+          model: "physician_orders",
+          key: "id",
         },
-        field: "physician_order"
+        field: "physician_order",
       },
       diagnostic: {
         type: DataTypes.INTEGER,
@@ -31,11 +37,13 @@ const model = (sequelize) => {
           model: "subcategories_cie_diez",
           key: "id",
         },
+        field: "diagnostic"
       },
     },
     {
-      tableName: "medical_event_diagnostic",
+      tableName: "patient_diagnostics",
       schema: "public",
+      timestamps: false
     }
   );
 };

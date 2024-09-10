@@ -93,6 +93,7 @@ import PatientStudiesModel from "./models/PatientStudies.js";
 import SelfEvaluationEventModel from "./models/SelfEvaluationEvent.js";
 import CategoryCieDiezModel from "./models/CategoryCieDiez.js";
 import SubcategoriesCieDiezModel from "./models/SubCategoriesCieDiez.js";
+import PatientDiagnosticsModel from "./models/PatientDiagnostics.js";
 
 // import
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
@@ -219,6 +220,7 @@ PatientStudiesModel(sequelize);
 SelfEvaluationEventModel(sequelize);
 CategoryCieDiezModel(sequelize);
 SubcategoriesCieDiezModel(sequelize);
+PatientDiagnosticsModel(sequelize);
 
 export const {
   AppointmentScheduling,
@@ -313,6 +315,7 @@ export const {
   SelfEvaluationEvent,
   CategoryCieDiez,
   SubCategoriesCieDiez,
+  PatientDiagnostics
 } = sequelize.models;
 
 MedicalEvent.belongsTo(AppointmentScheduling, {
@@ -615,10 +618,7 @@ CatProvince.belongsTo(CatCountry, {
   foreignKey: "country",
 });
 CatProvince.hasMany(CatCity, { as: "catCities", foreignKey: "province" });
-MedicalEvent.belongsTo(SubCategoriesCieDiez, {
-  as: "diagnosedDisease",
-  foreignKey: "diagnostic",
-});
+
 MedicalProcedurePrescription.belongsTo(CatMedicalProcedure, {
   as: "catMedicalProcedure",
   foreignKey: "medicalProcedure",
@@ -1296,14 +1296,14 @@ PrescriptionModificationsHistory.belongsTo(PhysicianOrders, {
   as: "medicalOrder",
 });
 
-PhysicianOrders.belongsTo(SubCategoriesCieDiez,{
-  foreignKey:"diagnostic",
-  as:"orderDiagnostic"
-})
-SubCategoriesCieDiez.hasOne(PhysicianOrders,{
-  foreignKey:"diagnostic",
-  as:"physicianOrder"
-})
+PhysicianOrders.belongsTo(SubCategoriesCieDiez, {
+  foreignKey: "diagnostic",
+  as: "orderDiagnostic",
+});
+SubCategoriesCieDiez.hasOne(PhysicianOrders, {
+  foreignKey: "diagnostic",
+  as: "physicianOrder",
+});
 
 SelfEvaluationEvent.belongsTo(User, {
   foreignKey: "patient",
@@ -1328,6 +1328,22 @@ SubCategoriesCieDiez.belongsTo(CategoryCieDiez, {
   foreignKey: "categoryId",
   as: "category",
 });
+PatientDiagnostics.hasOne(MedicalEvent,{
+  foreignKey:"id",
+  as:"medicalEventDiagnostic"
+})
+MedicalEvent.belongsTo(PatientDiagnostics,{
+  foreignKey:"id",
+  as:"medicalEventDiagnostic"
+})
+PatientDiagnostics.hasOne(PhysicianOrders,{
+  foreignKey:"id",
+  as:"physicianOrderDiagnostic"
+})
+PhysicianOrders.belongsTo(PatientDiagnostics,{
+  foreignKey:"physicianOrder",
+  as:"physicianOrderDiagnostic"
+})
 
 const models = {
   AnthropometricDetails,
@@ -1421,6 +1437,7 @@ const models = {
   SelfEvaluationEvent,
   CategoryCieDiez,
   SubCategoriesCieDiez,
+  PatientDiagnostics
 };
 
 export default models;
