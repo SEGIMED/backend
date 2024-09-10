@@ -46,7 +46,7 @@ import {
 
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 
-const getCatalogHandler = async (catalogName) => {
+const getCatalogHandler = async (catalogName, category) => {
 
     try {
         switch (catalogName.toUpperCase()) {
@@ -71,7 +71,10 @@ const getCatalogHandler = async (catalogName) => {
             case 'DRUG_PRESENTATIONS':
                 return await CatDrugPresentation.findAll()
             case 'MEASURE_UNITS':
-                return await CatMeasureUnit.findAll()
+                const query = category ? { category } : {};
+                 return await CatMeasureUnit.findAll({
+                    where: query
+                 })
             case 'DRUGS':
                 return await CatDrug.findAll()
             case 'VITAL_SIGNS_MEASURE_TYPES':
