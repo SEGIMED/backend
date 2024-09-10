@@ -684,38 +684,6 @@ MedicalEvent.hasMany(TherapyPrescription, {
   foreignKey: "medicalEvent",
 });
 
-// MedicalIndications.belongsTo(User, {
-//   as: "patientUser",
-//   foreignKey: "patient",
-// });
-// User.hasMany(MedicalIndications, {
-//   as: "medicalIndications",
-//   foreignKey: "patient",
-// });
-// MedicalIndications.belongsTo(User, {
-//   as: "prescribedPhysicianUser",
-//   foreignKey: "prescribedPhysician",
-// });
-// User.hasMany(MedicalIndications, {
-//   as: "prescribedPhysicianMedicalIndications",
-//   foreignKey: "prescribedPhysician",
-// });
-// MedicalProcedurePrescription.belongsTo(User, {
-//   as: "patientUser",
-//   foreignKey: "patient",
-// });
-// User.hasMany(MedicalProcedurePrescription, {
-//   as: "medicalProcedurePrescriptions",
-//   foreignKey: "patient",
-// });
-// MedicalProcedurePrescription.belongsTo(User, {
-//   as: "prescribedPhysicianUser",
-//   foreignKey: "prescribedPhysician",
-// });
-// User.hasMany(MedicalProcedurePrescription, {
-//   as: "prescribedPhysicianMedicalProcedurePrescriptions",
-//   foreignKey: "prescribedPhysician",
-// });
 MedicalReferral.belongsTo(User, { as: "patientUser", foreignKey: "patient" });
 User.hasMany(MedicalReferral, {
   as: "medicalReferrals",
@@ -730,22 +698,6 @@ User.hasMany(MedicalReferral, {
   foreignKey: "prescribedBy",
 });
 
-// TherapyPrescription.belongsTo(User, {
-//   as: "patientUser",
-//   foreignKey: "patient",
-// });
-// User.hasMany(TherapyPrescription, {
-//   as: "therapyPrescriptions",
-//   foreignKey: "patient",
-// });
-// TherapyPrescription.belongsTo(User, {
-//   as: "prescribedPhysicianUser",
-//   foreignKey: "prescribedPhysician",
-// });
-// User.hasMany(TherapyPrescription, {
-//   as: "prescribedPhysicianTherapyPrescriptions",
-//   foreignKey: "prescribedPhysician",
-// });
 SociodemographicDetails.belongsTo(CatCivilStatus, {
   as: "catCivilStatus",
   foreignKey: "civilStatus",
@@ -1096,16 +1048,6 @@ CatCenterAttention.hasMany(SociodemographicDetails, {
   as: "sociodemographicDetails",
   foreignKey: "centerAttention",
 });
-// AppointmentScheduling.belongsTo(CatCenterAttention, {
-//   as: "CenterAttention",
-//   foreignKey: "healthCenter",
-// });
-// CatCenterAttention.hasMany(AppointmentScheduling, {
-//   as: "AppointmentSchedulings",
-//   foreignKey: "healthCenter",
-// });
-
-// Relación entre AppointmentScheduling y CatCenterAttention
 
 AppointmentScheduling.belongsTo(CatCenterAttention, {
   as: "healthCenterDetails", // Alias para usar en las consultas
