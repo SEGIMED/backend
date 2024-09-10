@@ -4,14 +4,11 @@ import {
   Backgrounds,
   CatCardiovascularRisk,
   CatCivilStatus,
-  CatDiagnosticTestType,
-  CatDisease,
   CatDrug,
   CatEducationalLevel,
   CatGenre,
   CatHealthCarePlan,
   CatMeasureUnit,
-  CatMedicalBackgroundType,
   CatMedicalProcedure,
   CatMedicalProcedureType,
   CatPainDuration,
@@ -27,6 +24,7 @@ import {
   MedicalIndications,
   MedicalProcedurePrescription,
   PatientCardiovascularRisk,
+  PatientDiagnostics,
   PatientPainMap,
   PatientPhysicalExamination,
   PatientPulmonaryHypertensionGroup,
@@ -42,7 +40,6 @@ import {
 
 import { mapMedicalEventDetail } from "../../mapper/medicalEvent/medicalEventDetailMapper.js";
 import { consultationVitalSignsMapper } from "../../mapper/patient/consultationVitalSignsMapper.js";
-import { model } from "mongoose";
 
 const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
   const query = {
@@ -51,8 +48,14 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
     },
     include: [
       {
-        model: SubCategoriesCieDiez,
-        as: "diagnosedDisease",
+        model: PatientDiagnostics,
+        as: "medicalEventDiagnostics",
+        attributes:["id"],
+        include: {
+          model: SubCategoriesCieDiez,
+          as:"cie10subCategory",
+          attributes: ["description"]
+        }
       },
       {
         model: DrugPrescription,
