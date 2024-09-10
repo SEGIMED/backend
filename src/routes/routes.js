@@ -25,16 +25,12 @@ import getAllUsersController from "../controllers/user/getAllUsersController.js"
 import getAllSchedulesController from "../controllers/scheduling/getAllSchedulesController.js";
 import createVitalSignsController from "../controllers/vitalSigns/createVitalSignsController.js";
 import createAnthropometricDetailController from "../controllers/anthropometricDetails/createAnthropometricDetailController.js";
-import createMedicalBackgroundsController from "../controllers/medicalBackgrounds/medicalBackgroundsController.js";
 import patchScheduleController from "../controllers/scheduling/patchScheduleController.js";
 import deleteSchedulingController from "../controllers/scheduling/deleteSchedulingController.js";
 import createPhysicianReviewController from "../controllers/physician/reviewPhysician/createPhysicianReviewController.js";
 import getAllReviewsForPhisicianController from "../controllers/physician/reviewPhysician/getAllReviewsForPhysicianController.js";
 import getAllReviewsMadeByPatientController from "../controllers/physician/reviewPhysician/getAllReviewsMadeByPatientController.js";
 import patchPhysicianReviewController from "../controllers/physician/reviewPhysician/patchPhysicianReviewController.js";
-import createDiagnosticTestController from "../controllers/diagnosticTest/createDiagnosticTestController.js";
-import createPatientDiagnosticController from "../controllers/patient/createPatientDiagnosticController.js";
-import patchDiagnosticTestController from "../controllers/diagnosticTest/patchDiagnosticTestController.js";
 import getGenderDistributionController from "../controllers/statisticalCenter/getGenderDistributionController.js";
 import getPatientActivityDistributionController from "../controllers/statisticalCenter/getPatientActivityDistributionController.js";
 import getGeneralStatisticsController from "../controllers/statisticalCenter/getGeneralStatisticsController.js";
@@ -49,8 +45,6 @@ import updateTherapyPrescriptionController from "../controllers/therapy/updateTh
 import updateMedicalReferralController from "../controllers/medicalReferral/updateMedicalReferralController.js";
 import updateMedicalProcedurePrescriptionController from "../controllers/medicalProcedurePrescription/updateMedicalProcedurePrescriptionController.js";
 import updateDrugPrescriptionController from "../controllers/drugPrescription/updateDrugPrescriptionController.js";
-import updatePatientDiagnosticController from "../controllers/patient/updatePatientDiagnosticController.js";
-import updateMedicalBackgroundsController from "../controllers/medicalBackgrounds/updateMedicalBackgroundsController.js";
 import updateAnthropometricDetailController from "../controllers/anthropometricDetails/updateAnthropometricDetailsController.js";
 import createPhysicianMedicalRegisterController from "../controllers/physician/createPhysicianMedicalRegisterController.js";
 import createPhysicianAttendancePlaceController from "../controllers/physician/createPhysicianAttendancePlaceController.js";
@@ -144,7 +138,6 @@ const medicalEventRouter = Router();
 const vitalSignsRouter = Router();
 const anthropometricDetailsRouter = Router();
 const medicalBackgroundsRouter = Router();
-const diagnosticTestRouter = Router();
 const statisticsRouter = Router();
 const drugPrescriptionRouter = Router();
 const procedurePrescriptionRouter = Router();
@@ -190,12 +183,6 @@ patientRouter.route("/patch-patient").patch(patchPatientController);
 
 patientRouter.route("/patient-details").get(getPatientDetailsController);
 
-patientRouter
-  .route("/patient-diagnostic")
-  .post(createPatientDiagnosticController);
-patientRouter
-  .route("/patient-update-diagnostic")
-  .patch(updatePatientDiagnosticController);
 patientRouter
   .route("/patient-physical-examination")
   .post(createPatientPhysicalExaminationController)
@@ -410,14 +397,6 @@ sociodemographicDetailsRouter
   .route("/sociodemographic-details/update-sociodemographic-detail")
   .patch(updateSociodemographicDetailsController);
 
-//* Medical Backgrounds
-medicalBackgroundsRouter
-  .route("/medical-backgrounds/create-medical-background")
-  .post(createMedicalBackgroundsController);
-medicalBackgroundsRouter
-  .route("/medical-backgrounds/update-medical-background")
-  .patch(updateMedicalBackgroundsController);
-
 //*Backgrounds
 backgroundsRouter
   .route("/backgrounds/create-backgrounds")
@@ -426,13 +405,6 @@ backgroundsRouter
   .route("/backgrounds/update-backgrounds")
   .patch(updateBackgroundsController);
 
-//* Diagnostic test
-diagnosticTestRouter
-  .route("/diagnostic-test/create-diagnostic-test")
-  .post(createDiagnosticTestController);
-diagnosticTestRouter
-  .route("/diagnostic-test/update-diagnostic-test")
-  .patch(patchDiagnosticTestController);
 
 //* Drug Prescription
 drugPrescriptionRouter
@@ -591,7 +563,6 @@ export {
   vitalSignsRouter,
   anthropometricDetailsRouter,
   medicalBackgroundsRouter,
-  diagnosticTestRouter,
   statisticsRouter,
   drugPrescriptionRouter,
   procedurePrescriptionRouter,
