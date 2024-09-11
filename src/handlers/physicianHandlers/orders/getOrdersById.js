@@ -48,25 +48,7 @@ const getOrdersByIdHandlersPhysician = async (orderId) => {
               ],
               order: [["id", "DESC"]],
               limit: 1,
-              // include: [
-              //   {
-              //     model: models.DrugDetailPresentation,
-              //     as: "drugDetailPresentation",
-              //     attributes: ["dose"],
-              //     include: [
-              //       {
-              //         model: models.CatDrug,
-              //         as: "drugName",
-              //         attributes: ["name"],
-              //       },
-              //       {
-              //         model: models.CatMeasureUnit,
-              //         as: "measureUnit",
-              //         attributes: ["name"],
-              //       },
-              //     ],
-              //   },
-              // ],
+
             },
           ],
         },
