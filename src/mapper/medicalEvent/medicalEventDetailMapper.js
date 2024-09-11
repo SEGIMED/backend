@@ -103,7 +103,7 @@ export const mapMedicalEventDetail = (medicalEvent) => {
       medicalEvent?.therapyPrescriptions[0]?.therapyDescription ?? null,
 
     //plan de tratamiento
-    treatmentPlan: medicalEvent?.pendingDiagnosticTest ?? null,
+    treatmentPlan: medicalEvent?.treatmentPlan ?? null,
 
     //Tratamiento no farmacológico
     medicalIndications: medicalEvent?.medicalIndications[0]?.description,
