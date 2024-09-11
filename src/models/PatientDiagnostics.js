@@ -8,9 +8,18 @@ const model = (sequelize) => {
     {
       id: {
         type: DataTypes.INTEGER,
-        allowNull:false,
+        allowNull: false,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
+      },
+      patient: {
+        type: DataTypes,
+        allowNull: false,
+        references: {
+          model: "user",
+          key: "id",
+        },
+        field: "patient",
       },
       medicalEvent: {
         type: DataTypes.INTEGER,
@@ -21,15 +30,6 @@ const model = (sequelize) => {
         },
         field: "medical_event",
       },
-      physicianOrder: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-          model: "physician_orders",
-          key: "id",
-        },
-        field: "physician_order",
-      },
       diagnostic: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -37,13 +37,13 @@ const model = (sequelize) => {
           model: "subcategories_cie_diez",
           key: "id",
         },
-        field: "diagnostic"
+        field: "diagnostic",
       },
     },
     {
       tableName: "patient_diagnostics",
       schema: "public",
-      timestamps: false
+      timestamps: false,
     }
   );
 };

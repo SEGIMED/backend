@@ -22,6 +22,7 @@ import {
   MedicalEvent,
   MedicalIndications,
   MedicalProcedurePrescription,
+  PatientDiagnostics,
   PatientHeartFailureClassification,
   PatientPainMap,
   PatientPhysicalExamination,
@@ -59,8 +60,14 @@ const getMedicalEventHistoryHandler = async (
     const medicalEventHistory = await MedicalEvent.findAll({
       include: [
         {
-          model: SubCategoriesCieDiez,
-          as: "diagnosedDisease",
+          model: PatientDiagnostics,
+          as: "medicalEventDiagnostics",
+          attributes:["id"],
+          include: {
+            model: SubCategoriesCieDiez,
+            as:"cie10subCategory",
+            attributes: ["description"]
+          }
         },
         {
           model: AppointmentScheduling,
@@ -239,14 +246,6 @@ const getMedicalEventHistoryHandler = async (
           model: DrugPrescription,
           as: "drugPrescriptions",
           separate: true,
-          // include: {
-          //   model: CatDrug,
-          //   as: "catDrug",
-          //   include: {
-          //     model: CatDrugPresentation,
-          //     as: "catDrugPresentation",
-          //   },
-          // },
         },
         {
           model: MedicalProcedurePrescription,
