@@ -5,15 +5,11 @@ import {
   CatAnthropometricMeasureType,
   CatAppointmentModality,
   CatDiagnosticTestType,
-  CatDisease,
-  CatDrug,
-  CatDrugPresentation,
   CatHeartFailureClassification,
   CatMeasureUnit,
   CatMedicalProcedure,
   CatMedicalProcedureType,
   CatMedicalSpecialty,
-  CatPainAreas,
   CatPainDuration,
   CatPainFrequency,
   CatPainScale,
@@ -22,13 +18,11 @@ import {
   CatPulmonaryHypertensionGroup,
   CatSurgicalRisk,
   CatVitalSignMeasureType,
-  DiagnosticTest,
-  DiagnosticTestPrescription,
   DrugPrescription,
   MedicalEvent,
   MedicalIndications,
   MedicalProcedurePrescription,
-  PatientDiagnostic,
+  PatientDiagnostics,
   PatientHeartFailureClassification,
   PatientPainMap,
   PatientPhysicalExamination,
@@ -43,7 +37,6 @@ import {
 } from "../../databaseConfig.js";
 import { mapMedicalEvent } from "../../mapper/medicalEvent/medicalEventMapper.js";
 import interconsultationsMapper from "../../mapper/interconsultation/interconsultationsMapper.js";
-import { consultationVitalSignsMapper } from "../../mapper/patient/consultationVitalSignsMapper.js";
 import getInterconsultationsByPatientIdHandler from "./getInterconsultationsByPatientIdHandler.js";
 import universalPaginationHandler from "../Pagination/universalPaginationHandler.js";
 
@@ -67,8 +60,14 @@ const getMedicalEventHistoryHandler = async (
     const medicalEventHistory = await MedicalEvent.findAll({
       include: [
         {
-          model: SubCategoriesCieDiez,
-          as: "diagnosedDisease",
+          model: PatientDiagnostics,
+          as: "medicalEventDiagnostics",
+          attributes:["id"],
+          include: {
+            model: SubCategoriesCieDiez,
+            as:"cie10subCategory",
+            attributes: ["description"]
+          }
         },
         {
           model: AppointmentScheduling,
@@ -187,15 +186,6 @@ const getMedicalEventHistoryHandler = async (
                 },
               ],
             },
-            {
-              model: DiagnosticTest,
-              as: "schDiagnosticTests",
-              separate: true,
-              include: {
-                model: CatDiagnosticTestType,
-                as: "catDiagnosticTestType",
-              },
-            },
           ],
         },
         {
@@ -253,26 +243,9 @@ const getMedicalEventHistoryHandler = async (
           as: "background",
         },
         {
-          model: DiagnosticTest,
-          as: "diagnosticTests",
-          separate: true,
-          include: {
-            model: CatDiagnosticTestType,
-            as: "catDiagnosticTestType",
-          },
-        },
-        {
           model: DrugPrescription,
           as: "drugPrescriptions",
           separate: true,
-          // include: {
-          //   model: CatDrug,
-          //   as: "catDrug",
-          //   include: {
-          //     model: CatDrugPresentation,
-          //     as: "catDrugPresentation",
-          //   },
-          // },
         },
         {
           model: MedicalProcedurePrescription,
@@ -286,10 +259,6 @@ const getMedicalEventHistoryHandler = async (
               as: "catMedicalProcedureType",
             },
           },
-        },
-        {
-          model: DiagnosticTestPrescription,
-          as: "diagnosticTestExaminationPrescriptions",
         },
         {
           model: MedicalIndications,

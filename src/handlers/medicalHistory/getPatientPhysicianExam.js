@@ -7,7 +7,6 @@ const getPatientPhysicalExamination = async (patientId, page, limit) => {
     const response = await models.MedicalEvent.findAll({
       attributes: [
         "id",
-        "chiefComplaint",
         "historyOfPresentIllness",
         "reviewOfSystems",
       ],

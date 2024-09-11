@@ -6,9 +6,14 @@ const getDiagnosticHandler = async (patientId) => {
       attributes: ["id", "diagnosticNotes", "alarmPattern"],
       include: [
         {
-          model: models.SubCategoriesCieDiez,
-          as: "diagnosedDisease",
-          attributes:["description","code"]
+          model: models.PatientDiagnostics,
+          as: "medicalEventDiagnostics",
+          attributes:["id"],
+          include: {
+            model: models.SubCategoriesCieDiez,
+            as:"cie10subCategory",
+            attributes: ["description"]
+          }
         },
         {
             model:models.MedicalIndications,

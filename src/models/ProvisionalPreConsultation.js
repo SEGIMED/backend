@@ -166,62 +166,6 @@ const model = (sequelize) => {
         allowNull: true,
         field: "laboratory_results_description",
       },
-      electrocardiogram: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "electrocardiogram",
-      },
-      electrocardiogramDescription: {
-        type: DataTypes.STRING(500),
-        allowNull: true,
-        field: "electrocardiogram_description",
-      },
-      rxThorax: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "rx_thorax",
-      },
-      echocardiogram: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      walkTest: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "walk_test",
-      },
-      respiratoryFunctional: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "respiratory_functional",
-      },
-      tomographies: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      rightHeartCatheterization: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "right_heart_catheterization",
-      },
-      ccg: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      resonance: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      leftHeartCatheterization: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "left_heart_catheterization",
-      },
-      otherStudies: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "other_studies",
-      },
       pendingStudies: {
         type: DataTypes.STRING(500),
         allowNull: true,

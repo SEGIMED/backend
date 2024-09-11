@@ -1,23 +1,16 @@
 import { Op } from "sequelize";
 import {
-  AnthropometricDetails,
   AppointmentScheduling,
   Backgrounds,
-  CatAnthropometricMeasureType,
   CatCardiovascularRisk,
   CatCivilStatus,
-  CatDiagnosticTestType,
-  CatDisease,
   CatDrug,
-  CatDrugPresentation,
   CatEducationalLevel,
   CatGenre,
   CatHealthCarePlan,
   CatMeasureUnit,
-  CatMedicalBackgroundType,
   CatMedicalProcedure,
   CatMedicalProcedureType,
-  CatPainAreas,
   CatPainDuration,
   CatPainFrequency,
   CatPainScale,
@@ -26,15 +19,12 @@ import {
   CatPulmonaryHypertensionGroup,
   CatSurgicalRisk,
   CatVitalSignMeasureType,
-  DiagnosticTest,
-  DiagnosticTestPrescription,
   DrugPrescription,
   MedicalEvent,
   MedicalIndications,
   MedicalProcedurePrescription,
   PatientCardiovascularRisk,
-  PatientDiagnostic,
-  PatientMedicalBackground,
+  PatientDiagnostics,
   PatientPainMap,
   PatientPhysicalExamination,
   PatientPulmonaryHypertensionGroup,
@@ -50,7 +40,6 @@ import {
 
 import { mapMedicalEventDetail } from "../../mapper/medicalEvent/medicalEventDetailMapper.js";
 import { consultationVitalSignsMapper } from "../../mapper/patient/consultationVitalSignsMapper.js";
-import { model } from "mongoose";
 
 const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
   const query = {
@@ -59,8 +48,14 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
     },
     include: [
       {
-        model: SubCategoriesCieDiez,
-        as: "diagnosedDisease",
+        model: PatientDiagnostics,
+        as: "medicalEventDiagnostics",
+        attributes:["id"],
+        include: {
+          model: SubCategoriesCieDiez,
+          as:"cie10subCategory",
+          attributes: ["description"]
+        }
       },
       {
         model: DrugPrescription,
@@ -144,38 +139,9 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
                 ],
               },
               {
-                model: PatientMedicalBackground,
-                as: "patientMedicalBackgrounds",
-                separate: true,
-                include: [
-                  {
-                    model: CatMedicalBackgroundType,
-                    as: "medicalBackgroundType",
-                    attributes: ["name"],
-                  },
-                  {
-                    model: CatDisease,
-                    as: "catDisease",
-                    attributes: ["name"],
-                  },
-                ],
-              },
-              {
                 model: Backgrounds,
                 as: "backgrounds",
               },
-              // {
-              //   model: AnthropometricDetails,
-              //   as: "patientAnthDet",
-              //   include: {
-              //     model: CatAnthropometricMeasureType,
-              //     as: "anthMeasType",
-              //     include: {
-              //       model: CatMeasureUnit,
-              //       as: "measUnit",
-              //     },
-              //   },
-              // },
             ],
           },
           {
@@ -219,15 +185,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
               },
             ],
           },
-          {
-            model: DiagnosticTest,
-            as: "schDiagnosticTests",
-            separate: true,
-            include: {
-              model: CatDiagnosticTestType,
-              as: "catDiagnosticTestType",
-            },
-          },
         ],
       },
       {
@@ -266,15 +223,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
         },
       },
       {
-        model: DiagnosticTest,
-        as: "diagnosticTests",
-        separate: true,
-        include: {
-          model: CatDiagnosticTestType,
-          as: "catDiagnosticTestType",
-        },
-      },
-      {
         model: MedicalProcedurePrescription,
         as: "procedurePrescriptions",
         separate: true,
@@ -291,14 +239,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
         model: TherapyPrescription,
         as: "therapyPrescriptions",
         separate: true,
-        // include: {
-        //   model: CatMedicalProcedure,
-        //   as: "catMedicalProcedure",
-        //   include: {
-        //     model: CatMedicalProcedureType,
-        //     as: "catMedicalProcedureType",
-        //   },
-        // },
       },
       {
         model: VitalSignDetails,
@@ -318,10 +258,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
       {
         model: Backgrounds,
         as: "background",
-      },
-      {
-        model: DiagnosticTestPrescription,
-        as: "diagnosticTestExaminationPrescriptions",
       },
       {
         model: MedicalIndications,
