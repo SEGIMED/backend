@@ -137,16 +137,6 @@ const model = (sequelize) => {
         allowNull: true,
         field: "exercise_status",
       },
-      abnormalGlycemia: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-        field: "abnormal_glycemia",
-      },
-      lastAbnormalGlycemia: {
-        type: DataTypes.ARRAY(DataTypes.DECIMAL),
-        allowNull: true,
-        field: "last_abnormal_glycemia",
-      },
       physicalExamination: {
         type: DataTypes.BIGINT,
         allowNull: true,

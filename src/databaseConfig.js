@@ -1337,14 +1337,6 @@ MedicalEvent.hasMany(PatientDiagnostics, {
   foreignKey: "medicalEvent",
   as: "medicalEventDiagnostics",
 });
-PatientDiagnostics.hasOne(PhysicianOrders, {
-  foreignKey: "id",
-  as: "physicianOrderDiagnostic",
-});
-PhysicianOrders.belongsTo(PatientDiagnostics, {
-  foreignKey: "physicianOrder",
-  as: "physicianOrderDiagnostic",
-});
 
 PatientDiagnostics.belongsTo(SubCategoriesCieDiez, {
   foreignKey: "diagnostic",
