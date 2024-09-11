@@ -30,15 +30,6 @@ const model = (sequelize) => {
         },
         field: "medical_event",
       },
-      physicianOrder: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-          model: "physician_orders",
-          key: "id",
-        },
-        field: "physician_order",
-      },
       diagnostic: {
         type: DataTypes.INTEGER,
         allowNull: true,
