@@ -80,6 +80,7 @@ const updateMedicalEventHandler = async (body) => {
       const diagnosticsToCreate = newDiagnostics.map((diagnostic) => ({
         diagnostic: diagnostic,
         medicalEvent: id,
+        patient: appointmentSchedule.patient,
         physicianOrder: null,
       }));
       console.log(diagnosticsToCreate)

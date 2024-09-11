@@ -10,7 +10,7 @@ export const mapMedicalEventEvolution = (medicalEvent) => {
   return {
     timestamp: medicalEvent.appSch?.scheduledStartTimestamp, //
     chiefComplaint: medicalEvent.appSch?.reasonForConsultation,
-   
+
     physician: {
       id: medicalEvent.appSch?.physicianThatAttend?.id,
       name: medicalEvent.appSch?.physicianThatAttend?.name,
@@ -31,6 +31,7 @@ export const mapMedicalEvent = (medicalEvent) => {
 
   return {
     medicalEventId: medicalEvent.id,
+    medicalEventDiagnostics:medicalEvent.medicalEventDiagnostics,
     timestamp: medicalEvent.appSch.scheduledStartTimestamp,
     patientStudies: medicalEvent?.appSch?.appointmentStudies,
     //motivo de consulta
