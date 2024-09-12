@@ -94,6 +94,7 @@ import SelfEvaluationEventModel from "./models/SelfEvaluationEvent.js";
 import CategoryCieDiezModel from "./models/CategoryCieDiez.js";
 import SubcategoriesCieDiezModel from "./models/SubCategoriesCieDiez.js";
 import PatientDiagnosticsModel from "./models/PatientDiagnostics.js";
+import GlycemiaRecordsModel from "./models/GlycemiaRecords.js"
 
 // import
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
@@ -221,6 +222,7 @@ SelfEvaluationEventModel(sequelize);
 CategoryCieDiezModel(sequelize);
 SubcategoriesCieDiezModel(sequelize);
 PatientDiagnosticsModel(sequelize);
+GlycemiaRecordsModel(sequelize)
 
 export const {
   AppointmentScheduling,
@@ -316,6 +318,7 @@ export const {
   CategoryCieDiez,
   SubCategoriesCieDiez,
   PatientDiagnostics,
+  GlycemiaRecords
 } = sequelize.models;
 
 MedicalEvent.belongsTo(AppointmentScheduling, {
@@ -1346,6 +1349,10 @@ SubCategoriesCieDiez.hasMany(PatientDiagnostics, {
   foreignKey: "diagnostic",
   as: "diagnostic",
 });
+SelfEvaluationEvent.hasMany(GlycemiaRecords, {
+  foreignKey:"selfEvaluationEvent",
+  as:"glycemia"
+})
 
 const models = {
   AnthropometricDetails,
@@ -1440,6 +1447,7 @@ const models = {
   CategoryCieDiez,
   SubCategoriesCieDiez,
   PatientDiagnostics,
+  GlycemiaRecords
 };
 
 export default models;

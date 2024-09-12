@@ -84,7 +84,6 @@ import updateBackgroundsController from "../controllers/backgrounds/updatebackgr
 import createAlarmEventController from "../controllers/alarmEvent/createAlarmEventController.js";
 import getAllAlarmsForPatientController from "../controllers/alarmEvent/getAllAlarmsForPatientController.js";
 import patchAlarmEventController from "../controllers/alarmEvent/patchAlarmEventController.js";
-import createPreConsultationController from "../controllers/patient/preConsultation/ProvisionalPreConsultationController.js";
 import getAllProvisionaPreConsultationPatientController from "../controllers/patient/preConsultation/getAllProvisionaPreConsultationPatientController.js";
 import patchProvisionalPreConsultationController from "../controllers/patient/preConsultation/patchProvisionalPreConsultationController.js";
 import createSchedule from "../controllers/managementSchedule/createAttention.js";
@@ -126,6 +125,8 @@ import updateStatusSchedulingCtrl from "../controllers/scheduling/updateStatusSc
 import searchCIEController from "../controllers/cieDiezCtrl/searchCIEController.js";
 import getPatientPhysicianExamCtrl from "../controllers/medicalHistory/getPatientPhysicianExamCtrl.js";
 import getDiagnosticController from "../controllers/medicalHistory/getDiagnosticsController.js";
+import postGlycemiaRecordsController from "../controllers/glycemiaRecords/postGlycemiaRecordsController.js";
+import createSelfEvaluationVitalSignController from "../controllers/vitalSigns/createSelfEvaluationVitalSignController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -375,9 +376,6 @@ medicalEventRouter
 
 //* Vital Signs
 vitalSignsRouter
-  .route("/vital-signs/create-vital-sign")
-  .post(createVitalSignsController);
-vitalSignsRouter
   .route("/vital-signs/update-vital-sign")
   .patch(updateVitalSignsController);
 
@@ -465,9 +463,6 @@ alarmRouter.route("/edit-alarm-event/:id").patch(patchAlarmEventController);
 
 //*Provisional Pre Consultation
 preConsultationRouter
-  .route("/pre-consultation")
-  .post(createPreConsultationController);
-preConsultationRouter
   .route("/get-all-pateint-preconsultation")
   .get(getAllProvisionaPreConsultationPatientController);
 preConsultationRouter
@@ -550,6 +545,9 @@ selfEvaluationEventRouter
   .route("/pain-map")
   .get(getPainMapController)
   .post(physicalSelfEvaluationController);
+selfEvaluationEventRouter
+  .route("/vital-signs")
+  .post(createSelfEvaluationVitalSignController)
 
 export {
   getPatientsRouter,
