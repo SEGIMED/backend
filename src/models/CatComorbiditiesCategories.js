@@ -10,7 +10,7 @@ const model = (sequelize) => {
         autoIncrement: true,
         allowNull: false
       },
-      name: {
+      category: {
         type: DataTypes.STRING,
         allowNull: false
       }

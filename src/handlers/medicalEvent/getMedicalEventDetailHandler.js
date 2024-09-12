@@ -4,6 +4,8 @@ import {
   Backgrounds,
   CatCardiovascularRisk,
   CatCivilStatus,
+  CatComorbiditiesCategories,
+  CatComorbiditiesDiseases,
   CatDrug,
   CatEducationalLevel,
   CatGenre,
@@ -35,6 +37,7 @@ import {
   SubCategoriesCieDiez,
   TherapyPrescription,
   User,
+  UserComorbidities,
   VitalSignDetails,
 } from "../../databaseConfig.js";
 
@@ -142,6 +145,18 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
                 model: Backgrounds,
                 as: "backgrounds",
               },
+              {
+                model: UserComorbidities,
+                as:"comorbidities",
+                include:{
+                  model: CatComorbiditiesDiseases,
+                  as:"disease",
+                  include:{
+                    model: CatComorbiditiesCategories,
+                    as:"category"
+                  }
+                }
+              }
             ],
           },
           {
