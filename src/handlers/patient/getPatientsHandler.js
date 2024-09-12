@@ -26,6 +26,18 @@ const getPatientsHandler = async (
             ...(risk ? { where: { name: { [Op.iLike]: `%${risk}%` } } } : {}),
           },
         },
+        {
+          model: models.PatientPulmonaryHypertensionGroup,
+          as: "userHpGroups",
+          attributes: ["id"],
+          include: [
+            {
+              model: models.CatPulmonaryHypertensionGroup,
+              as: "catHpGroup",
+              attributes: ["name"],
+            },
+          ],
+        },
         // Incluir PhysicianFavoritePatient solo si physicianId está definido
         physicianId && {
           model: PhysicianFavoritePatient,
