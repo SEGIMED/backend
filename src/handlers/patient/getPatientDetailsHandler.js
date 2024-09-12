@@ -61,7 +61,7 @@ const getPatientDetailsHandler = async (id) => {
             {
               model: User,
               as: "measSourcePhys",
-              attributes: ["name", "lastname"],
+              attributes: ["name", "lastname", "email"],
             },
           ],
         },
@@ -152,6 +152,11 @@ const getPatientDetailsHandler = async (id) => {
             {
               model: CatCivilStatus,
               as: "catCivilStatus",
+              attributes: ["name"],
+            },
+            {
+              model: CatHealthCarePlan,
+              as: "catHealthCarePlan",
               attributes: ["name"],
             },
             {

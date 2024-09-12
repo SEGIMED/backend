@@ -6,6 +6,7 @@ export const mapPatient = (patient) => {
   return {
     userId: patient?.id,
     name: patient?.name,
+    email: patient?.email,
     lastname: patient?.lastname,
     geolocation: patient?.geolocation,
     cellphone: patient?.cellphone,
