@@ -1349,6 +1349,10 @@ SubCategoriesCieDiez.hasMany(PatientDiagnostics, {
   foreignKey: "diagnostic",
   as: "diagnostic",
 });
+SelfEvaluationEvent.hasMany(GlycemiaRecords, {
+  foreignKey:"selfEvaluationEvent",
+  as:"glycemia"
+})
 
 const models = {
   AnthropometricDetails,

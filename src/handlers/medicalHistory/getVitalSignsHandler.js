@@ -76,7 +76,7 @@ const getVitalSignsHandler = async (patientId, page, limit) => {
       attributes: {
         exclude: ["patient", "updated_at"],
       },
-      include: {
+      include: [{
         model: models.VitalSignDetails,
         as: "vitalSigns",
         attributes: {
@@ -101,7 +101,11 @@ const getVitalSignsHandler = async (patientId, page, limit) => {
             },
           },
         ],
-      },
+      },{
+        model: models.GlycemiaRecords,
+        attributes:["value"],
+        as:"glycemia"
+      }],
     });
 
     const formattedMedicalEvent = medicalEvent.map((me) => ({
