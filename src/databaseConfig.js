@@ -98,6 +98,7 @@ import GlycemiaRecordsModel from "./models/GlycemiaRecords.js";
 import CatComorbiditiesCategoriesModel from "./models/CatComorbiditiesCategories.js";
 import CatComorbiditiesDiseasesModel from "./models/CatComorbiditiesDiseases.js";
 import UserComorbiditiesModel from "./models/UserComorbidities.js";
+import CatConsultationReasonModel from "./models/CatConsultationReason.js";
 
 // import
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
@@ -229,6 +230,7 @@ GlycemiaRecordsModel(sequelize);
 CatComorbiditiesCategoriesModel(sequelize);
 CatComorbiditiesDiseasesModel(sequelize);
 UserComorbiditiesModel(sequelize);
+CatConsultationReasonModel(sequelize);
 
 export const {
   AppointmentScheduling,
@@ -328,6 +330,7 @@ export const {
   CatComorbiditiesCategories,
   CatComorbiditiesDiseases,
   UserComorbidities,
+  CatConsultationReason,
 } = sequelize.models;
 
 MedicalEvent.belongsTo(AppointmentScheduling, {
@@ -1392,6 +1395,16 @@ UserComorbidities.belongsTo(CatComorbiditiesDiseases, {
   as: "disease",
 });
 
+MedicalEvent.belongsTo(CatConsultationReason, {
+  foreignKey: "reasonForConsultationId",
+  as: "reasonForConsultation", 
+});
+
+CatConsultationReason.hasMany(MedicalEvent, {
+  foreignKey: "reasonForConsultationId",
+  as: "medicalEvents",
+});
+
 const models = {
   AnthropometricDetails,
   AppointmentScheduling,
@@ -1489,6 +1502,7 @@ const models = {
   CatComorbiditiesCategories,
   CatComorbiditiesDiseases,
   UserComorbidities,
+  CatConsultationReason,
 };
 
 export default models;

@@ -31,20 +31,10 @@ const model = (sequelize) => {
         allowNull: true,
         field: "history_of_present_illness",
       },
-      reviewOfSystems: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        field: "review_of_systems",
-      },
       treatmentPlan: {
         type: DataTypes.TEXT,
         allowNull: true,
         field: "treatment_plan",
-      },
-      pendingDiagnosticTest: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        field: "pending_diagnostic_test",
       },
       alarmPattern: {
         type: DataTypes.TEXT,
@@ -64,6 +54,15 @@ const model = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: true,
         field: "diagnostic_notes",
+      },
+      reasonForConsultationId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        field: "reason_for_consultation_id",
+        references: {
+          model: "cat_consultation_reason",
+          key: "id",
+        },
       },
     },
     {
