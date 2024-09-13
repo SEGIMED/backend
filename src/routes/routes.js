@@ -76,9 +76,7 @@ import updateHpRiskController from "../controllers/patient/patientRisk/updatePul
 import updateHeartFailureClassificationController from "../controllers/patient/patientRisk/updateHeartFailureClassificationController.js";
 import updateCardiovascularRiskController from "../controllers/patient/patientRisk/updateCardiovascularRiskController.js";
 import updateFullPatientController from "../controllers/patient/updateFullPatientController.js";
-import getMedicalEventHistoryController from "../controllers/medicalEvent/getMedicalEventHistoryController.js";
 import getMedicalEventHistoryEvolutionController from "../controllers/medicalHistory/getMedicalEventHistoryEvolution.js";
-import getMedicalEventDetailController from "../controllers/medicalEvent/getMedicalEventDetailController.js";
 import createBackgroundsController from "../controllers/backgrounds/createBackgroundsController.js";
 import updateBackgroundsController from "../controllers/backgrounds/updatebackgroundsController.js";
 import createAlarmEventController from "../controllers/alarmEvent/createAlarmEventController.js";
@@ -117,7 +115,6 @@ import getNewPatientDetailsController from "../controllers/medicalHistory/getNew
 import physicalSelfEvaluationController from "../controllers/painMap/physicalSelfEvaluationController.js";
 import getPainMapController from "../controllers/medicalHistory/getPainMapController.js";
 import patchPatientStudiesController from "../controllers/patient/patientStudies/patchPatientStudiesController.js";
-import getVitalSignsDetailController from "../controllers/medicalHistory/getVitalSignsdetailController.js";
 import getVitalSignsController from "../controllers/medicalHistory/getVitalSignsController.js";
 import createRegisterCie10Ctrl from "../controllers/cieDiezCtrl/createRegisterCie10Ctrl.js";
 import getCatAndSubCatCtrl from "../controllers/cieDiezCtrl/getCat&SubCatCie10Ctrl.js";
@@ -367,13 +364,8 @@ medicalEventRouter
 medicalEventRouter
   .route("/medical-event/update-event")
   .patch(updateMedicalEventController);
-medicalEventRouter
-  .route("/medical-event/get-medical-event-history")
-  .get(getMedicalEventHistoryController);
 medicalEventRouter.route("/medical-event/get-medical-event-history-evolution");
-medicalEventRouter
-  .route("/medical-event/get-medical-event-detail")
-  .get(getMedicalEventDetailController);
+
 
 //* Vital Signs
 vitalSignsRouter
@@ -529,7 +521,6 @@ notificationsRouter.patch("/notification-seen", patchNotificationsController);
 //* Medical History
 medicalHistoryRouter.get("/consultation", getConsultationController);
 medicalHistoryRouter.get("/patient-detail", getNewPatientDetailsController);
-medicalHistoryRouter.get("/vital-signs-detail", getVitalSignsDetailController);
 medicalHistoryRouter.get("/vital-signs", getVitalSignsController);
 medicalHistoryRouter.get(
   "/evolution",

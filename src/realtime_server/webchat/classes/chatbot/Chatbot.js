@@ -1,6 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import data from "../../helpers/chatbotData.json" assert { type: "json" };
-import getMedicalEventHistoryHandler from "../../../../handlers/medicalEvent/getMedicalEventHistoryHandler.js";
 import getAllAlarmsForPatientHandler from "../../../../handlers/alarmEvent/getAllAlarmsForPatientHandler.js";
 import getPatientDetailsHandler from "../../../../handlers/patient/getPatientDetailsHandler.js";
 import getPatientsHandler from "../../../../handlers/patient/getPatientsHandler.js";
@@ -244,7 +243,7 @@ class Chatbot {
         userId = this.user.userId;
       }
 
-      const result = await getMedicalEventHistoryHandler(userId);
+      // const result = await getMedicalEventHistoryHandler(userId);
       return `El historial clínico del paciente es:\n${JSON.stringify(
         result
       )}(No se puede agregar información)`;
