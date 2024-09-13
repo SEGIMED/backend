@@ -30,22 +30,26 @@ export async function loadImage(idImg, url) {
   return uploadResult;
 }
 // Upload file
-export async function loadFile(url) {
+export async function loadFile(base64String) {
   try {
-    const uploadResult = await cloudinary.uploader.upload(
-      url,
-      async function (error, result) {
-        if (error) {
-          return error.message;
-        } else {
-          return result;
-        }
-      }
-    );
+    // Verifica el tipo de archivo desde el prefijo base64
+    let resourceType = 'auto'; // Detecta automáticamente el tipo de archivo
+    if (base64String.startsWith('data:image/')) {
+      resourceType = 'image';
+    } else if (base64String.startsWith('data:application/pdf')) {
+      resourceType = 'raw';  // Cloudinary puede manejar PDFs como 'raw'
+    }
+
+    // Sube el archivo a Cloudinary con el tipo explícito
+    const uploadResult = await cloudinary.uploader.upload(base64String, {
+      resource_type: resourceType,
+    });
+
     return uploadResult;
+
   } catch (error) {
-    console.log("ERROR", error.message);
-    throw error;
+    console.error("Error al subir el archivo a Cloudinary:", error.message);
+    throw new Error("Error al subir el archivo a Cloudinary");
   }
 }
 
