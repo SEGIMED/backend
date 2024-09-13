@@ -17,7 +17,6 @@ import CatWeekDayModel from "./models/CatWeekDay.js";
 import ChatModel from "./models/Chat.js";
 import ChatMessageModel from "./models/ChatMessage.js";
 import ChatUserModel from "./models/ChatUser.js";
-import DrugPrescriptionModel from "./models/DrugPrescription.js";
 import MedicalEventModel from "./models/MedicalEvent.js";
 import OneTimePasswordModel from "./models/OneTimePassword.js";
 import PhysicianAgendaConfigurationModel from "./models/PhysicianAgendaConfiguration.js";
@@ -152,7 +151,6 @@ CatWeekDayModel(sequelize);
 ChatModel(sequelize);
 ChatMessageModel(sequelize);
 ChatUserModel(sequelize);
-DrugPrescriptionModel(sequelize);
 MedicalEventModel(sequelize);
 OneTimePasswordModel(sequelize);
 PhysicianAgendaConfigurationModel(sequelize);
@@ -253,7 +251,6 @@ export const {
   Chat,
   ChatMessage,
   ChatUser,
-  DrugPrescription,
   OneTimePassword,
   SociodemographicDetails,
   CatChatStatus,
@@ -447,14 +444,6 @@ ChatMessage.belongsTo(Chat, { as: "chat_chat", foreignKey: "chat" });
 Chat.hasMany(ChatMessage, { as: "chat_messages", foreignKey: "chat" });
 ChatUser.belongsTo(Chat, { as: "chat_chat", foreignKey: "chat" });
 Chat.hasMany(ChatUser, { as: "chat_users", foreignKey: "chat" });
-DrugPrescription.belongsTo(MedicalEvent, {
-  as: "medical_event_medical_event",
-  foreignKey: "medical_event",
-});
-MedicalEvent.hasMany(DrugPrescription, {
-  as: "drugPrescriptions",
-  foreignKey: "medical_event",
-});
 AnthropometricDetails.belongsTo(User, {
   as: "measSourcePhys",
   foreignKey: "measure_source",
@@ -493,19 +482,6 @@ ChatMessage.belongsTo(User, { as: "sender_user", foreignKey: "sender" });
 User.hasMany(ChatMessage, { as: "sender_chat_messages", foreignKey: "sender" });
 ChatUser.belongsTo(User, { as: "user_user", foreignKey: "user" });
 User.hasMany(ChatUser, { as: "chat_users", foreignKey: "user" });
-DrugPrescription.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
-User.hasMany(DrugPrescription, {
-  as: "drug_prescriptions",
-  foreignKey: "patient",
-});
-DrugPrescription.belongsTo(User, {
-  as: "prescribed_physician_user",
-  foreignKey: "prescribed_physician",
-});
-User.hasMany(DrugPrescription, {
-  as: "prescribed_physician_drug_prescriptions",
-  foreignKey: "prescribed_physician",
-});
 OneTimePassword.belongsTo(User, { as: "user_user", foreignKey: "user" });
 User.hasMany(OneTimePassword, { as: "oneTimePasswords", foreignKey: "user" });
 PhysicianAgendaConfiguration.belongsTo(User, {
@@ -745,7 +721,6 @@ MedicalEvent.hasMany(PatientPhysicalExamination, {
   as: "patientPhysicalExaminations",
   foreignKey: "medicalEvent",
 });
-DrugPrescription.belongsTo(CatDrug, { as: "catDrug", foreignKey: "drug" });
 User.hasMany(PhysicianReview, {
   as: "patienPhysicianReview",
   foreignKey: "patientId",
@@ -1422,7 +1397,6 @@ const models = {
   Chat,
   ChatMessage,
   ChatUser,
-  DrugPrescription,
   MedicalEvent,
   OneTimePassword,
   PhysicianAgendaConfiguration,

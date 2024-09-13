@@ -21,7 +21,6 @@ import {
   CatPulmonaryHypertensionGroup,
   CatSurgicalRisk,
   CatVitalSignMeasureType,
-  DrugPrescription,
   MedicalEvent,
   MedicalIndications,
   MedicalProcedurePrescription,
@@ -59,17 +58,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
           as:"cie10subCategory",
           attributes: ["description"]
         }
-      },
-      {
-        model: DrugPrescription,
-        as: "drugPrescriptions",
-        include: [
-          {
-            model: CatDrug,
-            as: "catDrug",
-            attributes: ["id", "name"],
-          },
-        ],
       },
       {
         model: AppointmentScheduling,
