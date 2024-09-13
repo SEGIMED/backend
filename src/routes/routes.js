@@ -125,8 +125,8 @@ import updateStatusSchedulingCtrl from "../controllers/scheduling/updateStatusSc
 import searchCIEController from "../controllers/cieDiezCtrl/searchCIEController.js";
 import getPatientPhysicianExamCtrl from "../controllers/medicalHistory/getPatientPhysicianExamCtrl.js";
 import getDiagnosticController from "../controllers/medicalHistory/getDiagnosticsController.js";
-import postGlycemiaRecordsController from "../controllers/glycemiaRecords/postGlycemiaRecordsController.js";
 import createSelfEvaluationVitalSignController from "../controllers/vitalSigns/createSelfEvaluationVitalSignController.js";
+import searchComorbiditiesController from "../controllers/Comorbidities/searchComorbiditesController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -158,6 +158,7 @@ const interconsultationRouter = Router();
 const interconsultationDetailsRouter = Router();
 const medicalHistoryRouter = Router();
 const selfEvaluationEventRouter = Router();
+const comorbiditiesRouter = Router();
 
 //* User
 userRouter.route("/user/register-user").post(userRegisterController);
@@ -403,7 +404,6 @@ backgroundsRouter
   .route("/backgrounds/update-backgrounds")
   .patch(updateBackgroundsController);
 
-
 //* Drug Prescription
 drugPrescriptionRouter
   .route("/drug-prescription")
@@ -536,9 +536,8 @@ medicalHistoryRouter.get(
   getMedicalEventHistoryEvolutionController
 );
 medicalHistoryRouter.get("/anamnesis", getAnamnesisCtrl);
-medicalHistoryRouter.get("/physical-examination", getPatientPhysicianExamCtrl)
-medicalHistoryRouter.get("/diagnostics", getDiagnosticController)
-
+medicalHistoryRouter.get("/physical-examination", getPatientPhysicianExamCtrl);
+medicalHistoryRouter.get("/diagnostics", getDiagnosticController);
 
 //* Self Evaluation
 selfEvaluationEventRouter
@@ -547,7 +546,10 @@ selfEvaluationEventRouter
   .post(physicalSelfEvaluationController);
 selfEvaluationEventRouter
   .route("/vital-signs")
-  .post(createSelfEvaluationVitalSignController)
+  .post(createSelfEvaluationVitalSignController);
+
+//* Comorbidities
+comorbiditiesRouter.route("/comorbidities").get(searchComorbiditiesController);
 
 export {
   getPatientsRouter,
@@ -580,4 +582,5 @@ export {
   interconsultationDetailsRouter,
   medicalHistoryRouter,
   selfEvaluationEventRouter,
+  comorbiditiesRouter
 };

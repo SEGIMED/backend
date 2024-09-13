@@ -1,7 +1,5 @@
 import { mapPainMap } from "../painMap/painMapMapper.js";
 import { mapPhysicalExamination } from "../patient/physicalExaminationMapper.js";
-import { mapPatientDiagnostic } from "../patient/patientDiagnosticMapper.js";
-import { mapDrugPrescription } from "../patient/drugPrescriptionMapper.js";
 import { mapProcedurePrescription } from "../patient/procedurePrescriptionMapper.js";
 import { mapAnthropometricDetail } from "../patient/anthropometricDetailsMapper.js";
 import { mapVitalSign } from "../patient/vitalSignsMapper.js";
@@ -100,9 +98,6 @@ export const mapMedicalEvent = (medicalEvent) => {
     diagnostics: medicalEvent.diagnosedDisease,
 
     // Medicamentos recetados
-    drugPrescriptions: medicalEvent.drugPrescriptions.map((drugPrescription) =>
-      mapDrugPrescription(drugPrescription)
-    ),
 
     // Examenes de laboratorio prescritos
     // prescribedDiagnosticTests: medicalEvent

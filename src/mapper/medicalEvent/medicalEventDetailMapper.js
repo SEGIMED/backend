@@ -45,7 +45,7 @@ export const mapMedicalEventDetail = (medicalEvent) => {
     backgrounds: (medicalEvent?.appSch?.patientUser?.backgrounds ?? [])
       .concat(medicalEvent?.background ?? [])
       .filter((background) => background !== null),
-
+    comorbidities: medicalEvent?.appSch?.patientUser?.comorbidities,
     //motivo de consulta
     chiefComplaint: medicalEvent?.chiefComplaint ?? null,
     /// enfermedad actual

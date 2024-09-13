@@ -4,6 +4,8 @@ import {
   Backgrounds,
   CatCardiovascularRisk,
   CatCivilStatus,
+  CatComorbiditiesCategories,
+  CatComorbiditiesDiseases,
   CatDrug,
   CatEducationalLevel,
   CatGenre,
@@ -19,7 +21,6 @@ import {
   CatPulmonaryHypertensionGroup,
   CatSurgicalRisk,
   CatVitalSignMeasureType,
-  DrugPrescription,
   MedicalEvent,
   MedicalIndications,
   MedicalProcedurePrescription,
@@ -35,6 +36,7 @@ import {
   SubCategoriesCieDiez,
   TherapyPrescription,
   User,
+  UserComorbidities,
   VitalSignDetails,
 } from "../../databaseConfig.js";
 
@@ -56,17 +58,6 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
           as:"cie10subCategory",
           attributes: ["description"]
         }
-      },
-      {
-        model: DrugPrescription,
-        as: "drugPrescriptions",
-        include: [
-          {
-            model: CatDrug,
-            as: "catDrug",
-            attributes: ["id", "name"],
-          },
-        ],
       },
       {
         model: AppointmentScheduling,
@@ -142,6 +133,18 @@ const getMedicalEventDetailHandler = async ({ medicalEventId, scheduleId }) => {
                 model: Backgrounds,
                 as: "backgrounds",
               },
+              {
+                model: UserComorbidities,
+                as:"comorbidities",
+                include:{
+                  model: CatComorbiditiesDiseases,
+                  as:"disease",
+                  include:{
+                    model: CatComorbiditiesCategories,
+                    as:"category"
+                  }
+                }
+              }
             ],
           },
           {

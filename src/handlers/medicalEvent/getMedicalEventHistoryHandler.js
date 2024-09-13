@@ -18,7 +18,6 @@ import {
   CatPulmonaryHypertensionGroup,
   CatSurgicalRisk,
   CatVitalSignMeasureType,
-  DrugPrescription,
   MedicalEvent,
   MedicalIndications,
   MedicalProcedurePrescription,
@@ -241,11 +240,6 @@ const getMedicalEventHistoryHandler = async (
         {
           model: Backgrounds,
           as: "background",
-        },
-        {
-          model: DrugPrescription,
-          as: "drugPrescriptions",
-          separate: true,
         },
         {
           model: MedicalProcedurePrescription,

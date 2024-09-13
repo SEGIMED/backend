@@ -17,7 +17,6 @@ import CatWeekDayModel from "./models/CatWeekDay.js";
 import ChatModel from "./models/Chat.js";
 import ChatMessageModel from "./models/ChatMessage.js";
 import ChatUserModel from "./models/ChatUser.js";
-import DrugPrescriptionModel from "./models/DrugPrescription.js";
 import MedicalEventModel from "./models/MedicalEvent.js";
 import OneTimePasswordModel from "./models/OneTimePassword.js";
 import PhysicianAgendaConfigurationModel from "./models/PhysicianAgendaConfiguration.js";
@@ -94,7 +93,11 @@ import SelfEvaluationEventModel from "./models/SelfEvaluationEvent.js";
 import CategoryCieDiezModel from "./models/CategoryCieDiez.js";
 import SubcategoriesCieDiezModel from "./models/SubCategoriesCieDiez.js";
 import PatientDiagnosticsModel from "./models/PatientDiagnostics.js";
-import GlycemiaRecordsModel from "./models/GlycemiaRecords.js"
+import GlycemiaRecordsModel from "./models/GlycemiaRecords.js";
+import CatComorbiditiesCategoriesModel from "./models/CatComorbiditiesCategories.js";
+import CatComorbiditiesDiseasesModel from "./models/CatComorbiditiesDiseases.js";
+import UserComorbiditiesModel from "./models/UserComorbidities.js";
+import CatConsultationReasonModel from "./models/CatConsultationReason.js";
 
 // import
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
@@ -148,7 +151,6 @@ CatWeekDayModel(sequelize);
 ChatModel(sequelize);
 ChatMessageModel(sequelize);
 ChatUserModel(sequelize);
-DrugPrescriptionModel(sequelize);
 MedicalEventModel(sequelize);
 OneTimePasswordModel(sequelize);
 PhysicianAgendaConfigurationModel(sequelize);
@@ -222,7 +224,11 @@ SelfEvaluationEventModel(sequelize);
 CategoryCieDiezModel(sequelize);
 SubcategoriesCieDiezModel(sequelize);
 PatientDiagnosticsModel(sequelize);
-GlycemiaRecordsModel(sequelize)
+GlycemiaRecordsModel(sequelize);
+CatComorbiditiesCategoriesModel(sequelize);
+CatComorbiditiesDiseasesModel(sequelize);
+UserComorbiditiesModel(sequelize);
+CatConsultationReasonModel(sequelize);
 
 export const {
   AppointmentScheduling,
@@ -245,7 +251,6 @@ export const {
   Chat,
   ChatMessage,
   ChatUser,
-  DrugPrescription,
   OneTimePassword,
   SociodemographicDetails,
   CatChatStatus,
@@ -318,7 +323,11 @@ export const {
   CategoryCieDiez,
   SubCategoriesCieDiez,
   PatientDiagnostics,
-  GlycemiaRecords
+  GlycemiaRecords,
+  CatComorbiditiesCategories,
+  CatComorbiditiesDiseases,
+  UserComorbidities,
+  CatConsultationReason,
 } = sequelize.models;
 
 MedicalEvent.belongsTo(AppointmentScheduling, {
@@ -435,14 +444,6 @@ ChatMessage.belongsTo(Chat, { as: "chat_chat", foreignKey: "chat" });
 Chat.hasMany(ChatMessage, { as: "chat_messages", foreignKey: "chat" });
 ChatUser.belongsTo(Chat, { as: "chat_chat", foreignKey: "chat" });
 Chat.hasMany(ChatUser, { as: "chat_users", foreignKey: "chat" });
-DrugPrescription.belongsTo(MedicalEvent, {
-  as: "medical_event_medical_event",
-  foreignKey: "medical_event",
-});
-MedicalEvent.hasMany(DrugPrescription, {
-  as: "drugPrescriptions",
-  foreignKey: "medical_event",
-});
 AnthropometricDetails.belongsTo(User, {
   as: "measSourcePhys",
   foreignKey: "measure_source",
@@ -481,19 +482,6 @@ ChatMessage.belongsTo(User, { as: "sender_user", foreignKey: "sender" });
 User.hasMany(ChatMessage, { as: "sender_chat_messages", foreignKey: "sender" });
 ChatUser.belongsTo(User, { as: "user_user", foreignKey: "user" });
 User.hasMany(ChatUser, { as: "chat_users", foreignKey: "user" });
-DrugPrescription.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
-User.hasMany(DrugPrescription, {
-  as: "drug_prescriptions",
-  foreignKey: "patient",
-});
-DrugPrescription.belongsTo(User, {
-  as: "prescribed_physician_user",
-  foreignKey: "prescribed_physician",
-});
-User.hasMany(DrugPrescription, {
-  as: "prescribed_physician_drug_prescriptions",
-  foreignKey: "prescribed_physician",
-});
 OneTimePassword.belongsTo(User, { as: "user_user", foreignKey: "user" });
 User.hasMany(OneTimePassword, { as: "oneTimePasswords", foreignKey: "user" });
 PhysicianAgendaConfiguration.belongsTo(User, {
@@ -733,7 +721,6 @@ MedicalEvent.hasMany(PatientPhysicalExamination, {
   as: "patientPhysicalExaminations",
   foreignKey: "medicalEvent",
 });
-DrugPrescription.belongsTo(CatDrug, { as: "catDrug", foreignKey: "drug" });
 User.hasMany(PhysicianReview, {
   as: "patienPhysicianReview",
   foreignKey: "patientId",
@@ -1350,9 +1337,48 @@ SubCategoriesCieDiez.hasMany(PatientDiagnostics, {
   as: "diagnostic",
 });
 SelfEvaluationEvent.hasMany(GlycemiaRecords, {
-  foreignKey:"selfEvaluationEvent",
-  as:"glycemia"
-})
+  foreignKey: "selfEvaluationEvent",
+  as: "glycemia",
+});
+
+CatComorbiditiesCategories.hasMany(CatComorbiditiesDiseases, {
+  foreignKey: "categoryId",
+  as: "diseases",
+});
+CatComorbiditiesDiseases.belongsTo(CatComorbiditiesCategories, {
+  foreignKey: "categoryId",
+  as: "category",
+});
+
+User.hasMany(UserComorbidities, {
+  foreignKey: "patientId",
+  as: "comorbidities",
+});
+
+UserComorbidities.belongsTo(User, {
+  foreignKey: "patientId",
+  as: "user",
+});
+
+CatComorbiditiesDiseases.hasMany(UserComorbidities, {
+  foreignKey: "diseaseId",
+  as: "userComorbidities",
+});
+
+UserComorbidities.belongsTo(CatComorbiditiesDiseases, {
+  foreignKey: "diseaseId",
+  as: "disease",
+});
+
+MedicalEvent.belongsTo(CatConsultationReason, {
+  foreignKey: "reasonForConsultationId",
+  as: "reasonForConsultation", 
+});
+
+CatConsultationReason.hasMany(MedicalEvent, {
+  foreignKey: "reasonForConsultationId",
+  as: "medicalEvents",
+});
 
 const models = {
   AnthropometricDetails,
@@ -1371,7 +1397,6 @@ const models = {
   Chat,
   ChatMessage,
   ChatUser,
-  DrugPrescription,
   MedicalEvent,
   OneTimePassword,
   PhysicianAgendaConfiguration,
@@ -1447,7 +1472,11 @@ const models = {
   CategoryCieDiez,
   SubCategoriesCieDiez,
   PatientDiagnostics,
-  GlycemiaRecords
+  GlycemiaRecords,
+  CatComorbiditiesCategories,
+  CatComorbiditiesDiseases,
+  UserComorbidities,
+  CatConsultationReason,
 };
 
 export default models;

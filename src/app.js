@@ -39,7 +39,8 @@ import {
   interconsultationRouter,
   interconsultationDetailsRouter,
   medicalHistoryRouter,
-  selfEvaluationEventRouter
+  selfEvaluationEventRouter,
+  comorbiditiesRouter,
 } from "./routes/routes.js";
 
 const corsOptions = {
@@ -100,6 +101,7 @@ app.use("/api", onbordingRouter);
 app.use("/api", getAllNotificationsPatienRouter);
 app.use("/api", getAllNotificationsPhysicianRouter);
 app.use("/api", notificationsRouter);
+app.use("/api", comorbiditiesRouter)
 
 app.use("/api", interconsultationRouter);
 app.use("/api", interconsultationDetailsRouter);

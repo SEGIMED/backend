@@ -1,10 +1,11 @@
 import { Op } from "sequelize";
-import { Backgrounds } from "../../databaseConfig.js";
-import SegimedAPIError from "../../error/SegimedAPIError.js";
+import { Backgrounds, sequelize } from "../../databaseConfig.js";
 import moment from "moment-timezone";
+import createComorbiditiesHandler from "../Comorbidities/createComorbiditiesHandler.js";
 
 const createBackgroundsHandler = async (body) => {
   const now = moment();
+  const transaction = await sequelize.transaction();
   const {
     patientId,
     surgicalBackground,
@@ -17,8 +18,10 @@ const createBackgroundsHandler = async (body) => {
     vaccinationBackground,
     medicalEventId,
     schedulingId,
+    comorbidities,
+    comorbiditiesList,
   } = body;
-  const query = {
+  const queryOptions = {
     where: {
       [Op.or]: [],
     },
@@ -35,40 +38,51 @@ const createBackgroundsHandler = async (body) => {
       timestamp: now.format("YYYY-MM-DD HH:mm:ss z"),
       medicalEvent: medicalEventId,
       appointmentScheduling: schedulingId,
+      comorbidities
     },
+    transaction
   };
   try {
     if (typeof medicalEventId !== "undefined") {
-      query.where[Op.or].push({ medicalEvent: medicalEventId });
+      queryOptions.where[Op.or].push({ medicalEvent: medicalEventId });
     }
     if (typeof schedulingId !== "undefined") {
-      query.where[Op.or].push({ appointmentScheduling: schedulingId });
+      queryOptions.where[Op.or].push({ appointmentScheduling: schedulingId });
     }
 
-    const [newBackground, createdBackground] = await Backgrounds.findOrCreate(
-      query
-    );
+    const [newBackground, createdBackground] = await Backgrounds.findOrCreate(queryOptions);
     if (createdBackground) {
       return newBackground;
     } else {
-      await newBackground.update({
-        surgicalBackground,
-        pathologicBackground,
-        nonPathologicBackground,
-        familyBackground,
-        pediatricBackground,
-        pharmacologicalBackground,
-        allergicBackground,
-        vaccinationBackground,
-        timestamp: now.format("YYYY-MM-DD HH:mm:ss z"),
-      });
-      return "Se han actualizado los antecedentes del paciente"
+      await newBackground.update(
+        {
+          surgicalBackground,
+          pathologicBackground,
+          nonPathologicBackground,
+          familyBackground,
+          pediatricBackground,
+          pharmacologicalBackground,
+          allergicBackground,
+          vaccinationBackground,
+          timestamp: now.format("YYYY-MM-DD HH:mm:ss z"),
+          comorbidities,
+        },
+        { transaction }
+      );
+      if (comorbidities) {
+        await createComorbiditiesHandler({
+          patientId,
+          comorbiditiesList,
+          transaction,
+        });
+      }
+      await transaction.commit();
+      return "Se han actualizado los antecedentes del paciente";
     }
   } catch (error) {
-    throw new SegimedAPIError(
-      "Hubo un error durante el proceso de registro.",
-      500
-    );
+    await transaction.rollback();
+    throw new Error("Hubo un error durante el proceso de registro: " + error.message);
+    
   }
 };
 

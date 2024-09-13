@@ -1,5 +1,6 @@
 import {
   AppointmentScheduling,
+  CatConsultationReason,
   MedicalEvent,
   PatientDiagnostics,
   sequelize,
@@ -29,6 +30,7 @@ const updateMedicalEventHandler = async (body) => {
         alarmPattern: body.alarmPattern,
         primaryDiagnostic: body.primaryDiagnostic,
         diagnosticNotes: body.diagnosticNotes,
+        reasonForConsultationId: body.reasonForConsultationId
       },
       {
         where: {
@@ -43,13 +45,14 @@ const updateMedicalEventHandler = async (body) => {
     );
 
     if (!medicalEvent) throw new Error("No se encontró la Consulta.");
-
+ 
+    const consultationReasonName = await CatConsultationReason.findByPk(body.reasonForConsultationId)
     const appointmentSchedule = await AppointmentScheduling.findOne({
       where: {
         id: medicalEvent.scheduling,
       },
     });
-    appointmentSchedule.reasonForConsultation = reasonForConsultation;
+    appointmentSchedule.reasonForConsultation = consultationReasonName.description;
     appointmentSchedule.save();
 
     const previousDiagnostics = await PatientDiagnostics.findAll({
