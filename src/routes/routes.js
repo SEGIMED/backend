@@ -2,7 +2,6 @@ import { Router } from "express";
 import getPatientsController from "../controllers/patient/getPatientsController.js";
 import getPatientsFilterController from "../controllers/patient/getPatientsFilterController.js";
 import getPatientController from "../controllers/patient/getPatientController.js";
-// import postPatientController from "../controllers/patient/postPatientController.js";
 import patchPatientController from "../controllers/patient/patchPatientController.js";
 import deletePatientController from "../controllers/patient/deletePatientController.js";
 import getPhysicianInformationController from "../controllers/physician/getPhysicianInformationController.js";
@@ -19,11 +18,9 @@ import recoverPasswordController from "../controllers/user/recoverPasswordContro
 import modifyPasswordWithOtpController from "../controllers/user/modifyPasswordWithOtpController.js";
 import getCatalogController from "../controllers/catalog/getCatalogController.js";
 import createSchedulingController from "../controllers/scheduling/createSchedulingController.js";
-import createMedicalEventController from "../controllers/medicalEvent/createMedicalEventController.js";
 import getPatientDetailsController from "../controllers/patient/getPatientDetailsController.js";
 import getAllUsersController from "../controllers/user/getAllUsersController.js";
 import getAllSchedulesController from "../controllers/scheduling/getAllSchedulesController.js";
-import createVitalSignsController from "../controllers/vitalSigns/createVitalSignsController.js";
 import createAnthropometricDetailController from "../controllers/anthropometricDetails/createAnthropometricDetailController.js";
 import patchScheduleController from "../controllers/scheduling/patchScheduleController.js";
 import deleteSchedulingController from "../controllers/scheduling/deleteSchedulingController.js";
@@ -124,6 +121,8 @@ import getPatientPhysicianExamCtrl from "../controllers/medicalHistory/getPatien
 import getDiagnosticController from "../controllers/medicalHistory/getDiagnosticsController.js";
 import createSelfEvaluationVitalSignController from "../controllers/vitalSigns/createSelfEvaluationVitalSignController.js";
 import searchComorbiditiesController from "../controllers/Comorbidities/searchComorbiditesController.js";
+import getVitalSignsByMedicalEventController from "../controllers/vitalSigns/getVitalSignsByMedicalEventController.js";
+import getConsultationTabController from "../controllers/medicalEvent/consultationTabs/getConsultationTabController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -358,19 +357,14 @@ schedulingRouter
   .get(getAllSchedulesByUserController);
 
 //* Medical Event
-medicalEventRouter
-  .route("/medical-event/create-event")
-  .post(createMedicalEventController);
-medicalEventRouter
-  .route("/medical-event/update-event")
-  .patch(updateMedicalEventController);
-medicalEventRouter.route("/medical-event/get-medical-event-history-evolution");
-
+medicalEventRouter.route("/consultation").get(getConsultationTabController);
+medicalEventRouter.route("/update-event").patch(updateMedicalEventController);
 
 //* Vital Signs
 vitalSignsRouter
-  .route("/vital-signs/update-vital-sign")
-  .patch(updateVitalSignsController);
+  .route("/medical-event")
+  .get(getVitalSignsByMedicalEventController);
+vitalSignsRouter.route("/update-vital-sign").patch(updateVitalSignsController);
 
 //* Anthropometric Details
 anthropometricDetailsRouter
@@ -573,5 +567,5 @@ export {
   interconsultationDetailsRouter,
   medicalHistoryRouter,
   selfEvaluationEventRouter,
-  comorbiditiesRouter
+  comorbiditiesRouter,
 };
