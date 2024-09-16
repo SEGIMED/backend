@@ -25,7 +25,6 @@ import {
   drugPrescriptionRouter,
   procedurePrescriptionRouter,
   medicalReferralRouter,
-  therapyPrescriptionRouter,
   medicalIndicationsRouter,
   sociodemographicDetailsRouter,
   alarmRouter,
@@ -90,7 +89,6 @@ app.use("/api", statisticsRouter);
 app.use("/api", drugPrescriptionRouter);
 app.use("/api", procedurePrescriptionRouter);
 app.use("/api", medicalReferralRouter);
-app.use("/api", therapyPrescriptionRouter);
 app.use("/api", medicalIndicationsRouter);
 app.use("/api", sociodemographicDetailsRouter);
 app.use("/api", alarmRouter);

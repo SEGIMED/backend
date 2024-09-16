@@ -34,11 +34,9 @@ import getGeneralStatisticsController from "../controllers/statisticalCenter/get
 import createDrugPrescriptionController from "../controllers/drugPrescription/createDrugPrescriptionController.js";
 import createMedicalProcedurePrescriptionController from "../controllers/medicalProcedurePrescription/createMedicalProcedurePrescriptionController.js";
 import createMedicalReferralController from "../controllers/medicalReferral/createMedicalReferralController.js";
-import createTherapyPrescriptionController from "../controllers/therapy/createTherapyPrescriptionController.js";
 import createPatientPhysicalExaminationController from "../controllers/patient/patientPhysicianExamCtrls/createPatientPhysicalExaminationController.js";
 import updatePatientPhysicalExaminationController from "../controllers/patient/patientPhysicianExamCtrls/updatePatientPhysicalExaminationController.js";
 import updateVitalSignsController from "../controllers/vitalSigns/updateVitalSignsController.js";
-import updateTherapyPrescriptionController from "../controllers/therapy/updateTherapyPrescriptionController.js";
 import updateMedicalReferralController from "../controllers/medicalReferral/updateMedicalReferralController.js";
 import updateMedicalProcedurePrescriptionController from "../controllers/medicalProcedurePrescription/updateMedicalProcedurePrescriptionController.js";
 import updateDrugPrescriptionController from "../controllers/drugPrescription/updateDrugPrescriptionController.js";
@@ -139,7 +137,6 @@ const statisticsRouter = Router();
 const drugPrescriptionRouter = Router();
 const procedurePrescriptionRouter = Router();
 const medicalReferralRouter = Router();
-const therapyPrescriptionRouter = Router();
 const medicalIndicationsRouter = Router();
 const sociodemographicDetailsRouter = Router();
 const backgroundsRouter = Router();
@@ -423,14 +420,6 @@ medicalReferralRouter
   .get(searchCIEController)
   .get(getCatAndSubCatCtrl);
 
-//* Therapy Prescription
-therapyPrescriptionRouter
-  .route("/therapy/create-therapy-prescription")
-  .post(createTherapyPrescriptionController);
-therapyPrescriptionRouter
-  .route("/therapy/update-therapy-prescription")
-  .patch(updateTherapyPrescriptionController);
-
 // *Medical Indications
 medicalIndicationsRouter
   .route("/medical-indications/new-indication")
@@ -552,7 +541,6 @@ export {
   drugPrescriptionRouter,
   procedurePrescriptionRouter,
   medicalReferralRouter,
-  therapyPrescriptionRouter,
   medicalIndicationsRouter,
   sociodemographicDetailsRouter,
   alarmRouter,
