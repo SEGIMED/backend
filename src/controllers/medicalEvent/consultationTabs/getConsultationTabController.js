@@ -10,7 +10,8 @@ const getConsultationTabController = async (req, res) => {
     const response = {
       vitalSigns,
       evolution: diagnostic.physicianComments,
-      diagnostic, 
+      diagnostic,
+      anamnesis: diagnostic.historyOfPresentIllness
     };
     return res.status(200).json(response);
   } catch (error) {
