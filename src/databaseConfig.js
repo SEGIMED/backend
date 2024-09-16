@@ -798,8 +798,6 @@ AppointmentScheduling.hasMany(PatientPainMap, {
   as: "patientPainMap",
   foreignKey: "scheduling",
 });
-// PatientPainMap.belongsTo(CatPainAreas, { as: "catPainArea", foreignKey: "painArea" });
-// CatPainAreas.hasMany(PatientPainMap, { as: "patientPainMaps", foreignKey: "painArea" });
 PatientPainMap.belongsTo(CatPainDuration, {
   as: "painDurationDetail",
   foreignKey: "painDuration",
@@ -938,11 +936,11 @@ User.hasMany(ProvisionalPreConsultation, {
   foreignKey: "patient",
 });
 ProvisionalPreConsultation.belongsTo(AppointmentScheduling, {
-  as: "ProvisionalPreConsultationSchedule",
+  as: "ProvisionalPreConsultation",
   foreignKey: "appointment_schedule",
 });
 AppointmentScheduling.hasOne(ProvisionalPreConsultation, {
-  as: "ProvisionalPreConsultationSchedule",
+  as: "ProvisionalPreConsultation",
   foreignKey: "appointment_schedule",
 });
 ProvisionalPreConsultation.belongsTo(PatientPainMap, {
@@ -1211,11 +1209,11 @@ PatientMedicalReq.belongsTo(User, {
   as: "physicianReq",
 });
 CatStudyType.hasMany(PatientStudies, {
-  as: "CatStudyTypePatientStudies",
+  as: "CatStudyType",
   foreignKey: "studyType",
 });
 PatientStudies.belongsTo(CatStudyType, {
-  as: "CatStudyTypePatientStudies",
+  as: "CatStudyType",
   foreignKey: "studyType",
 });
 AppointmentScheduling.hasMany(PatientStudies, {
