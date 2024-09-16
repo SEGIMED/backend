@@ -25,7 +25,6 @@ import {
   drugPrescriptionRouter,
   procedurePrescriptionRouter,
   medicalReferralRouter,
-  therapyPrescriptionRouter,
   medicalIndicationsRouter,
   sociodemographicDetailsRouter,
   alarmRouter,
@@ -83,14 +82,13 @@ app.use("/api", getPatientsFilterRouter);
 app.use("/api", userRouter);
 app.use("/api", catalogsRouter);
 app.use("/api", schedulingRouter);
-app.use("/api", medicalEventRouter);
-app.use("/api", vitalSignsRouter);
+app.use("/api/medical-event", medicalEventRouter);
+app.use("/api/vital-signs", vitalSignsRouter);
 app.use("/api", anthropometricDetailsRouter);
 app.use("/api", statisticsRouter);
 app.use("/api", drugPrescriptionRouter);
 app.use("/api", procedurePrescriptionRouter);
 app.use("/api", medicalReferralRouter);
-app.use("/api", therapyPrescriptionRouter);
 app.use("/api", medicalIndicationsRouter);
 app.use("/api", sociodemographicDetailsRouter);
 app.use("/api", alarmRouter);

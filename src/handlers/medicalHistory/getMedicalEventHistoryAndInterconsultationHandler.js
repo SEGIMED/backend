@@ -4,11 +4,29 @@ import {
   MedicalEvent,
   User,
 } from "../../databaseConfig.js";
-import { mapMedicalEventEvolution } from "../../mapper/medicalEvent/medicalEventMapper.js";
 import interconsultationsMapper from "../../mapper/interconsultation/interconsultationsMapper.js";
 import getInterconsultationsByPatientIdHandler from "../medicalEvent/getInterconsultationsByPatientIdHandler.js";
 import universalPaginationHandler from "../Pagination/universalPaginationHandler.js";
 import universalOrderByHandler from "../Pagination/universalOrderByHandler.js";
+
+export const mapMedicalEventEvolution = (medicalEvent) => {
+  return {
+    timestamp: medicalEvent.appSch?.scheduledStartTimestamp, //
+    chiefComplaint: medicalEvent.appSch?.reasonForConsultation,
+
+    physician: {
+      id: medicalEvent.appSch?.physicianThatAttend?.id,
+      name: medicalEvent.appSch?.physicianThatAttend?.name,
+      lastname: medicalEvent.appSch?.physicianThatAttend?.lastname,
+    },
+    attendancePlace: {
+      id: medicalEvent?.appSch?.attendancePlace?.id,
+      alias: medicalEvent?.appSch?.attendancePlace?.alias,
+    },
+    physicianComments: medicalEvent?.medicalOpinion || "",
+    historyOfPresentIllness: medicalEvent?.historyOfPresentIllness,
+  };
+};
 
 const getMedicalEventHistoryAndInterconsultationHandler = async (
   patientId,

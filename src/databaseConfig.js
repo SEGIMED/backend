@@ -40,8 +40,6 @@ import CatMedicalProcedureTypeModel from "./models/CatMedicalProcedureType.js";
 import MedicalIndicationsModel from "./models/MedicalIndications.js";
 import MedicalProcedurePrescriptionModel from "./models/MedicalProcedurePrescription.js";
 import MedicalReferralModel from "./models/MedicalReferral.js";
-import TherapyPrescriptionModel from "./models/TherapyPrescription.js";
-import CatTherapyModel from "./models/CatTherapy.js";
 import CatCivilStatusModel from "./models/CatCivilStatus.js";
 import CatGenreModel from "./models/CatGenre.js";
 import CatEducationalLevelModel from "./models/CatEducationalLevel.js";
@@ -171,8 +169,6 @@ CatMedicalProcedureTypeModel(sequelize);
 MedicalIndicationsModel(sequelize);
 MedicalProcedurePrescriptionModel(sequelize);
 MedicalReferralModel(sequelize);
-TherapyPrescriptionModel(sequelize);
-CatTherapyModel(sequelize);
 CatCivilStatusModel(sequelize);
 CatGenreModel(sequelize);
 CatEducationalLevelModel(sequelize);
@@ -270,8 +266,6 @@ export const {
   MedicalIndications,
   MedicalProcedurePrescription,
   MedicalReferral,
-  TherapyPrescription,
-  CatTherapy,
   CatCivilStatus,
   CatGenre,
   CatEducationalLevel,
@@ -335,7 +329,6 @@ MedicalEvent.belongsTo(AppointmentScheduling, {
   foreignKey: "scheduling",
 });
 AppointmentScheduling.hasOne(MedicalEvent, {
-  //creo que esta relacion se puede eliminar
   as: "medicalEvent",
   foreignKey: "scheduling",
 });
@@ -634,14 +627,6 @@ CatMedicalSpecialty.hasMany(MedicalReferral, {
   as: "medicalReferrals",
   foreignKey: "specialty",
 });
-TherapyPrescription.belongsTo(CatTherapy, {
-  as: "therapyCatTherapy",
-  foreignKey: "therapy",
-});
-CatTherapy.hasMany(TherapyPrescription, {
-  as: "therapyPrescriptions",
-  foreignKey: "therapy",
-});
 MedicalIndications.belongsTo(MedicalEvent, {
   as: "medicalEventMedicalEvent",
   foreignKey: "medicalEvent",
@@ -664,14 +649,6 @@ MedicalReferral.belongsTo(MedicalEvent, {
 });
 MedicalEvent.hasMany(MedicalReferral, {
   as: "medicalReferrals",
-  foreignKey: "medicalEvent",
-});
-TherapyPrescription.belongsTo(MedicalEvent, {
-  as: "medicalEventMedicalEvent",
-  foreignKey: "medicalEvent",
-});
-MedicalEvent.hasMany(TherapyPrescription, {
-  as: "therapyPrescriptions",
   foreignKey: "medicalEvent",
 });
 
@@ -1209,7 +1186,7 @@ User.hasMany(PrescriptionModificationsHistory, {
 
 PrescriptionModificationsHistory.belongsTo(DrugDetailPresentation, {
   foreignKey: "drugDetailPresentationId",
-  as: "drugDetailPresentation",
+  as: "drugDetailPresentations",
 });
 DrugDetailPresentation.hasMany(PrescriptionModificationsHistory, {
   foreignKey: "drugDetailPresentationId",
@@ -1379,6 +1356,16 @@ CatConsultationReason.hasMany(MedicalEvent, {
   foreignKey: "reasonForConsultationId",
   as: "medicalEvents",
 });
+MedicalEvent.belongsTo(SubCategoriesCieDiez, {
+  foreignKey: "primaryDiagnostic", 
+  as: "mainDiagnostic",
+});
+
+
+SubCategoriesCieDiez.hasOne(MedicalEvent, {
+  foreignKey: "primaryDiagnostic",
+  as: "medicalEvent",
+});
 
 const models = {
   AnthropometricDetails,
@@ -1420,8 +1407,6 @@ const models = {
   MedicalIndications,
   MedicalProcedurePrescription,
   MedicalReferral,
-  TherapyPrescription,
-  CatTherapy,
   CatCivilStatus,
   CatGenre,
   CatEducationalLevel,
