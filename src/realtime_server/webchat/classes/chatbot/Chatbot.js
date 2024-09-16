@@ -1,9 +1,18 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import data from "../../helpers/chatbotData.json" assert { type: "json" };
+import moment from "moment-timezone";
 import getAllAlarmsForPatientHandler from "../../../../handlers/alarmEvent/getAllAlarmsForPatientHandler.js";
 import getPatientDetailsHandler from "../../../../handlers/patient/getPatientDetailsHandler.js";
 import getPatientsHandler from "../../../../handlers/patient/getPatientsHandler.js";
 import getAllSchedulesByUserHandler from "../../../../handlers/scheduling/getAllSchedulesByUserHandler.js";
+import getDeathRateHandler from "../../../../handlers/statisticalCenter/getDeathRateHandler.js";
+import getGenderDistributionHandler from "../../../../handlers/statisticalCenter/getGenderDistributionHandler.js";
+import getPatientActivityDistributionHandler from "../../../../handlers/statisticalCenter/getPatientActivityDistributionHandler.js";
+import getAlarmEventsStatisticsHandler from "../../../../handlers/statisticalCenter/getAlarmEventsStatisticsHandler.js";
+import getAgeRangesHandler from "../../../../handlers/statisticalCenter/getAgeRangesHandler.js";
+import getRateESC2022RiskHandler from "../../../../handlers/statisticalCenter/getRateESC2022RiskHandler.js";
+import getRateHeartFailurHandler from "../../../../handlers/statisticalCenter/getRateHeartFailurHandler.js";
+import getRatePulmonaryHypertensionRiskHandler from "../../../../handlers/statisticalCenter/getRatePulmonaryHypertensionRiskHandler.js";
 const API_KEY = process.env.GOOGLE_API_KEY;
 if (!API_KEY) {
   throw new Error("API_KEY is required");
@@ -86,12 +95,16 @@ class Chatbot {
       `;
     } else if (this.user.role === "Médico") {
       const physicianPatients = await this.getPatients();
+      const stadistics = await this.getStadistics();
       const physicianInformation = `
       - **Especialidad:** ${this.user.specialty}
-     - ${physicianPatients}`;
+     - ${physicianPatients}
+      ${stadistics}
+     `;
 
       userInformation += physicianInformation;
     }
+
     // this.systemInstruction = `
     //   Eres un asistente virtual para la aplicación Segimed, especializado en proporcionar ayuda según el tipo de usuario: general, paciente, o médico. Tu objetivo es responder preguntas sobre la aplicación, siempre en español, y no exceder el límite de 350 caracteres(OBLIGATORIO)
 
@@ -284,7 +297,103 @@ class Chatbot {
       return "No se pudo obtener la información de los pacientes.";
     }
   } //Pacientes del médico
-  async getStadistics() {} //Estadisticas de los pacientes
+  async getStadistics() {
+    try {
+      const actual_year = {
+        from: moment().startOf("year").format("YYYY-MM-DD"),
+        to: moment().endOf("year").format("YYYY-MM-DD"),
+      };
+      const actual_month = {
+        from: moment().startOf("month").format("YYYY-MM-DD"),
+        to: moment().endOf("month").format("YYYY-MM-DD"),
+      };
+      const last24hs = {
+        from: moment().subtract(24, "hours").format("YYYY-MM-DD HH:mm:ss"),
+        to: moment().format("YYYY-MM-DD HH:mm:ss"),
+      };
+      const yearDeathRateStatistics = await getDeathRateHandler(
+        actual_year.from,
+        actual_year.to
+      );
+      const monthDeathRateStatistics = await getDeathRateHandler(
+        actual_month.from,
+        actual_month.to
+      );
+      const genderStatistics = await getGenderDistributionHandler();
+      const patientActivityDistribution =
+        await getPatientActivityDistributionHandler();
+      const alarmEventsStatistics = await getAlarmEventsStatisticsHandler(
+        "0001-01-01",
+        actual_year.to
+      );
+      const last24hsAlarmStatistics = await getAlarmEventsStatisticsHandler(
+        last24hs.from,
+        last24hs.to
+      );
+      const ageRanges = await getAgeRangesHandler();
+      const ratePulmonaryHypertensionRisk =
+        await getRatePulmonaryHypertensionRiskHandler();
+      const rateESC2022Risk = await getRateESC2022RiskHandler();
+      const heartFailur = await getRateHeartFailurHandler();
+      const statistics = {
+        heartFailur: {
+          data: heartFailur,
+          description:
+            "Clasificación de la insuficiencia cardíaca de los pacientes, incluyendo cantidad y descripción de cada nivel.",
+        },
+        ageRanges: {
+          data: ageRanges,
+          description:
+            "¿Cuántos pacientes entre tantos y tantos años hay? sino pide o no tenemos ese rango de edad responder con un rango cernano a la pregunta.Distribución de los pacientes por grupo de edad.",
+        },
+        alarmEventsStatistics: {
+          data: alarmEventsStatistics,
+          description:
+            "Estadísticas de los eventos de alarma desde el inicio del registro hasta la fecha actual, incluyendo total, resueltas y activas.",
+        },
+        last24hsAlarmStatistics: {
+          data: last24hsAlarmStatistics,
+          description:
+            "Estadísticas de las alarmas en las últimas 24 horas, incluyendo el total de alarmas, las resueltas y las que siguen activas.",
+        },
+        yearDeathRateStatistics: {
+          data: yearDeathRateStatistics,
+          description:
+            "Estadísticas de la tasa de mortalidad anual, incluyendo el número de pacientes fallecidos y vivos.",
+        },
+        monthDeathRateStatistics: {
+          data: monthDeathRateStatistics,
+          description:
+            "Estadísticas de la tasa de mortalidad mensual, mostrando los pacientes fallecidos y vivos en el mes actual.",
+        },
+        genderStatistics: {
+          data: genderStatistics,
+          description:
+            "Distribución de género de los pacientes, contabilizando el número de mujeres y hombres.",
+        },
+        patientActivityDistribution: {
+          data: patientActivityDistribution,
+          description:
+            "¿Cuánto es el número total de pacientes que tenemos actualmente?. Distribución de la actividad de los pacientes, indicando cuántos están activos e inactivos actualmente.",
+        },
+        ratePulmonaryHypertensionRisk: {
+          data: ratePulmonaryHypertensionRisk,
+          description:
+            "Riesgo de hipertensión pulmonar de los pacientes, con detalle de bajo, moderado y alto riesgo.",
+        },
+        rateESC2022Risk: {
+          data: rateESC2022Risk,
+          description:
+            "Evaluación del riesgo cardiovascular según el modelo ESC 2022, mostrando pacientes con riesgo bajo, moderado y alto.",
+        },
+      };
+
+      return `Los estadisticas son:\n${JSON.stringify(statistics)}`;
+    } catch (error) {
+      console.log(error);
+      return "No se pudo obtener la información de los pacientes.";
+    }
+  } //Estadisticas de los pacientes
   async getLastsMedicalEvent() {} //Ultimos 5 eventos médicos
 
   //resetear contador de mensajes
