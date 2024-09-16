@@ -83,6 +83,10 @@ const model = (sequelize) => {
           key: "id",
         },
       },
+      comorbidities: {
+        type: DataTypes.BOOLEAN,
+        allowNull:false,
+      }
     },
     {
       tableName: "backgrounds",

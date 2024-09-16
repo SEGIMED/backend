@@ -8,25 +8,22 @@ const getDiagnosticHandler = async (patientId) => {
         {
           model: models.PatientDiagnostics,
           as: "medicalEventDiagnostics",
-          attributes:["id"],
+          attributes: ["id"],
           include: {
             model: models.SubCategoriesCieDiez,
-            as:"cie10subCategory",
-            attributes: ["description"]
-          }
+            as: "cie10subCategory",
+            attributes: ["description"],
+          },
         },
         {
-            model:models.MedicalIndications,
-            as:"medicalIndications",
-            attributes:["description"]
-        },{
-            model: models.MedicalProcedurePrescription,
-            as:"procedurePrescriptions",
-            attributes:["medicalProcedure","medicalProcedureName"]
-        },{
-            model:models.TherapyPrescription,
-            as:"therapyPrescriptions",
-            attributes:["therapyDescription","quantity","therapy"]
+          model: models.MedicalIndications,
+          as: "medicalIndications",
+          attributes: ["description"],
+        },
+        {
+          model: models.MedicalProcedurePrescription,
+          as: "procedurePrescriptions",
+          attributes: ["medicalProcedure", "medicalProcedureName"],
         },
         {
           model: models.AppointmentScheduling,

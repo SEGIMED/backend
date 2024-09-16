@@ -27,7 +27,6 @@ import {
     CatPulmonaryArterialHypertensionRisk,
     CatRole,
     CatSchedulingStatus,
-    CatTherapy,
     CatVitalSignMeasureType,
     CatWeekDay,
     CatPainAreas,
@@ -95,8 +94,6 @@ const getCatalogHandler = async (catalogName, category) => {
                 return await CatMedicalProcedureType.findAll()
             case 'PROVINCES':
                 return await CatProvince.findAll()
-            case 'THERAPIES':
-                return await CatTherapy.findAll()
             case 'GENRES':
                 return await CatGenre.findAll()
             case 'EDUCATIONAL_LEVELS':
