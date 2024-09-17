@@ -739,7 +739,7 @@ PatientPulmonaryHypertensionRisk.belongsTo(
   { as: "catHpRisk", foreignKey: "pulmonaryHypertensionRisk" }
 );
 CatPulmonaryArterialHypertensionRisk.hasMany(PatientPulmonaryHypertensionRisk, {
-  as: "patientPulmonaryHypertensionRisks",
+  as: "patPHRisks",
   foreignKey: "pulmonaryHypertensionRisk",
 });
 PatientCardiovascularRisk.belongsTo(User, {
@@ -779,7 +779,7 @@ PatientPulmonaryHypertensionRisk.belongsTo(User, {
   foreignKey: "patient",
 });
 User.hasMany(PatientPulmonaryHypertensionRisk, {
-  as: "patientPulmonaryHypertensionRisks",
+  as: "patPHRisks",
   foreignKey: "patient",
 });
 PatientPulmonaryHypertensionRisk.belongsTo(User, {

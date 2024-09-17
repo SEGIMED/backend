@@ -32,7 +32,7 @@ const getAllSchedulesByUserHandler = async (userId, userRole) => {
           include: [
             {
               model: PatientPulmonaryHypertensionRisk,
-              as: "patientPulmonaryHypertensionRisks",
+              as: "patPHRisks",
               include: {
                 model: CatPulmonaryArterialHypertensionRisk,
                 as: "catHpRisk",

@@ -40,13 +40,13 @@ export const mapPatient = (patient) => {
         }
       : null,
     patientPulmonaryHypertensionRisks:
-      patient.patientPulmonaryHypertensionRisks.length > 0
+      patient.patPHRisks.length > 0
         ? {
             risk:
-              patient.patientPulmonaryHypertensionRisks[0].catHpRisk?.name ||
+              patient.patPHRisks[0].catHpRisk?.name ||
               null,
             timestamp:
-              patient.patientPulmonaryHypertensionRisks[0].registerTimestamp,
+              patient.patPHRisks[0].registerTimestamp,
           }
         : null,
     patientCardiovascularRisks: patient?.ptCvRsks?.catCvRisk
@@ -124,13 +124,13 @@ export const mapPatients = (patients) => {
     return {
       ...patientData,
       patientPulmonaryHypertensionRisks:
-        patient.patientPulmonaryHypertensionRisks?.length > 0
+        patient.patPHRisks?.length > 0
           ? {
               risk:
-                patient.patientPulmonaryHypertensionRisks[0].catHpRisk?.name ||
+                patient.patPHRisks[0].catHpRisk?.name ||
                 null,
               timestamp:
-                patient.patientPulmonaryHypertensionRisks[0].registerTimestamp,
+                patient.patPHRisks[0].registerTimestamp,
             }
           : null,
       isFavorite: favorites?.length > 0,
@@ -146,13 +146,13 @@ export const mapPatientsSchedule = (patients) => {
       lastname: patient.patientUser?.lastname || null,
       avatar: patient.patientUser?.avatar || null,
       patientPulmonaryHypertensionRisks:
-        patient.patientUser?.patientPulmonaryHypertensionRisks?.length > 0
+        patient.patientUser?.patPHRisks?.length > 0
           ? {
               risk:
-                patient.patientUser.patientPulmonaryHypertensionRisks[0]
+                patient.patientUser.patPHRisks[0]
                   .catHpRisk?.name || null,
               timestamp:
-                patient.patientUser.patientPulmonaryHypertensionRisks[0]
+                patient.patientUser.patPHRisks[0]
                   .registerTimestamp,
             }
           : null,
