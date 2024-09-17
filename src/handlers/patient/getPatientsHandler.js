@@ -20,7 +20,7 @@ const getPatientsHandler = async (
           model: models.PatientPulmonaryHypertensionRisk,
           as: "patPHRisks",
           include: {
-            model: models.CatPulmonaryArterialHypertensionRisk,
+            model: models.CatRisk,
             as: "catHpRisk",
             attributes: ["name"],
             ...(risk ? { where: { name: { [Op.iLike]: `%${risk}%` } } } : {}),

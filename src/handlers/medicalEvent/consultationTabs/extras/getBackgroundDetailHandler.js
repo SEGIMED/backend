@@ -58,7 +58,7 @@ const getBackgroundDetailHandler = async ({ id }) => {
             },
             order: [["registerTimestamp", "DESC"]],
             include: {
-              model: models.CatPulmonaryArterialHypertensionRisk,
+              model: models.CatRisk,
               as: "catHpRisk",
               attributes: ["name"],
             },
