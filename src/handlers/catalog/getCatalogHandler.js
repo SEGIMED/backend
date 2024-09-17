@@ -1,5 +1,4 @@
 import {
-    CatAnthropometricMeasureType,
     CatAppointmentModality,
     CatCardiovascularRisk,
     CatChatStatus,
@@ -82,8 +81,6 @@ const getCatalogHandler = async (catalogName, category) => {
                 return await CatDiagnosticTestType.findAll()
             case 'CHAT_STATUSES':
                 return await CatChatStatus.findAll()
-            case 'ANTHROPOMETRIC_MEASURE_TYPES':
-                return await CatAnthropometricMeasureType.findAll()
             case 'DISEASES':
                 return await CatDisease.findAll()
             case 'MEDICAL_BACKGROUND_TYPES':

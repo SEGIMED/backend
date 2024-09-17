@@ -1,9 +1,7 @@
 import { Sequelize, SequelizeScopeError } from "sequelize";
 import cls from "cls-hooked";
 
-import AnthropometricDetailsModel from "./models/AnthropometricDetails.js";
 import AppointmentSchedulingModel from "./models/AppointmentScheduling.js";
-import CatAnthropometricMeasureTypeModel from "./models/CatAnthropometricMeasureType.js";
 import CatAppointmentModalityModel from "./models/CatAppointmentModality.js";
 import CatChatStatusModel from "./models/CatChatStatus.js";
 import CatDiagnosticTestTypeModel from "./models/CatDiagnosticTestType.js";
@@ -134,9 +132,8 @@ CatRoleModel(sequelize);
 CatCountryModel(sequelize);
 CatProvinceModel(sequelize);
 CatCityModel(sequelize);
-AnthropometricDetailsModel(sequelize);
 AppointmentSchedulingModel(sequelize);
-CatAnthropometricMeasureTypeModel(sequelize);
+
 CatAppointmentModalityModel(sequelize);
 CatChatStatusModel(sequelize);
 CatDiagnosticTestTypeModel(sequelize);
@@ -229,8 +226,6 @@ CatConsultationReasonModel(sequelize);
 export const {
   AppointmentScheduling,
   MedicalEvent,
-  AnthropometricDetails,
-  CatAnthropometricMeasureType,
   PhysicianAgendaConfiguration,
   CatAppointmentModality,
   CatDiagnosticTestType,
@@ -332,14 +327,6 @@ AppointmentScheduling.hasOne(MedicalEvent, {
   as: "medicalEvent",
   foreignKey: "scheduling",
 });
-AnthropometricDetails.belongsTo(CatAnthropometricMeasureType, {
-  as: "anthMeasType",
-  foreignKey: "measure_type",
-});
-CatAnthropometricMeasureType.hasMany(AnthropometricDetails, {
-  as: "anthropometric_details",
-  foreignKey: "measure_type",
-});
 PhysicianAgendaConfiguration.belongsTo(CatAppointmentModality, {
   as: "modality_cat_appointment_modality",
   foreignKey: "modality",
@@ -350,14 +337,7 @@ CatAppointmentModality.hasMany(PhysicianAgendaConfiguration, {
 });
 User.belongsTo(CatIdType, { as: "userIdType", foreignKey: "id_type" });
 CatIdType.hasMany(User, { as: "users", foreignKey: "id_type" });
-CatAnthropometricMeasureType.belongsTo(CatMeasureUnit, {
-  as: "measUnit",
-  foreignKey: "measure_unit",
-});
-CatMeasureUnit.hasMany(CatAnthropometricMeasureType, {
-  as: "cat_anthropometric_measure_types",
-  foreignKey: "measure_unit",
-});
+
 CatVitalSignMeasureType.belongsTo(CatMeasureUnit, {
   as: "measUnit",
   foreignKey: "measure_unit",
@@ -437,22 +417,6 @@ ChatMessage.belongsTo(Chat, { as: "chat_chat", foreignKey: "chat" });
 Chat.hasMany(ChatMessage, { as: "chat_messages", foreignKey: "chat" });
 ChatUser.belongsTo(Chat, { as: "chat_chat", foreignKey: "chat" });
 Chat.hasMany(ChatUser, { as: "chat_users", foreignKey: "chat" });
-AnthropometricDetails.belongsTo(User, {
-  as: "measSourcePhys",
-  foreignKey: "measure_source",
-});
-User.hasMany(AnthropometricDetails, {
-  as: "anthDetails",
-  foreignKey: "measure_source",
-});
-AnthropometricDetails.belongsTo(User, {
-  as: "patient_user",
-  foreignKey: "patient",
-});
-User.hasMany(AnthropometricDetails, {
-  as: "patientAnthDet",
-  foreignKey: "patient",
-});
 AppointmentScheduling.belongsTo(User, {
   as: "patientUser",
   foreignKey: "patient",
@@ -1366,9 +1330,7 @@ SubCategoriesCieDiez.hasOne(MedicalEvent, {
 });
 
 const models = {
-  AnthropometricDetails,
   AppointmentScheduling,
-  CatAnthropometricMeasureType,
   CatAppointmentModality,
   CatChatStatus,
   CatDiagnosticTestType,

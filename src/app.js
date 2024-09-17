@@ -20,7 +20,6 @@ import {
   medicalEventRouter,
   schedulingRouter,
   vitalSignsRouter,
-  anthropometricDetailsRouter,
   statisticsRouter,
   drugPrescriptionRouter,
   procedurePrescriptionRouter,
@@ -84,7 +83,6 @@ app.use("/api", catalogsRouter);
 app.use("/api", schedulingRouter);
 app.use("/api/medical-event", medicalEventRouter);
 app.use("/api/vital-signs", vitalSignsRouter);
-app.use("/api", anthropometricDetailsRouter);
 app.use("/api", statisticsRouter);
 app.use("/api", drugPrescriptionRouter);
 app.use("/api", procedurePrescriptionRouter);

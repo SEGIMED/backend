@@ -21,7 +21,6 @@ import createSchedulingController from "../controllers/scheduling/createScheduli
 import getPatientDetailsController from "../controllers/patient/getPatientDetailsController.js";
 import getAllUsersController from "../controllers/user/getAllUsersController.js";
 import getAllSchedulesController from "../controllers/scheduling/getAllSchedulesController.js";
-import createAnthropometricDetailController from "../controllers/anthropometricDetails/createAnthropometricDetailController.js";
 import patchScheduleController from "../controllers/scheduling/patchScheduleController.js";
 import deleteSchedulingController from "../controllers/scheduling/deleteSchedulingController.js";
 import createPhysicianReviewController from "../controllers/physician/reviewPhysician/createPhysicianReviewController.js";
@@ -40,7 +39,6 @@ import updateVitalSignsController from "../controllers/vitalSigns/updateVitalSig
 import updateMedicalReferralController from "../controllers/medicalReferral/updateMedicalReferralController.js";
 import updateMedicalProcedurePrescriptionController from "../controllers/medicalProcedurePrescription/updateMedicalProcedurePrescriptionController.js";
 import updateDrugPrescriptionController from "../controllers/drugPrescription/updateDrugPrescriptionController.js";
-import updateAnthropometricDetailController from "../controllers/anthropometricDetails/updateAnthropometricDetailsController.js";
 import createPhysicianMedicalRegisterController from "../controllers/physician/createPhysicianMedicalRegisterController.js";
 import createPhysicianAttendancePlaceController from "../controllers/physician/createPhysicianAttendancePlaceController.js";
 import createPhysicianSpecialtyController from "../controllers/physician/createPhysicianSpecialtyController.js";
@@ -135,7 +133,6 @@ const catalogsRouter = Router();
 const schedulingRouter = Router();
 const medicalEventRouter = Router();
 const vitalSignsRouter = Router();
-const anthropometricDetailsRouter = Router();
 const medicalBackgroundsRouter = Router();
 const statisticsRouter = Router();
 const drugPrescriptionRouter = Router();
@@ -375,13 +372,6 @@ vitalSignsRouter
   .get(getVitalSignsByMedicalEventController);
 vitalSignsRouter.route("/update-vital-sign").patch(updateVitalSignsController);
 
-//* Anthropometric Details
-anthropometricDetailsRouter
-  .route("/anthropometric-details/create-anthropometric-detail")
-  .post(createAnthropometricDetailController);
-anthropometricDetailsRouter
-  .route("/anthropometric-details/update-anthropometric-detail")
-  .patch(updateAnthropometricDetailController);
 
 //* Sociodemographic Details
 sociodemographicDetailsRouter
@@ -547,7 +537,6 @@ export {
   schedulingRouter,
   medicalEventRouter,
   vitalSignsRouter,
-  anthropometricDetailsRouter,
   medicalBackgroundsRouter,
   statisticsRouter,
   drugPrescriptionRouter,
