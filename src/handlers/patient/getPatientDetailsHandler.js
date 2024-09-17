@@ -1,7 +1,6 @@
 import {
   AppointmentScheduling,
   Backgrounds,
-  CatCardiovascularRisk,
   CatCivilStatus,
   CatEducationalLevel,
   CatGenre,
@@ -12,7 +11,6 @@ import {
   CatRisk,
   CatPulmonaryHypertensionGroup,
   CatSchedulingStatus,
-  CatSurgicalRisk,
   CatVitalSignMeasureType,
   PatientCardiovascularRisk,
   PatientHeartFailureClassification,
@@ -65,7 +63,7 @@ const getPatientDetailsHandler = async (id) => {
           model: PatientCardiovascularRisk,
           as: "ptCvRsks",
           include: {
-            model: CatCardiovascularRisk,
+            model: CatRisk,
             as: "catCvRisk",
             attributes: ["name"],
           },
@@ -83,7 +81,7 @@ const getPatientDetailsHandler = async (id) => {
           model: PatientSurgicalRisk,
           as: "patSgRisks",
           include: {
-            model: CatSurgicalRisk,
+            model: CatRisk,
             as: "catSurgicalRisk",
             attributes: ["name"],
           },

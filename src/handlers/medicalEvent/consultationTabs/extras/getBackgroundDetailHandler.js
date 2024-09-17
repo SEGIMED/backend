@@ -34,7 +34,7 @@ const getBackgroundDetailHandler = async ({ id }) => {
             as: "ptCvRsks",
             attributes: ["risk"],
             include: {
-              model: models.CatCardiovascularRisk,
+              model: models.CatRisk,
               as: "catCvRisk",
               attributes: ["name"],
             },
@@ -44,7 +44,7 @@ const getBackgroundDetailHandler = async ({ id }) => {
             as: "patSgRisks",
             attributes: ["timestamp"],
             include: {
-              model: models.CatSurgicalRisk,
+              model: models.CatRisk,
               as: "catSurgicalRisk",
               attributes: ["name"],
             },
