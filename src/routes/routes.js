@@ -121,6 +121,10 @@ import createSelfEvaluationVitalSignController from "../controllers/vitalSigns/c
 import searchComorbiditiesController from "../controllers/Comorbidities/searchComorbiditesController.js";
 import getVitalSignsByMedicalEventController from "../controllers/vitalSigns/getVitalSignsByMedicalEventController.js";
 import getConsultationTabController from "../controllers/medicalEvent/consultationTabs/getConsultationTabController.js";
+import getPreConsultationTabController from "../controllers/medicalEvent/consultationTabs/getPreConsultationTabController.js";
+import getStudiesConsultationTabController from "../controllers/medicalEvent/getStudiesConsultationTabController.js";
+import getGeneralConsultationController from "../controllers/medicalEvent/consultationTabs/getGeneralConsultationController.js";
+import getBackgroundTabController from "../controllers/medicalEvent/consultationTabs/getBackgroundTabController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -354,7 +358,15 @@ schedulingRouter
   .get(getAllSchedulesByUserController);
 
 //* Medical Event
+medicalEventRouter
+  .route("/general-consultation")
+  .get(getGeneralConsultationController);
 medicalEventRouter.route("/consultation").get(getConsultationTabController);
+medicalEventRouter
+  .route("/preconsultation")
+  .get(getPreConsultationTabController);
+medicalEventRouter.route("/studies").get(getStudiesConsultationTabController);
+medicalEventRouter.route("/background").get(getBackgroundTabController);
 medicalEventRouter.route("/update-event").patch(updateMedicalEventController);
 
 //* Vital Signs

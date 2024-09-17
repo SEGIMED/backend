@@ -24,7 +24,7 @@ const getPreConsultationByScheduleIdHandler = async (scheduleId, status) => {
       include: [
         {
           model: models.AppointmentScheduling,
-          as: "ProvisionalPreConsultationSchedule",
+          as: "ProvisionalPreConsultation",
           include: [
             {
               model: models.VitalSignDetails,
@@ -105,7 +105,7 @@ const getPreConsultationByScheduleIdHandler = async (scheduleId, status) => {
     }
 
     preConsultation = preConsultation.get({ plain: true });
-    const preConsultationStatusId = preConsultation.ProvisionalPreConsultationSchedule.status.id;
+    const preConsultationStatusId = preConsultation.ProvisionalPreConsultation.status.id;
     
     if (userType!=="Médico" & parseInt(preConsultationStatusId) === 2) {
       throw new Error("No está autorizado a ver la preconsulta.");
@@ -116,14 +116,14 @@ const getPreConsultationByScheduleIdHandler = async (scheduleId, status) => {
     }
 
     const vitalSignDetails =
-      preConsultation.ProvisionalPreConsultationSchedule
+      preConsultation.ProvisionalPreConsultation
         .vitalSignDetailsScheduling;
 
     const filteredVitalSigns = await consultationVitalSignsMapper(
       vitalSignDetails
     );
     preConsultation.provisionalPreConsultationPainMap = painAreas;
-    preConsultation.ProvisionalPreConsultationSchedule.vitalSignDetailsScheduling =
+    preConsultation.ProvisionalPreConsultation.vitalSignDetailsScheduling =
       filteredVitalSigns;
 
     return preConsultation;

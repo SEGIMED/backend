@@ -76,7 +76,7 @@ const getPatientDetailsHandler = async (id) => {
         },
         {
           model: PatientPulmonaryHypertensionRisk,
-          as: "patientPulmonaryHypertensionRisks",
+          as: "patPHRisks",
           include: {
             model: CatPulmonaryArterialHypertensionRisk,
             as: "catHpRisk",

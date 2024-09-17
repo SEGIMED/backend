@@ -35,7 +35,7 @@ const getAllSchedulesHandler = async (patientId, physicianId, id) => {
           include: [
             {
               model: PatientPulmonaryHypertensionRisk,
-              as: "patientPulmonaryHypertensionRisks",
+              as: "patPHRisks",
               include: {
                 model: CatPulmonaryArterialHypertensionRisk,
                 as: "catHpRisk",
