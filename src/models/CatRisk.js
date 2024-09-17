@@ -3,7 +3,7 @@ import sequelize from "sequelize";
 const DataTypes = sequelize.DataTypes;
 
 const model = (sequelize) => {
-    sequelize.define('CatCardiovascularRisk', {
+    sequelize.define('CatRisk', {
         id: {
             autoIncrement: true,
             type: DataTypes.BIGINT,
@@ -19,12 +19,12 @@ const model = (sequelize) => {
             allowNull: true
         }
     }, {
-        tableName: 'cat_cardiovascular_risk',
+        tableName: 'cat_risk',
         schema: 'public',
         timestamps: false,
         indexes: [
             {
-                name: "cat_cardiovascular_risk_pk",
+                name: "cat_risk_pk",
                 unique: true,
                 fields: [
                     {name: "id"},
@@ -35,3 +35,4 @@ const model = (sequelize) => {
 };
 
 export default model
+

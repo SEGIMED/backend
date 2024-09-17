@@ -49,11 +49,10 @@ import CatPhysicianExpertiseLevelModel from "./models/CatPhysicianExpertiseLevel
 import PatientReviewModel from "./models/PatientReview.js";
 import LoginRecordModel from "./models/LoginRecord.js";
 import PatientCardiovascularRiskModel from "./models/PatientCardiovascularRisk.js";
-import CatCardiovascularRiskModel from "./models/CatCardiovascularRisk.js";
 import PatientHeartFailureClassificationModel from "./models/PatientHeartFailureClassification.js";
 import CatHeartFailureClassificationModel from "./models/CatHeartFailureClassification.js";
 import PatientPulmonaryHypertensionRiskModel from "./models/PatientPulmonaryHypertensionRisk.js";
-import CatPulmonaryArterialHypertensionRiskModel from "./models/CatPulmonaryArterialHypertensionRisk.js";
+import CatRiskModel from "./models/CatRisk.js";
 import CatPainAreasModel from "./models/CatPainAreas.js";
 import CatPainDurationModel from "./models/CatPainDuration.js";
 import CatPainFrequencyModel from "./models/CatPainFrequency.js";
@@ -62,7 +61,6 @@ import CatPainTypeModel from "./models/CatPainType.js";
 import PatientPainMapModel from "./models/PatientPainMap.js";
 import PatientPulmonaryHypertensionGroupModel from "./models/PatientPulmonaryHypertensionGroup.js";
 import CatPulmonaryHypertensionGroupModel from "./models/CatPulmonaryHypertensionGroup.js";
-import CatSurgicalRiskModel from "./models/CatSurgicalRisk.js";
 import PatientSurgicalRiskModel from "./models/PatientSurgicalRisk.js";
 import UserCurrentLocationModel from "./models/UserCurrentLocation.js";
 import AlarmEventModel from "./models/AlarmEvent.js";
@@ -176,19 +174,17 @@ PhysicianReviewModel(sequelize);
 CatPhysicianExpertiseLevelModel(sequelize);
 PatientReviewModel(sequelize);
 LoginRecordModel(sequelize);
-CatCardiovascularRiskModel(sequelize);
 PatientCardiovascularRiskModel(sequelize);
 PatientHeartFailureClassificationModel(sequelize);
 CatHeartFailureClassificationModel(sequelize);
 PatientPulmonaryHypertensionRiskModel(sequelize);
-CatPulmonaryArterialHypertensionRiskModel(sequelize);
+CatRiskModel(sequelize);
 PatientPainMapModel(sequelize);
 CatPainAreasModel(sequelize);
 CatPainDurationModel(sequelize);
 CatPainFrequencyModel(sequelize);
 CatPainScaleModel(sequelize);
 CatPainTypeModel(sequelize);
-CatSurgicalRiskModel(sequelize);
 CatPulmonaryHypertensionGroupModel(sequelize);
 PatientPulmonaryHypertensionGroupModel(sequelize);
 PatientSurgicalRiskModel(sequelize);
@@ -271,12 +267,11 @@ export const {
   CatPhysicianExpertiseLevel,
   PatientReview,
   LoginRecord,
-  CatCardiovascularRisk,
   PatientCardiovascularRisk,
   PatientHeartFailureClassification,
   CatHeartFailureClassification,
   PatientPulmonaryHypertensionRisk,
-  CatPulmonaryArterialHypertensionRisk,
+  CatRisk,
   PatientPainMap,
   CatPainAreas,
   CatPainDuration,
@@ -284,7 +279,6 @@ export const {
   CatPainScale,
   CatPainType,
   CatPulmonaryHypertensionGroup,
-  CatSurgicalRisk,
   PatientPulmonaryHypertensionGroup,
   PatientSurgicalRisk,
   UserCurrentLocation,
@@ -686,7 +680,7 @@ PatientReview.belongsTo(User, {
 User.hasMany(PatientReview, { as: "patientReview", foreignKey: "patientId" });
 PatientReview.belongsTo(User, { as: "patient", foreignKey: "patientId" });
 User.hasMany(LoginRecord, { as: "loginRecord", foreignKey: "id" });
-PatientCardiovascularRisk.belongsTo(CatCardiovascularRisk, {
+PatientCardiovascularRisk.belongsTo(CatRisk, {
   as: "catCvRisk",
   foreignKey: "risk",
 });
@@ -699,10 +693,10 @@ CatHeartFailureClassification.hasMany(PatientHeartFailureClassification, {
   foreignKey: "heartFailureClassification",
 });
 PatientPulmonaryHypertensionRisk.belongsTo(
-  CatPulmonaryArterialHypertensionRisk,
+  CatRisk,
   { as: "catHpRisk", foreignKey: "pulmonaryHypertensionRisk" }
 );
-CatPulmonaryArterialHypertensionRisk.hasMany(PatientPulmonaryHypertensionRisk, {
+CatRisk.hasMany(PatientPulmonaryHypertensionRisk, {
   as: "patPHRisks",
   foreignKey: "pulmonaryHypertensionRisk",
 });
@@ -828,11 +822,11 @@ CatPulmonaryHypertensionGroup.hasMany(PatientPulmonaryHypertensionGroup, {
   foreignKey: "group",
 });
 
-PatientSurgicalRisk.belongsTo(CatSurgicalRisk, {
+PatientSurgicalRisk.belongsTo(CatRisk, {
   as: "catSurgicalRisk",
   foreignKey: "risk",
 });
-CatSurgicalRisk.hasMany(PatientSurgicalRisk, {
+CatRisk.hasMany(PatientSurgicalRisk, {
   as: "surgicalRisk",
   foreignKey: "risk",
 });
@@ -1377,19 +1371,17 @@ const models = {
   CatPhysicianExpertiseLevel,
   PatientReview,
   LoginRecord,
-  CatCardiovascularRisk,
   PatientCardiovascularRisk,
   PatientHeartFailureClassification,
   CatHeartFailureClassification,
   PatientPulmonaryHypertensionRisk,
-  CatPulmonaryArterialHypertensionRisk,
+  CatRisk,
   PatientPainMap,
   CatPainAreas,
   CatPainDuration,
   CatPainFrequency,
   CatPainScale,
   CatPainType,
-  CatSurgicalRisk,
   CatPulmonaryHypertensionGroup,
   PatientPulmonaryHypertensionGroup,
   PatientSurgicalRisk,

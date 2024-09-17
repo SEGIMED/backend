@@ -3,7 +3,7 @@ import {
   AppointmentScheduling,
   User,
   PatientPulmonaryHypertensionRisk,
-  CatPulmonaryArterialHypertensionRisk,
+  CatRisk,
   MedicalEvent,
 } from "../../databaseConfig.js";
 
@@ -37,7 +37,7 @@ const getAllSchedulesHandler = async (patientId, physicianId, id) => {
               model: PatientPulmonaryHypertensionRisk,
               as: "patPHRisks",
               include: {
-                model: CatPulmonaryArterialHypertensionRisk,
+                model: CatRisk,
                 as: "catHpRisk",
                 attributes: ["name"],
               },

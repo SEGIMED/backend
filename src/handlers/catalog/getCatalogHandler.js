@@ -1,6 +1,5 @@
 import {
     CatAppointmentModality,
-    CatCardiovascularRisk,
     CatChatStatus,
     CatCity,
     CatCivilStatus,
@@ -23,7 +22,7 @@ import {
     CatPhysicalSubsystem,
     CatPhysicianExpertiseLevel,
     CatProvince,
-    CatPulmonaryArterialHypertensionRisk,
+    CatRisk,
     CatRole,
     CatSchedulingStatus,
     CatVitalSignMeasureType,
@@ -33,7 +32,6 @@ import {
     CatPainFrequency,
     CatPainScale,
     CatPainType,
-    CatSurgicalRisk,
     CatPulmonaryHypertensionGroup,
     CatCenterAttention,
     CatRouteOfAdministration,
@@ -103,12 +101,10 @@ const getCatalogHandler = async (catalogName, category) => {
                 return await CatPhysicalSubsystem.findAll()
             case 'PHYSICIAN_EXPERTISE_LEVELS':
                 return await CatPhysicianExpertiseLevel.findAll()
-            case 'CARDIOVASCULAR_RISKS':
-                return await CatCardiovascularRisk.findAll()
             case 'HEART_FAILURE_CLASSIFICATIONS':
                 return await CatHeartFailureClassification.findAll()
-            case 'PULMONARY_ARTERIAL_HYPERTENSION_RISKS':
-                return await CatPulmonaryArterialHypertensionRisk.findAll()
+            case 'CAT_RISK':
+                return await CatRisk.findAll()
             case 'PAIN_AREAS':
                 return await CatPainAreas.findAll()
             case 'PAIN_DURATIONS':
@@ -119,8 +115,6 @@ const getCatalogHandler = async (catalogName, category) => {
                 return await CatPainScale.findAll()
             case 'PAIN_TYPES':
                 return await CatPainType.findAll()
-            case 'SURGICAL_RISKS':
-                return await CatSurgicalRisk.findAll()
             case 'HP_GROUPS':
                 return await CatPulmonaryHypertensionGroup.findAll()
             case 'CENTER_ATT':

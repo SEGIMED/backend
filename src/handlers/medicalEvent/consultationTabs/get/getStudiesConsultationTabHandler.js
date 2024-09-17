@@ -1,4 +1,4 @@
-import models from "../../../databaseConfig.js";
+import models from "../../../../databaseConfig.js";
 
 const getStudiesConsultationTabHandler = async ({ id }) => {
   try {
@@ -9,14 +9,14 @@ const getStudiesConsultationTabHandler = async ({ id }) => {
       where: {
         schedule,
       },
-      attributes:{
-        exclude:["userId","id"]
+      attributes: {
+        exclude: ["userId", "id"],
       },
-      include:{
+      include: {
         model: models.CatStudyType,
-        as:"CatStudyType",
-        attributes:["name"]
-      }
+        as: "CatStudyType",
+        attributes: ["name"],
+      },
     });
 
     return studies;

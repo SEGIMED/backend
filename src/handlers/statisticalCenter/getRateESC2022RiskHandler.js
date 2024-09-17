@@ -1,4 +1,4 @@
-import { PatientCardiovascularRisk, CatCardiovascularRisk, User } from "../../databaseConfig.js";
+import { PatientCardiovascularRisk, CatRisk, User } from "../../databaseConfig.js";
 import { Sequelize } from "sequelize";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 
@@ -6,7 +6,7 @@ const getRateESC2022RiskHandler = async (physicianId) => {
     try {
         const includeClause = [
             {
-                model: CatCardiovascularRisk,
+                model: CatRisk,
                 as: 'catCvRisk',
                 attributes: ['name', 'description']
             }
