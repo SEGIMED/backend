@@ -23,7 +23,7 @@ import {
     CatPhysicalSubsystem,
     CatPhysicianExpertiseLevel,
     CatProvince,
-    CatPulmonaryArterialHypertensionRisk,
+    CatRisk,
     CatRole,
     CatSchedulingStatus,
     CatVitalSignMeasureType,
@@ -108,7 +108,7 @@ const getCatalogHandler = async (catalogName, category) => {
             case 'HEART_FAILURE_CLASSIFICATIONS':
                 return await CatHeartFailureClassification.findAll()
             case 'PULMONARY_ARTERIAL_HYPERTENSION_RISKS':
-                return await CatPulmonaryArterialHypertensionRisk.findAll()
+                return await CatRisk.findAll()
             case 'PAIN_AREAS':
                 return await CatPainAreas.findAll()
             case 'PAIN_DURATIONS':

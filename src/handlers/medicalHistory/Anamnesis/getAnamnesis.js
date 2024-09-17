@@ -8,7 +8,6 @@ const getAnamnesisHandler = async (patientId, page, limit) => {
       attributes: [
         "id",
         "historyOfPresentIllness",
-        "reviewOfSystems",
       ],
       include: [
         {

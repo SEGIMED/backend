@@ -35,7 +35,6 @@ import createMedicalProcedurePrescriptionController from "../controllers/medical
 import createMedicalReferralController from "../controllers/medicalReferral/createMedicalReferralController.js";
 import createPatientPhysicalExaminationController from "../controllers/patient/patientPhysicianExamCtrls/createPatientPhysicalExaminationController.js";
 import updatePatientPhysicalExaminationController from "../controllers/patient/patientPhysicianExamCtrls/updatePatientPhysicalExaminationController.js";
-import updateVitalSignsController from "../controllers/vitalSigns/updateVitalSignsController.js";
 import updateMedicalReferralController from "../controllers/medicalReferral/updateMedicalReferralController.js";
 import updateMedicalProcedurePrescriptionController from "../controllers/medicalProcedurePrescription/updateMedicalProcedurePrescriptionController.js";
 import updateDrugPrescriptionController from "../controllers/drugPrescription/updateDrugPrescriptionController.js";
@@ -123,6 +122,7 @@ import getConsultationTabController from "../controllers/medicalEvent/consultati
 import getPreConsultationTabController from "../controllers/medicalEvent/consultationTabs/get/getPreConsultationTabController.js";
 import getBackgroundTabController from "../controllers/medicalEvent/consultationTabs/get/getBackgroundTabController.js";
 import getStudiesConsultationTabController from "../controllers/medicalEvent/consultationTabs/get/getStudiesConsultationTabController.js";
+import postConsultationTabController from "../controllers/medicalEvent/consultationTabs/post/postConsultationTabController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -358,7 +358,10 @@ schedulingRouter
 medicalEventRouter
   .route("/general-consultation")
   .get(getGeneralConsultationController);
-medicalEventRouter.route("/consultation").get(getConsultationTabController);
+medicalEventRouter
+  .route("/consultation")
+  .get(getConsultationTabController)
+  .post(postConsultationTabController);
 medicalEventRouter
   .route("/preconsultation")
   .get(getPreConsultationTabController);
@@ -370,8 +373,6 @@ medicalEventRouter.route("/update-event").patch(updateMedicalEventController);
 vitalSignsRouter
   .route("/medical-event")
   .get(getVitalSignsByMedicalEventController);
-vitalSignsRouter.route("/update-vital-sign").patch(updateVitalSignsController);
-
 
 //* Sociodemographic Details
 sociodemographicDetailsRouter

@@ -2,7 +2,7 @@ import {
     AppointmentScheduling,
     User,
     PatientPulmonaryHypertensionRisk,
-    CatPulmonaryArterialHypertensionRisk,
+    CatRisk,
    } from "../../databaseConfig.js";
 
 
@@ -21,11 +21,11 @@ export async function getDataConsult(id){
                   {
                     model: PatientPulmonaryHypertensionRisk,
                     as: "patPHRisks",
-                    include: {
-                      model: CatPulmonaryArterialHypertensionRisk,
+                     include: {
+                      model: CatRisk,
                       as: "catHpRisk",
                       attributes: ["name"],
-                    },
+                    }, 
                   },
                 ],
               },

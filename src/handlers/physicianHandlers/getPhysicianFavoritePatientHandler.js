@@ -2,7 +2,7 @@ import {
   PhysicianFavoritePatient,
   User,
   PatientPulmonaryHypertensionRisk,
-  CatPulmonaryArterialHypertensionRisk,
+  CatRisk,
 } from "../../databaseConfig.js";
 
 import SegimedAPIError from "../../error/SegimedAPIError.js";
@@ -46,7 +46,7 @@ const getPhysicianFavoritePatientHandler = async (
                 model: PatientPulmonaryHypertensionRisk,
                 as: "patPHRisks",
                 include: {
-                  model: CatPulmonaryArterialHypertensionRisk,
+                  model: CatRisk,
                   as: "catHpRisk",
                   attributes: ["name"],
                   ...(risk

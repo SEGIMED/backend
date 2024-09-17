@@ -1,86 +1,68 @@
-import { VitalSignDetails } from "../../databaseConfig.js";
-import SegimedAPIError from "../../error/SegimedAPIError.js";
+import models, { VitalSignDetails } from "../../databaseConfig.js";
 import moment from "moment-timezone";
 import contextService from "request-context";
 
-const updateOrCreateVitalSignsHandler = async (body,{transaction}) => {
-  const { updateVitalSigns, patient, appointmentSchedule, medicalEvent} = body;
-
+const updateOrCreateVitalSignsHandler = async ({
+  id,
+  vitalSigns,
+  transaction,
+}) => {
   try {
-    //Validación. Si se envía el objeto updateVitalSigns pero es diferente a un array, retorna error
-    if (updateVitalSigns && !Array.isArray(updateVitalSigns)) {
-      throw new SegimedAPIError(
-        "Los datos proporcionados no se encuentran en un formato válido o no fueron enviados",
-        400
+    const schedulingData = await models.AppointmentScheduling.findByPk(id);
+    const patientId = schedulingData.patient;
+    const userId = contextService.get("request:user").userId;
+
+    // Validación simplificada de vitalSign
+    if (!Array.isArray(vitalSigns)) {
+      throw new Error(
+        "Los datos proporcionados no se encuentran en un formato válido o no fueron enviados"
       );
     }
-    
-    //Validación. Si no vienen signos vitales para actualizar, se retorna []
-    if (updateVitalSigns?.length !== 0 && updateVitalSigns) {
-      const updatedOrCreatedVitalSigns = await Promise.all(
-        updateVitalSigns.map(async (vitalSign) => {
-          
-          //Verificación de signos vitales en null
-          if (vitalSign.measure == null) {
-            return;
-          }
-          // Verificar si el signo vital ya existe
-          const existingVitalSign = await VitalSignDetails.findOne({
-            where: {
-              measureType: vitalSign.measureType,
-              scheduling: appointmentSchedule,
+
+    if (vitalSigns.length === 0) {
+      return true;
+    }
+
+    // Procesar los signos vitales con Promise.all
+    await Promise.all(
+      vitalSigns.map(async (vs) => {
+        if (vs.measure == null) return; // Ignorar si la medida es null
+
+        const data = {
+          measure: vs.measure,
+          measureSource: userId,
+          measureTimestamp: moment().toISOString(),
+          medicalEvent: id,
+        };
+
+        // Buscar si el signo vital ya existe
+        const existingVitalSign = await VitalSignDetails.findOne({
+          where: { measureType: vs.measureType, medicalEvent: id },
+          transaction,
+        });
+
+        if (existingVitalSign) {
+          // Actualizar si existe
+          await existingVitalSign.update(data, { transaction });
+        } else {
+          // Crear si no existe
+          await VitalSignDetails.create(
+            {
+              ...data,
+              patient: patientId,
+              measureType: vs.measureType,
+              scheduling: schedulingData.id,
             },
-            transaction
-      });
+            { transaction }
+          );
+        }
+      })
+    );
 
-          if (existingVitalSign) {
-            // Si existe, actualizarlo
-            const [affectedCount, [updatedVitalSign]] =
-              await VitalSignDetails.update(
-                {
-                  measure: vitalSign.measure,
-                  measureSource: contextService.get("request:user").userId,
-                  measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-                  medicalEvent: medicalEvent?.id??existingVitalSign.medicalEvent
-                },
-                {
-                  where: {
-                    id: existingVitalSign.id,
-                  },
-                  returning: true,
-                  transaction
-                }
-              );
-            return updatedVitalSign;
-          } else {
-            // Si no existe, crearlo
-            const newVitalSign = await VitalSignDetails.create({
-              patient: patient,
-              measure: vitalSign.measure,
-              measureSource: contextService.get("request:user").userId,
-              measureType: vitalSign.measureType,
-              measureTimestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-              scheduling: appointmentSchedule,
-              medicalEvent: medicalEvent.id,
-            },{
-              transaction
-            });
-            return newVitalSign;
-          }
-        })
-      );
-      const filteredVitalSigns = updatedOrCreatedVitalSigns.filter(
-        (vitalSign) => vitalSign !== undefined
-      );
-
-      return filteredVitalSigns;
-    } else {
-      return [];
-    }
+    return true;
   } catch (error) {
-    throw new SegimedAPIError(
-      "Hubo un error durante el proceso de actualización o creación de signos vitales: " + error.message,
-      500
+    throw new Error(
+      `Hubo un error durante el proceso de actualización o creación de signos vitales: ${error.message}`
     );
   }
 };

@@ -53,7 +53,7 @@ import CatCardiovascularRiskModel from "./models/CatCardiovascularRisk.js";
 import PatientHeartFailureClassificationModel from "./models/PatientHeartFailureClassification.js";
 import CatHeartFailureClassificationModel from "./models/CatHeartFailureClassification.js";
 import PatientPulmonaryHypertensionRiskModel from "./models/PatientPulmonaryHypertensionRisk.js";
-import CatPulmonaryArterialHypertensionRiskModel from "./models/CatPulmonaryArterialHypertensionRisk.js";
+import CatRiskModel from "./models/CatRisk.js";
 import CatPainAreasModel from "./models/CatPainAreas.js";
 import CatPainDurationModel from "./models/CatPainDuration.js";
 import CatPainFrequencyModel from "./models/CatPainFrequency.js";
@@ -181,7 +181,7 @@ PatientCardiovascularRiskModel(sequelize);
 PatientHeartFailureClassificationModel(sequelize);
 CatHeartFailureClassificationModel(sequelize);
 PatientPulmonaryHypertensionRiskModel(sequelize);
-CatPulmonaryArterialHypertensionRiskModel(sequelize);
+CatRiskModel(sequelize);
 PatientPainMapModel(sequelize);
 CatPainAreasModel(sequelize);
 CatPainDurationModel(sequelize);
@@ -276,7 +276,7 @@ export const {
   PatientHeartFailureClassification,
   CatHeartFailureClassification,
   PatientPulmonaryHypertensionRisk,
-  CatPulmonaryArterialHypertensionRisk,
+  CatRisk,
   PatientPainMap,
   CatPainAreas,
   CatPainDuration,
@@ -699,10 +699,10 @@ CatHeartFailureClassification.hasMany(PatientHeartFailureClassification, {
   foreignKey: "heartFailureClassification",
 });
 PatientPulmonaryHypertensionRisk.belongsTo(
-  CatPulmonaryArterialHypertensionRisk,
+  CatRisk,
   { as: "catHpRisk", foreignKey: "pulmonaryHypertensionRisk" }
 );
-CatPulmonaryArterialHypertensionRisk.hasMany(PatientPulmonaryHypertensionRisk, {
+CatRisk.hasMany(PatientPulmonaryHypertensionRisk, {
   as: "patPHRisks",
   foreignKey: "pulmonaryHypertensionRisk",
 });
@@ -1382,7 +1382,7 @@ const models = {
   PatientHeartFailureClassification,
   CatHeartFailureClassification,
   PatientPulmonaryHypertensionRisk,
-  CatPulmonaryArterialHypertensionRisk,
+  CatRisk,
   PatientPainMap,
   CatPainAreas,
   CatPainDuration,
