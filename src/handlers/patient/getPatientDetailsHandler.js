@@ -1,8 +1,6 @@
 import {
-  AnthropometricDetails,
   AppointmentScheduling,
   Backgrounds,
-  CatAnthropometricMeasureType,
   CatCardiovascularRisk,
   CatCivilStatus,
   CatEducationalLevel,
@@ -44,26 +42,6 @@ const getPatientDetailsHandler = async (id) => {
         {
           model: UserCurrentLocation,
           as: "currentLocationUser",
-        },
-        {
-          model: AnthropometricDetails,
-          as: "patientAnthDet",
-          include: [
-            {
-              model: CatAnthropometricMeasureType,
-              as: "anthMeasType",
-              include: {
-                model: CatMeasureUnit,
-                as: "measUnit",
-                attributes: ["name"],
-              },
-            },
-            {
-              model: User,
-              as: "measSourcePhys",
-              attributes: ["name", "lastname", "email"],
-            },
-          ],
         },
         {
           model: PatientPulmonaryHypertensionGroup,

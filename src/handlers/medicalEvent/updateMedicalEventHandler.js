@@ -7,7 +7,7 @@ import {
 } from "../../databaseConfig.js";
 
 const updateMedicalEventHandler = async (body) => {
-  const { id, diagnostics, reasonForConsultation } = body;
+  const { id, diagnostics } = body;
   if (!Array.isArray(diagnostics)) {
     throw new Error(
       "Los diagnosticos deben ser enviados como un array de números."

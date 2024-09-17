@@ -1,4 +1,3 @@
-import { mapAnthropometricDetail } from "./anthropometricDetailsMapper.js";
 import { mapVitalSign } from "./vitalSignsMapper.js";
 import { mapSociodemographicDetails } from "./sociodemographicDetailsMapper.js";
 
@@ -14,13 +13,6 @@ export const mapPatient = (patient) => {
     currentLocationCity: patient?.currentLocationUser?.city || null,
     currentLocationCountry: patient?.currentLocationUser?.country || null,
     lastLogin: patient?.lastLogin,
-    anthropometricDetails: patient.patientAnthDet
-      ? getLatestAnthropometricMeasures(
-          patient.patientAnthDet.map((anthDetail) =>
-            mapAnthropometricDetail(anthDetail)
-          )
-        )
-      : [],
     vitalSigns: patient.patientVitalSignDetails
       ? getLatestVitalSignsMeasures(
           patient.patientVitalSignDetails.map((vitalSign) =>
@@ -77,25 +69,6 @@ export const mapPatient = (patient) => {
   };
 };
 
-// Función para obtener las últimas medidas antropométricas por tipo de medida
-function getLatestAnthropometricMeasures(anthropometricDetailsArray) {
-  const measuresMap = new Map();
-  anthropometricDetailsArray.forEach((anthDetail) => {
-    if (anthDetail) {
-      if (measuresMap.has(anthDetail.measureType)) {
-        if (
-          measuresMap.get(anthDetail.measureType).measureDate <
-          anthDetail.measureDate
-        ) {
-          measuresMap.set(anthDetail.measureType, anthDetail);
-        }
-      } else {
-        measuresMap.set(anthDetail.measureType, anthDetail);
-      }
-    }
-  });
-  return Array.from(measuresMap.values());
-}
 
 // Función para obtener las últimas medidas de signos vitales por tipo de medida
 function getLatestVitalSignsMeasures(vitalSignsArray) {
