@@ -1,5 +1,6 @@
-import getVitalSignsByMedicalEventHandler from "../../vitalSigns/getVitalSignsByMedicalEventHandler.js";
-import getDiagnosticsTabHandler from "./extras/getDiagnosticsTabHandler.js";
+
+import getVitalSignsByMedicalEventHandler from "../../../vitalSigns/getVitalSignsByMedicalEventHandler.js";
+import getDiagnosticsTabHandler from "../extras/getDiagnosticsTabHandler.js";
 
 const getConsultationTabHandler = async ({ id }) => {
   try {

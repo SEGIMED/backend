@@ -3,6 +3,7 @@ import getConsultationTabHandler from "./getConsultationTabHandler.js";
 import getPreConsultationTabHandler from "./getPreConsultationTabHandler.js";
 import getStudiesConsultationTabHandler from "./getStudiesConsultationTabHandler.js";
 
+
 const getGeneralConsultationHandler = async ({ id }) => {
   try {
     const consultation = await getConsultationTabHandler({ id });

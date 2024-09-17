@@ -1,4 +1,4 @@
-import getBackgroundDetailHandler from "./extras/getBackgroundDetailHandler.js";
+import  getBackgroundDetailHandler from "../extras/getBackgroundDetailHandler.js"
 
 const getBackgroundTabHandler = async ({ id }) => {
   try {

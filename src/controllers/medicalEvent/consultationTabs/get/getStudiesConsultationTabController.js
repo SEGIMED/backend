@@ -1,4 +1,5 @@
-import getStudiesConsultationTabHandler from "../../handlers/medicalEvent/consultationTabs/getStudiesConsultationTabHandler.js";
+import getStudiesConsultationTabHandler from "../../../../handlers/medicalEvent/consultationTabs/get/getStudiesConsultationTabHandler.js";
+
 
 const getStudiesConsultationTabController = async (req, res) => {
   try {

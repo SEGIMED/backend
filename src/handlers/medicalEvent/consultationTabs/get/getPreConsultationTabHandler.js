@@ -1,4 +1,5 @@
-import models from "../../../databaseConfig.js";
+import models from "../../../../databaseConfig.js";
+import { painAreaNameMap } from "../../../../mapper/painMap/painMapMapper.js";
 
 const getPreConsultationTabHandler = async ({ id }) => {
   try {
@@ -8,7 +9,14 @@ const getPreConsultationTabHandler = async ({ id }) => {
         {
           model: models.PatientPainMap,
           as: "patientPainMap",
-          attributes:{exclude:["painOwner","painRecorder","medicalEvent","selfEvaluationEvent"]},
+          attributes: {
+            exclude: [
+              "painOwner",
+              "painRecorder",
+              "medicalEvent",
+              "selfEvaluationEvent",
+            ],
+          },
           include: [
             {
               model: models.CatPainDuration,
@@ -35,18 +43,33 @@ const getPreConsultationTabHandler = async ({ id }) => {
           include: {
             model: models.ProvisionalPreConsultation,
             as: "ProvisionalPreConsultation",
-            attributes:{
-                exclude:["appointment_schedule","patient","appointmentSchedule"]
-            }
+            attributes: {
+              exclude: [
+                "appointment_schedule",
+                "patient",
+                "appointmentSchedule",
+              ],
+            },
           },
         },
       ],
     });
-    return response;
+
+
+    const formattedResponse = response.toJSON();
+    if (formattedResponse.patientPainMap && formattedResponse.patientPainMap.painAreas) {
+      formattedResponse.patientPainMap.painAreas = formattedResponse.patientPainMap.painAreas.map((area) => ({
+        painArea: painAreaNameMap(parseInt(area.painArea)), 
+        painNotes: area.painNotes,
+      }));
+    }
+
+    return formattedResponse;
   } catch (error) {
     throw new Error(
-      "Ocurrio un error al recuperar la preconsulta: " + error.message
+      "Ocurrió un error al recuperar la preconsulta: " + error.message
     );
   }
 };
+
 export default getPreConsultationTabHandler;

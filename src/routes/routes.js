@@ -118,11 +118,11 @@ import getDiagnosticController from "../controllers/medicalHistory/getDiagnostic
 import createSelfEvaluationVitalSignController from "../controllers/vitalSigns/createSelfEvaluationVitalSignController.js";
 import searchComorbiditiesController from "../controllers/Comorbidities/searchComorbiditesController.js";
 import getVitalSignsByMedicalEventController from "../controllers/vitalSigns/getVitalSignsByMedicalEventController.js";
-import getConsultationTabController from "../controllers/medicalEvent/consultationTabs/getConsultationTabController.js";
-import getPreConsultationTabController from "../controllers/medicalEvent/consultationTabs/getPreConsultationTabController.js";
-import getStudiesConsultationTabController from "../controllers/medicalEvent/getStudiesConsultationTabController.js";
-import getGeneralConsultationController from "../controllers/medicalEvent/consultationTabs/getGeneralConsultationController.js";
-import getBackgroundTabController from "../controllers/medicalEvent/consultationTabs/getBackgroundTabController.js";
+import getGeneralConsultationController from "../controllers/medicalEvent/consultationTabs/get/getGeneralConsultationController.js";
+import getConsultationTabController from "../controllers/medicalEvent/consultationTabs/get/getConsultationTabController.js";
+import getPreConsultationTabController from "../controllers/medicalEvent/consultationTabs/get/getPreConsultationTabController.js";
+import getBackgroundTabController from "../controllers/medicalEvent/consultationTabs/get/getBackgroundTabController.js";
+import getStudiesConsultationTabController from "../controllers/medicalEvent/consultationTabs/get/getStudiesConsultationTabController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
