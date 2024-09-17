@@ -37,7 +37,7 @@ const getAllProvisionaPreConsultationHandler = async (patientId) => {
           },
           {
             model: models.AppointmentScheduling,
-            as: "ProvisionalPreConsultationSchedule",
+            as: "ProvisionalPreConsultation",
             include: [
               {
                 model: models.VitalSignDetails,
