@@ -14,7 +14,7 @@ const model = (sequelize) => {
       },
       physicalSubsystem: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "cat_physical_subsystem",
           key: "id",

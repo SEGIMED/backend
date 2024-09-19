@@ -1,4 +1,5 @@
 import { sequelize } from "../../../../databaseConfig.js";
+import newPhysicalExaminationHandler from "../../../patient/patientPhysicianExam/createPatientPhysicalExaminationHandler.js";
 import updateOrCreateVitalSignsHandler from "../../../vitalSigns/updateVitalSignsHandler.js";
 import updateMedicalEventHandler from "../../updateMedicalEventHandler.js";
 import postDiagnosticsTabHandler from "../extras/postDiagnosticsTabHandler.js";
@@ -9,6 +10,7 @@ const postConsultationTabHandler = async ({
   diagnostics,
   appointmentSchedule,
   medicalEvent,
+  physicalExamination,
 }) => {
   const transaction = await sequelize.transaction();
   try {
@@ -29,8 +31,18 @@ const postConsultationTabHandler = async ({
       appointmentSchedule,
       transaction,
     });
+    const physicalExaminationResponse = await newPhysicalExaminationHandler({
+      id,
+      appointmentSchedule,
+      physicalExamination,
+    });
     await transaction.commit();
-    return { vitalSignsResponse, diagnosticResponse, medicalEventResponse };
+    return {
+      vitalSignsResponse,
+      diagnosticResponse,
+      medicalEventResponse,
+      physicalExaminationResponse,
+    };
   } catch (error) {
     await transaction.rollback();
     throw new Error(
