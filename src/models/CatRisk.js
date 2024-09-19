@@ -14,7 +14,7 @@ const model = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: true
         },
-        description: {
+        category: {
             type: DataTypes.TEXT,
             allowNull: true
         }
