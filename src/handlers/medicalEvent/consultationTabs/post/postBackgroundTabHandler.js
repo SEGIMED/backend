@@ -1,8 +1,14 @@
 import models, { sequelize } from "../../../../databaseConfig.js";
+import createBackgroundsHandler from "../../../Backgrounds/createBackgroundsHandler.js";
 import createPatientHpGroupHandler from "../../../patient/createPatientHpGroupHandler.js";
 import postRisksHandler from "../extras/postRisksHandler.js";
 
-const postBackgroundTabHandler = async ({ id, risks, hpGroupIds }) => {
+const postBackgroundTabHandler = async ({
+  id,
+  risks,
+  hpGroupIds,
+  background,
+}) => {
   const transaction = await sequelize.transaction();
   try {
     const medicalEvent = await models.MedicalEvent.findByPk(id);
@@ -23,8 +29,15 @@ const postBackgroundTabHandler = async ({ id, risks, hpGroupIds }) => {
       hpGroupIds,
       transaction,
     });
+    const backgroundResponse = await createBackgroundsHandler({
+      id,
+      appointmentSchedule: appointmentSchedule.id,
+      patientId,
+      background,
+      transaction,
+    });
     await transaction.commit();
-    return { ...risksResponse, htpGroupResponse };
+    return { ...risksResponse, htpGroupResponse, backgroundResponse };
   } catch (error) {
     await transaction.rollback();
     throw new Error(

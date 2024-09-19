@@ -65,7 +65,6 @@ import updateHeartFailureClassificationController from "../controllers/patient/p
 import updateFullPatientController from "../controllers/patient/updateFullPatientController.js";
 import getMedicalEventHistoryEvolutionController from "../controllers/medicalHistory/getMedicalEventHistoryEvolution.js";
 import createBackgroundsController from "../controllers/backgrounds/createBackgroundsController.js";
-import updateBackgroundsController from "../controllers/backgrounds/updatebackgroundsController.js";
 import createAlarmEventController from "../controllers/alarmEvent/createAlarmEventController.js";
 import getAllAlarmsForPatientController from "../controllers/alarmEvent/getAllAlarmsForPatientController.js";
 import patchAlarmEventController from "../controllers/alarmEvent/patchAlarmEventController.js";
@@ -376,11 +375,9 @@ sociodemographicDetailsRouter
 
 //*Backgrounds
 backgroundsRouter
-  .route("/backgrounds/create-backgrounds")
+  .route("/background")
   .post(createBackgroundsController);
-backgroundsRouter
-  .route("/backgrounds/update-backgrounds")
-  .patch(updateBackgroundsController);
+
 
 //* Drug Prescription
 drugPrescriptionRouter

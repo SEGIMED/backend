@@ -3,8 +3,8 @@ import postBackgroundTabHandler from "../../../../handlers/medicalEvent/consulta
 const postBackgroundTabController = async (req, res) => {
   try {
     const { id } = req.query;
-    const { risks, hpGroupIds } = req.body;
-    const response = await postBackgroundTabHandler({ id, risks, hpGroupIds });
+    const { risks, hpGroupIds, background } = req.body;
+    const response = await postBackgroundTabHandler({ id, risks, hpGroupIds, background });
     
     const anyFailed = Object.values(response).some((value) => value === false);
 

@@ -3,11 +3,15 @@ import { Backgrounds, sequelize } from "../../databaseConfig.js";
 import moment from "moment-timezone";
 import createComorbiditiesHandler from "../Comorbidities/createComorbiditiesHandler.js";
 
-const createBackgroundsHandler = async (body) => {
+const createBackgroundsHandler = async ({
+  id,
+  appointmentSchedule,
+  patientId,
+  background,
+  transaction,
+}) => {
   const now = moment();
-  const transaction = await sequelize.transaction();
   const {
-    patientId,
     surgicalBackground,
     pathologicBackground,
     nonPathologicBackground,
@@ -16,11 +20,9 @@ const createBackgroundsHandler = async (body) => {
     pharmacologicalBackground,
     allergicBackground,
     vaccinationBackground,
-    medicalEventId,
-    schedulingId,
     comorbidities,
     comorbiditiesList,
-  } = body;
+  } = background;
   const queryOptions = {
     where: {
       [Op.or]: [],
@@ -36,21 +38,23 @@ const createBackgroundsHandler = async (body) => {
       allergicBackground,
       vaccinationBackground,
       timestamp: now.format("YYYY-MM-DD HH:mm:ss z"),
-      medicalEvent: medicalEventId,
-      appointmentScheduling: schedulingId,
-      comorbidities
+      medicalEvent: id,
+      appointmentScheduling: appointmentSchedule,
+      comorbidities,
     },
-    transaction
+    transaction,
   };
   try {
-    if (typeof medicalEventId !== "undefined") {
-      queryOptions.where[Op.or].push({ medicalEvent: medicalEventId });
+    if (typeof id !== "undefined") {
+      queryOptions.where[Op.or].push({ medicalEvent: id });
     }
-    if (typeof schedulingId !== "undefined") {
-      queryOptions.where[Op.or].push({ appointmentScheduling: schedulingId });
+    if (typeof appointmentSchedule !== "undefined") {
+      queryOptions.where[Op.or].push({ appointmentScheduling: appointmentSchedule });
     }
 
-    const [newBackground, createdBackground] = await Backgrounds.findOrCreate(queryOptions);
+    const [newBackground, createdBackground] = await Backgrounds.findOrCreate(
+      queryOptions
+    );
     if (createdBackground) {
       return newBackground;
     } else {
@@ -76,13 +80,13 @@ const createBackgroundsHandler = async (body) => {
           transaction,
         });
       }
-      await transaction.commit();
-      return "Se han actualizado los antecedentes del paciente";
+      return true;
     }
   } catch (error) {
-    await transaction.rollback();
-    throw new Error("Hubo un error durante el proceso de registro: " + error.message);
-    
+    console.log(error)
+    throw new Error(
+      "Hubo un error durante el proceso de registro: " + error.message
+    );
   }
 };
 
