@@ -1,33 +1,32 @@
 import models from "../../../databaseConfig.js";
-import SegimedAPIError from "../../../error/SegimedAPIError.js";
 
-const newPhysicalExaminationHandler = async (body) => {
-  const { physicalSubsystemId, description, medicalEventId, schedulingId } =
-    body;
-  let newSchedulingId = schedulingId;
+const newPhysicalExaminationHandler = async ({
+  id,
+  appointmentSchedule,
+  physicalExamination,
+}) => {
+  const { physicalSubsystemId, description } = physicalExamination;
   try {
-    if (!schedulingId) {
-      const medicalEventRegistered = await models.MedicalEvent.findByPk(
-        medicalEventId
-      );
-      if (!medicalEventRegistered) {
-        throw new SegimedAPIError("El evento médico no existe.", 404);
-      }
-      newSchedulingId = medicalEventRegistered.scheduling;
-    }
-    const newPhysicalExamination =
-      await models.PatientPhysicalExamination.create({
-        physicalSubsystem: physicalSubsystemId,
-        description,
-        medicalEvent: medicalEventId,
-        appointmentScheduling: newSchedulingId,
+    const [physicalExam, created] =
+      await models.PatientPhysicalExamination.findOrCreate({
+        where: {
+          medicalEvent: id,
+        },
+        defaults: {
+          description,
+          physicalSubsystem: physicalSubsystemId,
+          appointmentScheduling: appointmentSchedule.id,
+        },
       });
-    return newPhysicalExamination;
+    if (!created) {
+      await physicalExam.update({
+        description,
+        physicalSubsystem: physicalSubsystemId,
+      });
+    }
+    return true;
   } catch (error) {
-    throw new SegimedAPIError(
-      "Hubo un error durante el proceso." + error.message,
-      500
-    );
+    throw new Error("Hubo un error durante el proceso." + error.message);
   }
 };
 
