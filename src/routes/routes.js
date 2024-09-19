@@ -120,6 +120,7 @@ import postConsultationTabController from "../controllers/medicalEvent/consultat
 import findOrCreateCardiovascularRiskController from "../controllers/patient/patientRisk/findOrCreateCardiovascularRiskController.js";
 import findOrCreateSurgicalRiskController from "../controllers/patient/patientRisk/findOrCreateSurgicalRiskController.js";
 import postBackgroundTabController from "../controllers/medicalEvent/consultationTabs/post/postBackgroundTabController.js";
+import postGeneralConsultationTabController from "../controllers/medicalEvent/consultationTabs/post/postGeneralConsultationTabController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -345,7 +346,8 @@ schedulingRouter
 //* Medical Event
 medicalEventRouter
   .route("/general-consultation")
-  .get(getGeneralConsultationController);
+  .get(getGeneralConsultationController)
+  .post(postGeneralConsultationTabController);
 medicalEventRouter
   .route("/consultation")
   .get(getConsultationTabController)

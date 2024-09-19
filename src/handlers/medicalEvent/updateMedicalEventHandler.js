@@ -1,11 +1,11 @@
-import {
-  AppointmentScheduling,
-  CatConsultationReason,
-  MedicalEvent,
-  sequelize,
-} from "../../databaseConfig.js";
+import { CatConsultationReason, MedicalEvent } from "../../databaseConfig.js";
 
-const updateMedicalEventHandler = async ({id, medicalEvent, appointmentSchedule, transaction}) => {
+const updateMedicalEventHandler = async ({
+  id,
+  medicalEvent,
+  appointmentSchedule,
+  transaction,
+}) => {
   try {
     await MedicalEvent.update(
       {
@@ -17,7 +17,7 @@ const updateMedicalEventHandler = async ({id, medicalEvent, appointmentSchedule,
         alarmPattern: medicalEvent.alarmPattern,
         primaryDiagnostic: medicalEvent.primaryDiagnostic,
         diagnosticNotes: medicalEvent.diagnosticNotes,
-        reasonForConsultationId: medicalEvent.reasonForConsultationId
+        reasonForConsultationId: medicalEvent.reasonForConsultationId,
       },
       {
         where: {
@@ -25,19 +25,27 @@ const updateMedicalEventHandler = async ({id, medicalEvent, appointmentSchedule,
         },
         returning: true,
         plain: true,
-      },
-      {
         transaction,
       }
     );
 
     if (!medicalEvent) throw new Error("No se encontró la Consulta.");
- 
-    const consultationReasonName = await CatConsultationReason.findByPk(medicalEvent.reasonForConsultationId)
-    appointmentSchedule.reasonForConsultation = consultationReasonName.description;
-    appointmentSchedule.save();
 
-    
+    const consultationReason = await CatConsultationReason.findByPk(
+      medicalEvent.reasonForConsultationId,
+      { transaction }
+    );
+    if (!consultationReason)
+      throw new Error("No se encontró el motivo de consulta.");
+    if (appointmentSchedule) {
+      appointmentSchedule.reasonForConsultation =
+        consultationReason.description;
+      await appointmentSchedule.save({ transaction });
+    } else {
+      throw new Error(
+        "No se encontró el agendamiento de la cita."
+      );
+    }
 
     return true;
   } catch (error) {
