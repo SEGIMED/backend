@@ -1,4 +1,7 @@
-import { PatientPulmonaryHypertensionGroup } from "../../databaseConfig.js";
+import {
+  CatRisk,
+  PatientPulmonaryHypertensionGroup,
+} from "../../databaseConfig.js";
 import contextService from "request-context";
 import moment from "moment-timezone";
 
@@ -8,6 +11,22 @@ const createPatientHpGroupHandler = async ({
   transaction,
 }) => {
   try {
+    const validHpGroups = await CatRisk.findAll({
+      where: { category: "HTP" },
+      attributes: ["id"],
+    });
+
+    const validHpGroupIds = validHpGroups.map((group) => group.id);
+
+    const invalidIds = hpGroupIds.filter((id) => !validHpGroupIds.includes(id));
+
+    if (invalidIds.length > 0) {
+      throw new Error(
+        `Los siguientes IDs de grupos no son válidos para la categoría HTP: ${invalidIds.join(
+          ", "
+        )}`
+      );
+    }
     const existingGroups = await PatientPulmonaryHypertensionGroup.findAll({
       where: { patient: patientId },
       attributes: ["group"],
