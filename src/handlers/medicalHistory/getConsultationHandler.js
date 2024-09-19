@@ -45,7 +45,7 @@ const getConsultationHandler = async (
               attributes: ["id"],
               include: [
                 {
-                  model: models.CatPulmonaryHypertensionGroup,
+                  model: models.CatRisk,
                   as: "catHpGroup",
                   attributes: ["name"],
                 },

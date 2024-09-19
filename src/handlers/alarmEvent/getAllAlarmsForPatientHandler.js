@@ -2,8 +2,6 @@ import { AlarmEvent } from "../../databaseConfig.js";
 import { mapquestionsPriority } from "../../mapper/alarmEvent/alarmEventMapper.js";
 import {
   User,
-  CatPulmonaryHypertensionGroup,
-  PatientPulmonaryHypertensionGroup,
 } from "../../databaseConfig.js";
 
 const getAllAlarmsForPatientHandler = async (patientId) => {
@@ -19,18 +17,6 @@ const getAllAlarmsForPatientHandler = async (patientId) => {
             model: User,
             as: "AlarmForPatient",
             attributes: { exclude: ["password"] },
-            //Resolver cuando el hpgroups sean mas de 1 se generen 2 alarms en vez de solo 1
-            // include: [
-            //   {
-            //     model: PatientPulmonaryHypertensionGroup,
-            //     as: "userHpGroups",
-            //     include: {
-            //       model: CatPulmonaryHypertensionGroup,
-            //       as: "catHpGroup",
-            //       attributes: ["name"],
-            //     },
-            //   },
-            // ],
           },
         ],
       });
@@ -41,17 +27,6 @@ const getAllAlarmsForPatientHandler = async (patientId) => {
             model: User,
             as: "AlarmForPatient",
             attributes: { exclude: ["password"] },
-            //Resolver cuando el hpgroups sean mas de 1 se generen 2 alarms en vez de solo 1
-            // include: [
-            //   {
-            //     model: PatientPulmonaryHypertensionGroup,
-            //     as: "userHpGroups",
-            //     include: {
-            //       model: CatPulmonaryHypertensionGroup,
-            //       as: "catHpGroup",
-            //     },
-            //   },
-            // ],
           },
         ],
       });

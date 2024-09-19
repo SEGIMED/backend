@@ -60,7 +60,6 @@ import CatPainScaleModel from "./models/CatPainScale.js";
 import CatPainTypeModel from "./models/CatPainType.js";
 import PatientPainMapModel from "./models/PatientPainMap.js";
 import PatientPulmonaryHypertensionGroupModel from "./models/PatientPulmonaryHypertensionGroup.js";
-import CatPulmonaryHypertensionGroupModel from "./models/CatPulmonaryHypertensionGroup.js";
 import PatientSurgicalRiskModel from "./models/PatientSurgicalRisk.js";
 import UserCurrentLocationModel from "./models/UserCurrentLocation.js";
 import AlarmEventModel from "./models/AlarmEvent.js";
@@ -185,7 +184,6 @@ CatPainDurationModel(sequelize);
 CatPainFrequencyModel(sequelize);
 CatPainScaleModel(sequelize);
 CatPainTypeModel(sequelize);
-CatPulmonaryHypertensionGroupModel(sequelize);
 PatientPulmonaryHypertensionGroupModel(sequelize);
 PatientSurgicalRiskModel(sequelize);
 BackgroundsModel(sequelize);
@@ -278,7 +276,6 @@ export const {
   CatPainFrequency,
   CatPainScale,
   CatPainType,
-  CatPulmonaryHypertensionGroup,
   PatientPulmonaryHypertensionGroup,
   PatientSurgicalRisk,
   UserCurrentLocation,
@@ -812,12 +809,12 @@ User.hasMany(PatientPainMap, {
   as: "painRecorderPatientPainMaps",
   foreignKey: "painRecorder",
 });
-PatientPulmonaryHypertensionGroup.belongsTo(CatPulmonaryHypertensionGroup, {
+PatientPulmonaryHypertensionGroup.belongsTo(CatRisk, {
   as: "catHpGroup",
-  foreignKey: "group", // La columna 'group' en PatientPulmonaryHypertensionGroup
-  targetKey: "id", // La columna 'id' en CatPulmonaryHypertensionGroup
+  foreignKey: "group", 
+  targetKey: "id", 
 });
-CatPulmonaryHypertensionGroup.hasMany(PatientPulmonaryHypertensionGroup, {
+CatRisk.hasMany(PatientPulmonaryHypertensionGroup, {
   as: "hpGroup",
   foreignKey: "group",
 });
@@ -1382,7 +1379,6 @@ const models = {
   CatPainFrequency,
   CatPainScale,
   CatPainType,
-  CatPulmonaryHypertensionGroup,
   PatientPulmonaryHypertensionGroup,
   PatientSurgicalRisk,
   AlarmEvent,

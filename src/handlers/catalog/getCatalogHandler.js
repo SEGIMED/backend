@@ -32,7 +32,6 @@ import {
     CatPainFrequency,
     CatPainScale,
     CatPainType,
-    CatPulmonaryHypertensionGroup,
     CatCenterAttention,
     CatRouteOfAdministration,
     CatStudyType,
@@ -115,8 +114,6 @@ const getCatalogHandler = async (catalogName, category) => {
                 return await CatPainScale.findAll()
             case 'PAIN_TYPES':
                 return await CatPainType.findAll()
-            case 'HP_GROUPS':
-                return await CatPulmonaryHypertensionGroup.findAll()
             case 'CENTER_ATT':
                 return await CatCenterAttention.findAll()
             case 'ROUTE_OF_ADMINISTRATION':
