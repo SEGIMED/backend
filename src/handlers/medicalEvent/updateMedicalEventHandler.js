@@ -40,10 +40,10 @@ const updateMedicalEventHandler = async ({
     if (appointmentSchedule) {
       appointmentSchedule.reasonForConsultation =
         consultationReason.description;
-      await appointmentSchedule.save({ transaction }); // Guardar con la transacción activa
+      await appointmentSchedule.save({ transaction });
     } else {
       throw new Error(
-        "No se encontró el agendamiento de la cita (appointmentSchedule)."
+        "No se encontró el agendamiento de la cita."
       );
     }
 
