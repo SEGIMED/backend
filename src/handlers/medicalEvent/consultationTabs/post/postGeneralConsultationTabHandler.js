@@ -44,6 +44,8 @@ const postGeneralConsultationTabHandler = async ({
       hpGroupIds,
       background,
     });
+    appointmentSchedule.schedulingStatus = 2;
+    appointmentSchedule.save();
     return { consultationResponse, backgroundResponse };
   } catch (error) {
     console.log(error);
