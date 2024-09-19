@@ -2,8 +2,7 @@ import { AlarmEvent } from "../../databaseConfig.js";
 import { mapquestionsPriority } from "../../mapper/alarmEvent/alarmEventMapper.js";
 import {
   User,
-  CatPulmonaryHypertensionGroup,
-  PatientPulmonaryHypertensionGroup,
+
 } from "../../databaseConfig.js";
 
 const getAlarmByIdHandler = async (alarmId) => {
@@ -14,17 +13,6 @@ const getAlarmByIdHandler = async (alarmId) => {
           model: User,
           as: "AlarmForPatient",
           attributes: { exclude: ["password"] },
-          // include: [
-          //   {
-          //     model: PatientPulmonaryHypertensionGroup,
-          //     as: "userHpGroups",
-          //     include: {
-          //       model: CatPulmonaryHypertensionGroup,
-          //       as: "catHpGroup",
-          //       attributes: ["name"],
-          //     },
-          //   },
-          // ],
         },
       ],
     });

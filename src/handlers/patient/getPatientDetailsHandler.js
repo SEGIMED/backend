@@ -9,7 +9,6 @@ import {
   CatMeasureUnit,
   CatMedicalSpecialty,
   CatRisk,
-  CatPulmonaryHypertensionGroup,
   CatSchedulingStatus,
   CatVitalSignMeasureType,
   PatientCardiovascularRisk,
@@ -45,7 +44,7 @@ const getPatientDetailsHandler = async (id) => {
           model: PatientPulmonaryHypertensionGroup,
           as: "userHpGroups",
           include: {
-            model: CatPulmonaryHypertensionGroup,
+            model: CatRisk,
             as: "catHpGroup",
             attributes: ["name"],
           },

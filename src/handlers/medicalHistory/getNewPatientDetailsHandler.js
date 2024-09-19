@@ -19,7 +19,7 @@ const getNewPatientDetailsHandler = async (id) => {
           as: "userHpGroups",
           attributes: ["id"],
           include: {
-            model: models.CatPulmonaryHypertensionGroup,
+            model: models.CatRisk,
             as: "catHpGroup",
             attributes: ["name"],
           },

@@ -48,7 +48,7 @@ const getPatientPhysicalExamination = async (patientId, page, limit) => {
                   attributes: ["id"],
                   include: [
                     {
-                      model: models.CatPulmonaryHypertensionGroup,
+                      model: models.CatRisk,
                       as: "catHpGroup",
                       attributes: ["name"],
                     },
