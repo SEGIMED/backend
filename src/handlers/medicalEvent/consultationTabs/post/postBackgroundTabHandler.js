@@ -13,29 +13,38 @@ const postBackgroundTabHandler = async ({
   try {
     const medicalEvent = await models.MedicalEvent.findByPk(id);
     if (!medicalEvent) throw new Error("La consulta no es válida");
+
     const appointmentSchedule = await models.AppointmentScheduling.findOne({
-      where: {
-        id: medicalEvent.scheduling,
-      },
+      where: { id: medicalEvent.scheduling },
     });
     const patientId = appointmentSchedule.patient;
-    const risksResponse = await postRisksHandler({
-      risks,
-      patientId,
-      transaction,
-    });
-    const htpGroupResponse = await createPatientHpGroupHandler({
-      patientId,
-      hpGroupIds,
-      transaction,
-    });
-    const backgroundResponse = await createBackgroundsHandler({
-      id,
-      appointmentSchedule: appointmentSchedule.id,
-      patientId,
-      background,
-      transaction,
-    });
+
+    const risksResponse = risks
+      ? await postRisksHandler({ risks, patientId, transaction })
+      : {
+          cardiovascularRiskResponse: null,
+          surgicalRiskResponse: null,
+          htpRiksResponse: null,
+        };
+
+    const htpGroupResponse = hpGroupIds
+      ? await createPatientHpGroupHandler({
+          patientId,
+          hpGroupIds,
+          transaction,
+        })
+      : null;
+
+    const backgroundResponse = background
+      ? await createBackgroundsHandler({
+          id,
+          appointmentSchedule: appointmentSchedule.id,
+          patientId,
+          background,
+          transaction,
+        })
+      : null;
+
     await transaction.commit();
     return { ...risksResponse, htpGroupResponse, backgroundResponse };
   } catch (error) {
@@ -46,4 +55,5 @@ const postBackgroundTabHandler = async ({
     );
   }
 };
+
 export default postBackgroundTabHandler;

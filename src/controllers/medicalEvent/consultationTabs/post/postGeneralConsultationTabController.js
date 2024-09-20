@@ -12,14 +12,16 @@ const postGeneralConsultationTabController = async (req, res) => {
     });
 
     const values = Object.values(response).flatMap(Object.values);
-    const allTrue = values.every((value) => value === true);
+    const allTrue = values.every((value) => value === true || value == null);
+
     if (allTrue) {
       return res.status(200).json("Datos actualizados correctamente.");
     } else {
-      throw new Error("Algún campo no se pudo actualizar: " + response);
+      throw new Error("Algún campo no se pudo actualizar.");
     }
   } catch (error) {
     return res.status(500).json(error.message);
   }
 };
+
 export default postGeneralConsultationTabController;

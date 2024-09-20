@@ -8,23 +8,32 @@ const postRisksHandler = async ({ risks, patientId, transaction }) => {
       cardiovascularRiskId,
       surgicalRiskId,
       pulmonaryHypertensionRiskId,
-    } = risks;
-    const cardiovascularRiskResponse =
-      await findOrCreateCardiovascularRiskHandler({
-        patientId,
-        cardiovascularRiskId,
-        transaction,
-      });
-    const surgicalRiskResponse = await findOrCreateSurgicalRiskHandler({
-      patientId,
-      surgicalRiskId,
-      transaction,
-    });
-    const htpRiksResponse = await createPulmonaryHypertensionRiskHandler({
-      patientId,
-      pulmonaryHypertensionRiskId,
-      transaction,
-    });
+    } = risks || {};
+
+    const cardiovascularRiskResponse = cardiovascularRiskId
+      ? await findOrCreateCardiovascularRiskHandler({
+          patientId,
+          cardiovascularRiskId,
+          transaction,
+        })
+      : null;
+
+    const surgicalRiskResponse = surgicalRiskId
+      ? await findOrCreateSurgicalRiskHandler({
+          patientId,
+          surgicalRiskId,
+          transaction,
+        })
+      : null;
+
+    const htpRiksResponse = pulmonaryHypertensionRiskId
+      ? await createPulmonaryHypertensionRiskHandler({
+          patientId,
+          pulmonaryHypertensionRiskId,
+          transaction,
+        })
+      : null;
+
     return {
       cardiovascularRiskResponse,
       surgicalRiskResponse,
@@ -32,8 +41,9 @@ const postRisksHandler = async ({ risks, patientId, transaction }) => {
     };
   } catch (error) {
     throw new Error(
-      "Ocurrio un error al guardar los riesgos: " + error.message
+      "Ocurrió un error al guardar los riesgos: " + error.message
     );
   }
 };
+
 export default postRisksHandler;
