@@ -4,8 +4,14 @@ import postConsultationTabHandler from "../../../../handlers/medicalEvent/consul
 const postConsultationTabController = async (req, res) => {
   try {
     const { id } = req.query;
-    const { vitalSigns, diagnostics, medicalEvent, physicalExamination } =
-      req.body;
+    const {
+      vitalSigns,
+      diagnostics,
+      medicalEvent,
+      physicalExamination,
+      glycemia,
+      functionalClass,
+    } = req.body;
     const medicalEventData = await models.MedicalEvent.findOne({
       where: {
         id,
@@ -31,6 +37,8 @@ const postConsultationTabController = async (req, res) => {
       appointmentSchedule,
       medicalEvent,
       physicalExamination,
+      glycemia,
+      functionalClass,
     });
 
     const anyFailed = Object.values(response).some((value) => value === false);

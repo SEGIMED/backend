@@ -122,6 +122,7 @@ import findOrCreateSurgicalRiskController from "../controllers/patient/patientRi
 import postBackgroundTabController from "../controllers/medicalEvent/consultationTabs/post/postBackgroundTabController.js";
 import postGeneralConsultationTabController from "../controllers/medicalEvent/consultationTabs/post/postGeneralConsultationTabController.js";
 import createVitalSignsController from "../controllers/vitalSigns/createVitalSignsController.js";
+import postGlycemiaRecordsController from "../controllers/glycemiaRecords/postGlycemiaRecordsController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -363,6 +364,7 @@ medicalEventRouter.route("/update-event").patch(updateMedicalEventController);
 
 //* Vital Signs
 vitalSignsRouter.route("/").patch(createVitalSignsController);
+vitalSignsRouter.route("/glycemia").post(postGlycemiaRecordsController);
 vitalSignsRouter
   .route("/medical-event")
   .get(getVitalSignsByMedicalEventController);
