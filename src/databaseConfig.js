@@ -91,7 +91,7 @@ import CatComorbiditiesCategoriesModel from "./models/CatComorbiditiesCategories
 import CatComorbiditiesDiseasesModel from "./models/CatComorbiditiesDiseases.js";
 import UserComorbiditiesModel from "./models/UserComorbidities.js";
 import CatConsultationReasonModel from "./models/CatConsultationReason.js";
-import PatientFunctionalClassModel from "./models/PatientFunctionalClass.js"
+import PatientFunctionalClassModel from "./models/PatientFunctionalClass.js";
 
 // import
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
@@ -1323,6 +1323,11 @@ MedicalEvent.belongsTo(SubCategoriesCieDiez, {
 SubCategoriesCieDiez.hasOne(MedicalEvent, {
   foreignKey: "primaryDiagnostic",
   as: "medicalEvent",
+});
+
+PatientFunctionalClass.belongsTo(CatRisk, {
+  foreignKey: "class",
+  as: "category",
 });
 
 const models = {

@@ -7,11 +7,6 @@ const getPreConsultationTabHandler = async ({ id }) => {
       attributes: ["id"],
       include: [
         {
-          model: models.GlycemiaRecords,
-          as: "glycemia",
-          attributes: ["value"],
-        },
-        {
           model: models.PatientPainMap,
           as: "patientPainMap",
           attributes: {
