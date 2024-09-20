@@ -18,38 +18,52 @@ const postConsultationTabHandler = async ({
 }) => {
   const transaction = await sequelize.transaction();
   try {
-    const vitalSignsResponse = await updateOrCreateVitalSignsHandler({
-      id,
-      vitalSigns,
-      transaction,
-    });
-    const glycemiaResponse = await postGlycemiaRecordsHandler({
-      glycemia,
-      medicalEvent: id,
-      transaction,
-    });
-    const functionalClassResponse = await findOrCreateFunctionalClassHandler({
-      appointmentSchedule,
-      functionalClass,
-      transaction,
-    });
-    const diagnosticResponse = await postDiagnosticsTabHandler({
-      id,
-      diagnostics,
-      appointmentSchedule,
-      transaction,
-    });
-    const medicalEventResponse = await updateMedicalEventHandler({
-      id,
-      medicalEvent,
-      appointmentSchedule,
-      transaction,
-    });
-    const physicalExaminationResponse = await newPhysicalExaminationHandler({
-      id,
-      appointmentSchedule,
-      physicalExamination,
-    });
+    const vitalSignsResponse = vitalSigns
+      ? await updateOrCreateVitalSignsHandler({ id, vitalSigns, transaction })
+      : null;
+
+    const glycemiaResponse = glycemia
+      ? await postGlycemiaRecordsHandler({
+          glycemia,
+          medicalEvent: id,
+          transaction,
+        })
+      : null;
+
+    const functionalClassResponse = functionalClass
+      ? await findOrCreateFunctionalClassHandler({
+          appointmentSchedule,
+          functionalClass,
+          transaction,
+        })
+      : null;
+
+    const diagnosticResponse = diagnostics
+      ? await postDiagnosticsTabHandler({
+          id,
+          diagnostics,
+          appointmentSchedule,
+          transaction,
+        })
+      : null;
+
+    const medicalEventResponse = medicalEvent
+      ? await updateMedicalEventHandler({
+          id,
+          medicalEvent,
+          appointmentSchedule,
+          transaction,
+        })
+      : null;
+
+    const physicalExaminationResponse = physicalExamination
+      ? await newPhysicalExaminationHandler({
+          id,
+          appointmentSchedule,
+          physicalExamination,
+        })
+      : null;
+
     await transaction.commit();
     return {
       vitalSignsResponse,
@@ -66,4 +80,5 @@ const postConsultationTabHandler = async ({
     );
   }
 };
+
 export default postConsultationTabHandler;
