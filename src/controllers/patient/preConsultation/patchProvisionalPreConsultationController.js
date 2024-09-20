@@ -1,14 +1,14 @@
-import { sequelize } from "../../../databaseConfig.js";
 import patchProvisionalPreConsultationHandler from "../../../handlers/patient/preConsultation/patchProvisionalPreConsultationHandler.js";
 
 const patchProvisionalPreConsultationController = async (req, res) => {
   const { id } = req.query;
-  const { vitalSigns, painMap } = req.body;
+  const { vitalSigns, painMap, preconsultation } = req.body;
   try {
     const response = await patchProvisionalPreConsultationHandler({
       id,
       vitalSigns,
       painMap,
+      preconsultation,
     });
     return res.status(200).json(response);
   } catch (error) {
