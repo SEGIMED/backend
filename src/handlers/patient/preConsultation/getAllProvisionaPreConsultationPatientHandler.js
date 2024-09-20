@@ -1,5 +1,4 @@
 import models from "../../../databaseConfig.js";
-import segimedAPIError from "../../../error/SegimedAPIError.js";
 
 const getAllProvisionaPreConsultationHandler = async (patientId) => {
   try {
@@ -90,9 +89,8 @@ const getAllProvisionaPreConsultationHandler = async (patientId) => {
     );
     return allPreConsultations;
   } catch (error) {
-    throw new segimedAPIError(
-      "Error al cargar los detalles de la preconsulta ",
-      500
+    throw new Error(
+      "Error al cargar los detalles de la preconsulta: " +error.message
     );
   }
 };
