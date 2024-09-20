@@ -437,7 +437,7 @@ preConsultationRouter
   .route("/get-preconsultation")
   .get(getPreConsultationByScheduleIdController);
 preConsultationRouter
-  .route("/update-pre-consultation")
+  .route("/pre-consultation")
   .patch(patchProvisionalPreConsultationController);
 
 //* Statistical center
