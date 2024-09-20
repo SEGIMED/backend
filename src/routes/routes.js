@@ -121,6 +121,7 @@ import findOrCreateCardiovascularRiskController from "../controllers/patient/pat
 import findOrCreateSurgicalRiskController from "../controllers/patient/patientRisk/findOrCreateSurgicalRiskController.js";
 import postBackgroundTabController from "../controllers/medicalEvent/consultationTabs/post/postBackgroundTabController.js";
 import postGeneralConsultationTabController from "../controllers/medicalEvent/consultationTabs/post/postGeneralConsultationTabController.js";
+import createVitalSignsController from "../controllers/vitalSigns/createVitalSignsController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -215,9 +216,7 @@ patientRouter
   .patch(updateHeartFailureClassificationController);
 
 //* hp risk classification
-patientRouter
-  .route("/hp-risk")
-  .post(createPulmonaryHypertensionRiskController);
+patientRouter.route("/hp-risk").post(createPulmonaryHypertensionRiskController);
 
 //* pulmonary hypertension group
 patientRouter
@@ -363,6 +362,7 @@ medicalEventRouter
 medicalEventRouter.route("/update-event").patch(updateMedicalEventController);
 
 //* Vital Signs
+vitalSignsRouter.route("/").patch(createVitalSignsController);
 vitalSignsRouter
   .route("/medical-event")
   .get(getVitalSignsByMedicalEventController);
@@ -376,10 +376,7 @@ sociodemographicDetailsRouter
   .patch(updateSociodemographicDetailsController);
 
 //*Backgrounds
-backgroundsRouter
-  .route("/background")
-  .post(createBackgroundsController);
-
+backgroundsRouter.route("/background").post(createBackgroundsController);
 
 //* Drug Prescription
 drugPrescriptionRouter
