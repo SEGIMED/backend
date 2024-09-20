@@ -6,8 +6,6 @@ const patchPreconsultationHandler = async ({
   transaction,
 }) => {
   try {
-    console.log("Datos de preconsulta:", preconsultation);
-
     const medicalEvent = await models.MedicalEvent.findByPk(id);
     const existingPreconsultation =
       await models.ProvisionalPreConsultation.findOne({
@@ -133,14 +131,11 @@ const patchPreconsultationHandler = async ({
           : existingPreconsultation.lackOfAirIncremented,
     };
 
-    console.log(existingPreconsultation);
-    console.log("Datos a actualizar:", updatedData);
     existingPreconsultation.set(updatedData);
     await existingPreconsultation.save({ transaction });
 
     return true;
   } catch (error) {
-    console.error(error);
     throw new Error(
       "Ocurrió un error al guardar los datos de la preconsulta: " +
         error.message

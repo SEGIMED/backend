@@ -26,13 +26,23 @@ const postGeneralConsultationTabHandler = async ({
         .status(404)
         .send("La consulta no tiene un agendamiento válido.");
     }
-    const { vitalSigns, diagnostics, medicalEvent, physicalExamination } =
-      consultationData;
+    const {
+      vitalSigns,
+      glycemia,
+      abnormalGlycemia,
+      functionalClass,
+      diagnostics,
+      medicalEvent,
+      physicalExamination,
+    } = consultationData;
     const { risks, hpGroupIds, background } = backgroundData;
 
     const consultationResponse = await postConsultationTabHandler({
       id,
       vitalSigns,
+      glycemia,
+      abnormalGlycemia,
+      functionalClass,
       diagnostics,
       appointmentSchedule,
       medicalEvent,

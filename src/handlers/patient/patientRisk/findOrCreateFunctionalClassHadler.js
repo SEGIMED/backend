@@ -32,9 +32,7 @@ const findOrCreateFunctionalClassHandler = async ({
       );
     }
 
-    return created
-      ? "Clase funcional creada correctamente."
-      : "Clase funcional actualizada correctamente.";
+    return true
   } catch (error) {
     throw new Error("Hubo un error al procesar los datos: " + error.message);
   }

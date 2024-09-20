@@ -5,10 +5,11 @@ const postGlycemiaRecordsController = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
     const { id } = req.query;
-    const { glycemia } = req.body;
+    const { glycemia, abnormalGlycemia } = req.body;
     const data = await postGlycemiaRecordsHandler({
       glycemia,
       medicalEvent: id,
+      abnormalGlycemia,
       transaction,
     });
     await transaction.commit();

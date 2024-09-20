@@ -17,7 +17,7 @@ const postGeneralConsultationTabController = async (req, res) => {
     if (allTrue) {
       return res.status(200).json("Datos actualizados correctamente.");
     } else {
-      throw new Error("Algún campo no se pudo actualizar.");
+      throw new Error("Algún campo no se pudo actualizar: " + values);
     }
   } catch (error) {
     return res.status(500).json(error.message);

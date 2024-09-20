@@ -10,6 +10,7 @@ const postConsultationTabHandler = async ({
   id,
   vitalSigns,
   glycemia,
+  abnormalGlycemia,
   functionalClass,
   diagnostics,
   appointmentSchedule,
@@ -25,6 +26,7 @@ const postConsultationTabHandler = async ({
     const glycemiaResponse = glycemia
       ? await postGlycemiaRecordsHandler({
           glycemia,
+          abnormalGlycemia,
           medicalEvent: id,
           transaction,
         })
@@ -75,6 +77,7 @@ const postConsultationTabHandler = async ({
     };
   } catch (error) {
     await transaction.rollback();
+    console.log(error)
     throw new Error(
       "Ocurrió un error al guardar los datos de consulta: " + error.message
     );

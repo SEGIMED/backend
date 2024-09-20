@@ -10,6 +10,7 @@ const postConsultationTabController = async (req, res) => {
       medicalEvent,
       physicalExamination,
       glycemia,
+      abnormalGlycemia,
       functionalClass,
     } = req.body;
     const medicalEventData = await models.MedicalEvent.findOne({
@@ -38,6 +39,7 @@ const postConsultationTabController = async (req, res) => {
       medicalEvent,
       physicalExamination,
       glycemia,
+      abnormalGlycemia,
       functionalClass,
     });
 

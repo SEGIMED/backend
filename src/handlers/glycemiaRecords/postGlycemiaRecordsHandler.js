@@ -4,6 +4,7 @@ const postGlycemiaRecordsHandler = async ({
   glycemia,
   selfEvaluationEventId,
   medicalEvent,
+  abnormalGlycemia,
   transaction,
 }) => {
   try {
@@ -26,6 +27,15 @@ const postGlycemiaRecordsHandler = async ({
     });
 
     if (medicalEvent) {
+      const medicalEventData = await models.MedicalEvent.findByPk(medicalEvent);
+      const preconsultation = await models.ProvisionalPreConsultation.findOne({
+        where: { appointmentSchedule: medicalEventData.scheduling },
+      });
+      if (abnormalGlycemia !== undefined && abnormalGlycemia !== null) {
+        preconsultation.abnormalGlycemia = abnormalGlycemia;
+        await preconsultation.save({ transaction });
+      }
+
       for (let i = 0; i < glycemia.length; i++) {
         if (i < existingRecords.length) {
           await existingRecords[i].update(
