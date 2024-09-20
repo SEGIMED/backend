@@ -14,7 +14,7 @@ const model = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'cat_surgical_risk',
+        model: 'cat_risk',
         key: 'id'
       }
     },

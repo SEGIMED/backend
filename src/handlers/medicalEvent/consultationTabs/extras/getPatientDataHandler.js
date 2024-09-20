@@ -29,6 +29,11 @@ const getPatientDataHandler = async ({ id }) => {
         "genre",
         "numberOfFamilyAsistence",
       ],
+      include:{
+        model: models.CatGenre,
+        as:"catGenre",
+        attributes:["name"]
+      }
     });
 
     const patientData = patient.toJSON();

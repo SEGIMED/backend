@@ -91,6 +91,7 @@ import CatComorbiditiesCategoriesModel from "./models/CatComorbiditiesCategories
 import CatComorbiditiesDiseasesModel from "./models/CatComorbiditiesDiseases.js";
 import UserComorbiditiesModel from "./models/UserComorbidities.js";
 import CatConsultationReasonModel from "./models/CatConsultationReason.js";
+import PatientFunctionalClassModel from "./models/PatientFunctionalClass.js"
 
 // import
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
@@ -216,6 +217,7 @@ CatComorbiditiesCategoriesModel(sequelize);
 CatComorbiditiesDiseasesModel(sequelize);
 UserComorbiditiesModel(sequelize);
 CatConsultationReasonModel(sequelize);
+PatientFunctionalClassModel(sequelize);
 
 export const {
   AppointmentScheduling,
@@ -308,6 +310,7 @@ export const {
   CatComorbiditiesDiseases,
   UserComorbidities,
   CatConsultationReason,
+  PatientFunctionalClass,
 } = sequelize.models;
 
 MedicalEvent.belongsTo(AppointmentScheduling, {
@@ -689,10 +692,10 @@ CatHeartFailureClassification.hasMany(PatientHeartFailureClassification, {
   as: "patientHeartFailureClassifications",
   foreignKey: "heartFailureClassification",
 });
-PatientPulmonaryHypertensionRisk.belongsTo(
-  CatRisk,
-  { as: "catHpRisk", foreignKey: "pulmonaryHypertensionRisk" }
-);
+PatientPulmonaryHypertensionRisk.belongsTo(CatRisk, {
+  as: "catHpRisk",
+  foreignKey: "pulmonaryHypertensionRisk",
+});
 CatRisk.hasMany(PatientPulmonaryHypertensionRisk, {
   as: "patPHRisks",
   foreignKey: "pulmonaryHypertensionRisk",
@@ -811,8 +814,8 @@ User.hasMany(PatientPainMap, {
 });
 PatientPulmonaryHypertensionGroup.belongsTo(CatRisk, {
   as: "catHpGroup",
-  foreignKey: "group", 
-  targetKey: "id", 
+  foreignKey: "group",
+  targetKey: "id",
 });
 CatRisk.hasMany(PatientPulmonaryHypertensionGroup, {
   as: "hpGroup",
@@ -1270,7 +1273,10 @@ SelfEvaluationEvent.hasMany(GlycemiaRecords, {
   foreignKey: "selfEvaluationEvent",
   as: "glycemia",
 });
-
+MedicalEvent.hasMany(GlycemiaRecords, {
+  foreignKey: "medicalEvent",
+  as: "glycemia",
+});
 CatComorbiditiesCategories.hasMany(CatComorbiditiesDiseases, {
   foreignKey: "categoryId",
   as: "diseases",
@@ -1302,7 +1308,7 @@ UserComorbidities.belongsTo(CatComorbiditiesDiseases, {
 
 MedicalEvent.belongsTo(CatConsultationReason, {
   foreignKey: "reasonForConsultationId",
-  as: "reasonForConsultation", 
+  as: "reasonForConsultation",
 });
 
 CatConsultationReason.hasMany(MedicalEvent, {
@@ -1310,10 +1316,9 @@ CatConsultationReason.hasMany(MedicalEvent, {
   as: "medicalEvents",
 });
 MedicalEvent.belongsTo(SubCategoriesCieDiez, {
-  foreignKey: "primaryDiagnostic", 
+  foreignKey: "primaryDiagnostic",
   as: "mainDiagnostic",
 });
-
 
 SubCategoriesCieDiez.hasOne(MedicalEvent, {
   foreignKey: "primaryDiagnostic",
@@ -1410,6 +1415,7 @@ const models = {
   CatComorbiditiesDiseases,
   UserComorbidities,
   CatConsultationReason,
+  PatientFunctionalClass,
 };
 
 export default models;

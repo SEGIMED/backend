@@ -1,63 +1,78 @@
-import SegimedAPIError from "../../error/SegimedAPIError.js";
-import { PatientPainMap } from "../../databaseConfig.js";
+import models, { PatientPainMap } from "../../databaseConfig.js";
 import contextService from "request-context";
 import moment from "moment";
 
-const patchPatientPainMapHandler = async (body,{transaction}) => {
+const patchPatientPainMapHandler = async ({ id, painMap, transaction }) => {
   try {
-    
-    //Validación. Si se envía el objeto painRecordsToUpdate pero es diferente a un array, retorna error
-    if (body.painRecordsToUpdate && !Array.isArray(body.painRecordsToUpdate)) {
-      throw new SegimedAPIError(
-        "Los datos proporcionados no se encuentran en un formato válido o no fueron enviados",
-        400
+    const medicalEventData = await models.MedicalEvent.findByPk(id);
+    if (!medicalEventData) {
+      throw new Error(
+        "No se encontró el evento médico con el ID proporcionado."
       );
     }
 
-    //Validación. Si no vienen zonas de dolor para actualizar, se retorna []
-    if (body.painRecordsToUpdate && body.painRecordsToUpdate?.length !== 0) {
-      const patientPainMapping = await mapPainRecord(body.painRecordsToUpdate[0],body);
-      patientPainMapping.painOwner = body.patient
-      
-      const [updatedPainRecord, created] = await PatientPainMap.findOrCreate({
-        where: {
-            scheduling: patientPainMapping.scheduling,
-            medicalEvent: patientPainMapping.medicalEvent
-        },
-        defaults: patientPainMapping,
-        transaction
+    const schedulingData = await models.AppointmentScheduling.findOne({
+      where: {
+        id: medicalEventData.scheduling,
+      },
     });
+    if (!schedulingData) {
+      throw new Error(
+        "No se encontró la programación asociada al evento médico."
+      );
+    }
+
+    const [patientPainMapping, created] = await PatientPainMap.findOrCreate({
+      where: {
+        scheduling: schedulingData.id,
+        medicalEvent: medicalEventData.id,
+      },
+      defaults: {
+        isTherePain: painMap.isTherePain ?? null,
+        painDuration: painMap.painDuration ?? null,
+        painScale: painMap.painScale ?? null,
+        painType: painMap.painType ?? null,
+        painAreas: painMap.painAreas ?? [],
+        painFrequency: painMap.painFrequency ?? null,
+        isTakingAnalgesic: painMap.isTakingAnalgesic ?? null,
+        doesAnalgesicWorks: painMap.doesAnalgesicWorks ?? null,
+        isWorstPainEver: painMap.isWorstPainEver ?? null,
+        timestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
+        painRecorder: contextService.get("request:user").userId,
+        scheduling: schedulingData.id,
+        medicalEvent: medicalEventData.id,
+      },
+      transaction,
+    });
+
     if (!created) {
-      await updatedPainRecord.update(patientPainMapping, {transaction});
+      const updatedPainMapping = {
+        isTherePain: painMap.isTherePain ?? patientPainMapping.isTherePain,
+        painDuration: painMap.painDuration ?? patientPainMapping.painDuration,
+        painScale: painMap.painScale ?? patientPainMapping.painScale,
+        painType: painMap.painType ?? patientPainMapping.painType,
+        painAreas: painMap.painAreas ?? patientPainMapping.painAreas,
+        painFrequency:
+          painMap.painFrequency ?? patientPainMapping.painFrequency,
+        isTakingAnalgesic:
+          painMap.isTakingAnalgesic ?? patientPainMapping.isTakingAnalgesic,
+        doesAnalgesicWorks:
+          painMap.doesAnalgesicWorks ?? patientPainMapping.doesAnalgesicWorks,
+        isWorstPainEver:
+          painMap.isWorstPainEver ?? patientPainMapping.isWorstPainEver,
+        timestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
+      };
+
+      await patientPainMapping.update(updatedPainMapping, { transaction });
     }
-      return updatedPainRecord;
-    } else {
-      return [];
-    }
+
+    return true;
   } catch (error) {
     throw new Error(
-      "Hubo un error durante el proceso de actualización o creación del mapeo de las zonas de dolor." +
-        error.message,
-      500
+      "Hubo un error durante el proceso de actualización o creación del mapeo de las zonas de dolor: " +
+        error.message
     );
   }
 };
-async function mapPainRecord(props,body) {
-    return {
-        isTherePain: props.isTherePain,
-        painDuration: props.painDurationId,
-        painScale: props.painScaleId,
-        painType: props.painTypeId,
-        painAreas: props.painAreas,
-        painFrequency: props.painFrequencyId,
-        isTakingAnalgesic: props.isTakingAnalgesic,
-        doesAnalgesicWorks: props.doesAnalgesicWorks,
-        isWorstPainEver: props.isWorstPainEver,
-        timestamp: moment().format("YYYY-MM-DD HH:mm:ss z"),
-        painRecorder: contextService.get('request:user').userId,
-        scheduling: body.appointmentSchedule,
-        medicalEvent: body.medicalEvent.id
-    };
-}
 
 export default patchPatientPainMapHandler;

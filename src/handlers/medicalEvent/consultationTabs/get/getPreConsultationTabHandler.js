@@ -7,6 +7,11 @@ const getPreConsultationTabHandler = async ({ id }) => {
       attributes: ["id"],
       include: [
         {
+          model: models.GlycemiaRecords,
+          as: "glycemia",
+          attributes: ["value"],
+        },
+        {
           model: models.PatientPainMap,
           as: "patientPainMap",
           attributes: {
@@ -21,18 +26,22 @@ const getPreConsultationTabHandler = async ({ id }) => {
             {
               model: models.CatPainDuration,
               as: "painDurationDetail",
+              attributes: ["name"],
             },
             {
               model: models.CatPainType,
               as: "painTypeDetail",
+              attributes: ["name"],
             },
             {
               model: models.CatPainScale,
               as: "painScaleDetail",
+              attributes: ["name"],
             },
             {
               model: models.CatPainFrequency,
               as: "painFrequencyDetail",
+              attributes: ["name"],
             },
           ],
         },
@@ -55,13 +64,16 @@ const getPreConsultationTabHandler = async ({ id }) => {
       ],
     });
 
-
     const formattedResponse = response.toJSON();
-    if (formattedResponse.patientPainMap && formattedResponse.patientPainMap.painAreas) {
-      formattedResponse.patientPainMap.painAreas = formattedResponse.patientPainMap.painAreas.map((area) => ({
-        painArea: painAreaNameMap(parseInt(area.painArea)), 
-        painNotes: area.painNotes,
-      }));
+    if (
+      formattedResponse.patientPainMap &&
+      formattedResponse.patientPainMap.painAreas
+    ) {
+      formattedResponse.patientPainMap.painAreas =
+        formattedResponse.patientPainMap.painAreas.map((area) => ({
+          painArea: painAreaNameMap(parseInt(area.painArea)),
+          painNotes: area.painNotes,
+        }));
     }
 
     return formattedResponse;

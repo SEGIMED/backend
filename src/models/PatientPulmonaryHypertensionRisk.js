@@ -22,7 +22,7 @@ const model = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'cat_pulmonary_arterial_hypertension_risk',
+                model: 'cat_risk',
                 key: 'id'
             },
             field: 'pulmonary_hypertension_risk'
