@@ -131,7 +131,6 @@ CatCountryModel(sequelize);
 CatProvinceModel(sequelize);
 CatCityModel(sequelize);
 AppointmentSchedulingModel(sequelize);
-
 CatAppointmentModalityModel(sequelize);
 CatChatStatusModel(sequelize);
 CatDiagnosticTestTypeModel(sequelize);

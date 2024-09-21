@@ -123,6 +123,7 @@ import postBackgroundTabController from "../controllers/medicalEvent/consultatio
 import postGeneralConsultationTabController from "../controllers/medicalEvent/consultationTabs/post/postGeneralConsultationTabController.js";
 import createVitalSignsController from "../controllers/vitalSigns/createVitalSignsController.js";
 import postGlycemiaRecordsController from "../controllers/glycemiaRecords/postGlycemiaRecordsController.js";
+import getLastMedicalEventController from "../controllers/medicalEvent/getLastMedicalEventController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -361,7 +362,7 @@ medicalEventRouter
   .get(getBackgroundTabController)
   .post(postBackgroundTabController);
 medicalEventRouter.route("/update-event").patch(updateMedicalEventController);
-
+medicalEventRouter.route("/last-consultation").get(getLastMedicalEventController)
 //* Vital Signs
 vitalSignsRouter.route("/").patch(createVitalSignsController);
 vitalSignsRouter.route("/glycemia").post(postGlycemiaRecordsController);
