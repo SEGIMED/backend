@@ -15,7 +15,6 @@ const getConsultationTabHandler = async ({ id }) => {
     const vitalSigns = await getVitalSignsByMedicalEventHandler({ id });
     const diagnostic = await getDiagnosticsTabHandler({ id });
     const physicalExamination = await getPhysicalExaminarionTabHandler({ id });
-    console.log(diagnostic)
     return {
       patient,
       glycemia,

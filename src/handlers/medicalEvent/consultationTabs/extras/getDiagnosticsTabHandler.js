@@ -97,7 +97,6 @@ const getDiagnosticsTabHandler = async ({ id }) => {
         },
       ],
     });
-    console.log(diagnostic);
     return diagnostic;
   } catch (error) {
     throw new Error(
