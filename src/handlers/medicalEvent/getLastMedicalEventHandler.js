@@ -26,7 +26,6 @@ const getLastMedicalEventHandler = async ({ id }) => {
       order: [["scheduled_start_timestamp", "DESC"]],
       limit: 1,
     });
-    console.log(allSchedules)
     const lastMedicalEvent = await getConsultationTabHandler({
       id: allSchedules[0].medicalEvent.id,
     });
