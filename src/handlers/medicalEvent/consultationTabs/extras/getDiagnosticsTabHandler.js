@@ -4,7 +4,6 @@ const getDiagnosticsTabHandler = async ({ id }) => {
   //Incluye diagnosticos y evoluciones
   try {
     const diagnostic = await models.MedicalEvent.findByPk(id, {
-      attributes: { exclude: ["scheduling"] },
       include: [
         {
           model: models.CatConsultationReason,
@@ -30,7 +29,7 @@ const getDiagnosticsTabHandler = async ({ id }) => {
         {
           model: models.PatientDiagnostics,
           as: "medicalEventDiagnostics",
-          attributes:["id","diagnostic"],
+          attributes: ["id", "diagnostic"],
           include: {
             model: models.SubCategoriesCieDiez,
             as: "cie10subCategory",
@@ -40,6 +39,7 @@ const getDiagnosticsTabHandler = async ({ id }) => {
         {
           model: models.MedicationPrescription,
           as: "prescriptions",
+          required: false,
           where: {
             active: true,
             deleted: false,
@@ -97,6 +97,7 @@ const getDiagnosticsTabHandler = async ({ id }) => {
         },
       ],
     });
+    console.log(diagnostic);
     return diagnostic;
   } catch (error) {
     throw new Error(
