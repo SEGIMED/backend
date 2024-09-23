@@ -88,15 +88,6 @@ const model = (sequelize) => {
         geolocation: {
             type: DataTypes.ARRAY(DataTypes.DECIMAL),
             allowNull: true
-        },
-        treatingPhysician:{
-            type:DataTypes.INTEGER,
-            allowNull:true,
-            references: {
-                model: 'physician_details',
-                key: 'physician'
-            },
-            field:"treating_physician"
         }
     }, {
         tableName: 'user',
