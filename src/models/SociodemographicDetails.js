@@ -74,6 +74,11 @@ const model = (sequelize) => {
         allowNull: true,
         field: "health_care_number",
       },
+      emergencyContactPhonePrefix: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: "emergency_contact_phone_prefix",
+      },
       emergencyContactPhone: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -129,6 +134,11 @@ const model = (sequelize) => {
         allowNull: true,
         defaultValue: false,
         field: "needs_cell_phone_assistance",
+      },
+      numberOfFamilyAsistencePrefix: {
+        type:DataTypes.STRING,
+        allowNull:true,
+        field: "number_of_family_asistence_prefix"
       },
       numberOfFamilyAsistence: {
         //número de familiares que asisten
