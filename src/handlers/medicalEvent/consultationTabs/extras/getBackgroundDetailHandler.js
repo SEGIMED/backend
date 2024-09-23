@@ -76,7 +76,7 @@ const getBackgroundDetailHandler = async ({ id }) => {
         ],
       },
     });
-
+    if(backgroundData===null) return null
     const background = backgroundData.get({ plain: true });
     const firstRisk =
       background?.patientUser?.patPHRisks[
@@ -87,7 +87,7 @@ const getBackgroundDetailHandler = async ({ id }) => {
     return background;
   } catch (error) {
     throw new Error(
-      "Ocurrió un error al recuperar los antecedentes: " + error.message
+      "Error al recuperar los antecedentes: " + error.message
     );
   }
 };

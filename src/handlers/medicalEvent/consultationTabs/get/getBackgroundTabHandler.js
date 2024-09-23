@@ -1,14 +1,20 @@
-import  getBackgroundDetailHandler from "../extras/getBackgroundDetailHandler.js"
+import getBackgroundDetailHandler from "../extras/getBackgroundDetailHandler.js";
 
 const getBackgroundTabHandler = async ({ id }) => {
   try {
     const background = await getBackgroundDetailHandler({ id });
-    const { patientUser, ...backgroundClear } = background
-    const {comorbidities, ...patientUserClear} = patientUser
+    if (background === null)
+      return {
+        background: null,
+        risk: null,
+        comorbidities: null,
+      };
+    const { patientUser, ...backgroundClear } = background;
+    const { comorbidities, ...patientUserClear } = patientUser;
     return {
       background: backgroundClear,
       risk: patientUserClear,
-      comorbidities
+      comorbidities,
     };
   } catch (error) {
     throw new Error(
