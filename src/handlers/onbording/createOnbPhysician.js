@@ -1,5 +1,4 @@
 import models from "../../databaseConfig.js";
-import SegimedAPIError from "../../error/SegimedAPIError.js";
 import { PhysicianSpecialty } from "../../databaseConfig.js";
 import { PhysicianMedicalRegistry } from "../../databaseConfig.js";
 import { createRegisterPhysicianOnCenterAtt } from "./registerPhysicianOnCenterAtt.js";
@@ -17,10 +16,7 @@ export const createOnbPhysician = async (body, userId) => {
   try {
     // verificamos que se mande un elemento dentro del array de centros de atención
     if (centerAttention.length === 0) {
-      throw new SegimedAPIError(
-        400,
-        "Debe seleccionar al menos un centro de atención"
-      );
+      throw new Error("Debe seleccionar al menos un centro de atención");
     }
 
     // Crear un nuevo registro médico en el centro de atención
@@ -78,8 +74,7 @@ export const createOnbPhysician = async (body, userId) => {
       attendentPlaceRegister,
     };
   } catch (error) {
-    console.log(error);
-
-    throw new SegimedAPIError(500, error.message);
+    console.log(error)
+    throw new Error("Ocurrió un error al guardar los datos del médico: "+error.message);
   }
 };

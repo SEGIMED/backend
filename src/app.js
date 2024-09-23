@@ -78,7 +78,7 @@ app.use("/api", patientRouter);
 app.use("/api", getPatientsRouter);
 app.use("/api", physicianRouter);
 app.use("/api", getPatientsFilterRouter);
-app.use("/api", userRouter);
+app.use("/api/user", userRouter);
 app.use("/api", catalogsRouter);
 app.use("/api", schedulingRouter);
 app.use("/api/medical-event", medicalEventRouter);

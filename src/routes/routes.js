@@ -4,7 +4,6 @@ import getPatientsFilterController from "../controllers/patient/getPatientsFilte
 import getPatientController from "../controllers/patient/getPatientController.js";
 import patchPatientController from "../controllers/patient/patchPatientController.js";
 import deletePatientController from "../controllers/patient/deletePatientController.js";
-import getPhysicianInformationController from "../controllers/physician/getPhysicianInformationController.js";
 import getAllPhysiciansController from "../controllers/physician/getAllPhysiciansController.js";
 import getPhysicianByNameLikeController from "../controllers/physician/getPhysicianByNameLikeController.js";
 import getPhysiciansBySpecialtyIdController from "../controllers/physician/getPhysiciansBySpecialtyIdController.js";
@@ -18,7 +17,6 @@ import recoverPasswordController from "../controllers/user/recoverPasswordContro
 import modifyPasswordWithOtpController from "../controllers/user/modifyPasswordWithOtpController.js";
 import getCatalogController from "../controllers/catalog/getCatalogController.js";
 import createSchedulingController from "../controllers/scheduling/createSchedulingController.js";
-import getPatientDetailsController from "../controllers/patient/getPatientDetailsController.js";
 import getAllUsersController from "../controllers/user/getAllUsersController.js";
 import getAllSchedulesController from "../controllers/scheduling/getAllSchedulesController.js";
 import patchScheduleController from "../controllers/scheduling/patchScheduleController.js";
@@ -125,6 +123,7 @@ import createVitalSignsController from "../controllers/vitalSigns/createVitalSig
 import postGlycemiaRecordsController from "../controllers/glycemiaRecords/postGlycemiaRecordsController.js";
 import getLastMedicalEventController from "../controllers/medicalEvent/getLastMedicalEventController.js";
 import searchHealthCarePlanController from "../controllers/sociodemographicDetails/search/searchHealthCarePlanController.js";
+import getUserProfileInfoController from "../controllers/user/profile/getUserProfileInfoController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -157,17 +156,16 @@ const selfEvaluationEventRouter = Router();
 const comorbiditiesRouter = Router();
 
 //* User
-userRouter.route("/user/register-user").post(userRegisterController);
-userRouter.route("/user/validate-email").post(otpMailValidationController);
-userRouter.route("/user/login").post(userLoginController);
-userRouter.route("/user/login-record").get(getAllLoginRecordController);
-userRouter.route("/user/recover-password").post(recoverPasswordController);
-userRouter.route("/user/modify-password").post(modifyPasswordWithOtpController);
-userRouter.route("/user/getAllUsers").get(getAllUsersController);
-userRouter.route("/user/:id").get(getUserController);
-userRouter
-  .route("/user/update-user-info")
-  .patch(updateUserInformationController);
+userRouter.route("/register-user").post(userRegisterController);
+userRouter.route("/validate-email").post(otpMailValidationController);
+userRouter.route("/login").post(userLoginController);
+userRouter.route("/login-record").get(getAllLoginRecordController);
+userRouter.route("/recover-password").post(recoverPasswordController);
+userRouter.route("/modify-password").post(modifyPasswordWithOtpController);
+userRouter.route("/getAllUsers").get(getAllUsersController);
+userRouter.route("/profile").get(getUserProfileInfoController);
+userRouter.route("/:id").get(getUserController);
+userRouter.route("/update-user-info").patch(updateUserInformationController);
 
 //* Patient
 // patientRouter.route("/patient").post(postPatientController);
@@ -178,8 +176,6 @@ patientRouter
   .delete(deletePatientController);
 
 patientRouter.route("/patch-patient").patch(patchPatientController);
-
-patientRouter.route("/patient-details").get(getPatientDetailsController);
 
 patientRouter
   .route("/patient-physical-examination")
@@ -257,7 +253,6 @@ getPatientsRouter.get("/patients", getPatientsController);
 getPatientsFilterRouter.get("/patientsfilter", getPatientsFilterController);
 
 //*physician
-physicianRouter.get("/physician-info", getPhysicianInformationController);
 physicianRouter.get("/all-physicians", getAllPhysiciansController);
 physicianRouter.get(
   "/find-physician-like-name",
@@ -382,7 +377,7 @@ sociodemographicDetailsRouter
   .patch(updateSociodemographicDetailsController);
 sociodemographicDetailsRouter
   .route("/health-care-search")
-  .post(searchHealthCarePlanController);
+  .get(searchHealthCarePlanController);
 //*Backgrounds
 backgroundsRouter.route("/background").post(createBackgroundsController);
 
