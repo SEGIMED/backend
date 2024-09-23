@@ -1,0 +1,74 @@
+{
+  "Data_entry": [
+    {
+      "Laboratorio": "ROSPAW S.R.L.",
+      "Nombre_Comercial": "VINTEX",
+      "Forma_farmaceutica": "COMPRIMIDO RECUBIERTO",
+      "Presentacion": "BLISTER por 30 UNIDADES",
+      "Generico": "LOSARTAN POTASICO 50 MG"
+    },
+    {
+      "Laboratorio": "SANT GALL FRIBURG Q.C.I.S.R.L.",
+      "Nombre_Comercial": "LOSARGAL",
+      "Forma_farmaceutica": "COMPRIMIDO RECUBIERTO",
+      "Presentacion": "BLISTER por 30 UNIDADES",
+      "Generico": "LOSARTAN POTASICO 50 MG"
+    },
+    {
+      "Laboratorio": "ROSPAW S.R.L.",
+      "Nombre_Comercial": "VINTEX",
+      "Forma_farmaceutica": "COMPRIMIDO RECUBIERTO",
+      "Presentacion": "BLISTER por 30 UNIDADES",
+      "Generico": "LOSARTAN POTASICO 100 MG"
+    },
+    {
+      "Laboratorio": "LABORATORIO ECZANE PHARMA S A",
+      "Nombre_Comercial": "TARCANE",
+      "Forma_farmaceutica": "COMPRIMIDO RECUBIERTO",
+      "Presentacion": "BLISTER por 60 UNIDADES",
+      "Generico": "LOSARTAN POTASICO 50 MG"
+    },
+    {
+      "Laboratorio": "LABORATORIO ECZANE PHARMA S A",
+      "Nombre_Comercial": "TARCANE",
+      "Forma_farmaceutica": "COMPRIMIDO RECUBIERTO",
+      "Presentacion": "BLISTER por 60 UNIDADES",
+      "Generico": "LOSARTAN POTASICO 100 MG"
+    },
+    {
+      "Laboratorio": "LABORATORIO VANNIER S.A.",
+      "Nombre_Comercial": "LOSARTAN VANNIER",
+      "Forma_farmaceutica": "COMPRIMIDO RECUBIERTO",
+      "Presentacion": "BLISTER por 1000 UNIDADES",
+      "Generico": "LOSARTAN POTASICO 50 MG"
+    },
+    {
+      "Laboratorio": "BIOTENK S A",
+      "Nombre_Comercial": "LOCTENK",
+      "Forma_farmaceutica": "COMPRIMIDO RECUBIERTO",
+      "Presentacion": "BLISTER por 100 UNIDADES",
+      "Generico": "LOSARTAN POTASICO 100 MG"
+    },
+    {
+      "Laboratorio": "LABORATORIOS RICHET S A",
+      "Nombre_Comercial": "LOSARTAN RICHET",
+      "Forma_farmaceutica": "COMPRIMIDO RECUBIERTO",
+      "Presentacion": "BLISTER por 60 UNIDADES",
+      "Generico": "LOSARTAN POTASICO 50 MG"
+    },
+    {
+      "Laboratorio": "LABORATORIO FECOFAR DE LA FEDERACION ARGENTINA DE COOPERATIVAS FARMACEUTICAS COOP.LTDA.",
+      "Nombre_Comercial": "ANTIPRESOL 50",
+      "Forma_farmaceutica": "COMPRIMIDO RECUBIERTO",
+      "Presentacion": "BLISTER por 30 UNIDADES",
+      "Generico": "LOSARTAN POTASICO 50 MG"
+    },
+    {
+      "Laboratorio": "LABORATORIO FECOFAR DE LA FEDERACION ARGENTINA DE COOPERATIVAS FARMACEUTICAS COOP.LTDA.",
+      "Nombre_Comercial": "ANTIPRESOL-D",
+      "Forma_farmaceutica": "COMPRIMIDO RECUBIERTO",
+      "Presentacion": "BLISTER por 30 UNIDADES",
+      "Generico": "HIDROCLOROTIAZIDA 12.5 MG + LOSARTAN POTASICO 50 MG"
+    }
+  ]
+}
