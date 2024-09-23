@@ -88,7 +88,7 @@ app.use("/api", drugPrescriptionRouter);
 app.use("/api", procedurePrescriptionRouter);
 app.use("/api", medicalReferralRouter);
 app.use("/api", medicalIndicationsRouter);
-app.use("/api", sociodemographicDetailsRouter);
+app.use("/api/sociodemographic-details", sociodemographicDetailsRouter);
 app.use("/api", alarmRouter);
 app.use("/api", preConsultationRouter);
 app.use("/api", backgroundsRouter);
