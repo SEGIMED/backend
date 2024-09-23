@@ -936,14 +936,6 @@ PhysicianFavoritePatient.belongsTo(User, {
   foreignKey: "physicianId",
   as: "physician",
 });
-User.belongsTo(PhysicianDetails, {
-  as: "treatingPhysicianId",
-  foreignKey: "treatingPhysician",
-});
-PhysicianDetails.hasMany(User, {
-  as: "treatingPhysician",
-  foreignKey: "treatingPhysician",
-});
 AppointmentScheduling.hasMany(PatientPhysicalExamination, {
   as: "physicalAppointment",
   foreignKey: "appointment_scheduling",
