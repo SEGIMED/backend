@@ -124,6 +124,7 @@ import postGeneralConsultationTabController from "../controllers/medicalEvent/co
 import createVitalSignsController from "../controllers/vitalSigns/createVitalSignsController.js";
 import postGlycemiaRecordsController from "../controllers/glycemiaRecords/postGlycemiaRecordsController.js";
 import getLastMedicalEventController from "../controllers/medicalEvent/getLastMedicalEventController.js";
+import searchHealthCarePlanController from "../controllers/sociodemographicDetails/search/searchHealthCarePlanController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -362,7 +363,9 @@ medicalEventRouter
   .get(getBackgroundTabController)
   .post(postBackgroundTabController);
 medicalEventRouter.route("/update-event").patch(updateMedicalEventController);
-medicalEventRouter.route("/last-consultation").get(getLastMedicalEventController)
+medicalEventRouter
+  .route("/last-consultation")
+  .get(getLastMedicalEventController);
 //* Vital Signs
 vitalSignsRouter.route("/").patch(createVitalSignsController);
 vitalSignsRouter.route("/glycemia").post(postGlycemiaRecordsController);
@@ -372,12 +375,14 @@ vitalSignsRouter
 
 //* Sociodemographic Details
 sociodemographicDetailsRouter
-  .route("/sociodemographic-details/create-sociodemographic-detail")
+  .route("/create-sociodemographic-detail")
   .post(createSociodemographicDetailsController);
 sociodemographicDetailsRouter
-  .route("/sociodemographic-details/update-sociodemographic-detail")
+  .route("/update-sociodemographic-detail")
   .patch(updateSociodemographicDetailsController);
-
+sociodemographicDetailsRouter
+  .route("/health-care-search")
+  .post(searchHealthCarePlanController);
 //*Backgrounds
 backgroundsRouter.route("/background").post(createBackgroundsController);
 
