@@ -93,6 +93,7 @@ import UserComorbiditiesModel from "./models/UserComorbidities.js";
 import CatConsultationReasonModel from "./models/CatConsultationReason.js";
 import PatientFunctionalClassModel from "./models/PatientFunctionalClass.js";
 
+
 // import
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
 // import { URL } from 'url';

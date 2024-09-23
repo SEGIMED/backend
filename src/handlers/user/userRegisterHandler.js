@@ -20,6 +20,7 @@ const userRegisterHandler = async (body, frontendUrl) => {
     role,
     geolocation,
     avatar,
+    areaCode,
     cellphone,
     email,
     nationality,
@@ -37,6 +38,7 @@ const userRegisterHandler = async (body, frontendUrl) => {
         verified: false,
         geolocation,
         avatar,
+        areaCode,
         cellphone,
         email: emailLowerCase,
         nationality,
@@ -67,6 +69,7 @@ async function inputValidation(body) {
     lastname,
     password,
     role,
+    areaCode,
     cellphone,
     email,
     nationality,
@@ -80,6 +83,7 @@ async function inputValidation(body) {
     !idType ||
     !password ||
     !role ||
+    !areaCode ||
     !cellphone ||
     !nationality
   )
