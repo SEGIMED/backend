@@ -124,6 +124,9 @@ import postGlycemiaRecordsController from "../controllers/glycemiaRecords/postGl
 import getLastMedicalEventController from "../controllers/medicalEvent/getLastMedicalEventController.js";
 import searchHealthCarePlanController from "../controllers/sociodemographicDetails/search/searchHealthCarePlanController.js";
 import getUserProfileInfoController from "../controllers/user/profile/getUserProfileInfoController.js";
+import patchPhysicianFilesController from "../controllers/physician/files/patchPhysicianFilesController.js";
+import deletePhysicianFileController from "../handlers/physicianHandlers/files/deletePhysicianFileHandler.js";
+import getPhysicianFilesController from "../handlers/physicianHandlers/files/getPhysicianFileHandler.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -321,6 +324,12 @@ physicianRouter
   .route("/physician-order")
   .post(createNewOrderPhysicianCtrl)
   .get(getPhysicianOrderById);
+
+physicianRouter
+  .route("/physician/files")
+  .get(getPhysicianFilesController)
+  .patch(patchPhysicianFilesController)
+  .delete(deletePhysicianFileController);
 
 //* Catalogs
 catalogsRouter.get("/catalog/get-catalog", getCatalogController);
