@@ -5,7 +5,6 @@ import getPhysicianProfileHandler from "../../../handlers/user/profile/getPhysic
 const getUserProfileInfoController = async (req, res) => {
   try {
     const user = contextService.get("request:user");
-    console.log(user);
     if (user.role === "Paciente") {
       const response = await getPatientProfileHandler({
         id: user.userId,
