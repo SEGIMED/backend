@@ -517,7 +517,7 @@ CatPhysicianExpertiseLevel.hasMany(PhysicianDetails, {
   as: "physicianDetails",
   foreignKey: "expertiseLevel",
 });
-CatCity.belongsTo(CatProvince, { as: "cityProvince", foreignKey: "province" });
+CatCity.belongsTo(CatProvince, { as: "provinces", foreignKey: "province" });
 CatCountry.hasMany(CatProvince, { as: "catProvinces", foreignKey: "country" });
 User.belongsTo(CatCountry, {
   as: "userNationality",
@@ -561,7 +561,7 @@ User.belongsTo(CatCity, {
   foreignKey: "currentLocation",
 });
 CatProvince.belongsTo(CatCountry, {
-  as: "provinceCountry",
+  as: "countries",
   foreignKey: "country",
 });
 CatProvince.hasMany(CatCity, { as: "catCities", foreignKey: "province" });
@@ -991,15 +991,29 @@ PhysicianOnboarding.belongsTo(CatGenre, { foreignKey: "genre" });
 PhysicianOnboarding.belongsTo(CatCenterAttention, {
   foreignKey: "centerAttention",
 });
-PhysicianOnboarding.belongsToMany(CatCenterAttention, {
-  through: AttendentPlace,
-  foreignKey: "idPhysician",
+
+User.hasMany(AttendentPlace, {
+  foreignKey: "id_physician",
+  sourceKey: "id", 
 });
-CatCenterAttention.belongsToMany(PhysicianOnboarding, {
-  through: AttendentPlace,
-  foreignKey: "idCenterAttention",
+
+AttendentPlace.belongsTo(User, {
+  foreignKey: "id_physician",
+  targetKey: "id", 
 });
-// Relaciones del modelo MedicalInterconsultations
+
+CatCenterAttention.hasMany(AttendentPlace, {
+  as:"center",
+  foreignKey: "id_center_attention",
+  sourceKey: "id",
+});
+
+AttendentPlace.belongsTo(CatCenterAttention, {
+  as:"center",
+  foreignKey: "id_center_attention",
+  targetKey: "id", 
+});
+
 
 User.hasOne(MedicalInterconsultations, {
   foreignKey: "physicianRequester",
