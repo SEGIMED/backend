@@ -127,6 +127,7 @@ import getUserProfileInfoController from "../controllers/user/profile/getUserPro
 import patchPhysicianFilesController from "../controllers/physician/files/patchPhysicianFilesController.js";
 import deletePhysicianFileController from "../handlers/physicianHandlers/files/deletePhysicianFileHandler.js";
 import getPhysicianFilesController from "../handlers/physicianHandlers/files/getPhysicianFileHandler.js";
+import getMedicalHistoryController from "../controllers/medicalEvent/getMedicalHistoryController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -370,6 +371,8 @@ medicalEventRouter.route("/update-event").patch(updateMedicalEventController);
 medicalEventRouter
   .route("/last-consultation")
   .get(getLastMedicalEventController);
+medicalEventRouter.route("/history").get(getMedicalHistoryController);
+
 //* Vital Signs
 vitalSignsRouter.route("/").patch(createVitalSignsController);
 vitalSignsRouter.route("/glycemia").post(postGlycemiaRecordsController);

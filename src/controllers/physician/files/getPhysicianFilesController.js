@@ -2,7 +2,7 @@ import models from "../../../databaseConfig.js";
 
 const getPhysicianFilesHandler = async ({ physicianId }) => {
   try {
-    // Busca todos los archivos asociados al physicianId
+
     const files = await models.PhysicianFiles.findAll({
       where: { physicianId },
       attributes: ["id", "fileType", "url"],
