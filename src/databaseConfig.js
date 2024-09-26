@@ -992,27 +992,26 @@ PhysicianOnboarding.belongsTo(CatCenterAttention, {
   foreignKey: "centerAttention",
 });
 
-// Relaciones
 User.hasMany(AttendentPlace, {
   foreignKey: "id_physician",
-  sourceKey: "id", // Usar la clave primaria de User
+  sourceKey: "id", 
 });
 
 AttendentPlace.belongsTo(User, {
   foreignKey: "id_physician",
-  targetKey: "id", // Usar la clave primaria de User
+  targetKey: "id", 
 });
 
 CatCenterAttention.hasMany(AttendentPlace, {
   as:"center",
   foreignKey: "id_center_attention",
-  sourceKey: "id", // Usar la clave primaria de CatCenterAttention
+  sourceKey: "id",
 });
 
 AttendentPlace.belongsTo(CatCenterAttention, {
   as:"center",
   foreignKey: "id_center_attention",
-  targetKey: "id", // Usar la clave primaria de CatCenterAttention
+  targetKey: "id", 
 });
 
 
