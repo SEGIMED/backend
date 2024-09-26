@@ -2,7 +2,7 @@ import getPhysicianFilesHandler from "../../../controllers/physician/files/getPh
 
 const getPhysicianFilesController = async (req, res) => {
   try {
-    const { physicianId } = req.query; // Recibe el ID del médico por parámetro
+    const { physicianId } = req.query; 
     const response = await getPhysicianFilesHandler({ physicianId });
     return res.status(200).json(response);
   } catch (error) {
