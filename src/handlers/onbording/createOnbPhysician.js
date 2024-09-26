@@ -1,7 +1,7 @@
 import models from "../../databaseConfig.js";
-import { PhysicianSpecialty } from "../../databaseConfig.js";
 import { PhysicianMedicalRegistry } from "../../databaseConfig.js";
-import { createRegisterPhysicianOnCenterAtt } from "./registerPhysicianOnCenterAtt.js";
+import { syncPhysicianSpecialties } from "./extras/specialities.js";
+import { syncRegisterPhysicianOnCenterAtt } from "./registerPhysicianOnCenterAtt.js";
 
 export const createOnbPhysician = async (body, userId) => {
   const {
@@ -26,55 +26,71 @@ export const createOnbPhysician = async (body, userId) => {
         idCenterAttention: centerid,
       };
     });
-    await createRegisterPhysicianOnCenterAtt(attendentPlaceRegister);
+    await syncRegisterPhysicianOnCenterAtt(attendentPlaceRegister);
 
-    // Crear un nuevo registro médico en el onboarding del médico
-    const [newOnbPhysician] = await models.PhysicianOnboarding.findOrCreate({
-      where: { idPhysician: userId },
-      defaults: {
-        idPhysician: userId,
+    const [newOnbPhysician, created] =
+      await models.PhysicianOnboarding.findOrCreate({
+        where: { idPhysician: userId },
+        defaults: {
+          idPhysician: userId,
+          genre,
+          birthDate,
+          address,
+        },
+      });
+    if (!created) {
+      await newOnbPhysician.update({
         genre,
         birthDate,
         address,
-      },
+      });
+    }
+
+    const newSpecialty = await syncPhysicianSpecialties({
+      userId,
+      specialties: specialty,
     });
 
-    // Crear un nuevo registro médico en la especialidad del médico
-    const [newSpecialty] = await PhysicianSpecialty.findOrCreate({
-      where: { physician: userId, medicalSpecialty: specialty },
-    });
-
-    // Crear un nuevo registro médico provincial
-    const [newMedicalRegistryProvincial] =
+    const [medicalRegistryProvincial, createdRP] =
       await PhysicianMedicalRegistry.findOrCreate({
         where: {
           physician: userId,
           registryType: 1,
-          registryId: provincialRegistration,
         },
         defaults: { registryId: provincialRegistration },
       });
 
-    // Crear un nuevo registro médico nacional
-    const [newMedicalRegistryNacional] =
+    if (!createdRP) {
+      await medicalRegistryProvincial.update({
+        registryId: provincialRegistration,
+      });
+    }
+
+    const [medicalRegistryNacional, createdRN] =
       await PhysicianMedicalRegistry.findOrCreate({
         where: {
           physician: userId,
           registryType: 2,
-          registryId: nacionalRegistration,
         },
         defaults: { registryId: nacionalRegistration },
       });
 
+    if (!createdRN) {
+      await medicalRegistryNacional.update({
+        registryId: nacionalRegistration,
+      });
+    }
+
     return {
       newOnbPhysician,
-      newMedicalRegistryNacional,
-      newMedicalRegistryProvincial,
+      medicalRegistryNacional,
+      medicalRegistryProvincial,
       newSpecialty,
       attendentPlaceRegister,
     };
   } catch (error) {
-    console.log(error)
-    throw new Error("Ocurrió un error al guardar los datos del médico: "+error.message);
+    throw new Error(
+      "Ocurrió un error al guardar los datos del médico: " + error.message
+    );
   }
 };

@@ -16,13 +16,13 @@ const getPhysicianProfileHandler = async ({ id, role }) => {
       include: [
         {
           model: models.AttendentPlace,
-          attributes:{
-            exclude:["idPhysician","id_physician","id_center_attention"]
+          attributes: {
+            exclude: ["idPhysician", "id_physician", "id_center_attention"],
           },
           include: [
             {
               model: models.CatCenterAttention,
-              as:"center",
+              as: "center",
             },
           ],
         },
