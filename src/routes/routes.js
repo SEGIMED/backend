@@ -128,6 +128,7 @@ import patchPhysicianFilesController from "../controllers/physician/files/patchP
 import deletePhysicianFileController from "../handlers/physicianHandlers/files/deletePhysicianFileHandler.js";
 import getPhysicianFilesController from "../handlers/physicianHandlers/files/getPhysicianFileHandler.js";
 import getMedicalHistoryController from "../controllers/medicalEvent/getMedicalHistoryController.js";
+import patchUserProfileController from "../controllers/user/profile/patchUserProfileController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -167,7 +168,10 @@ userRouter.route("/login-record").get(getAllLoginRecordController);
 userRouter.route("/recover-password").post(recoverPasswordController);
 userRouter.route("/modify-password").post(modifyPasswordWithOtpController);
 userRouter.route("/getAllUsers").get(getAllUsersController);
-userRouter.route("/profile").get(getUserProfileInfoController);
+userRouter
+  .route("/profile")
+  .get(getUserProfileInfoController)
+  .patch(patchUserProfileController);
 userRouter.route("/:id").get(getUserController);
 userRouter.route("/update-user-info").patch(updateUserInformationController);
 

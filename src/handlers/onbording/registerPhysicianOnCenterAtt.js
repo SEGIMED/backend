@@ -1,29 +1,57 @@
 import models from "../../databaseConfig.js";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 
-export const createRegisterPhysicianOnCenterAtt = async (
-  newCenterAttention
-) => {
+export const syncRegisterPhysicianOnCenterAtt = async (newCenterAttention) => {
   try {
-    const [newRegister, created] = await newCenterAttention.map(
-      async (centerAttention) => {
-        await models.AttendentPlace.findOrCreate({
-          where: {
-            idPhysician: centerAttention.idPhysician,
-            idCenterAttention: centerAttention.idCenterAttention,
-          },
-          defaults: {
-            idPhysician: centerAttention.idPhysician,
-            idCenterAttention: centerAttention.idCenterAttention,
-          },
-        });
-      }
+    const idPhysician = newCenterAttention[0].idPhysician;
+
+    const existingCenters = await models.AttendentPlace.findAll({
+      where: { idPhysician },
+      attributes: ["idCenterAttention"],
+    });
+
+    const existingCenterIds = existingCenters.map(
+      (center) => center.idCenterAttention
     );
-    return newRegister;
+
+    const centersToAdd = newCenterAttention.filter(
+      (center) => !existingCenterIds.includes(center.idCenterAttention)
+    );
+
+    const centersToRemove = existingCenterIds.filter(
+      (centerId) =>
+        !newCenterAttention.some(
+          (center) => center.idCenterAttention === centerId
+        )
+    );
+
+    if (centersToRemove.length > 0) {
+      await models.AttendentPlace.destroy({
+        where: {
+          idPhysician,
+          idCenterAttention: centersToRemove,
+        },
+      });
+    }
+
+    if (centersToAdd.length > 0) {
+      const centersData = centersToAdd.map((center) => ({
+        idPhysician: center.idPhysician,
+        idCenterAttention: center.idCenterAttention,
+      }));
+
+      await models.AttendentPlace.bulkCreate(centersData);
+    }
+
+    return {
+      message: "Center associations successfully synchronized",
+      addedCenters: centersToAdd.map((c) => c.idCenterAttention),
+      removedCenters: centersToRemove,
+    };
   } catch (error) {
     throw new SegimedAPIError(
       500,
-      error.message || "Error al registrar el médico en el centro de atención"
+      error.message || "Error al sincronizar los centros de atención"
     );
   }
 };
