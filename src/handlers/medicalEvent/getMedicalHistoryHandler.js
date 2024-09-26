@@ -18,7 +18,24 @@ const getMedicalHistoryHandler = async ({ userId }) => {
     });
     const getAllData = await Promise.all(
       listOfMedicalEvent.map(async (e) => {
-        return await getGeneralConsultationHandler({ id: e.id });
+        const event = await getGeneralConsultationHandler({ id: e.id });
+        const extraData = await models.MedicalEvent.findByPk(e.id,{
+          attributes:[],
+          include: {
+            model: models.AppointmentScheduling,
+            as:"appSch",
+            attributes:["scheduledStartTimestamp"],
+            include: {
+              model:models.User,
+              as:"physicianThatAttend",
+              attributes:["name","lastname"]
+            }
+          }
+        })
+        return{
+          event,
+          extraData
+        }
       })
     );
 
