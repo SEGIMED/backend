@@ -1,5 +1,5 @@
 import { createRequestHandler } from "../../handlers/requestTreatingPhysician/requestTreatingPhysicianHandler.js";
-export const createRequestController = async (req, res) => {
+ const createRequestController = async (req, res) => {
   try {
     const { physicianId, patientId } = req.body;
     const newRequest = await createRequestHandler(physicianId, patientId);
@@ -8,3 +8,5 @@ export const createRequestController = async (req, res) => {
     return res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
+
+export default createRequestController;

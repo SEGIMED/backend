@@ -129,10 +129,10 @@ import deletePhysicianFileController from "../handlers/physicianHandlers/files/d
 import getPhysicianFilesController from "../handlers/physicianHandlers/files/getPhysicianFileHandler.js";
 import getMedicalHistoryController from "../controllers/medicalEvent/getMedicalHistoryController.js";
 import patchUserProfileController from "../controllers/user/profile/patchUserProfileController.js";
-import { updateTreatingPhysicianController } from "../controllers/requestTreatingPhysician/updateTreatingPhysicianController.js";
-import { createRequestController } from "../controllers/requestTreatingPhysician/requestTreatingPhysicianController.js";
-import { deleteRequestController } from "../controllers/requestTreatingPhysician/deleteTreatingPhysicianController.js";
-import { getRequestController } from "../controllers/requestTreatingPhysician/getTreatingPhysicianController.js";
+import  updateTreatingPhysicianController  from "../controllers/requestTreatingPhysician/updateTreatingPhysicianController.js";
+import  createRequestController  from "../controllers/requestTreatingPhysician/requestTreatingPhysicianController.js";
+import  deleteRequestController  from "../controllers/requestTreatingPhysician/deleteTreatingPhysicianController.js";
+import  getRequestController  from "../controllers/requestTreatingPhysician/getTreatingPhysicianController.js";
 
 const patientRouter = Router();
 const userRouter = Router();

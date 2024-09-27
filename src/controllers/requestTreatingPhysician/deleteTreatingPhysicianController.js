@@ -1,5 +1,5 @@
 import { deleteRequestHandler } from "../../handlers/requestTreatingPhysician/deleteTreatingPhysicianHandler.js";
-export const deleteRequestController = async (req, res) => {
+const deleteRequestController = async (req, res) => {
   try {
     const { id } = req.query;
     const message = await deleteRequestHandler(id);
@@ -8,3 +8,5 @@ export const deleteRequestController = async (req, res) => {
     return res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
+
+export default deleteRequestController;
