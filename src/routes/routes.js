@@ -129,6 +129,10 @@ import deletePhysicianFileController from "../handlers/physicianHandlers/files/d
 import getPhysicianFilesController from "../handlers/physicianHandlers/files/getPhysicianFileHandler.js";
 import getMedicalHistoryController from "../controllers/medicalEvent/getMedicalHistoryController.js";
 import patchUserProfileController from "../controllers/user/profile/patchUserProfileController.js";
+import { updateTreatingPhysicianController } from "../controllers/requestTreatingPhysician/updateTreatingPhysicianController.js";
+import { createRequestController } from "../controllers/requestTreatingPhysician/requestTreatingPhysicianController.js";
+import { deleteRequestController } from "../controllers/requestTreatingPhysician/deleteTreatingPhysicianController.js";
+import { getRequestController } from "../controllers/requestTreatingPhysician/getTreatingPhysicianController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -159,6 +163,8 @@ const interconsultationDetailsRouter = Router();
 const medicalHistoryRouter = Router();
 const selfEvaluationEventRouter = Router();
 const comorbiditiesRouter = Router();
+const treatingPhysicianRouter = Router();
+const profileRouter = Router();
 
 //* User
 userRouter.route("/register-user").post(userRegisterController);
@@ -168,13 +174,14 @@ userRouter.route("/login-record").get(getAllLoginRecordController);
 userRouter.route("/recover-password").post(recoverPasswordController);
 userRouter.route("/modify-password").post(modifyPasswordWithOtpController);
 userRouter.route("/getAllUsers").get(getAllUsersController);
-userRouter
-  .route("/profile")
-  .get(getUserProfileInfoController)
-  .patch(patchUserProfileController);
 userRouter.route("/:id").get(getUserController);
 userRouter.route("/update-user-info").patch(updateUserInformationController);
 
+//* Profile
+profileRouter
+  .route("/")
+  .get(getUserProfileInfoController)
+  .patch(patchUserProfileController);
 //* Patient
 // patientRouter.route("/patient").post(postPatientController);
 
@@ -535,6 +542,14 @@ selfEvaluationEventRouter
 //* Comorbidities
 comorbiditiesRouter.route("/comorbidities").get(searchComorbiditiesController);
 
+//* Treating Physician Request
+treatingPhysicianRouter
+  .route("/request")
+  .get(getRequestController)
+  .post(createRequestController)
+  .patch(updateTreatingPhysicianController)
+  .delete(deleteRequestController);
+
 export {
   getPatientsRouter,
   patientRouter,
@@ -565,4 +580,6 @@ export {
   medicalHistoryRouter,
   selfEvaluationEventRouter,
   comorbiditiesRouter,
+  treatingPhysicianRouter,
+  profileRouter,
 };

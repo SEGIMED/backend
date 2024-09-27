@@ -94,6 +94,7 @@ import CatConsultationReasonModel from "./models/CatConsultationReason.js";
 import PatientFunctionalClassModel from "./models/PatientFunctionalClass.js";
 import PhysicianFilesModel from "./models/physicianFiles.js";
 import CatFileTypeModel from "./models/CatFileType.js";
+import RequestTreatingPhysicianModel from "./models/requestTreatingPhysician.js";
 
 // import
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
@@ -221,6 +222,7 @@ CatConsultationReasonModel(sequelize);
 PatientFunctionalClassModel(sequelize);
 PhysicianFilesModel(sequelize);
 CatFileTypeModel(sequelize);
+RequestTreatingPhysicianModel(sequelize);
 
 export const {
   AppointmentScheduling,
@@ -316,6 +318,7 @@ export const {
   PatientFunctionalClass,
   PhysicianFiles,
   CatFileType,
+  RequestTreatingPhysician,
 } = sequelize.models;
 
 MedicalEvent.belongsTo(AppointmentScheduling, {
@@ -1357,6 +1360,23 @@ CatFileType.hasMany(PhysicianFiles, {
   as: "physicianFiles",
 });
 
+RequestTreatingPhysician.belongsTo(User, {
+  foreignKey: "physician",
+  as: "physicianRequest",
+});
+RequestTreatingPhysician.belongsTo(User, {
+  foreignKey: "patient",
+  as: "patientRequest",
+});
+User.hasMany(RequestTreatingPhysician, {
+  foreignKey: "patient",
+  as: "patientRequest",
+});
+User.hasMany(RequestTreatingPhysician, {
+  foreignKey: "physician",
+  as: "physicianRequest",
+});
+
 const models = {
   AppointmentScheduling,
   CatAppointmentModality,
@@ -1450,6 +1470,7 @@ const models = {
   PatientFunctionalClass,
   PhysicianFiles,
   CatFileType,
+  RequestTreatingPhysician,
 };
 
 export default models;
