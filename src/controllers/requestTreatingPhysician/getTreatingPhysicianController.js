@@ -1,5 +1,5 @@
 import { getRequestHandler } from "../../handlers/requestTreatingPhysician/getTreatingPhysicianHandler.js";
-export const getRequestController = async (req, res) => {
+const getRequestController = async (req, res) => {
   try {
     const { status, isActive, senderType } = req.query;
     const message = await getRequestHandler({ status, isActive, senderType });
@@ -8,3 +8,4 @@ export const getRequestController = async (req, res) => {
     return res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
+export default getRequestController;
