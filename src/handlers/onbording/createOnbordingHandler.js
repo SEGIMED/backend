@@ -20,6 +20,8 @@ export const createOnbordingHandler = async (body, userId) => {
     needsCellphoneAssistance,
     numberOfFamilyAsistencePrefix,
     numberOfFamilyAsistence,
+    healthCareNumber,
+    healthCarePlan,
   } = body;
 
   try {
@@ -37,6 +39,8 @@ export const createOnbordingHandler = async (body, userId) => {
         patient: userId,
         numberOfFamilyAsistencePrefix,
         numberOfFamilyAsistence,
+        healthCareNumber,
+        healthCarePlan,
       },
     });
 
@@ -52,6 +56,8 @@ export const createOnbordingHandler = async (body, userId) => {
         needsCellphoneAssistance,
         numberOfFamilyAsistencePrefix,
         numberOfFamilyAsistence,
+        healthCareNumber,
+        healthCarePlan,
       });
     }
 
