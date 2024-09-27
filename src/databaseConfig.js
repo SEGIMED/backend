@@ -94,7 +94,7 @@ import CatConsultationReasonModel from "./models/CatConsultationReason.js";
 import PatientFunctionalClassModel from "./models/PatientFunctionalClass.js";
 import PhysicianFilesModel from "./models/physicianFiles.js";
 import CatFileTypeModel from "./models/CatFileType.js";
-import RequestTreatingPhysicianModel from "./models/requestTreatingPhysician.js";
+import RequestTreatingPhysicianModel from "./models/RequestTreatingPhysician.js";
 
 // import
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
