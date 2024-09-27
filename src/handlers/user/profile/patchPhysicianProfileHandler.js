@@ -6,12 +6,10 @@ const patchPhysicianProfileHandler = async ({
   onboardingData,
 }) => {
   try {
-    console.log("asdas")
     const user = await models.User.findByPk(id);
     if (!user) throw new Error("No se encontró un usuario.");
-    user.update(userData);
+    await user.update(userData);
     await createOnbPhysician(onboardingData, id);
-
     return "Se actualizaron los datos correctamente.";
   } catch (error) {
     throw new Error(
