@@ -63,11 +63,22 @@ const getPhysicianProfileHandler = async ({ id, role }) => {
         },
         {
           model: models.PhysicianDetails,
-          as:"details",
-          attributes:["reviewsScore"]
-        }
+          as: "details",
+          attributes: ["reviewsScore"],
+        },
+        {
+          model: models.RequestTreatingPhysician,
+          as: "physicianRequest",
+          required: false,
+          attributes: ["id"],
+          where: {
+            isActive: true,
+            status: "Aceptada",
+          },
+        },
       ],
     });
+
     return user;
   } catch (error) {
     throw new Error(
