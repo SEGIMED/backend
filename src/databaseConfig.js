@@ -489,6 +489,7 @@ PhysicianDetails.belongsTo(User, {
   as: "physicianUser",
   foreignKey: "physician",
 });
+User.hasOne(PhysicianDetails, { foreignKey: "physician", as: "details" });
 VitalSignDetails.belongsTo(AppointmentScheduling, {
   as: "appointmentSchedulingSings",
   foreignKey: "scheduling",
@@ -994,26 +995,25 @@ PhysicianOnboarding.belongsTo(CatCenterAttention, {
 
 User.hasMany(AttendentPlace, {
   foreignKey: "id_physician",
-  sourceKey: "id", 
+  sourceKey: "id",
 });
 
 AttendentPlace.belongsTo(User, {
   foreignKey: "id_physician",
-  targetKey: "id", 
+  targetKey: "id",
 });
 
 CatCenterAttention.hasMany(AttendentPlace, {
-  as:"center",
+  as: "center",
   foreignKey: "id_center_attention",
   sourceKey: "id",
 });
 
 AttendentPlace.belongsTo(CatCenterAttention, {
-  as:"center",
+  as: "center",
   foreignKey: "id_center_attention",
-  targetKey: "id", 
+  targetKey: "id",
 });
-
 
 User.hasOne(MedicalInterconsultations, {
   foreignKey: "physicianRequester",

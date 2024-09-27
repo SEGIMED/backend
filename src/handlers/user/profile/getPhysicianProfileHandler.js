@@ -61,6 +61,11 @@ const getPhysicianProfileHandler = async ({ id, role }) => {
             model: models.CatFileType,
           },
         },
+        {
+          model: models.PhysicianDetails,
+          as:"details",
+          attributes:["reviewsScore"]
+        }
       ],
     });
     return user;

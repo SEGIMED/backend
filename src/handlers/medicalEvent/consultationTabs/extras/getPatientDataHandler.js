@@ -15,7 +15,15 @@ const getPatientDataHandler = async ({ id }) => {
     const patientId = appointmentSchedule.patient;
 
     const patient = await models.User.findByPk(patientId, {
-      attributes: ["idNumber", "name", "lastname", "cellphone", "email", "areaCode", "avatar"],
+      attributes: [
+        "idNumber",
+        "name",
+        "lastname",
+        "cellphone",
+        "email",
+        "areaCode",
+        "avatar",
+      ],
     });
     if (!patient) throw new Error("Paciente no encontrado");
     const sociodemographic = await SociodemographicDetails.findOne({
@@ -29,11 +37,11 @@ const getPatientDataHandler = async ({ id }) => {
         "genre",
         "numberOfFamilyAsistence",
       ],
-      include:{
+      include: {
         model: models.CatGenre,
-        as:"catGenre",
-        attributes:["name"]
-      }
+        as: "catGenre",
+        attributes: ["name"],
+      },
     });
 
     const patientData = patient.toJSON();
