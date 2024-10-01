@@ -1,4 +1,8 @@
-import { User } from "../../databaseConfig.js";
+import {
+  PhysicianOnboarding,
+  RequestTreatingPhysician,
+  User,
+} from "../../databaseConfig.js";
 import bcrypt from "bcrypt";
 import { generateOTP } from "../../utils/generateOTP.js";
 import { sendMail } from "../../utils/sendMail.js";
@@ -6,8 +10,11 @@ import SegimedInputValidationError from "../../error/SegimedInputValidationError
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 import { sequelize } from "../../databaseConfig.js";
 import confirmEmailHtml from "../../utils/emailTemplates/confirmEmailHtml.js";
+import { createRequestHandler } from "../requestTreatingPhysician/requestTreatingPhysicianHandler.js";
+import Notify from "../../realtime_server/models/Notify.js";
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+import moment from "moment";
 
 const userRegisterHandler = async (body, frontendUrl) => {
   await inputValidation(body);
@@ -24,38 +31,91 @@ const userRegisterHandler = async (body, frontendUrl) => {
     cellphone,
     email,
     nationality,
+    token,
   } = body;
   const emailLowerCase = String(email).toLowerCase();
+
   try {
+    // Iniciamos una transacción para todas las operaciones críticas
     const newUser = await sequelize.transaction(async (t) => {
-      const newUser = await User.create({
-        idNumber,
-        idType,
-        name,
-        lastname,
-        password: await bcrypt.hash(password, 12),
-        role,
-        verified: false,
-        geolocation,
-        avatar,
-        areaCode,
-        cellphone,
-        email: emailLowerCase,
-        nationality,
-      });
+      // Crear el usuario dentro de la transacción
+      const newUser = await User.create(
+        {
+          idNumber,
+          idType,
+          name,
+          lastname,
+          password: await bcrypt.hash(password, 12),
+          role,
+          verified: false,
+          geolocation,
+          avatar,
+          areaCode,
+          cellphone,
+          email: emailLowerCase,
+          nationality,
+        },
+        { transaction: t } // Aseguramos que la operación esté dentro de la transacción
+      );
 
       const userOtp = await generateOTP(newUser);
       const linkVerify = `${frontendUrl}/accounts/verify?codeOTP=${userOtp}&userId=${newUser.id}`;
-      //uncomment the following line once send mail credentials are fixed
       const emailSent = confirmEmailHtml(linkVerify);
+
+      // Enviar correo dentro de la transacción
       await sendMail(newUser.email, emailSent, "Link de verificación");
+
       return newUser;
     });
+
+    if ((role = 3)) {
+      const validateToken = await PhysicianOnboarding.findOne({
+        where: {
+          token,
+        },
+      });
+
+      if (!validateToken)
+        throw new Error("El token proporcionado no es válido.");
+
+      const currentTime = moment();
+      const tokenExpirationTime = moment(validateToken.tokenExpiresAt);
+
+      if (currentTime.isAfter(tokenExpirationTime)) {
+        throw new Error("El token ha expirado.");
+      }
+      // Crear el RequestTreatingPhysician dentro de la transacción
+      await RequestTreatingPhysician.create(
+        {
+          patient: newUser.id,
+          physician: validateToken.idPhysician,
+          senderType: "Paciente",
+        },
+        { transaction: t }
+      );
+
+      // Crear la notificación dentro de la transacción
+      const newNotification = new Notify({
+        content: {
+          notificationType: "requestTreatingPhysicianCreated",
+          name: name,
+          lastName: lastname,
+        },
+        target: validateToken.idPhysician,
+      });
+      await newNotification.save({ transaction: t });
+
+      // Limpiar el token de PhysicianOnboarding dentro de la transacción
+      validateToken.token = null;
+      validateToken.tokenExpiresAt = null;
+      await validateToken.save({ transaction: t });
+    }
     return newUser;
   } catch (error) {
     console.log(error);
     throw new SegimedAPIError(
-      "Hubo un error durante el proceso de registro. Por favor intenta de nuevo",
+      "Hubo un error durante el proceso de registro. Por favor intenta de nuevo: " +
+        error.message,
       500
     );
   }
