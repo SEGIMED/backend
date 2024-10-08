@@ -35,44 +35,43 @@ const userRegisterHandler = async (body, frontendUrl) => {
   } = body;
   const emailLowerCase = String(email).toLowerCase();
 
+  // Iniciar la transacción manualmente
+  const transaction = await sequelize.transaction();
+
   try {
-    // Iniciamos una transacción para todas las operaciones críticas
-    const newUser = await sequelize.transaction(async (t) => {
-      // Crear el usuario dentro de la transacción
-      const newUser = await User.create(
-        {
-          idNumber,
-          idType,
-          name,
-          lastname,
-          password: await bcrypt.hash(password, 12),
-          role,
-          verified: false,
-          geolocation,
-          avatar,
-          areaCode,
-          cellphone,
-          email: emailLowerCase,
-          nationality,
-        },
-        { transaction: t } // Aseguramos que la operación esté dentro de la transacción
-      );
+    // Crear el usuario dentro de la transacción
+    const newUser = await User.create(
+      {
+        idNumber,
+        idType,
+        name,
+        lastname,
+        password: await bcrypt.hash(password, 12),
+        role,
+        verified: false,
+        geolocation,
+        avatar,
+        areaCode,
+        cellphone,
+        email: emailLowerCase,
+        nationality,
+      },
+      { transaction } // Aseguramos que la operación esté dentro de la transacción
+    );
 
-      const userOtp = await generateOTP(newUser);
-      const linkVerify = `${frontendUrl}/accounts/verify?codeOTP=${userOtp}&userId=${newUser.id}`;
-      const emailSent = confirmEmailHtml(linkVerify);
+    // Generar OTP dentro de la transacción
+    const userOtp = await generateOTP(newUser, transaction); // Pasar la transacción aquí
 
-      // Enviar correo dentro de la transacción
-      await sendMail(newUser.email, emailSent, "Link de verificación");
+    const linkVerify = `${frontendUrl}/accounts/verify?codeOTP=${userOtp}&userId=${newUser.id}`;
+    const emailSent = confirmEmailHtml(linkVerify);
 
-      return newUser;
-    });
+    // Enviar correo dentro de la transacción
+    await sendMail(newUser.email, emailSent, "Link de verificación");
 
-    if ((role = 3)) {
+    if (role === "3") {
       const validateToken = await PhysicianOnboarding.findOne({
-        where: {
-          token,
-        },
+        where: { token },
+        transaction, // Aseguramos que sea dentro de la transacción
       });
 
       if (!validateToken)
@@ -84,34 +83,42 @@ const userRegisterHandler = async (body, frontendUrl) => {
       if (currentTime.isAfter(tokenExpirationTime)) {
         throw new Error("El token ha expirado.");
       }
+
       // Crear el RequestTreatingPhysician dentro de la transacción
       await RequestTreatingPhysician.create(
         {
           patient: newUser.id,
           physician: validateToken.idPhysician,
           senderType: "Paciente",
+          status: "Aceptada",
+          isActive: true,
         },
-        { transaction: t }
+        { transaction }
       );
 
       // Crear la notificación dentro de la transacción
       const newNotification = new Notify({
         content: {
-          notificationType: "requestTreatingPhysicianCreated",
+          notificationType: "patientAssociatedByRegister",
           name: name,
           lastName: lastname,
         },
         target: validateToken.idPhysician,
       });
-      await newNotification.save({ transaction: t });
+      await newNotification.save({ transaction });
 
       // Limpiar el token de PhysicianOnboarding dentro de la transacción
       validateToken.token = null;
       validateToken.tokenExpiresAt = null;
-      await validateToken.save({ transaction: t });
+      await validateToken.save({ transaction });
     }
+
+    // Hacer commit si todo ha salido bien
+    await transaction.commit();
     return newUser;
   } catch (error) {
+    // Hacer rollback si ha habido un error
+    await transaction.rollback();
     console.log(error);
     throw new SegimedAPIError(
       "Hubo un error durante el proceso de registro. Por favor intenta de nuevo: " +
