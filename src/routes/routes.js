@@ -134,6 +134,7 @@ import createRequestController from "../controllers/requestTreatingPhysician/req
 import deleteRequestController from "../controllers/requestTreatingPhysician/deleteTreatingPhysicianController.js";
 import getRequestController from "../controllers/requestTreatingPhysician/getTreatingPhysicianController.js";
 import tokenController from "../controllers/requestTreatingPhysician/tokenController.js";
+import verificationDataPhysicians from "../utils/verificationDataPhysicians.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -166,6 +167,7 @@ const selfEvaluationEventRouter = Router();
 const comorbiditiesRouter = Router();
 const treatingPhysicianRouter = Router();
 const profileRouter = Router();
+const adminRouter = Router();
 
 //* User
 userRouter.route("/register-user").post(userRegisterController);
@@ -553,6 +555,9 @@ treatingPhysicianRouter
   .patch(updateTreatingPhysicianController)
   .delete(deleteRequestController);
 
+//* Admin Routes
+adminRouter.route("/physician-verification").post(verificationDataPhysicians);
+
 export {
   getPatientsRouter,
   patientRouter,
@@ -585,4 +590,5 @@ export {
   comorbiditiesRouter,
   treatingPhysicianRouter,
   profileRouter,
+  adminRouter,
 };

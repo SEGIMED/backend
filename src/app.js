@@ -41,6 +41,7 @@ import {
   comorbiditiesRouter,
   treatingPhysicianRouter,
   profileRouter,
+  adminRouter,
 } from "./routes/routes.js";
 
 const corsOptions = {
@@ -102,6 +103,7 @@ app.use("/api", notificationsRouter);
 app.use("/api", comorbiditiesRouter);
 app.use("/api", treatingPhysicianRouter);
 app.use("/api/profile", profileRouter);
+app.use("/api/admin", adminRouter);
 
 app.use("/api", interconsultationRouter);
 app.use("/api", interconsultationDetailsRouter);

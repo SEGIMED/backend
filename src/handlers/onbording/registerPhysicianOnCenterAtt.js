@@ -43,11 +43,16 @@ export const syncRegisterPhysicianOnCenterAtt = async (newCenterAttention) => {
       await models.AttendentPlace.bulkCreate(centersData);
     }
 
-    return {
-      message: "Center associations successfully synchronized",
-      addedCenters: centersToAdd.map((c) => c.idCenterAttention),
-      removedCenters: centersToRemove,
-    };
+    const allCenters = await models.AttendentPlace.findAll({
+      where: { idPhysician },
+      attributes: ["idCenterAttention"],
+      include: {
+        model: models.CatCenterAttention,
+        as: "center",
+      },
+    });
+
+    return allCenters;
   } catch (error) {
     throw new SegimedAPIError(
       500,

@@ -26,7 +26,9 @@ export const createOnbPhysician = async (body, userId) => {
         idCenterAttention: centerid,
       };
     });
-    await syncRegisterPhysicianOnCenterAtt(attendentPlaceRegister);
+    const allAttendentPlace = await syncRegisterPhysicianOnCenterAtt(
+      attendentPlaceRegister
+    );
 
     const [newOnbPhysician, created] =
       await models.PhysicianOnboarding.findOrCreate({
@@ -86,7 +88,7 @@ export const createOnbPhysician = async (body, userId) => {
       medicalRegistryNacional,
       medicalRegistryProvincial,
       newSpecialty,
-      attendentPlaceRegister,
+      allAttendentPlace,
     };
   } catch (error) {
     throw new Error(
