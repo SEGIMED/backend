@@ -38,15 +38,29 @@ const model = (sequelize) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      centerAttention: {
-        type: DataTypes.BIGINT,
+      token: {
+        type: DataTypes.STRING(5),
         allowNull: true,
-        field: "center_attention",
-        references: {
-          model: "cat_center_attention",
-          key: "id",
-        },
-      }
+        field: "token",
+        unique: true,
+      },
+      tokenExpiresAt: {
+        type: DataTypes.DATE,
+        field: "token_expires_at",
+        allowNull: true,
+      },
+      verified: {
+        type: DataTypes.BOOLEAN,
+        field: "verified",
+        allowNull: false,
+        defaultValue: false,
+      },
+      documentationComplete: {
+        type: DataTypes.BOOLEAN,
+        field: "documentation_complete",
+        allowNull: false,
+        defaultValue: false,
+      },
     },
     {
       tableName: "physician_onboarding",

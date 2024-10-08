@@ -129,10 +129,12 @@ import deletePhysicianFileController from "../handlers/physicianHandlers/files/d
 import getPhysicianFilesController from "../handlers/physicianHandlers/files/getPhysicianFileHandler.js";
 import getMedicalHistoryController from "../controllers/medicalEvent/getMedicalHistoryController.js";
 import patchUserProfileController from "../controllers/user/profile/patchUserProfileController.js";
-import  updateTreatingPhysicianController  from "../controllers/requestTreatingPhysician/updateTreatingPhysicianController.js";
-import  createRequestController  from "../controllers/requestTreatingPhysician/requestTreatingPhysicianController.js";
-import  deleteRequestController  from "../controllers/requestTreatingPhysician/deleteTreatingPhysicianController.js";
-import  getRequestController  from "../controllers/requestTreatingPhysician/getTreatingPhysicianController.js";
+import updateTreatingPhysicianController from "../controllers/requestTreatingPhysician/updateTreatingPhysicianController.js";
+import createRequestController from "../controllers/requestTreatingPhysician/requestTreatingPhysicianController.js";
+import deleteRequestController from "../controllers/requestTreatingPhysician/deleteTreatingPhysicianController.js";
+import getRequestController from "../controllers/requestTreatingPhysician/getTreatingPhysicianController.js";
+import tokenController from "../controllers/requestTreatingPhysician/tokenController.js";
+import verificationDataPhysicians from "../utils/verificationDataPhysicians.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -165,6 +167,7 @@ const selfEvaluationEventRouter = Router();
 const comorbiditiesRouter = Router();
 const treatingPhysicianRouter = Router();
 const profileRouter = Router();
+const adminRouter = Router();
 
 //* User
 userRouter.route("/register-user").post(userRegisterController);
@@ -342,6 +345,8 @@ physicianRouter
   .get(getPhysicianFilesController)
   .patch(patchPhysicianFilesController)
   .delete(deletePhysicianFileController);
+
+physicianRouter.route("/physician/token").post(tokenController);
 
 //* Catalogs
 catalogsRouter.get("/catalog/get-catalog", getCatalogController);
@@ -550,6 +555,9 @@ treatingPhysicianRouter
   .patch(updateTreatingPhysicianController)
   .delete(deleteRequestController);
 
+//* Admin Routes
+adminRouter.route("/physician-verification").post(verificationDataPhysicians);
+
 export {
   getPatientsRouter,
   patientRouter,
@@ -582,4 +590,5 @@ export {
   comorbiditiesRouter,
   treatingPhysicianRouter,
   profileRouter,
+  adminRouter,
 };

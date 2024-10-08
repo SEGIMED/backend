@@ -992,9 +992,6 @@ CatCity.hasMany(CatCenterAttention, { foreignKey: "city" });
 User.hasOne(PhysicianOnboarding, { foreignKey: "idPhysician" });
 PhysicianOnboarding.belongsTo(User, { foreignKey: "idPhysician" });
 PhysicianOnboarding.belongsTo(CatGenre, { foreignKey: "genre" });
-PhysicianOnboarding.belongsTo(CatCenterAttention, {
-  foreignKey: "centerAttention",
-});
 
 User.hasMany(AttendentPlace, {
   foreignKey: "id_physician",

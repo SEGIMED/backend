@@ -9,6 +9,7 @@ cron.schedule("0 * * * *", async () => {
     await sequelize.query("SELECT delete_unverified_users();");
     console.log("Usuarios no verificados eliminados correctamente.");
   } catch (error) {
+    console.log(error)
     console.error("Error al borrar los usuarios no verificados");
   }
 });

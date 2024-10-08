@@ -1,7 +1,5 @@
-
 import models from "../../../databaseConfig.js";
 import SegimedAPIError from "../../../error/SegimedAPIError.js";
-
 
 export const syncPhysicianSpecialties = async ({ userId, specialties }) => {
   try {
@@ -39,12 +37,16 @@ export const syncPhysicianSpecialties = async ({ userId, specialties }) => {
 
       await models.PhysicianSpecialty.bulkCreate(specialtiesData);
     }
+    const newSpecialties = await models.PhysicianSpecialty.findAll({
+      where: { physician: userId },
+      attributes: ["medicalSpecialty"],
+      include:{
+        model: models.CatMedicalSpecialty,
+        as: "specialty"
+      }
+    });
 
-    return {
-      message: "Specialties successfully synchronized",
-      addedSpecialties: specialtiesToAdd,
-      removedSpecialties: specialtiesToRemove,
-    };
+    return newSpecialties;
   } catch (error) {
     throw new SegimedAPIError(
       500,
