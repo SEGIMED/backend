@@ -4,6 +4,7 @@ const newPhysicalExaminationHandler = async ({
   id,
   appointmentSchedule,
   physicalExamination,
+  transaction,
 }) => {
   const { physicalSubsystemId, description } = physicalExamination;
   try {
@@ -17,12 +18,16 @@ const newPhysicalExaminationHandler = async ({
           physicalSubsystem: physicalSubsystemId,
           appointmentScheduling: appointmentSchedule.id,
         },
+        transaction,
       });
     if (!created) {
-      await physicalExam.update({
-        description,
-        physicalSubsystem: physicalSubsystemId,
-      });
+      await physicalExam.update(
+        {
+          description,
+          physicalSubsystem: physicalSubsystemId,
+        },
+        { transaction }
+      );
     }
     return true;
   } catch (error) {

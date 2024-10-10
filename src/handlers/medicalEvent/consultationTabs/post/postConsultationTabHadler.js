@@ -1,5 +1,6 @@
 import { sequelize } from "../../../../databaseConfig.js";
 import postGlycemiaRecordsHandler from "../../../glycemiaRecords/postGlycemiaRecordsHandler.js";
+import updateMedicalProcedurePrescriptionHandler from "../../../medicalProcedurePrescription/updateMedicalProcedurePrescriptionHandler.js";
 import newPhysicalExaminationHandler from "../../../patient/patientPhysicianExam/createPatientPhysicalExaminationHandler.js";
 import findOrCreateFunctionalClassHandler from "../../../patient/patientRisk/findOrCreateFunctionalClassHadler.js";
 import updateOrCreateVitalSignsHandler from "../../../vitalSigns/updateVitalSignsHandler.js";
@@ -16,6 +17,7 @@ const postConsultationTabHandler = async ({
   appointmentSchedule,
   medicalEvent,
   physicalExamination,
+  medicalProcedure,
 }) => {
   const transaction = await sequelize.transaction();
   try {
@@ -63,9 +65,16 @@ const postConsultationTabHandler = async ({
           id,
           appointmentSchedule,
           physicalExamination,
+          transaction,
         })
       : null;
-
+    const medicalProcedureResponse = medicalProcedure
+      ? await updateMedicalProcedurePrescriptionHandler({
+          id,
+          medicalProcedures: medicalProcedure,
+          transaction,
+        })
+      : null;
     await transaction.commit();
     return {
       vitalSignsResponse,
@@ -74,10 +83,11 @@ const postConsultationTabHandler = async ({
       diagnosticResponse,
       medicalEventResponse,
       physicalExaminationResponse,
+      medicalProcedureResponse,
     };
   } catch (error) {
     await transaction.rollback();
-    console.log(error)
+    console.log(error);
     throw new Error(
       "Ocurrió un error al guardar los datos de consulta: " + error.message
     );
