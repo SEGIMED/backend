@@ -1,5 +1,4 @@
 import models from "../../../../databaseConfig.js";
-import createNewOrderHandler from "../../../physicianHandlers/orders/createNewOrderHandlers.js";
 import postBackgroundTabHandler from "./postBackgroundTabHandler.js";
 import postConsultationTabHandler from "./postConsultationTabHadler.js";
 
