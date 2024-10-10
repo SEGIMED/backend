@@ -12,6 +12,7 @@ const postConsultationTabController = async (req, res) => {
       glycemia,
       abnormalGlycemia,
       functionalClass,
+      medicalProcedure,
     } = req.body;
     const medicalEventData = await models.MedicalEvent.findOne({
       where: {
@@ -41,6 +42,7 @@ const postConsultationTabController = async (req, res) => {
       glycemia,
       abnormalGlycemia,
       functionalClass,
+      medicalProcedure,
     });
 
     const anyFailed = Object.values(response).some((value) => value === false);

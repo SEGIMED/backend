@@ -1,49 +1,55 @@
 import { MedicalProcedurePrescription } from "../../databaseConfig.js";
-import SegimedAPIError from "../../error/SegimedAPIError.js";
 
-const updateMedicalProcedurePrescriptionHandler = async (body) => {
-  const { id, medicalEventId, medicalProcedureId, medicalProcedureName } = body;
-
+const updateMedicalProcedurePrescriptionHandler = async ({
+  id,
+  medicalProcedures,
+  transaction,
+}) => {
   try {
-    // Verificar si se proporciona id o medicalEventId
-    if (!id && !medicalEventId) {
-      throw new SegimedAPIError(
-        "Se debe proporcionar id o medicalEventId.",
-        400
+    if (!id || !Array.isArray(medicalProcedures)) {
+      throw new Error(
+        "Se debe proporcionar el id del evento médico y un array de procedimientos."
       );
     }
 
-    // Verificar si existe una entrada con el id o medicalEventId proporcionado
-    const existingProcedure = await MedicalProcedurePrescription.findOne({
-      where: id ? { id } : { medicalEvent: medicalEventId },
+    const existingProcedures = await MedicalProcedurePrescription.findAll({
+      where: { medicalEvent: id },
+      transaction,
     });
 
-    if (!existingProcedure) {
-      throw new SegimedAPIError(
-        "No se encontró una prescripción con el id o medicalEventId proporcionado.",
-        404
+    const existingProcedureNames = existingProcedures.map(
+      (proc) => proc.medicalProcedureName
+    );
+
+    const proceduresToAdd = medicalProcedures.filter(
+      (proc) => !existingProcedureNames.includes(proc)
+    );
+    const proceduresToRemove = existingProcedures.filter(
+      (proc) => !medicalProcedures.includes(proc.medicalProcedureName)
+    );
+
+    if (proceduresToRemove.length > 0) {
+      const idsToRemove = proceduresToRemove.map((proc) => proc.id);
+      await MedicalProcedurePrescription.destroy({
+        where: { id: idsToRemove },
+        transaction,
+      });
+    }
+
+    for (const procedureName of proceduresToAdd) {
+      await MedicalProcedurePrescription.create(
+        {
+          medicalProcedureName: procedureName,
+          medicalEvent: id,
+          prescriptionTimestamp: new Date(),
+        },
+        { transaction }
       );
     }
 
-    // Realizar la actualización basada en el campo proporcionado
-    const updatedProcedure = await MedicalProcedurePrescription.update(
-      {
-        medicalProcedure: medicalProcedureId,
-        medicalProcedureName,
-      },
-      {
-        where: id ? { id } : { medicalEvent: medicalEventId },
-        returning: true,
-        plain: true,
-      }
-    );
-
-    return updatedProcedure[1];
+    return true;
   } catch (error) {
-    if (error instanceof SegimedAPIError) {
-      throw error;
-    }
-    throw new SegimedAPIError("Hubo un error durante el proceso.", 500);
+    throw new Error("Hubo un error durante el proceso: " + error.message);
   }
 };
 
