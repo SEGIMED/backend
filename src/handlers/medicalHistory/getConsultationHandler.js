@@ -1,13 +1,14 @@
 import models from "../../databaseConfig.js";
 import universalPaginationHandler from "../Pagination/universalPaginationHandler.js";
 
-const getConsultationHandler = async (
+const getConsultationHandler = async ({
   patientId,
   physicianId,
+  medicalSpecialtyId,
   page,
   limit,
-  status
-) => {
+  status,
+}) => {
   try {
     if (
       patientId &&
@@ -26,6 +27,9 @@ const getConsultationHandler = async (
     }
     if (physicianId) {
       filters.physician = physicianId;
+    }
+    if (medicalSpecialtyId) {
+      filters.medicalSpecialty = medicalSpecialtyId;
     }
     const consultations = await models.MedicalEvent.findAll({
       attributes: ["id"],
