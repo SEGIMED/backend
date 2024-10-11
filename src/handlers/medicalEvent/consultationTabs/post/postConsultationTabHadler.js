@@ -1,3 +1,4 @@
+import { createDrugPrescriptions } from "../../../../controllers/drugPrescription/drugPrescriptionHelper.js";
 import { sequelize } from "../../../../databaseConfig.js";
 import postGlycemiaRecordsHandler from "../../../glycemiaRecords/postGlycemiaRecordsHandler.js";
 import updateMedicalProcedurePrescriptionHandler from "../../../medicalProcedurePrescription/updateMedicalProcedurePrescriptionHandler.js";
@@ -18,6 +19,7 @@ const postConsultationTabHandler = async ({
   medicalEvent,
   physicalExamination,
   medicalProcedure,
+  medication
 }) => {
   const transaction = await sequelize.transaction();
   try {
@@ -75,6 +77,10 @@ const postConsultationTabHandler = async ({
           transaction,
         })
       : null;
+    
+    const medicationResponse = medication ? await createDrugPrescriptions(medication, transaction): null;
+    medicalEventResponse === "Medicamentos creados con éxito" ? medicalEventResponse = true : null;
+
     await transaction.commit();
     return {
       vitalSignsResponse,
@@ -84,6 +90,7 @@ const postConsultationTabHandler = async ({
       medicalEventResponse,
       physicalExaminationResponse,
       medicalProcedureResponse,
+      medicationResponse
     };
   } catch (error) {
     await transaction.rollback();

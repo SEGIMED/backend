@@ -18,7 +18,10 @@ const updateDrugPrescriptionHandler = async (body) => {
     } = body;
 
     if (!medicalOrderId && !medicalEventId) {
-      throw new Error("Se necesita el ID de una orden medical o una consulta");
+      throw new SegimedAPIError(
+        "Se necesita el ID de una orden médica o una consulta",
+        400
+      );
     }
 
     const drugDetailPresentation =
@@ -41,13 +44,20 @@ const updateDrugPrescriptionHandler = async (body) => {
       );
     }
 
-    const newPrescriptionModificationsHistory =
-      await models.PrescriptionModificationsHistory.create({
-        medicationPrescriptionId,
-        physicianId: contextService.get("request:user").userId,
+
+    const existingHistoryEntry =
+      await models.PrescriptionModificationsHistory.findOne({
+        where: {
+          medicationPrescriptionId,
+          physicianId: contextService.get("request:user").userId,
+          medicalEventId: medicalEventId ?? null,
+          medicalOrderId: medicalOrderId ?? null,
+        },
+      });
+
+    if (existingHistoryEntry) {
+      await existingHistoryEntry.update({
         modificationTimestamp: moment().tz(TZ).toISOString(),
-        medicalEventId: medicalEventId ?? null,
-        medicalOrderId: medicalOrderId ?? null ,
         observations,
         indications,
         doseMeasure,
@@ -57,10 +67,29 @@ const updateDrugPrescriptionHandler = async (body) => {
           drugDetailPresentation.drugDetailPresentationId,
         commercialNameDrugId: drugDetailPresentation.commercialNameDrugId,
       });
-    return newPrescriptionModificationsHistory;
+      return existingHistoryEntry;
+    } else {
+      const newPrescriptionModificationsHistory =
+        await models.PrescriptionModificationsHistory.create({
+          medicationPrescriptionId,
+          physicianId: contextService.get("request:user").userId,
+          modificationTimestamp: moment().tz(TZ).toISOString(),
+          medicalEventId: medicalEventId ?? null,
+          medicalOrderId: medicalOrderId ?? null,
+          observations,
+          indications,
+          doseMeasure,
+          timeMeasure,
+          timeMeasureType,
+          drugDetailPresentationId:
+            drugDetailPresentation.drugDetailPresentationId,
+          commercialNameDrugId: drugDetailPresentation.commercialNameDrugId,
+        });
+      return newPrescriptionModificationsHistory;
+    }
   } catch (error) {
     throw new SegimedAPIError(
-      "Hubo un error al modificar la prescripción: " + error,
+      "Hubo un error al modificar la prescripción: " + error.message,
       500
     );
   }
