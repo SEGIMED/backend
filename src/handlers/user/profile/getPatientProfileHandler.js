@@ -17,7 +17,7 @@ const getPatientProfileHandler = async ({ id, role }) => {
         model: models.SociodemographicDetails,
         as: "socDemDet",
         attributes: {
-          exclude: ["dateOfDeathReport", "registrationDate", "hipertPulm"],
+          exclude: ["dateOfDeathReport", "registrationDate"],
         },
         include: {
           model: models.CatGenre,
