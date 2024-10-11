@@ -1,5 +1,4 @@
 import models from "../../../../databaseConfig.js";
-import createNewOrderHandler from "../../../physicianHandlers/orders/createNewOrderHandlers.js";
 import postBackgroundTabHandler from "./postBackgroundTabHandler.js";
 import postConsultationTabHandler from "./postConsultationTabHadler.js";
 
@@ -35,6 +34,7 @@ const postGeneralConsultationTabHandler = async ({
       diagnostics,
       medicalEvent,
       physicalExamination,
+      medication
     } = consultationData;
     const { risks, hpGroupIds, background } = backgroundData;
 
@@ -49,6 +49,7 @@ const postGeneralConsultationTabHandler = async ({
       medicalEvent,
       physicalExamination,
       medicalProcedure,
+      medication
     });
     const backgroundResponse = await postBackgroundTabHandler({
       id,
