@@ -7,7 +7,7 @@ const getNewPatientDetailsHandler = async (id) => {
         role: 3,
         id,
       },
-      attributes: ["name", "lastname"],
+      attributes: ["name", "lastname", "avatar"],
       include: [
         {
           model: models.SociodemographicDetails,
