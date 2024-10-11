@@ -2,148 +2,167 @@ import models from "../../databaseConfig.js";
 import { painAreaNameMap } from "../../mapper/painMap/painMapMapper.js";
 import universalPaginationHandler from "../Pagination/universalPaginationHandler.js";
 
-const getPainMapHandler = async (patientId, page, limit) => {
+const getPainMapHandler = async ({
+  patientId,
+  physicianId,
+  medicalSpecialtyId,
+  page,
+  limit,
+  onlySelfEvaluations = false, 
+}) => {
   try {
-    const consultations = await models.MedicalEvent.findAll({
-      attributes: ["id"],
-      include: [
-        {
-          model: models.AppointmentScheduling,
-          as: "appSch",
-          where: {
-            schedulingStatus: 2,
-            patient: patientId,
-          },
-          attributes: ["scheduledStartTimestamp", "reasonForConsultation"],
-          include: [
-            {
-              model: models.User,
-              as: "patientUser",
-              attributes: ["id"],
-              include: [
-                {
-                  model: models.PatientPulmonaryHypertensionGroup,
-                  as: "userHpGroups",
-                  attributes: ["id"],
-                  include: [
-                    {
-                      model: models.CatRisk,
-                      as: "catHpGroup",
-                      attributes: ["name"],
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              model: models.PhysicianAttendancePlace,
-              as: "attendancePlace",
-            },
-          ],
-        },
+    const where = {
+      schedulingStatus: 2,
+      patient: patientId,
+    };
 
-        {
-          model: models.PatientPainMap,
-          as: "patientPainMap",
-          attributes: {
-            exclude: [
-              "id",
-              "painScale",
-              "painDuration",
-              "painType",
-              "painFrequency",
-              "medicalEvent",
-              "scheduling",
-            ],
-          },
-          include: [
-            {
-              model: models.CatPainDuration,
-              as: "painDurationDetail",
-              attributes: ["name"],
-            },
-            {
-              model: models.CatPainType,
-              as: "painTypeDetail",
-              attributes: ["name"],
-            },
-            {
-              model: models.CatPainScale,
-              as: "painScaleDetail",
-              attributes: ["name"],
-            },
-            {
-              model: models.CatPainFrequency,
-              as: "painFrequencyDetail",
-              attributes: ["name"],
-            },
-          ],
-        },
-      ],
-    });
-    const selfEvaluations = await models.SelfEvaluationEvent.findAll({
-      where: {
-        patient: patientId,
-      },
-      attributes: ["created_at"],
-      include: [
-        {
-          model: models.PatientPainMap,
-          as: "patientPainMap",
-          attributes: {
-            exclude: [
-              "id",
-              "painScale",
-              "painDuration",
-              "painType",
-              "painFrequency",
-              "medicalEvent",
-              "scheduling",
-            ],
-          },
-          include: [
-            {
-              model: models.CatPainDuration,
-              as: "painDurationDetail",
-              attributes: ["name"],
-            },
-            {
-              model: models.CatPainType,
-              as: "painTypeDetail",
-              attributes: ["name"],
-            },
-            {
-              model: models.CatPainScale,
-              as: "painScaleDetail",
-              attributes: ["name"],
-            },
-            {
-              model: models.CatPainFrequency,
-              as: "painFrequencyDetail",
-              attributes: ["name"],
-            },
-          ],
-        },
-        {
-          model: models.User,
-          as: "patientUser",
-          attributes: ["id"],
-          include: {
-            model: models.PatientPulmonaryHypertensionGroup,
-            as: "userHpGroups",
-            attributes: ["id"],
+    physicianId ? (where.physician = physicianId) : null;
+    medicalSpecialtyId ? (where.medicalSpecialty = medicalSpecialtyId) : null;
+
+    let consultations = [];
+    let selfEvaluations = [];
+
+    // Si no se piden solo selfEvaluations, obtener las consultas médicas
+    if (!onlySelfEvaluations) {
+      consultations = await models.MedicalEvent.findAll({
+        attributes: ["id"],
+        include: [
+          {
+            model: models.AppointmentScheduling,
+            as: "appSch",
+            where,
+            attributes: ["scheduledStartTimestamp", "reasonForConsultation"],
             include: [
               {
-                model: models.CatRisk,
-                as: "catHpGroup",
+                model: models.User,
+                as: "patientUser",
+                attributes: ["id"],
+                include: [
+                  {
+                    model: models.PatientPulmonaryHypertensionGroup,
+                    as: "userHpGroups",
+                    attributes: ["id"],
+                    include: [
+                      {
+                        model: models.CatRisk,
+                        as: "catHpGroup",
+                        attributes: ["name"],
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                model: models.PhysicianAttendancePlace,
+                as: "attendancePlace",
+              },
+            ],
+          },
+          {
+            model: models.PatientPainMap,
+            as: "patientPainMap",
+            attributes: {
+              exclude: [
+                "id",
+                "painScale",
+                "painDuration",
+                "painType",
+                "painFrequency",
+                "medicalEvent",
+                "scheduling",
+              ],
+            },
+            include: [
+              {
+                model: models.CatPainDuration,
+                as: "painDurationDetail",
+                attributes: ["name"],
+              },
+              {
+                model: models.CatPainType,
+                as: "painTypeDetail",
+                attributes: ["name"],
+              },
+              {
+                model: models.CatPainScale,
+                as: "painScaleDetail",
+                attributes: ["name"],
+              },
+              {
+                model: models.CatPainFrequency,
+                as: "painFrequencyDetail",
                 attributes: ["name"],
               },
             ],
           },
-        },
-      ],
-    });
+        ],
+      });
+    }
 
+    if ((!physicianId && !medicalSpecialtyId) || onlySelfEvaluations) {
+      selfEvaluations = await models.SelfEvaluationEvent.findAll({
+        where: {
+          patient: patientId,
+        },
+        attributes: ["created_at"],
+        include: [
+          {
+            model: models.PatientPainMap,
+            as: "patientPainMap",
+            attributes: {
+              exclude: [
+                "id",
+                "painScale",
+                "painDuration",
+                "painType",
+                "painFrequency",
+                "medicalEvent",
+                "scheduling",
+              ],
+            },
+            include: [
+              {
+                model: models.CatPainDuration,
+                as: "painDurationDetail",
+                attributes: ["name"],
+              },
+              {
+                model: models.CatPainType,
+                as: "painTypeDetail",
+                attributes: ["name"],
+              },
+              {
+                model: models.CatPainScale,
+                as: "painScaleDetail",
+                attributes: ["name"],
+              },
+              {
+                model: models.CatPainFrequency,
+                as: "painFrequencyDetail",
+                attributes: ["name"],
+              },
+            ],
+          },
+          {
+            model: models.User,
+            as: "patientUser",
+            attributes: ["id"],
+            include: {
+              model: models.PatientPulmonaryHypertensionGroup,
+              as: "userHpGroups",
+              attributes: ["id"],
+              include: [
+                {
+                  model: models.CatRisk,
+                  as: "catHpGroup",
+                  attributes: ["name"],
+                },
+              ],
+            },
+          },
+        ],
+      });
+    }
     const formattedConsultations = consultations.map((consultation) => ({
       ...consultation.toJSON(),
       date: consultation.appSch.scheduledStartTimestamp,
@@ -155,6 +174,7 @@ const getPainMapHandler = async (patientId, page, limit) => {
         })),
       },
     }));
+
     const filteredSelfEvaluations = selfEvaluations.filter(
       (evaluation) =>
         evaluation.patientPainMap &&
@@ -177,10 +197,16 @@ const getPainMapHandler = async (patientId, page, limit) => {
       })
     );
 
-    const combinedResults = [
-      ...formattedConsultations,
-      ...formattedSelfEvaluations,
-    ];
+    let combinedResults = [];
+
+    if (onlySelfEvaluations) {
+      combinedResults = formattedSelfEvaluations;
+    } else {
+      combinedResults = [
+        ...formattedConsultations,
+        ...formattedSelfEvaluations,
+      ];
+    }
 
     combinedResults.sort((a, b) => new Date(a.date) - new Date(b.date));
 

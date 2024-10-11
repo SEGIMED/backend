@@ -1,7 +1,20 @@
 import models from "../../databaseConfig.js";
+import universalPaginationHandler from "../Pagination/universalPaginationHandler.js";
 
-const getDiagnosticHandler = async (patientId) => {
+const getDiagnosticHandler = async ({
+  patientId,
+  physicianId,
+  medicalSpecialtyId,
+  page,
+  limit,
+}) => {
   try {
+    const where = {
+      schedulingStatus: 2,
+      patient: patientId,
+    };
+    physicianId ? (where.physician = physicianId) : null;
+    medicalSpecialtyId ? (where.medicalSpecialty = medicalSpecialtyId) : null;
     const medicalEvent = await models.MedicalEvent.findAll({
       attributes: ["id", "diagnosticNotes", "alarmPattern"],
       include: [
@@ -28,10 +41,7 @@ const getDiagnosticHandler = async (patientId) => {
         {
           model: models.AppointmentScheduling,
           as: "appSch",
-          where: {
-            schedulingStatus: 2,
-            patient: patientId,
-          },
+          where,
           attributes: ["scheduledStartTimestamp", "reasonForConsultation"],
           include: [
             {
@@ -61,6 +71,10 @@ const getDiagnosticHandler = async (patientId) => {
         },
       ],
     });
+    if (page && limit) {
+      const paginated = universalPaginationHandler(medicalEvent, page, limit);
+      return paginated;
+    }
     return medicalEvent;
   } catch (error) {
     throw new Error(
