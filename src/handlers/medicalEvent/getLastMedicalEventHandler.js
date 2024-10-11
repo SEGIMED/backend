@@ -26,6 +26,11 @@ const getLastMedicalEventHandler = async ({ id }) => {
       order: [["scheduled_start_timestamp", "DESC"]],
       limit: 1,
     });
+
+    if (!allSchedules.length || !allSchedules[0].medicalEvent) {
+      throw new Error("No se encontró una consulta médica anterior");
+    }
+
     const lastMedicalEvent = await getConsultationTabHandler({
       id: allSchedules[0].medicalEvent.id,
     });
