@@ -2,7 +2,14 @@ import getVitalSignsHandler from "../../handlers/medicalHistory/getVitalSignsHan
 
 const getVitalSignsController = async (req, res) => {
   try {
-    const { patientId, page, limit } = req.query;
+    const {
+      patientId,
+      medicalSpecialtyId,
+      physicianId,
+      onlySelfEvaluations,
+      page,
+      limit,
+    } = req.query;
 
     if (!patientId) {
       return res
@@ -10,7 +17,14 @@ const getVitalSignsController = async (req, res) => {
         .json({ error: "Se requiere un patientId válido." });
     }
 
-    const data = await getVitalSignsHandler(patientId, page, limit);
+    const data = await getVitalSignsHandler({
+      patientId,
+      medicalSpecialtyId,
+      physicianId,
+      onlySelfEvaluations,
+      page,
+      limit,
+    });
     res.json(data);
   } catch (error) {
     console.error("Error al obtener signos vitales:", error.message);

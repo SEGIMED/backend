@@ -28,12 +28,13 @@ export const mapMedicalEventEvolution = (medicalEvent) => {
   };
 };
 
-const getMedicalEventHistoryAndInterconsultationHandler = async (
+const getMedicalEventHistoryAndInterconsultationHandler = async ({
   patientId,
   physicianId,
+  medicalSpecialtyId,
   page,
-  limit
-) => {
+  limit,
+}) => {
   try {
     const filters = {
       schedulingStatus: 2, // 2 = atendida
@@ -44,6 +45,9 @@ const getMedicalEventHistoryAndInterconsultationHandler = async (
     }
     if (physicianId) {
       filters.physician = physicianId;
+    }
+    if (medicalSpecialtyId) {
+      filters.medicalSpecialty = medicalSpecialtyId;
     }
 
     const medicalEventHistory = await MedicalEvent.findAll({
@@ -73,13 +77,18 @@ const getMedicalEventHistoryAndInterconsultationHandler = async (
     const medicalEvent = medicalEventHistory.map((event) =>
       mapMedicalEventEvolution(event)
     );
-    const interconsultations = await getInterconsultationsByPatientIdHandler(
-      patientId
-    );
-    const interconsultasArray = interconsultationsMapper(interconsultations);
-    let result = await universalOrderByHandler(
-      medicalEvent.concat(interconsultasArray)
-    );
+    let result;
+    if (!medicalSpecialtyId) {
+      const interconsultations = await getInterconsultationsByPatientIdHandler(
+        patientId
+      );
+      const interconsultasArray = interconsultationsMapper(interconsultations);
+       result = await universalOrderByHandler(
+        medicalEvent.concat(interconsultasArray)
+      );
+    } else {
+      result = medicalEvent
+    }
     if (page && limit) {
       return universalPaginationHandler(result, page, limit);
     } else {

@@ -2,19 +2,29 @@ import models from "../../../databaseConfig.js";
 import SegimedAPIError from "../../../error/SegimedAPIError.js";
 import universalPaginationHandler from "../../Pagination/universalPaginationHandler.js";
 
-const getAnamnesisHandler = async (patientId, page, limit) => {
+const getAnamnesisHandler = async ({
+  patientId,
+  physicianId,
+  medicalSpecialtyId,
+  page,
+  limit,
+}) => {
   try {
+    const where = { patient: patientId, schedulingStatus: 2 };
+    physicianId ? (where.physician = physicianId) : null;
+    medicalSpecialtyId ? (where.medicalSpecialty = medicalSpecialtyId) : null;
     const response = await models.MedicalEvent.findAll({
-      attributes: [
-        "id",
-        "historyOfPresentIllness",
-      ],
+      attributes: ["id", "historyOfPresentIllness"],
       include: [
         {
           model: models.AppointmentScheduling,
           as: "appSch",
-          where: { patient: patientId, schedulingStatus: 2 },
-          attributes: ["patient", "scheduledStartTimestamp", "reasonForConsultation"],
+          where,
+          attributes: [
+            "patient",
+            "scheduledStartTimestamp",
+            "reasonForConsultation",
+          ],
           include: [
             {
               model: models.User,
