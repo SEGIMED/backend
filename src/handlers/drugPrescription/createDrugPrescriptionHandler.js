@@ -5,7 +5,6 @@ import SegimedAPIError from "../../error/SegimedAPIError.js";
 const TZ = process.env.TZ;
 
 const createDrugPrescriptionHandler = async (body, transaction) => {
-  console.log("asdasd");
   const {
     medicalEventId,
     patientId,
