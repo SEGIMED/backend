@@ -35,6 +35,7 @@ import {
   CatCenterAttention,
   CatRouteOfAdministration,
   CatStudyType,
+  CatConsultationReason,
 } from "../../databaseConfig.js";
 
 import SegimedAPIError from "../../error/SegimedAPIError.js";
@@ -123,6 +124,8 @@ const getCatalogHandler = async (catalogName, category) => {
         return await CatStudyType.findAll();
       case "PRESENTATION":
         return await CatDrugPresentation.findAll();
+      case "CONSULTATION_REASON":
+        return await CatConsultationReason.findAll();
 
       default:
         throw new SegimedAPIError(
