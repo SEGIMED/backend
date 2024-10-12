@@ -36,7 +36,7 @@ const createComorbiditiesHandler = async ({ patientId, comorbiditiesList, transa
       });
     }
     if (newComorbidities.length > 0) {
-      const bulkData = comorbiditiesList.map((e) => {
+      const bulkData = newComorbidities.map((e) => {
         return {
           patientId,
           diseaseId: e,
