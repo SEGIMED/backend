@@ -10,9 +10,14 @@ const postGeneralConsultationTabController = async (req, res) => {
       consultationData,
       backgroundData,
     });
-
+    console.log(response);
     const values = Object.values(response).flatMap(Object.values);
-    const allTrue = values.every((value) => value === true || value == null);
+    const allTrue = values.every(
+      (value) =>
+        value === true ||
+        value == null ||
+        value === "Medicamentos creados con éxito"
+    );
 
     if (allTrue) {
       return res.status(200).json("Datos actualizados correctamente.");
