@@ -441,7 +441,6 @@ medicalReferralRouter
   .post(createRegisterCie10Ctrl)
   .get(searchCIEController)
   .get(getCatAndSubCatCtrl);
-
 // *Medical Indications
 medicalIndicationsRouter
   .route("/medical-indications/new-indication")

@@ -34,7 +34,8 @@ const postGeneralConsultationTabHandler = async ({
       diagnostics,
       medicalEvent,
       physicalExamination,
-      medication
+      medicalProcedure,
+      medication,
     } = consultationData;
     const { risks, hpGroupIds, background } = backgroundData;
 
@@ -49,7 +50,7 @@ const postGeneralConsultationTabHandler = async ({
       medicalEvent,
       physicalExamination,
       medicalProcedure,
-      medication
+      medication,
     });
     const backgroundResponse = await postBackgroundTabHandler({
       id,
