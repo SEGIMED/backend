@@ -906,6 +906,10 @@ ProvisionalPreConsultation.belongsTo(AppointmentScheduling, {
   as: "ProvisionalPreConsultation",
   foreignKey: "appointment_schedule",
 });
+ProvisionalPreConsultation.belongsTo(AppointmentScheduling, {
+  as: "appointmentScheduleDetails",
+  foreignKey: "appointment_schedule",
+});
 AppointmentScheduling.hasOne(ProvisionalPreConsultation, {
   as: "ProvisionalPreConsultation",
   foreignKey: "appointment_schedule",
