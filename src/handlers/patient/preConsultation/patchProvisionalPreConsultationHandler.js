@@ -11,21 +11,33 @@ const patchProvisionalPreConsultationHandler = async ({
 }) => {
   const transaction = await sequelize.transaction();
   try {
-    const vitalSignsResponse = await updateOrCreateVitalSignsHandler({
-      id,
-      vitalSigns,
-      transaction,
-    });
-    const painMapResponse = await patchPatientPainMapHandler({
-      id,
-      painMap,
-      transaction,
-    });
-    const preConsultationResponse = await patchPreconsultationHandler({
-      id,
-      preconsultation,
-      transaction,
-    });
+    let vitalSignsResponse;
+    let painMapResponse;
+    let preConsultationResponse;
+
+    if (vitalSigns) {
+      vitalSignsResponse = await updateOrCreateVitalSignsHandler({
+        id,
+        vitalSigns,
+        transaction,
+      });
+    }
+
+    if (painMap) {
+      painMapResponse = await patchPatientPainMapHandler({
+        id,
+        painMap,
+        transaction,
+      });
+    }
+
+    if (preconsultation) {
+      preConsultationResponse = await patchPreconsultationHandler({
+        id,
+        preconsultation,
+        transaction,
+      });
+    }
 
     await transaction.commit();
     return { vitalSignsResponse, painMapResponse, preConsultationResponse };
