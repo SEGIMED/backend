@@ -1,5 +1,11 @@
 import patchPreconsultationHandler from "../../../controllers/patient/preConsultation/extra/patchPreconsultationHandler.js";
-import { sequelize } from "../../../databaseConfig.js";
+import {
+  AppointmentScheduling,
+  MedicalEvent,
+  ProvisionalPreConsultation,
+  sequelize,
+} from "../../../databaseConfig.js";
+import postGlycemiaRecordsHandler from "../../glycemiaRecords/postGlycemiaRecordsHandler.js";
 import patchPatientPainMapHandler from "../../painMap/patchPatientPainMapHandler.js";
 import updateOrCreateVitalSignsHandler from "../../vitalSigns/updateVitalSignsHandler.js";
 
@@ -8,12 +14,14 @@ const patchProvisionalPreConsultationHandler = async ({
   vitalSigns,
   painMap,
   preconsultation,
+  glycemia,
 }) => {
   const transaction = await sequelize.transaction();
   try {
     let vitalSignsResponse;
     let painMapResponse;
     let preConsultationResponse;
+    let glycemiaResponse;
 
     if (vitalSigns) {
       vitalSignsResponse = await updateOrCreateVitalSignsHandler({
@@ -39,8 +47,22 @@ const patchProvisionalPreConsultationHandler = async ({
       });
     }
 
+    if (glycemia) {
+      glycemiaResponse = await postGlycemiaRecordsHandler({
+        glycemia,
+        medicalEvent: id,
+        abnormalGlycemia: preconsultation?.abnormalGlycemia,
+        transaction,
+      });
+    }
+
     await transaction.commit();
-    return { vitalSignsResponse, painMapResponse, preConsultationResponse };
+    return {
+      vitalSignsResponse,
+      painMapResponse,
+      preConsultationResponse,
+      glycemiaResponse,
+    };
   } catch (error) {
     await transaction.rollback();
     throw new Error("Error actualizando la preconsulta: " + error.message);

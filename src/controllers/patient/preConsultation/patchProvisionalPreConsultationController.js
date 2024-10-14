@@ -2,13 +2,14 @@ import patchProvisionalPreConsultationHandler from "../../../handlers/patient/pr
 
 const patchProvisionalPreConsultationController = async (req, res) => {
   const { id } = req.query;
-  const { vitalSigns, painMap, preconsultation } = req.body;
+  const { vitalSigns, painMap, preconsultation, glycemia } = req.body;
   try {
     const response = await patchProvisionalPreConsultationHandler({
       id,
       vitalSigns,
       painMap,
       preconsultation,
+      glycemia,
     });
     return res.status(200).json(response);
   } catch (error) {
