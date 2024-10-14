@@ -27,7 +27,7 @@ const createOnboardingController = async (req, res) => {
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
-  } else if (tipo === "Paciente") {
+  } else if (user.role === "Paciente") {
     try {
       const newOnbording = req.body;
       const onbording = await createOnbordingHandler(newOnbording, user.userId);
