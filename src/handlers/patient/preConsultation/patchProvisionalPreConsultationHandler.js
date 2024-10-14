@@ -16,19 +16,6 @@ const patchProvisionalPreConsultationHandler = async ({
   preconsultation,
   glycemia,
 }) => {
-  const event = await ProvisionalPreConsultation.findByPk(id, {
-    include: {
-      model: AppointmentScheduling,
-      as: "appointmentScheduleDetails",
-      include: {
-        model: MedicalEvent,
-        as: "medicalEvent",
-      },
-    },
-  });
-  if (!event) throw new Error("Ocurrió un error al encontrar la consulta");
-  const medicalEventId = event?.appointmentScheduleDetails?.medicalEvent?.id;
-  console.log()
   const transaction = await sequelize.transaction();
   try {
     let vitalSignsResponse;
@@ -38,7 +25,7 @@ const patchProvisionalPreConsultationHandler = async ({
 
     if (vitalSigns) {
       vitalSignsResponse = await updateOrCreateVitalSignsHandler({
-        id: medicalEventId,
+        id,
         vitalSigns,
         transaction,
       });
@@ -46,7 +33,7 @@ const patchProvisionalPreConsultationHandler = async ({
 
     if (painMap) {
       painMapResponse = await patchPatientPainMapHandler({
-        id: medicalEventId,
+        id,
         painMap,
         transaction,
       });
@@ -54,7 +41,7 @@ const patchProvisionalPreConsultationHandler = async ({
 
     if (preconsultation) {
       preConsultationResponse = await patchPreconsultationHandler({
-        id: medicalEventId,
+        id,
         preconsultation,
         transaction,
       });
@@ -63,14 +50,19 @@ const patchProvisionalPreConsultationHandler = async ({
     if (glycemia) {
       glycemiaResponse = await postGlycemiaRecordsHandler({
         glycemia,
-        medicalEvent: medicalEventId,
+        medicalEvent: id,
         abnormalGlycemia: preconsultation?.abnormalGlycemia,
         transaction,
       });
     }
 
     await transaction.commit();
-    return { vitalSignsResponse, painMapResponse, preConsultationResponse, glycemiaResponse };
+    return {
+      vitalSignsResponse,
+      painMapResponse,
+      preConsultationResponse,
+      glycemiaResponse,
+    };
   } catch (error) {
     await transaction.rollback();
     throw new Error("Error actualizando la preconsulta: " + error.message);
