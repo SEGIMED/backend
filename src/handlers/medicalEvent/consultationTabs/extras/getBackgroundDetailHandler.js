@@ -1,10 +1,18 @@
 import models from "../../../../databaseConfig.js";
+import getLastMedicalEventHandler from "../../getLastMedicalEventHandler.js";
 
 const getBackgroundDetailHandler = async ({ id }) => {
   try {
+    const lastMedicalEvent = await getLastMedicalEventHandler({
+      id,
+      forBackground: true,
+    });
+    if (!lastMedicalEvent) {
+      return null;
+    }
     const backgroundData = await models.Backgrounds.findOne({
       where: {
-        medicalEvent: id,
+        medicalEvent: lastMedicalEvent,
       },
       attributes: {
         exclude: [
@@ -65,18 +73,18 @@ const getBackgroundDetailHandler = async ({ id }) => {
           },
           {
             model: models.UserComorbidities,
-            as:"comorbidities",
-            attributes:["diseaseId"],
-            include:{
-                model: models.CatComorbiditiesDiseases,
-                as:"disease",
-                attributes:["name"]
-            }
-          }
+            as: "comorbidities",
+            attributes: ["diseaseId"],
+            include: {
+              model: models.CatComorbiditiesDiseases,
+              as: "disease",
+              attributes: ["name"],
+            },
+          },
         ],
       },
     });
-    if(backgroundData===null) return null
+    if (backgroundData === null) return null;
     const background = backgroundData.get({ plain: true });
     const firstRisk =
       background?.patientUser?.patPHRisks[
@@ -86,9 +94,7 @@ const getBackgroundDetailHandler = async ({ id }) => {
     background.patientUser.patPHRisks = { firstRisk, lastRisk };
     return background;
   } catch (error) {
-    throw new Error(
-      "Error al recuperar los antecedentes: " + error.message
-    );
+    throw new Error("Error al recuperar los antecedentes: " + error.message);
   }
 };
 export default getBackgroundDetailHandler;
