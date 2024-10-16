@@ -1,11 +1,29 @@
 import models from "../../../../databaseConfig.js";
+import getLastMedicalEventHandler from "../../getLastMedicalEventHandler.js";
 
 const getBackgroundDetailHandler = async ({ id }) => {
   try {
-    const backgroundData = await models.Backgrounds.findOne({
+    const isBackgroundSaved = await models.Backgrounds.findOne({
       where: {
         medicalEvent: id,
       },
+    });
+    const where = {
+      medicalEvent: id
+    }
+    if (!isBackgroundSaved) {
+      const lastMedicalEvent = await getLastMedicalEventHandler({
+        id,
+        forBackground: true,
+      });
+      if (!lastMedicalEvent) {
+        return null;
+      }
+      where.medicalEvent = lastMedicalEvent
+    }
+
+    const backgroundData = await models.Backgrounds.findOne({
+      where,
       attributes: {
         exclude: [
           "appointment_scheduling",
@@ -65,18 +83,18 @@ const getBackgroundDetailHandler = async ({ id }) => {
           },
           {
             model: models.UserComorbidities,
-            as:"comorbidities",
-            attributes:["diseaseId"],
-            include:{
-                model: models.CatComorbiditiesDiseases,
-                as:"disease",
-                attributes:["name"]
-            }
-          }
+            as: "comorbidities",
+            attributes: ["diseaseId"],
+            include: {
+              model: models.CatComorbiditiesDiseases,
+              as: "disease",
+              attributes: ["name"],
+            },
+          },
         ],
       },
     });
-    if(backgroundData===null) return null
+    if (backgroundData === null) return null;
     const background = backgroundData.get({ plain: true });
     const firstRisk =
       background?.patientUser?.patPHRisks[
@@ -86,9 +104,7 @@ const getBackgroundDetailHandler = async ({ id }) => {
     background.patientUser.patPHRisks = { firstRisk, lastRisk };
     return background;
   } catch (error) {
-    throw new Error(
-      "Error al recuperar los antecedentes: " + error.message
-    );
+    throw new Error("Error al recuperar los antecedentes: " + error.message);
   }
 };
 export default getBackgroundDetailHandler;
