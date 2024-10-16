@@ -34,6 +34,7 @@ const postGeneralConsultationTabHandler = async ({
       diagnostics,
       medicalEvent,
       physicalExamination,
+      medicalProcedure,
       medication
     } = consultationData;
     const { risks, hpGroupIds, background } = backgroundData;
@@ -58,6 +59,7 @@ const postGeneralConsultationTabHandler = async ({
       background,
     });
     appointmentSchedule.schedulingStatus = 2;
+    appointmentSchedule.actualEndTimestamp = new Date().toISOString();
     appointmentSchedule.save();
     return { consultationResponse, backgroundResponse };
   } catch (error) {
