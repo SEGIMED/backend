@@ -3,8 +3,8 @@ import { CatComorbiditiesDiseases } from "../../databaseConfig.js";
 
 const searchComorbiditiesHandler = async (search) => {
   try {
-    if (search && search.length < 3) {
-      throw new Error("El término de búsqueda debe tener al menos 3 letras");
+    if (search && search.length < 1) {
+      throw new Error("El término de búsqueda debe tener al menos 1 letras");
     }
 
     const results = await CatComorbiditiesDiseases.findAll({

@@ -59,6 +59,7 @@ const postGeneralConsultationTabHandler = async ({
       background,
     });
     appointmentSchedule.schedulingStatus = 2;
+    appointmentSchedule.actualEndTimestamp = new Date().toISOString();
     appointmentSchedule.save();
     return { consultationResponse, backgroundResponse };
   } catch (error) {

@@ -23,7 +23,7 @@ const getLastMedicalEventHandler = async ({ id, forBackground = false }) => {
         model: models.MedicalEvent,
         as: "medicalEvent",
       },
-      order: [["scheduled_start_timestamp", "DESC"]],
+      order: [["actual_end_timestamp", "DESC"]],
       limit: 1,
     });
     if (forBackground) {
