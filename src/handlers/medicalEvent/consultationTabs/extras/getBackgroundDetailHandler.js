@@ -3,17 +3,27 @@ import getLastMedicalEventHandler from "../../getLastMedicalEventHandler.js";
 
 const getBackgroundDetailHandler = async ({ id }) => {
   try {
-    const lastMedicalEvent = await getLastMedicalEventHandler({
-      id,
-      forBackground: true,
-    });
-    if (!lastMedicalEvent) {
-      return null;
-    }
-    const backgroundData = await models.Backgrounds.findOne({
+    const isBackgroundSaved = await models.Backgrounds.findOne({
       where: {
-        medicalEvent: lastMedicalEvent,
+        medicalEvent: id,
       },
+    });
+    const where = {
+      medicalEvent: id
+    }
+    if (!isBackgroundSaved) {
+      const lastMedicalEvent = await getLastMedicalEventHandler({
+        id,
+        forBackground: true,
+      });
+      if (!lastMedicalEvent) {
+        return null;
+      }
+      where.medicalEvent = lastMedicalEvent
+    }
+
+    const backgroundData = await models.Backgrounds.findOne({
+      where,
       attributes: {
         exclude: [
           "appointment_scheduling",
