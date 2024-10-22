@@ -66,7 +66,7 @@ const patchPatientPainMapHandler = async ({ id, painMap, transaction }) => {
       await patientPainMapping.update(updatedPainMapping, { transaction });
     }
 
-    return true;
+    return {response:true, id:patientPainMapping.id};
   } catch (error) {
     throw new Error(
       "Hubo un error durante el proceso de actualización o creación del mapeo de las zonas de dolor: " +

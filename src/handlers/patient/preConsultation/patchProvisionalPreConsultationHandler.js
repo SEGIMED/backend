@@ -1,8 +1,5 @@
 import patchPreconsultationHandler from "../../../controllers/patient/preConsultation/extra/patchPreconsultationHandler.js";
 import {
-  AppointmentScheduling,
-  MedicalEvent,
-  ProvisionalPreConsultation,
   sequelize,
 } from "../../../databaseConfig.js";
 import postGlycemiaRecordsHandler from "../../glycemiaRecords/postGlycemiaRecordsHandler.js";
@@ -42,7 +39,7 @@ const patchProvisionalPreConsultationHandler = async ({
     if (preconsultation) {
       preConsultationResponse = await patchPreconsultationHandler({
         id,
-        preconsultation,
+        preconsultation: {...preconsultation, physicalExamination:painMapResponse.id },
         transaction,
       });
     }
@@ -59,11 +56,12 @@ const patchProvisionalPreConsultationHandler = async ({
     await transaction.commit();
     return {
       vitalSignsResponse,
-      painMapResponse,
+      painMapResponse: painMapResponse.response,
       preConsultationResponse,
       glycemiaResponse,
     };
   } catch (error) {
+    console.log(error)
     await transaction.rollback();
     throw new Error("Error actualizando la preconsulta: " + error.message);
   }
