@@ -52,7 +52,6 @@ export async function loadFile(base64String) {
     throw new Error("Error al subir el archivo a Cloudinary");
   }
 }
-
 export async function loadStudiesInterconsultation(
   files, //array que contiene objetos  1 o mas archivos  {data = "archivo en base64", name : "nombredel archivo"}
   maxConcurrentUploads = 5 //define el maximo de upload simultaneo ya que puede traer problemas con cloudinary
