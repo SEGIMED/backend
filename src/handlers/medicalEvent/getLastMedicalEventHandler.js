@@ -5,7 +5,6 @@ const getLastMedicalEventHandler = async ({ id, forBackground = false }) => {
   try {
     const medicalEventData = await models.MedicalEvent.findByPk(id);
     if (!medicalEventData) throw new Error("No se encontró la consulta");
-
     const schedule = await models.AppointmentScheduling.findOne({
       where: {
         id: medicalEventData.scheduling,
@@ -24,7 +23,7 @@ const getLastMedicalEventHandler = async ({ id, forBackground = false }) => {
         as: "medicalEvent",
       },
       order: [["actual_end_timestamp", "DESC"]],
-      limit: 1,
+      limit: 1
     });
     if (forBackground) {
       if (!allSchedules.length || !allSchedules[0].medicalEvent) {

@@ -136,6 +136,7 @@ const patchPreconsultationHandler = async ({
 
     return true;
   } catch (error) {
+    console.log(error)
     throw new Error(
       "Ocurrió un error al guardar los datos de la preconsulta: " +
         error.message

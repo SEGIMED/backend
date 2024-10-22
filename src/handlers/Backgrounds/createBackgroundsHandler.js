@@ -56,7 +56,7 @@ const createBackgroundsHandler = async ({
       queryOptions
     );
     if (createdBackground) {
-      return newBackground;
+      return true;
     } else {
       await newBackground.update(
         {
