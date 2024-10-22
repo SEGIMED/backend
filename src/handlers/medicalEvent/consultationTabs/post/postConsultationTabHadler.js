@@ -80,9 +80,6 @@ const postConsultationTabHandler = async ({
     const medicationResponse = medication
       ? await createDrugPrescriptions(medication, transaction)
       : null;
-    medicalEventResponse === "Medicamentos creados con éxito"
-      ? (medicalEventResponse = true)
-      : null;
 
     await transaction.commit();
     return {
