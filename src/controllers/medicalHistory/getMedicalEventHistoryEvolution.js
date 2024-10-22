@@ -5,13 +5,15 @@ const getMedicalEventHistoryEvolutionController = async (req, res) => {
     const page = req.query.page;
     const limit = req.query.limit;
     const physicianId = req.query.physicianId;
+    const medicalSpecialtyId = req.query.medicalSpecialtyId;
     const MedicalEventHistory =
-      await getMedicalEventHistoryAndInterconsultationHandler(
+      await getMedicalEventHistoryAndInterconsultationHandler({
         patientId,
         physicianId,
+        medicalSpecialtyId,
         page,
         limit
-      );
+      });
     return res.status(200).json(MedicalEventHistory);
   } catch (error) {
     return res.status(500).json({ error: error.message });

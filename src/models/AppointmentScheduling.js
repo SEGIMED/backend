@@ -83,7 +83,7 @@ const model = (sequelize) => {
       },
       reasonForConsultation: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
         field: "reason_for_consultation",
       },
       healthCenter: {

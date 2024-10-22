@@ -1,30 +1,43 @@
 export const validationOnbording = (body) => {
+  const errors = [];
+
   if (typeof body.birthDate !== "string") {
-    return false;
+    errors.push("La fecha de nacimiento debe ser una cadena.");
   }
   if (typeof body.address !== "string") {
-    return false;
-  }
-  if (body.address.length <= 3 || body.address.length >= 50) {
-    return false;
+    errors.push("La dirección debe ser una cadena.");
+  } else if (body.address.length <= 3 || body.address.length >= 50) {
+    errors.push("La dirección debe tener entre 4 y 50 caracteres.");
   }
   if (typeof body.genre !== "number") {
-    return false;
+    errors.push("El género debe ser un número.");
   }
   if (typeof body.hipertPulm !== "boolean") {
-    return false;
+    errors.push("La hipertensión pulmonar debe ser un valor booleano.");
   }
   if (typeof body.centerAttention !== "number") {
-    return false;
+    errors.push("El centro de atención debe ser un número.");
   }
   if (typeof body.liveAlone !== "boolean") {
-    return false;
+    errors.push("El valor de vivir solo debe ser booleano.");
   }
   if (typeof body.hasTechUseDifficulty !== "boolean") {
-    return false;
+    errors.push(
+      "La dificultad para usar tecnología debe ser un valor booleano."
+    );
   }
   if (typeof body.needsCellphoneAssistance !== "boolean") {
-    return false;
+    errors.push(
+      "La necesidad de asistencia con el celular debe ser un valor booleano."
+    );
   }
-  return true;
+
+  if (errors.length === 0) {
+    return { valid: true };
+  }
+
+  return {
+    valid: false,
+    errors,
+  };
 };

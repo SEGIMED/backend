@@ -26,48 +26,43 @@ const model = (sequelize) => {
           key: "id",
         },
       },
-      chiefComplaint: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "chief_complaint",
-      },
       historyOfPresentIllness: {
         type: DataTypes.TEXT,
         allowNull: true,
         field: "history_of_present_illness",
-      },
-      reviewOfSystems: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        field: "review_of_systems",
       },
       treatmentPlan: {
         type: DataTypes.TEXT,
         allowNull: true,
         field: "treatment_plan",
       },
-      pendingDiagnosticTest: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        field: "pending_diagnostic_test",
-      },
       alarmPattern: {
         type: DataTypes.TEXT,
         allowNull: true,
         field: "alarm_pattern",
       },
-      diagnostic: {
+      primaryDiagnostic: {
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {
           model: "subcategories_cie_diez",
           key: "id",
         },
+        field: "primary_diagnostic",
       },
       diagnosticNotes: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "diagnostic_notes"
+        field: "diagnostic_notes",
+      },
+      reasonForConsultationId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        field: "reason_for_consultation_id",
+        references: {
+          model: "cat_consultation_reason",
+          key: "id",
+        },
       },
     },
     {

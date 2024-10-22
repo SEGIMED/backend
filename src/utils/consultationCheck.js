@@ -1,10 +1,20 @@
 import cron from "node-cron";
 import moment from "moment-timezone";
-import models from "../databaseConfig.js";
+import models, { sequelize } from "../databaseConfig.js";
 import { Op } from "sequelize";
 import scheduleReminderEmails from "./emailReminders/appointmentReminder.js";
 
-cron.schedule("0 7 * * *", async () => { 
+cron.schedule("0 * * * *", async () => {
+  try {
+    await sequelize.query("SELECT delete_unverified_users();");
+    console.log("Usuarios no verificados eliminados correctamente.");
+  } catch (error) {
+    console.log(error)
+    console.error("Error al borrar los usuarios no verificados");
+  }
+});
+
+cron.schedule("0 7 * * *", async () => {
   try {
     console.log("Enviando recordatorios de citas...");
     await scheduleReminderEmails();

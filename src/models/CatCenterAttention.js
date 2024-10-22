@@ -37,6 +37,11 @@ const model = (sequelize) => {
           key: "id",
         },
       },
+      urlMap: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        field:"url_map"
+      }
     },
     {
       tableName: "cat_center_attention",

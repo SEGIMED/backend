@@ -28,7 +28,7 @@ const getFilesHandler = async (userId, studyType, limit, page, scheduleId) => {
       },
       include: {
         model: models.CatStudyType,
-        as: "CatStudyTypePatientStudies",
+        as: "CatStudyType",
         attributes: ["name"],
       },
     });

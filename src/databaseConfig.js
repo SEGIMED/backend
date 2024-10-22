@@ -1,9 +1,7 @@
 import { Sequelize, SequelizeScopeError } from "sequelize";
 import cls from "cls-hooked";
 
-import AnthropometricDetailsModel from "./models/AnthropometricDetails.js";
 import AppointmentSchedulingModel from "./models/AppointmentScheduling.js";
-import CatAnthropometricMeasureTypeModel from "./models/CatAnthropometricMeasureType.js";
 import CatAppointmentModalityModel from "./models/CatAppointmentModality.js";
 import CatChatStatusModel from "./models/CatChatStatus.js";
 import CatDiagnosticTestTypeModel from "./models/CatDiagnosticTestType.js";
@@ -17,9 +15,6 @@ import CatWeekDayModel from "./models/CatWeekDay.js";
 import ChatModel from "./models/Chat.js";
 import ChatMessageModel from "./models/ChatMessage.js";
 import ChatUserModel from "./models/ChatUser.js";
-import DiagnosticTestModel from "./models/DiagnosticTest.js";
-import DiagnosticTestPrescriptionModel from "./models/DiagnosticTestPrescription.js";
-import DrugPrescriptionModel from "./models/DrugPrescription.js";
 import MedicalEventModel from "./models/MedicalEvent.js";
 import OneTimePasswordModel from "./models/OneTimePassword.js";
 import PhysicianAgendaConfigurationModel from "./models/PhysicianAgendaConfiguration.js";
@@ -43,10 +38,6 @@ import CatMedicalProcedureTypeModel from "./models/CatMedicalProcedureType.js";
 import MedicalIndicationsModel from "./models/MedicalIndications.js";
 import MedicalProcedurePrescriptionModel from "./models/MedicalProcedurePrescription.js";
 import MedicalReferralModel from "./models/MedicalReferral.js";
-import PatientDiagnosticModel from "./models/PatientDiagnostic.js";
-import PatientMedicalBackgroundModel from "./models/PatientMedicalBackground.js";
-import TherapyPrescriptionModel from "./models/TherapyPrescription.js";
-import CatTherapyModel from "./models/CatTherapy.js";
 import CatCivilStatusModel from "./models/CatCivilStatus.js";
 import CatGenreModel from "./models/CatGenre.js";
 import CatEducationalLevelModel from "./models/CatEducationalLevel.js";
@@ -58,11 +49,10 @@ import CatPhysicianExpertiseLevelModel from "./models/CatPhysicianExpertiseLevel
 import PatientReviewModel from "./models/PatientReview.js";
 import LoginRecordModel from "./models/LoginRecord.js";
 import PatientCardiovascularRiskModel from "./models/PatientCardiovascularRisk.js";
-import CatCardiovascularRiskModel from "./models/CatCardiovascularRisk.js";
 import PatientHeartFailureClassificationModel from "./models/PatientHeartFailureClassification.js";
 import CatHeartFailureClassificationModel from "./models/CatHeartFailureClassification.js";
 import PatientPulmonaryHypertensionRiskModel from "./models/PatientPulmonaryHypertensionRisk.js";
-import CatPulmonaryArterialHypertensionRiskModel from "./models/CatPulmonaryArterialHypertensionRisk.js";
+import CatRiskModel from "./models/CatRisk.js";
 import CatPainAreasModel from "./models/CatPainAreas.js";
 import CatPainDurationModel from "./models/CatPainDuration.js";
 import CatPainFrequencyModel from "./models/CatPainFrequency.js";
@@ -70,8 +60,6 @@ import CatPainScaleModel from "./models/CatPainScale.js";
 import CatPainTypeModel from "./models/CatPainType.js";
 import PatientPainMapModel from "./models/PatientPainMap.js";
 import PatientPulmonaryHypertensionGroupModel from "./models/PatientPulmonaryHypertensionGroup.js";
-import CatPulmonaryHypertensionGroupModel from "./models/CatPulmonaryHypertensionGroup.js";
-import CatSurgicalRiskModel from "./models/CatSurgicalRisk.js";
 import PatientSurgicalRiskModel from "./models/PatientSurgicalRisk.js";
 import UserCurrentLocationModel from "./models/UserCurrentLocation.js";
 import AlarmEventModel from "./models/AlarmEvent.js";
@@ -97,6 +85,16 @@ import PatientStudiesModel from "./models/PatientStudies.js";
 import SelfEvaluationEventModel from "./models/SelfEvaluationEvent.js";
 import CategoryCieDiezModel from "./models/CategoryCieDiez.js";
 import SubcategoriesCieDiezModel from "./models/SubCategoriesCieDiez.js";
+import PatientDiagnosticsModel from "./models/PatientDiagnostics.js";
+import GlycemiaRecordsModel from "./models/GlycemiaRecords.js";
+import CatComorbiditiesCategoriesModel from "./models/CatComorbiditiesCategories.js";
+import CatComorbiditiesDiseasesModel from "./models/CatComorbiditiesDiseases.js";
+import UserComorbiditiesModel from "./models/UserComorbidities.js";
+import CatConsultationReasonModel from "./models/CatConsultationReason.js";
+import PatientFunctionalClassModel from "./models/PatientFunctionalClass.js";
+import PhysicianFilesModel from "./models/physicianFiles.js";
+import CatFileTypeModel from "./models/CatFileType.js";
+import RequestTreatingPhysicianModel from "./models/RequestTreatingPhysician.js";
 
 // import
 //JUST USE FOR LOCAL ENVIRONMENT WITHOUT NODEMON
@@ -135,9 +133,7 @@ CatRoleModel(sequelize);
 CatCountryModel(sequelize);
 CatProvinceModel(sequelize);
 CatCityModel(sequelize);
-AnthropometricDetailsModel(sequelize);
 AppointmentSchedulingModel(sequelize);
-CatAnthropometricMeasureTypeModel(sequelize);
 CatAppointmentModalityModel(sequelize);
 CatChatStatusModel(sequelize);
 CatDiagnosticTestTypeModel(sequelize);
@@ -150,9 +146,6 @@ CatWeekDayModel(sequelize);
 ChatModel(sequelize);
 ChatMessageModel(sequelize);
 ChatUserModel(sequelize);
-DiagnosticTestModel(sequelize);
-DiagnosticTestPrescriptionModel(sequelize);
-DrugPrescriptionModel(sequelize);
 MedicalEventModel(sequelize);
 OneTimePasswordModel(sequelize);
 PhysicianAgendaConfigurationModel(sequelize);
@@ -173,10 +166,6 @@ CatMedicalProcedureTypeModel(sequelize);
 MedicalIndicationsModel(sequelize);
 MedicalProcedurePrescriptionModel(sequelize);
 MedicalReferralModel(sequelize);
-PatientDiagnosticModel(sequelize);
-PatientMedicalBackgroundModel(sequelize);
-TherapyPrescriptionModel(sequelize);
-CatTherapyModel(sequelize);
 CatCivilStatusModel(sequelize);
 CatGenreModel(sequelize);
 CatEducationalLevelModel(sequelize);
@@ -187,20 +176,17 @@ PhysicianReviewModel(sequelize);
 CatPhysicianExpertiseLevelModel(sequelize);
 PatientReviewModel(sequelize);
 LoginRecordModel(sequelize);
-CatCardiovascularRiskModel(sequelize);
 PatientCardiovascularRiskModel(sequelize);
 PatientHeartFailureClassificationModel(sequelize);
 CatHeartFailureClassificationModel(sequelize);
 PatientPulmonaryHypertensionRiskModel(sequelize);
-CatPulmonaryArterialHypertensionRiskModel(sequelize);
+CatRiskModel(sequelize);
 PatientPainMapModel(sequelize);
 CatPainAreasModel(sequelize);
 CatPainDurationModel(sequelize);
 CatPainFrequencyModel(sequelize);
 CatPainScaleModel(sequelize);
 CatPainTypeModel(sequelize);
-CatSurgicalRiskModel(sequelize);
-CatPulmonaryHypertensionGroupModel(sequelize);
 PatientPulmonaryHypertensionGroupModel(sequelize);
 PatientSurgicalRiskModel(sequelize);
 BackgroundsModel(sequelize);
@@ -227,13 +213,20 @@ PatientStudiesModel(sequelize);
 SelfEvaluationEventModel(sequelize);
 CategoryCieDiezModel(sequelize);
 SubcategoriesCieDiezModel(sequelize);
+PatientDiagnosticsModel(sequelize);
+GlycemiaRecordsModel(sequelize);
+CatComorbiditiesCategoriesModel(sequelize);
+CatComorbiditiesDiseasesModel(sequelize);
+UserComorbiditiesModel(sequelize);
+CatConsultationReasonModel(sequelize);
+PatientFunctionalClassModel(sequelize);
+PhysicianFilesModel(sequelize);
+CatFileTypeModel(sequelize);
+RequestTreatingPhysicianModel(sequelize);
 
 export const {
-  DiagnosticTest,
   AppointmentScheduling,
   MedicalEvent,
-  AnthropometricDetails,
-  CatAnthropometricMeasureType,
   PhysicianAgendaConfiguration,
   CatAppointmentModality,
   CatDiagnosticTestType,
@@ -250,8 +243,6 @@ export const {
   Chat,
   ChatMessage,
   ChatUser,
-  DiagnosticTestPrescription,
-  DrugPrescription,
   OneTimePassword,
   SociodemographicDetails,
   CatChatStatus,
@@ -271,10 +262,6 @@ export const {
   MedicalIndications,
   MedicalProcedurePrescription,
   MedicalReferral,
-  PatientDiagnostic,
-  PatientMedicalBackground,
-  TherapyPrescription,
-  CatTherapy,
   CatCivilStatus,
   CatGenre,
   CatEducationalLevel,
@@ -285,20 +272,17 @@ export const {
   CatPhysicianExpertiseLevel,
   PatientReview,
   LoginRecord,
-  CatCardiovascularRisk,
   PatientCardiovascularRisk,
   PatientHeartFailureClassification,
   CatHeartFailureClassification,
   PatientPulmonaryHypertensionRisk,
-  CatPulmonaryArterialHypertensionRisk,
+  CatRisk,
   PatientPainMap,
   CatPainAreas,
   CatPainDuration,
   CatPainFrequency,
   CatPainScale,
   CatPainType,
-  CatPulmonaryHypertensionGroup,
-  CatSurgicalRisk,
   PatientPulmonaryHypertensionGroup,
   PatientSurgicalRisk,
   UserCurrentLocation,
@@ -325,32 +309,25 @@ export const {
   SelfEvaluationEvent,
   CategoryCieDiez,
   SubCategoriesCieDiez,
+  PatientDiagnostics,
+  GlycemiaRecords,
+  CatComorbiditiesCategories,
+  CatComorbiditiesDiseases,
+  UserComorbidities,
+  CatConsultationReason,
+  PatientFunctionalClass,
+  PhysicianFiles,
+  CatFileType,
+  RequestTreatingPhysician,
 } = sequelize.models;
 
-DiagnosticTest.belongsTo(AppointmentScheduling, {
-  as: "scheduling_appointment_scheduling",
-  foreignKey: "scheduling",
-});
-AppointmentScheduling.hasMany(DiagnosticTest, {
-  as: "schDiagnosticTests",
-  foreignKey: "scheduling",
-});
 MedicalEvent.belongsTo(AppointmentScheduling, {
   as: "appSch",
   foreignKey: "scheduling",
 });
 AppointmentScheduling.hasOne(MedicalEvent, {
-  //creo que esta relacion se puede eliminar
   as: "medicalEvent",
   foreignKey: "scheduling",
-});
-AnthropometricDetails.belongsTo(CatAnthropometricMeasureType, {
-  as: "anthMeasType",
-  foreignKey: "measure_type",
-});
-CatAnthropometricMeasureType.hasMany(AnthropometricDetails, {
-  as: "anthropometric_details",
-  foreignKey: "measure_type",
 });
 PhysicianAgendaConfiguration.belongsTo(CatAppointmentModality, {
   as: "modality_cat_appointment_modality",
@@ -360,24 +337,9 @@ CatAppointmentModality.hasMany(PhysicianAgendaConfiguration, {
   as: "physician_agenda_configurations",
   foreignKey: "modality",
 });
-DiagnosticTest.belongsTo(CatDiagnosticTestType, {
-  as: "catDiagnosticTestType",
-  foreignKey: "test_type",
-});
-CatDiagnosticTestType.hasMany(DiagnosticTest, {
-  as: "diagnostic_tests",
-  foreignKey: "test_type",
-});
 User.belongsTo(CatIdType, { as: "userIdType", foreignKey: "id_type" });
 CatIdType.hasMany(User, { as: "users", foreignKey: "id_type" });
-CatAnthropometricMeasureType.belongsTo(CatMeasureUnit, {
-  as: "measUnit",
-  foreignKey: "measure_unit",
-});
-CatMeasureUnit.hasMany(CatAnthropometricMeasureType, {
-  as: "cat_anthropometric_measure_types",
-  foreignKey: "measure_unit",
-});
+
 CatVitalSignMeasureType.belongsTo(CatMeasureUnit, {
   as: "measUnit",
   foreignKey: "measure_unit",
@@ -457,38 +419,6 @@ ChatMessage.belongsTo(Chat, { as: "chat_chat", foreignKey: "chat" });
 Chat.hasMany(ChatMessage, { as: "chat_messages", foreignKey: "chat" });
 ChatUser.belongsTo(Chat, { as: "chat_chat", foreignKey: "chat" });
 Chat.hasMany(ChatUser, { as: "chat_users", foreignKey: "chat" });
-DiagnosticTest.belongsTo(DiagnosticTestPrescription, {
-  as: "testPrescription",
-  foreignKey: "diagnosticTestPrescription",
-});
-DiagnosticTestPrescription.hasMany(DiagnosticTest, {
-  as: "diagnosticTests",
-  foreignKey: "diagnosticTestPrescription",
-});
-DrugPrescription.belongsTo(MedicalEvent, {
-  as: "medical_event_medical_event",
-  foreignKey: "medical_event",
-});
-MedicalEvent.hasMany(DrugPrescription, {
-  as: "drugPrescriptions",
-  foreignKey: "medical_event",
-});
-AnthropometricDetails.belongsTo(User, {
-  as: "measSourcePhys",
-  foreignKey: "measure_source",
-});
-User.hasMany(AnthropometricDetails, {
-  as: "anthDetails",
-  foreignKey: "measure_source",
-});
-AnthropometricDetails.belongsTo(User, {
-  as: "patient_user",
-  foreignKey: "patient",
-});
-User.hasMany(AnthropometricDetails, {
-  as: "patientAnthDet",
-  foreignKey: "patient",
-});
 AppointmentScheduling.belongsTo(User, {
   as: "patientUser",
   foreignKey: "patient",
@@ -511,21 +441,6 @@ ChatMessage.belongsTo(User, { as: "sender_user", foreignKey: "sender" });
 User.hasMany(ChatMessage, { as: "sender_chat_messages", foreignKey: "sender" });
 ChatUser.belongsTo(User, { as: "user_user", foreignKey: "user" });
 User.hasMany(ChatUser, { as: "chat_users", foreignKey: "user" });
-DiagnosticTest.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
-User.hasMany(DiagnosticTest, { as: "diagnostic_tests", foreignKey: "patient" });
-DrugPrescription.belongsTo(User, { as: "patient_user", foreignKey: "patient" });
-User.hasMany(DrugPrescription, {
-  as: "drug_prescriptions",
-  foreignKey: "patient",
-});
-DrugPrescription.belongsTo(User, {
-  as: "prescribed_physician_user",
-  foreignKey: "prescribed_physician",
-});
-User.hasMany(DrugPrescription, {
-  as: "prescribed_physician_drug_prescriptions",
-  foreignKey: "prescribed_physician",
-});
 OneTimePassword.belongsTo(User, { as: "user_user", foreignKey: "user" });
 User.hasMany(OneTimePassword, { as: "oneTimePasswords", foreignKey: "user" });
 PhysicianAgendaConfiguration.belongsTo(User, {
@@ -577,6 +492,7 @@ PhysicianDetails.belongsTo(User, {
   as: "physicianUser",
   foreignKey: "physician",
 });
+User.hasOne(PhysicianDetails, { foreignKey: "physician", as: "details" });
 VitalSignDetails.belongsTo(AppointmentScheduling, {
   as: "appointmentSchedulingSings",
   foreignKey: "scheduling",
@@ -605,7 +521,7 @@ CatPhysicianExpertiseLevel.hasMany(PhysicianDetails, {
   as: "physicianDetails",
   foreignKey: "expertiseLevel",
 });
-CatCity.belongsTo(CatProvince, { as: "cityProvince", foreignKey: "province" });
+CatCity.belongsTo(CatProvince, { as: "provinces", foreignKey: "province" });
 CatCountry.hasMany(CatProvince, { as: "catProvinces", foreignKey: "country" });
 User.belongsTo(CatCountry, {
   as: "userNationality",
@@ -649,34 +565,11 @@ User.belongsTo(CatCity, {
   foreignKey: "currentLocation",
 });
 CatProvince.belongsTo(CatCountry, {
-  as: "provinceCountry",
+  as: "countries",
   foreignKey: "country",
 });
 CatProvince.hasMany(CatCity, { as: "catCities", foreignKey: "province" });
-MedicalEvent.belongsTo(SubCategoriesCieDiez, {
-  as: "diagnosedDisease",
-  foreignKey: "diagnostic",
-});
-SubCategoriesCieDiez.hasMany(MedicalEvent, {
-  as: "patientDiagnostics",
-  foreignKey: "diagnostic",
-});
-PatientMedicalBackground.belongsTo(CatDisease, {
-  as: "catDisease",
-  foreignKey: "disease",
-});
-CatDisease.hasMany(PatientMedicalBackground, {
-  as: "patientMedicalBackgrounds",
-  foreignKey: "disease",
-});
-PatientMedicalBackground.belongsTo(CatMedicalBackgroundType, {
-  as: "medicalBackgroundType",
-  foreignKey: "backgroundType",
-});
-CatMedicalBackgroundType.hasMany(PatientMedicalBackground, {
-  as: "patientMedicalBackgrounds",
-  foreignKey: "backgroundType",
-});
+
 MedicalProcedurePrescription.belongsTo(CatMedicalProcedure, {
   as: "catMedicalProcedure",
   foreignKey: "medicalProcedure",
@@ -700,22 +593,6 @@ MedicalReferral.belongsTo(CatMedicalSpecialty, {
 CatMedicalSpecialty.hasMany(MedicalReferral, {
   as: "medicalReferrals",
   foreignKey: "specialty",
-});
-TherapyPrescription.belongsTo(CatTherapy, {
-  as: "therapyCatTherapy",
-  foreignKey: "therapy",
-});
-CatTherapy.hasMany(TherapyPrescription, {
-  as: "therapyPrescriptions",
-  foreignKey: "therapy",
-});
-DiagnosticTestPrescription.belongsTo(MedicalEvent, {
-  as: "medicalEventMedicalEvent",
-  foreignKey: "medicalEvent",
-});
-MedicalEvent.hasMany(DiagnosticTestPrescription, {
-  as: "diagnosticTestExaminationPrescriptions",
-  foreignKey: "medicalEvent",
 });
 MedicalIndications.belongsTo(MedicalEvent, {
   as: "medicalEventMedicalEvent",
@@ -741,79 +618,7 @@ MedicalEvent.hasMany(MedicalReferral, {
   as: "medicalReferrals",
   foreignKey: "medicalEvent",
 });
-PatientDiagnostic.belongsTo(MedicalEvent, {
-  as: "medicalEventMedicalEvent",
-  foreignKey: "medicalEvent",
-});
-MedicalEvent.hasMany(PatientDiagnostic, {
-  as: "patientDiagnostics",
-  foreignKey: "medicalEvent",
-});
-TherapyPrescription.belongsTo(MedicalEvent, {
-  as: "medicalEventMedicalEvent",
-  foreignKey: "medicalEvent",
-});
-MedicalEvent.hasMany(TherapyPrescription, {
-  as: "therapyPrescriptions",
-  foreignKey: "medicalEvent",
-});
-PatientMedicalBackground.belongsTo(PatientDiagnostic, {
-  as: "diagnosticPatientDiagnostic",
-  foreignKey: "diagnostic",
-});
-PatientDiagnostic.hasMany(PatientMedicalBackground, {
-  as: "patientMedicalBackgrounds",
-  foreignKey: "diagnostic",
-});
-DiagnosticTest.belongsTo(User, { as: "patientUser", foreignKey: "patient" });
-DiagnosticTestPrescription.belongsTo(User, {
-  as: "patientUser",
-  foreignKey: "patient",
-});
-User.hasMany(DiagnosticTestPrescription, {
-  as: "diagnosticTestExaminationPrescriptions",
-  foreignKey: "patient",
-});
-DiagnosticTestPrescription.belongsTo(User, {
-  as: "prescribedPhysicianUser",
-  foreignKey: "prescribedPhysician",
-});
-User.hasMany(DiagnosticTestPrescription, {
-  as: "prescribedPhysicianDiagnosticTestPrescriptions",
-  foreignKey: "prescribedPhysician",
-});
-// MedicalIndications.belongsTo(User, {
-//   as: "patientUser",
-//   foreignKey: "patient",
-// });
-// User.hasMany(MedicalIndications, {
-//   as: "medicalIndications",
-//   foreignKey: "patient",
-// });
-// MedicalIndications.belongsTo(User, {
-//   as: "prescribedPhysicianUser",
-//   foreignKey: "prescribedPhysician",
-// });
-// User.hasMany(MedicalIndications, {
-//   as: "prescribedPhysicianMedicalIndications",
-//   foreignKey: "prescribedPhysician",
-// });
-// MedicalProcedurePrescription.belongsTo(User, {
-//   as: "patientUser",
-//   foreignKey: "patient",
-// });
-// User.hasMany(MedicalProcedurePrescription, {
-//   as: "medicalProcedurePrescriptions",
-//   foreignKey: "patient",
-// });
-// MedicalProcedurePrescription.belongsTo(User, {
-//   as: "prescribedPhysicianUser",
-//   foreignKey: "prescribedPhysician",
-// });
-// User.hasMany(MedicalProcedurePrescription, {
-//   as: "prescribedPhysicianMedicalProcedurePrescriptions",
-//   foreignKey: "prescribedPhysician",
-// });
+
 MedicalReferral.belongsTo(User, { as: "patientUser", foreignKey: "patient" });
 User.hasMany(MedicalReferral, {
   as: "medicalReferrals",
@@ -827,43 +632,7 @@ User.hasMany(MedicalReferral, {
   as: "prescribedByMedicalReferrals",
   foreignKey: "prescribedBy",
 });
-PatientDiagnostic.belongsTo(User, {
-  as: "diagnosedByUser",
-  foreignKey: "diagnosedBy",
-});
-User.hasMany(PatientDiagnostic, {
-  as: "patientDiagnostics",
-  foreignKey: "diagnosedBy",
-});
-PatientDiagnostic.belongsTo(User, { as: "patientUser", foreignKey: "patient" });
-User.hasMany(PatientDiagnostic, {
-  as: "patientPatientDiagnostics",
-  foreignKey: "patient",
-});
-PatientMedicalBackground.belongsTo(User, {
-  as: "patientUser",
-  foreignKey: "patient",
-});
-User.hasMany(PatientMedicalBackground, {
-  as: "patientMedicalBackgrounds",
-  foreignKey: "patient",
-});
-// TherapyPrescription.belongsTo(User, {
-//   as: "patientUser",
-//   foreignKey: "patient",
-// });
-// User.hasMany(TherapyPrescription, {
-//   as: "therapyPrescriptions",
-//   foreignKey: "patient",
-// });
-// TherapyPrescription.belongsTo(User, {
-//   as: "prescribedPhysicianUser",
-//   foreignKey: "prescribedPhysician",
-// });
-// User.hasMany(TherapyPrescription, {
-//   as: "prescribedPhysicianTherapyPrescriptions",
-//   foreignKey: "prescribedPhysician",
-// });
+
 SociodemographicDetails.belongsTo(CatCivilStatus, {
   as: "catCivilStatus",
   foreignKey: "civilStatus",
@@ -888,14 +657,6 @@ PatientPhysicalExamination.belongsTo(CatPhysicalSubsystem, {
   as: "catPhysicalSubsystem",
   foreignKey: "physicalSubsystem",
 });
-DiagnosticTest.belongsTo(MedicalEvent, {
-  as: "medicalEventMedicalEvent",
-  foreignKey: "medicalEvent",
-});
-MedicalEvent.hasMany(DiagnosticTest, {
-  as: "diagnosticTests",
-  foreignKey: "medicalEvent",
-});
 PatientPhysicalExamination.belongsTo(MedicalEvent, {
   as: "medicalEventMedicalEvent",
   foreignKey: "medicalEvent",
@@ -904,7 +665,6 @@ MedicalEvent.hasMany(PatientPhysicalExamination, {
   as: "patientPhysicalExaminations",
   foreignKey: "medicalEvent",
 });
-DrugPrescription.belongsTo(CatDrug, { as: "catDrug", foreignKey: "drug" });
 User.hasMany(PhysicianReview, {
   as: "patienPhysicianReview",
   foreignKey: "patientId",
@@ -929,7 +689,7 @@ PatientReview.belongsTo(User, {
 User.hasMany(PatientReview, { as: "patientReview", foreignKey: "patientId" });
 PatientReview.belongsTo(User, { as: "patient", foreignKey: "patientId" });
 User.hasMany(LoginRecord, { as: "loginRecord", foreignKey: "id" });
-PatientCardiovascularRisk.belongsTo(CatCardiovascularRisk, {
+PatientCardiovascularRisk.belongsTo(CatRisk, {
   as: "catCvRisk",
   foreignKey: "risk",
 });
@@ -941,12 +701,12 @@ CatHeartFailureClassification.hasMany(PatientHeartFailureClassification, {
   as: "patientHeartFailureClassifications",
   foreignKey: "heartFailureClassification",
 });
-PatientPulmonaryHypertensionRisk.belongsTo(
-  CatPulmonaryArterialHypertensionRisk,
-  { as: "catHpRisk", foreignKey: "pulmonaryHypertensionRisk" }
-);
-CatPulmonaryArterialHypertensionRisk.hasMany(PatientPulmonaryHypertensionRisk, {
-  as: "patientPulmonaryHypertensionRisks",
+PatientPulmonaryHypertensionRisk.belongsTo(CatRisk, {
+  as: "catHpRisk",
+  foreignKey: "pulmonaryHypertensionRisk",
+});
+CatRisk.hasMany(PatientPulmonaryHypertensionRisk, {
+  as: "patPHRisks",
   foreignKey: "pulmonaryHypertensionRisk",
 });
 PatientCardiovascularRisk.belongsTo(User, {
@@ -986,7 +746,7 @@ PatientPulmonaryHypertensionRisk.belongsTo(User, {
   foreignKey: "patient",
 });
 User.hasMany(PatientPulmonaryHypertensionRisk, {
-  as: "patientPulmonaryHypertensionRisks",
+  as: "patPHRisks",
   foreignKey: "patient",
 });
 PatientPulmonaryHypertensionRisk.belongsTo(User, {
@@ -1005,8 +765,6 @@ AppointmentScheduling.hasMany(PatientPainMap, {
   as: "patientPainMap",
   foreignKey: "scheduling",
 });
-// PatientPainMap.belongsTo(CatPainAreas, { as: "catPainArea", foreignKey: "painArea" });
-// CatPainAreas.hasMany(PatientPainMap, { as: "patientPainMaps", foreignKey: "painArea" });
 PatientPainMap.belongsTo(CatPainDuration, {
   as: "painDurationDetail",
   foreignKey: "painDuration",
@@ -1063,21 +821,21 @@ User.hasMany(PatientPainMap, {
   as: "painRecorderPatientPainMaps",
   foreignKey: "painRecorder",
 });
-PatientPulmonaryHypertensionGroup.belongsTo(CatPulmonaryHypertensionGroup, {
+PatientPulmonaryHypertensionGroup.belongsTo(CatRisk, {
   as: "catHpGroup",
-  foreignKey: "group", // La columna 'group' en PatientPulmonaryHypertensionGroup
-  targetKey: "id", // La columna 'id' en CatPulmonaryHypertensionGroup
+  foreignKey: "group",
+  targetKey: "id",
 });
-CatPulmonaryHypertensionGroup.hasMany(PatientPulmonaryHypertensionGroup, {
+CatRisk.hasMany(PatientPulmonaryHypertensionGroup, {
   as: "hpGroup",
   foreignKey: "group",
 });
 
-PatientSurgicalRisk.belongsTo(CatSurgicalRisk, {
+PatientSurgicalRisk.belongsTo(CatRisk, {
   as: "catSurgicalRisk",
   foreignKey: "risk",
 });
-CatSurgicalRisk.hasMany(PatientSurgicalRisk, {
+CatRisk.hasMany(PatientSurgicalRisk, {
   as: "surgicalRisk",
   foreignKey: "risk",
 });
@@ -1145,11 +903,15 @@ User.hasMany(ProvisionalPreConsultation, {
   foreignKey: "patient",
 });
 ProvisionalPreConsultation.belongsTo(AppointmentScheduling, {
-  as: "ProvisionalPreConsultationSchedule",
+  as: "ProvisionalPreConsultation",
+  foreignKey: "appointment_schedule",
+});
+ProvisionalPreConsultation.belongsTo(AppointmentScheduling, {
+  as: "appointmentScheduleDetails",
   foreignKey: "appointment_schedule",
 });
 AppointmentScheduling.hasOne(ProvisionalPreConsultation, {
-  as: "ProvisionalPreConsultationSchedule",
+  as: "ProvisionalPreConsultation",
   foreignKey: "appointment_schedule",
 });
 ProvisionalPreConsultation.belongsTo(PatientPainMap, {
@@ -1188,14 +950,6 @@ PhysicianFavoritePatient.belongsTo(User, {
   foreignKey: "physicianId",
   as: "physician",
 });
-User.belongsTo(PhysicianDetails, {
-  as: "treatingPhysicianId",
-  foreignKey: "treatingPhysician",
-});
-PhysicianDetails.hasMany(User, {
-  as: "treatingPhysician",
-  foreignKey: "treatingPhysician",
-});
 AppointmentScheduling.hasMany(PatientPhysicalExamination, {
   as: "physicalAppointment",
   foreignKey: "appointment_scheduling",
@@ -1222,16 +976,6 @@ CatCenterAttention.hasMany(SociodemographicDetails, {
   as: "sociodemographicDetails",
   foreignKey: "centerAttention",
 });
-// AppointmentScheduling.belongsTo(CatCenterAttention, {
-//   as: "CenterAttention",
-//   foreignKey: "healthCenter",
-// });
-// CatCenterAttention.hasMany(AppointmentScheduling, {
-//   as: "AppointmentSchedulings",
-//   foreignKey: "healthCenter",
-// });
-
-// Relación entre AppointmentScheduling y CatCenterAttention
 
 AppointmentScheduling.belongsTo(CatCenterAttention, {
   as: "healthCenterDetails", // Alias para usar en las consultas
@@ -1252,18 +996,28 @@ CatCity.hasMany(CatCenterAttention, { foreignKey: "city" });
 User.hasOne(PhysicianOnboarding, { foreignKey: "idPhysician" });
 PhysicianOnboarding.belongsTo(User, { foreignKey: "idPhysician" });
 PhysicianOnboarding.belongsTo(CatGenre, { foreignKey: "genre" });
-PhysicianOnboarding.belongsTo(CatCenterAttention, {
-  foreignKey: "centerAttention",
+
+User.hasMany(AttendentPlace, {
+  foreignKey: "id_physician",
+  sourceKey: "id",
 });
-PhysicianOnboarding.belongsToMany(CatCenterAttention, {
-  through: AttendentPlace,
-  foreignKey: "idPhysician",
+
+AttendentPlace.belongsTo(User, {
+  foreignKey: "id_physician",
+  targetKey: "id",
 });
-CatCenterAttention.belongsToMany(PhysicianOnboarding, {
-  through: AttendentPlace,
-  foreignKey: "idCenterAttention",
+
+CatCenterAttention.hasMany(AttendentPlace, {
+  as: "center",
+  foreignKey: "id_center_attention",
+  sourceKey: "id",
 });
-// Relaciones del modelo MedicalInterconsultations
+
+AttendentPlace.belongsTo(CatCenterAttention, {
+  as: "center",
+  foreignKey: "id_center_attention",
+  targetKey: "id",
+});
 
 User.hasOne(MedicalInterconsultations, {
   foreignKey: "physicianRequester",
@@ -1403,7 +1157,7 @@ User.hasMany(PrescriptionModificationsHistory, {
 
 PrescriptionModificationsHistory.belongsTo(DrugDetailPresentation, {
   foreignKey: "drugDetailPresentationId",
-  as: "drugDetailPresentation",
+  as: "drugDetailPresentations",
 });
 DrugDetailPresentation.hasMany(PrescriptionModificationsHistory, {
   foreignKey: "drugDetailPresentationId",
@@ -1428,11 +1182,11 @@ PatientMedicalReq.belongsTo(User, {
   as: "physicianReq",
 });
 CatStudyType.hasMany(PatientStudies, {
-  as: "CatStudyTypePatientStudies",
+  as: "CatStudyType",
   foreignKey: "studyType",
 });
 PatientStudies.belongsTo(CatStudyType, {
-  as: "CatStudyTypePatientStudies",
+  as: "CatStudyType",
   foreignKey: "studyType",
 });
 AppointmentScheduling.hasMany(PatientStudies, {
@@ -1480,14 +1234,14 @@ PrescriptionModificationsHistory.belongsTo(PhysicianOrders, {
   as: "medicalOrder",
 });
 
-PhysicianOrders.belongsTo(SubCategoriesCieDiez,{
-  foreignKey:"diagnostic",
-  as:"orderDiagnostic"
-})
-SubCategoriesCieDiez.hasOne(PhysicianOrders,{
-  foreignKey:"diagnostic",
-  as:"physicianOrder"
-})
+PhysicianOrders.belongsTo(SubCategoriesCieDiez, {
+  foreignKey: "diagnostic",
+  as: "orderDiagnostic",
+});
+SubCategoriesCieDiez.hasOne(PhysicianOrders, {
+  foreignKey: "diagnostic",
+  as: "physicianOrder",
+});
 
 SelfEvaluationEvent.belongsTo(User, {
   foreignKey: "patient",
@@ -1512,11 +1266,120 @@ SubCategoriesCieDiez.belongsTo(CategoryCieDiez, {
   foreignKey: "categoryId",
   as: "category",
 });
+PatientDiagnostics.belongsTo(MedicalEvent, {
+  foreignKey: "medicalEvent",
+  as: "medicalEventDiagnostic",
+});
+
+MedicalEvent.hasMany(PatientDiagnostics, {
+  foreignKey: "medicalEvent",
+  as: "medicalEventDiagnostics",
+});
+
+PatientDiagnostics.belongsTo(SubCategoriesCieDiez, {
+  foreignKey: "diagnostic",
+  as: "cie10subCategory",
+});
+SubCategoriesCieDiez.hasMany(PatientDiagnostics, {
+  foreignKey: "diagnostic",
+  as: "diagnostic",
+});
+SelfEvaluationEvent.hasMany(GlycemiaRecords, {
+  foreignKey: "selfEvaluationEvent",
+  as: "glycemia",
+});
+MedicalEvent.hasMany(GlycemiaRecords, {
+  foreignKey: "medicalEvent",
+  as: "glycemia",
+});
+CatComorbiditiesCategories.hasMany(CatComorbiditiesDiseases, {
+  foreignKey: "categoryId",
+  as: "diseases",
+});
+CatComorbiditiesDiseases.belongsTo(CatComorbiditiesCategories, {
+  foreignKey: "categoryId",
+  as: "category",
+});
+
+User.hasMany(UserComorbidities, {
+  foreignKey: "patientId",
+  as: "comorbidities",
+});
+
+UserComorbidities.belongsTo(User, {
+  foreignKey: "patientId",
+  as: "user",
+});
+
+CatComorbiditiesDiseases.hasMany(UserComorbidities, {
+  foreignKey: "diseaseId",
+  as: "userComorbidities",
+});
+
+UserComorbidities.belongsTo(CatComorbiditiesDiseases, {
+  foreignKey: "diseaseId",
+  as: "disease",
+});
+
+MedicalEvent.belongsTo(CatConsultationReason, {
+  foreignKey: "reasonForConsultationId",
+  as: "reasonForConsultation",
+});
+
+CatConsultationReason.hasMany(MedicalEvent, {
+  foreignKey: "reasonForConsultationId",
+  as: "medicalEvents",
+});
+MedicalEvent.belongsTo(SubCategoriesCieDiez, {
+  foreignKey: "primaryDiagnostic",
+  as: "mainDiagnostic",
+});
+
+SubCategoriesCieDiez.hasOne(MedicalEvent, {
+  foreignKey: "primaryDiagnostic",
+  as: "medicalEvent",
+});
+
+PatientFunctionalClass.belongsTo(CatRisk, {
+  foreignKey: "class",
+  as: "category",
+});
+
+PhysicianFiles.belongsTo(User, {
+  foreignKey: "physicianId",
+  as: "physician",
+});
+User.hasMany(PhysicianFiles, {
+  foreignKey: "physicianId",
+  as: "files",
+});
+PhysicianFiles.belongsTo(CatFileType, {
+  foreignKey: "fileType",
+});
+CatFileType.hasMany(PhysicianFiles, {
+  foreignKey: "fileType",
+  as: "physicianFiles",
+});
+
+RequestTreatingPhysician.belongsTo(User, {
+  foreignKey: "physician",
+  as: "physicianRequest",
+});
+RequestTreatingPhysician.belongsTo(User, {
+  foreignKey: "patient",
+  as: "patientRequest",
+});
+User.hasMany(RequestTreatingPhysician, {
+  foreignKey: "patient",
+  as: "patientRequest",
+});
+User.hasMany(RequestTreatingPhysician, {
+  foreignKey: "physician",
+  as: "physicianRequest",
+});
 
 const models = {
-  AnthropometricDetails,
   AppointmentScheduling,
-  CatAnthropometricMeasureType,
   CatAppointmentModality,
   CatChatStatus,
   CatDiagnosticTestType,
@@ -1530,9 +1393,6 @@ const models = {
   Chat,
   ChatMessage,
   ChatUser,
-  DiagnosticTest,
-  DiagnosticTestPrescription,
-  DrugPrescription,
   MedicalEvent,
   OneTimePassword,
   PhysicianAgendaConfiguration,
@@ -1556,10 +1416,6 @@ const models = {
   MedicalIndications,
   MedicalProcedurePrescription,
   MedicalReferral,
-  PatientDiagnostic,
-  PatientMedicalBackground,
-  TherapyPrescription,
-  CatTherapy,
   CatCivilStatus,
   CatGenre,
   CatEducationalLevel,
@@ -1570,20 +1426,17 @@ const models = {
   CatPhysicianExpertiseLevel,
   PatientReview,
   LoginRecord,
-  CatCardiovascularRisk,
   PatientCardiovascularRisk,
   PatientHeartFailureClassification,
   CatHeartFailureClassification,
   PatientPulmonaryHypertensionRisk,
-  CatPulmonaryArterialHypertensionRisk,
+  CatRisk,
   PatientPainMap,
   CatPainAreas,
   CatPainDuration,
   CatPainFrequency,
   CatPainScale,
   CatPainType,
-  CatSurgicalRisk,
-  CatPulmonaryHypertensionGroup,
   PatientPulmonaryHypertensionGroup,
   PatientSurgicalRisk,
   AlarmEvent,
@@ -1609,6 +1462,16 @@ const models = {
   SelfEvaluationEvent,
   CategoryCieDiez,
   SubCategoriesCieDiez,
+  PatientDiagnostics,
+  GlycemiaRecords,
+  CatComorbiditiesCategories,
+  CatComorbiditiesDiseases,
+  UserComorbidities,
+  CatConsultationReason,
+  PatientFunctionalClass,
+  PhysicianFiles,
+  CatFileType,
+  RequestTreatingPhysician,
 };
 
 export default models;

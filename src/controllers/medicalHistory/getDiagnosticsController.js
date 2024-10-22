@@ -2,8 +2,15 @@ import getDiagnosticHandler from "../../handlers/medicalHistory/getDiagnosticsHa
 
 const getDiagnosticController = async (req, res) => {
   try {
-    const { patientId } = req.query;
-    const data = await getDiagnosticHandler(patientId);
+    const { patientId, physicianId, medicalSpecialtyId, page, limit } =
+      req.query;
+    const data = await getDiagnosticHandler({
+      patientId,
+      physicianId,
+      medicalSpecialtyId,
+      page,
+      limit,
+    });
     return res.status(200).json(data);
   } catch (error) {
     console.log(error);

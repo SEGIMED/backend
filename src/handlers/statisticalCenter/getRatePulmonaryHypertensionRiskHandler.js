@@ -1,4 +1,4 @@
-import { PatientPulmonaryHypertensionRisk, CatPulmonaryArterialHypertensionRisk, User } from "../../databaseConfig.js";
+import { PatientPulmonaryHypertensionRisk, CatRisk, User } from "../../databaseConfig.js";
 import { Sequelize } from "sequelize";
 import SegimedAPIError from "../../error/SegimedAPIError.js";
 
@@ -9,7 +9,7 @@ const getRatePulmonaryHypertensionRiskHandler = async (physicianId) => {
 
         // Si physicianId está definido, agregar la condición de filtro
         const includeClause = [{
-            model: CatPulmonaryArterialHypertensionRisk,
+            model: CatRisk,
             as: 'catHpRisk',
             attributes: ['name', 'description']
         }];

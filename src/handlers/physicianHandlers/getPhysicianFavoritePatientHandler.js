@@ -2,7 +2,7 @@ import {
   PhysicianFavoritePatient,
   User,
   PatientPulmonaryHypertensionRisk,
-  CatPulmonaryArterialHypertensionRisk,
+  CatRisk,
 } from "../../databaseConfig.js";
 
 import SegimedAPIError from "../../error/SegimedAPIError.js";
@@ -44,9 +44,9 @@ const getPhysicianFavoritePatientHandler = async (
             include: [
               {
                 model: PatientPulmonaryHypertensionRisk,
-                as: "patientPulmonaryHypertensionRisks",
+                as: "patPHRisks",
                 include: {
-                  model: CatPulmonaryArterialHypertensionRisk,
+                  model: CatRisk,
                   as: "catHpRisk",
                   attributes: ["name"],
                   ...(risk
@@ -82,13 +82,13 @@ const getPhysicianFavoritePatientHandler = async (
       geolocation: favPatient.user.geolocation,
       id_type: favPatient.user.id_type,
       patientPulmonaryHypertensionRisks:
-        favPatient.user.patientPulmonaryHypertensionRisks?.length > 0
+        favPatient.user.patPHRisks?.length > 0
           ? {
               risk:
-                favPatient.user.patientPulmonaryHypertensionRisks[0].catHpRisk
+                favPatient.user.patPHRisks[0].catHpRisk
                   ?.name || null,
               timestamp:
-                favPatient.user.patientPulmonaryHypertensionRisks[0]
+                favPatient.user.patPHRisks[0]
                   .registerTimestamp,
             }
           : null,

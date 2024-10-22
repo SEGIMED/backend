@@ -8,7 +8,7 @@ import swaggerOptions from "./swaggerOptions.js";
 import swaggerUI from "swagger-ui-express";
 import { validateJWT } from "./utils/JWTInterceptor.js";
 import contextService from "request-context";
-import './utils/consultationCheck.js';
+import "./utils/consultationCheck.js";
 
 import {
   patientRouter,
@@ -20,14 +20,10 @@ import {
   medicalEventRouter,
   schedulingRouter,
   vitalSignsRouter,
-  anthropometricDetailsRouter,
-  medicalBackgroundsRouter,
-  diagnosticTestRouter,
   statisticsRouter,
   drugPrescriptionRouter,
   procedurePrescriptionRouter,
   medicalReferralRouter,
-  therapyPrescriptionRouter,
   medicalIndicationsRouter,
   sociodemographicDetailsRouter,
   alarmRouter,
@@ -38,11 +34,14 @@ import {
   getAllNotificationsPhysicianRouter,
   notificationsRouter,
   doctorScheduleRouter,
-  // centerAttRouter,
   interconsultationRouter,
   interconsultationDetailsRouter,
   medicalHistoryRouter,
-  selfEvaluationEventRouter
+  selfEvaluationEventRouter,
+  comorbiditiesRouter,
+  treatingPhysicianRouter,
+  profileRouter,
+  adminRouter,
 } from "./routes/routes.js";
 
 const corsOptions = {
@@ -82,21 +81,17 @@ app.use("/api", patientRouter);
 app.use("/api", getPatientsRouter);
 app.use("/api", physicianRouter);
 app.use("/api", getPatientsFilterRouter);
-app.use("/api", userRouter);
+app.use("/api/user", userRouter);
 app.use("/api", catalogsRouter);
 app.use("/api", schedulingRouter);
-app.use("/api", medicalEventRouter);
-app.use("/api", vitalSignsRouter);
-app.use("/api", anthropometricDetailsRouter);
-app.use("/api", medicalBackgroundsRouter);
+app.use("/api/medical-event", medicalEventRouter);
+app.use("/api/vital-signs", vitalSignsRouter);
 app.use("/api", statisticsRouter);
-app.use("/api", diagnosticTestRouter);
 app.use("/api", drugPrescriptionRouter);
 app.use("/api", procedurePrescriptionRouter);
 app.use("/api", medicalReferralRouter);
-app.use("/api", therapyPrescriptionRouter);
 app.use("/api", medicalIndicationsRouter);
-app.use("/api", sociodemographicDetailsRouter);
+app.use("/api/sociodemographic-details", sociodemographicDetailsRouter);
 app.use("/api", alarmRouter);
 app.use("/api", preConsultationRouter);
 app.use("/api", backgroundsRouter);
@@ -105,11 +100,15 @@ app.use("/api", onbordingRouter);
 app.use("/api", getAllNotificationsPatienRouter);
 app.use("/api", getAllNotificationsPhysicianRouter);
 app.use("/api", notificationsRouter);
+app.use("/api", comorbiditiesRouter);
+app.use("/api", treatingPhysicianRouter);
+app.use("/api/profile", profileRouter);
+app.use("/api/admin", adminRouter);
 
 app.use("/api", interconsultationRouter);
 app.use("/api", interconsultationDetailsRouter);
-app.use("/api/medical-history", medicalHistoryRouter)
-app.use("/api/self-evaluation-event", selfEvaluationEventRouter)
+app.use("/api/medical-history", medicalHistoryRouter);
+app.use("/api/self-evaluation-event", selfEvaluationEventRouter);
 
 app.use("/api/doc", swaggerUI.serve, swaggerUI.setup(swaggerOptions));
 

@@ -4,18 +4,37 @@ import {
   MedicalEvent,
   User,
 } from "../../databaseConfig.js";
-import { mapMedicalEventEvolution } from "../../mapper/medicalEvent/medicalEventMapper.js";
 import interconsultationsMapper from "../../mapper/interconsultation/interconsultationsMapper.js";
 import getInterconsultationsByPatientIdHandler from "../medicalEvent/getInterconsultationsByPatientIdHandler.js";
 import universalPaginationHandler from "../Pagination/universalPaginationHandler.js";
 import universalOrderByHandler from "../Pagination/universalOrderByHandler.js";
 
-const getMedicalEventHistoryAndInterconsultationHandler = async (
+export const mapMedicalEventEvolution = (medicalEvent) => {
+  return {
+    timestamp: medicalEvent.appSch?.scheduledStartTimestamp, //
+    chiefComplaint: medicalEvent.appSch?.reasonForConsultation,
+
+    physician: {
+      id: medicalEvent.appSch?.physicianThatAttend?.id,
+      name: medicalEvent.appSch?.physicianThatAttend?.name,
+      lastname: medicalEvent.appSch?.physicianThatAttend?.lastname,
+    },
+    attendancePlace: {
+      id: medicalEvent?.appSch?.attendancePlace?.id,
+      alias: medicalEvent?.appSch?.attendancePlace?.alias,
+    },
+    physicianComments: medicalEvent?.medicalOpinion || "",
+    historyOfPresentIllness: medicalEvent?.historyOfPresentIllness,
+  };
+};
+
+const getMedicalEventHistoryAndInterconsultationHandler = async ({
   patientId,
   physicianId,
+  medicalSpecialtyId,
   page,
-  limit
-) => {
+  limit,
+}) => {
   try {
     const filters = {
       schedulingStatus: 2, // 2 = atendida
@@ -26,6 +45,9 @@ const getMedicalEventHistoryAndInterconsultationHandler = async (
     }
     if (physicianId) {
       filters.physician = physicianId;
+    }
+    if (medicalSpecialtyId) {
+      filters.medicalSpecialty = medicalSpecialtyId;
     }
 
     const medicalEventHistory = await MedicalEvent.findAll({
@@ -55,13 +77,18 @@ const getMedicalEventHistoryAndInterconsultationHandler = async (
     const medicalEvent = medicalEventHistory.map((event) =>
       mapMedicalEventEvolution(event)
     );
-    const interconsultations = await getInterconsultationsByPatientIdHandler(
-      patientId
-    );
-    const interconsultasArray = interconsultationsMapper(interconsultations);
-    let result = await universalOrderByHandler(
-      medicalEvent.concat(interconsultasArray)
-    );
+    let result;
+    if (!medicalSpecialtyId) {
+      const interconsultations = await getInterconsultationsByPatientIdHandler(
+        patientId
+      );
+      const interconsultasArray = interconsultationsMapper(interconsultations);
+       result = await universalOrderByHandler(
+        medicalEvent.concat(interconsultasArray)
+      );
+    } else {
+      result = medicalEvent
+    }
     if (page && limit) {
       return universalPaginationHandler(result, page, limit);
     } else {

@@ -2,10 +2,8 @@ import { Router } from "express";
 import getPatientsController from "../controllers/patient/getPatientsController.js";
 import getPatientsFilterController from "../controllers/patient/getPatientsFilterController.js";
 import getPatientController from "../controllers/patient/getPatientController.js";
-// import postPatientController from "../controllers/patient/postPatientController.js";
 import patchPatientController from "../controllers/patient/patchPatientController.js";
 import deletePatientController from "../controllers/patient/deletePatientController.js";
-import getPhysicianInformationController from "../controllers/physician/getPhysicianInformationController.js";
 import getAllPhysiciansController from "../controllers/physician/getAllPhysiciansController.js";
 import getPhysicianByNameLikeController from "../controllers/physician/getPhysicianByNameLikeController.js";
 import getPhysiciansBySpecialtyIdController from "../controllers/physician/getPhysiciansBySpecialtyIdController.js";
@@ -19,39 +17,25 @@ import recoverPasswordController from "../controllers/user/recoverPasswordContro
 import modifyPasswordWithOtpController from "../controllers/user/modifyPasswordWithOtpController.js";
 import getCatalogController from "../controllers/catalog/getCatalogController.js";
 import createSchedulingController from "../controllers/scheduling/createSchedulingController.js";
-import createMedicalEventController from "../controllers/medicalEvent/createMedicalEventController.js";
-import getPatientDetailsController from "../controllers/patient/getPatientDetailsController.js";
 import getAllUsersController from "../controllers/user/getAllUsersController.js";
 import getAllSchedulesController from "../controllers/scheduling/getAllSchedulesController.js";
-import createVitalSignsController from "../controllers/vitalSigns/createVitalSignsController.js";
-import createAnthropometricDetailController from "../controllers/anthropometricDetails/createAnthropometricDetailController.js";
-import createMedicalBackgroundsController from "../controllers/medicalBackgrounds/medicalBackgroundsController.js";
 import patchScheduleController from "../controllers/scheduling/patchScheduleController.js";
 import deleteSchedulingController from "../controllers/scheduling/deleteSchedulingController.js";
 import createPhysicianReviewController from "../controllers/physician/reviewPhysician/createPhysicianReviewController.js";
 import getAllReviewsForPhisicianController from "../controllers/physician/reviewPhysician/getAllReviewsForPhysicianController.js";
 import getAllReviewsMadeByPatientController from "../controllers/physician/reviewPhysician/getAllReviewsMadeByPatientController.js";
 import patchPhysicianReviewController from "../controllers/physician/reviewPhysician/patchPhysicianReviewController.js";
-import createDiagnosticTestController from "../controllers/diagnosticTest/createDiagnosticTestController.js";
-import createPatientDiagnosticController from "../controllers/patient/createPatientDiagnosticController.js";
-import patchDiagnosticTestController from "../controllers/diagnosticTest/patchDiagnosticTestController.js";
 import getGenderDistributionController from "../controllers/statisticalCenter/getGenderDistributionController.js";
 import getPatientActivityDistributionController from "../controllers/statisticalCenter/getPatientActivityDistributionController.js";
 import getGeneralStatisticsController from "../controllers/statisticalCenter/getGeneralStatisticsController.js";
 import createDrugPrescriptionController from "../controllers/drugPrescription/createDrugPrescriptionController.js";
 import createMedicalProcedurePrescriptionController from "../controllers/medicalProcedurePrescription/createMedicalProcedurePrescriptionController.js";
 import createMedicalReferralController from "../controllers/medicalReferral/createMedicalReferralController.js";
-import createTherapyPrescriptionController from "../controllers/therapy/createTherapyPrescriptionController.js";
 import createPatientPhysicalExaminationController from "../controllers/patient/patientPhysicianExamCtrls/createPatientPhysicalExaminationController.js";
 import updatePatientPhysicalExaminationController from "../controllers/patient/patientPhysicianExamCtrls/updatePatientPhysicalExaminationController.js";
-import updateVitalSignsController from "../controllers/vitalSigns/updateVitalSignsController.js";
-import updateTherapyPrescriptionController from "../controllers/therapy/updateTherapyPrescriptionController.js";
 import updateMedicalReferralController from "../controllers/medicalReferral/updateMedicalReferralController.js";
 import updateMedicalProcedurePrescriptionController from "../controllers/medicalProcedurePrescription/updateMedicalProcedurePrescriptionController.js";
 import updateDrugPrescriptionController from "../controllers/drugPrescription/updateDrugPrescriptionController.js";
-import updatePatientDiagnosticController from "../controllers/patient/updatePatientDiagnosticController.js";
-import updateMedicalBackgroundsController from "../controllers/medicalBackgrounds/updateMedicalBackgroundsController.js";
-import updateAnthropometricDetailController from "../controllers/anthropometricDetails/updateAnthropometricDetailsController.js";
 import createPhysicianMedicalRegisterController from "../controllers/physician/createPhysicianMedicalRegisterController.js";
 import createPhysicianAttendancePlaceController from "../controllers/physician/createPhysicianAttendancePlaceController.js";
 import createPhysicianSpecialtyController from "../controllers/physician/createPhysicianSpecialtyController.js";
@@ -66,7 +50,6 @@ import getAllReviewsMadeByPhysicianController from "../controllers/patient/revie
 import patchPatientReviewController from "../controllers/patient/reviewPatient/patchPatientReviewController.js";
 import getUserController from "../controllers/user/getUserController.js";
 import updateUserInformationController from "../controllers/user/updateUserInformationController.js";
-import createCardiovascularRiskController from "../controllers/patient/patientRisk/createCardiovascularRiskController.js";
 import createHeartFailureClassificationController from "../controllers/patient/patientRisk/createHeartFailureClassificationController.js";
 import createPulmonaryHypertensionRiskController from "../controllers/patient/patientRisk/createPulmonaryHypertensionRiskController.js";
 import createPatientPainMapController from "../controllers/painMap/createPatientPainMapController.js";
@@ -74,23 +57,15 @@ import updatePhysicianController from "../controllers/physician/updateFullPhysic
 import updateMedicalEventController from "../controllers/medicalEvent/updateMedicalEventController.js";
 import createSociodemographicDetailsController from "../controllers/sociodemographicDetails/createSociodemographicDetailsController.js";
 import updateSociodemographicDetailsController from "../controllers/sociodemographicDetails/updateSociodemographicDetailsController.js";
-import createSurgicalRiskController from "../controllers/patient/patientRisk/createSurgicalRiskController.js";
 import createPatientHpGroupController from "../controllers/patient/createPatientHpGroupController.js";
 import updatePatientHpGroupController from "../controllers/patient/updatePatientHpGroupController.js";
-import updateSurgicalRiskController from "../controllers/patient/patientRisk/updateSurgicalRiskController.js";
-import updateHpRiskController from "../controllers/patient/patientRisk/updatePulmonaryHypertensionRiskController.js";
 import updateHeartFailureClassificationController from "../controllers/patient/patientRisk/updateHeartFailureClassificationController.js";
-import updateCardiovascularRiskController from "../controllers/patient/patientRisk/updateCardiovascularRiskController.js";
 import updateFullPatientController from "../controllers/patient/updateFullPatientController.js";
-import getMedicalEventHistoryController from "../controllers/medicalEvent/getMedicalEventHistoryController.js";
 import getMedicalEventHistoryEvolutionController from "../controllers/medicalHistory/getMedicalEventHistoryEvolution.js";
-import getMedicalEventDetailController from "../controllers/medicalEvent/getMedicalEventDetailController.js";
 import createBackgroundsController from "../controllers/backgrounds/createBackgroundsController.js";
-import updateBackgroundsController from "../controllers/backgrounds/updatebackgroundsController.js";
 import createAlarmEventController from "../controllers/alarmEvent/createAlarmEventController.js";
 import getAllAlarmsForPatientController from "../controllers/alarmEvent/getAllAlarmsForPatientController.js";
 import patchAlarmEventController from "../controllers/alarmEvent/patchAlarmEventController.js";
-import createPreConsultationController from "../controllers/patient/preConsultation/ProvisionalPreConsultationController.js";
 import getAllProvisionaPreConsultationPatientController from "../controllers/patient/preConsultation/getAllProvisionaPreConsultationPatientController.js";
 import patchProvisionalPreConsultationController from "../controllers/patient/preConsultation/patchProvisionalPreConsultationController.js";
 import createSchedule from "../controllers/managementSchedule/createAttention.js";
@@ -124,7 +99,6 @@ import getNewPatientDetailsController from "../controllers/medicalHistory/getNew
 import physicalSelfEvaluationController from "../controllers/painMap/physicalSelfEvaluationController.js";
 import getPainMapController from "../controllers/medicalHistory/getPainMapController.js";
 import patchPatientStudiesController from "../controllers/patient/patientStudies/patchPatientStudiesController.js";
-import getVitalSignsDetailController from "../controllers/medicalHistory/getVitalSignsdetailController.js";
 import getVitalSignsController from "../controllers/medicalHistory/getVitalSignsController.js";
 import createRegisterCie10Ctrl from "../controllers/cieDiezCtrl/createRegisterCie10Ctrl.js";
 import getCatAndSubCatCtrl from "../controllers/cieDiezCtrl/getCat&SubCatCie10Ctrl.js";
@@ -132,6 +106,36 @@ import updateStatusSchedulingCtrl from "../controllers/scheduling/updateStatusSc
 import searchCIEController from "../controllers/cieDiezCtrl/searchCIEController.js";
 import getPatientPhysicianExamCtrl from "../controllers/medicalHistory/getPatientPhysicianExamCtrl.js";
 import getDiagnosticController from "../controllers/medicalHistory/getDiagnosticsController.js";
+import createSelfEvaluationVitalSignController from "../controllers/vitalSigns/createSelfEvaluationVitalSignController.js";
+import searchComorbiditiesController from "../controllers/Comorbidities/searchComorbiditesController.js";
+import getVitalSignsByMedicalEventController from "../controllers/vitalSigns/getVitalSignsByMedicalEventController.js";
+import getGeneralConsultationController from "../controllers/medicalEvent/consultationTabs/get/getGeneralConsultationController.js";
+import getConsultationTabController from "../controllers/medicalEvent/consultationTabs/get/getConsultationTabController.js";
+import getPreConsultationTabController from "../controllers/medicalEvent/consultationTabs/get/getPreConsultationTabController.js";
+import getBackgroundTabController from "../controllers/medicalEvent/consultationTabs/get/getBackgroundTabController.js";
+import getStudiesConsultationTabController from "../controllers/medicalEvent/consultationTabs/get/getStudiesConsultationTabController.js";
+import postConsultationTabController from "../controllers/medicalEvent/consultationTabs/post/postConsultationTabController.js";
+import findOrCreateCardiovascularRiskController from "../controllers/patient/patientRisk/findOrCreateCardiovascularRiskController.js";
+import findOrCreateSurgicalRiskController from "../controllers/patient/patientRisk/findOrCreateSurgicalRiskController.js";
+import postBackgroundTabController from "../controllers/medicalEvent/consultationTabs/post/postBackgroundTabController.js";
+import postGeneralConsultationTabController from "../controllers/medicalEvent/consultationTabs/post/postGeneralConsultationTabController.js";
+import createVitalSignsController from "../controllers/vitalSigns/createVitalSignsController.js";
+import postGlycemiaRecordsController from "../controllers/glycemiaRecords/postGlycemiaRecordsController.js";
+import getLastMedicalEventController from "../controllers/medicalEvent/getLastMedicalEventController.js";
+import searchHealthCarePlanController from "../controllers/sociodemographicDetails/search/searchHealthCarePlanController.js";
+import getUserProfileInfoController from "../controllers/user/profile/getUserProfileInfoController.js";
+import patchPhysicianFilesController from "../controllers/physician/files/patchPhysicianFilesController.js";
+import deletePhysicianFileController from "../handlers/physicianHandlers/files/deletePhysicianFileHandler.js";
+import getPhysicianFilesController from "../handlers/physicianHandlers/files/getPhysicianFileHandler.js";
+import getMedicalHistoryController from "../controllers/medicalEvent/getMedicalHistoryController.js";
+import patchUserProfileController from "../controllers/user/profile/patchUserProfileController.js";
+import updateTreatingPhysicianController from "../controllers/requestTreatingPhysician/updateTreatingPhysicianController.js";
+import createRequestController from "../controllers/requestTreatingPhysician/requestTreatingPhysicianController.js";
+import deleteRequestController from "../controllers/requestTreatingPhysician/deleteTreatingPhysicianController.js";
+import getRequestController from "../controllers/requestTreatingPhysician/getTreatingPhysicianController.js";
+import tokenController from "../controllers/requestTreatingPhysician/tokenController.js";
+import verificationDataPhysicians from "../utils/verificationDataPhysicians.js";
+import deletePatientStudiesController from "../controllers/patient/patientStudies/deletePatientStudiesController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -142,14 +146,11 @@ const catalogsRouter = Router();
 const schedulingRouter = Router();
 const medicalEventRouter = Router();
 const vitalSignsRouter = Router();
-const anthropometricDetailsRouter = Router();
 const medicalBackgroundsRouter = Router();
-const diagnosticTestRouter = Router();
 const statisticsRouter = Router();
 const drugPrescriptionRouter = Router();
 const procedurePrescriptionRouter = Router();
 const medicalReferralRouter = Router();
-const therapyPrescriptionRouter = Router();
 const medicalIndicationsRouter = Router();
 const sociodemographicDetailsRouter = Router();
 const backgroundsRouter = Router();
@@ -164,20 +165,27 @@ const interconsultationRouter = Router();
 const interconsultationDetailsRouter = Router();
 const medicalHistoryRouter = Router();
 const selfEvaluationEventRouter = Router();
+const comorbiditiesRouter = Router();
+const treatingPhysicianRouter = Router();
+const profileRouter = Router();
+const adminRouter = Router();
 
 //* User
-userRouter.route("/user/register-user").post(userRegisterController);
-userRouter.route("/user/validate-email").post(otpMailValidationController);
-userRouter.route("/user/login").post(userLoginController);
-userRouter.route("/user/login-record").get(getAllLoginRecordController);
-userRouter.route("/user/recover-password").post(recoverPasswordController);
-userRouter.route("/user/modify-password").post(modifyPasswordWithOtpController);
-userRouter.route("/user/getAllUsers").get(getAllUsersController);
-userRouter.route("/user/:id").get(getUserController);
-userRouter
-  .route("/user/update-user-info")
-  .patch(updateUserInformationController);
+userRouter.route("/register-user").post(userRegisterController);
+userRouter.route("/validate-email").post(otpMailValidationController);
+userRouter.route("/login").post(userLoginController);
+userRouter.route("/login-record").get(getAllLoginRecordController);
+userRouter.route("/recover-password").post(recoverPasswordController);
+userRouter.route("/modify-password").post(modifyPasswordWithOtpController);
+userRouter.route("/getAllUsers").get(getAllUsersController);
+userRouter.route("/:id").get(getUserController);
+userRouter.route("/update-user-info").patch(updateUserInformationController);
 
+//* Profile
+profileRouter
+  .route("/")
+  .get(getUserProfileInfoController)
+  .patch(patchUserProfileController);
 //* Patient
 // patientRouter.route("/patient").post(postPatientController);
 
@@ -188,14 +196,6 @@ patientRouter
 
 patientRouter.route("/patch-patient").patch(patchPatientController);
 
-patientRouter.route("/patient-details").get(getPatientDetailsController);
-
-patientRouter
-  .route("/patient-diagnostic")
-  .post(createPatientDiagnosticController);
-patientRouter
-  .route("/patient-update-diagnostic")
-  .patch(updatePatientDiagnosticController);
 patientRouter
   .route("/patient-physical-examination")
   .post(createPatientPhysicalExaminationController)
@@ -215,23 +215,16 @@ patientRouter
   .route("/patient-studies")
   .get(getFilesController)
   .post(postPatientStudiesController)
-  .patch(patchPatientStudiesController);
+  .patch(patchPatientStudiesController)
+  .delete(deletePatientStudiesController);
 
 //* cardiovascular risk
 patientRouter
-  .route("/patient-new-cardiovascular-risk")
-  .post(createCardiovascularRiskController);
-patientRouter
-  .route("/patient-update-cardiovascular-risk")
-  .patch(updateCardiovascularRiskController);
+  .route("/cardiovascular-risk")
+  .post(findOrCreateCardiovascularRiskController);
 
 //* Surgical risk
-patientRouter
-  .route("/patient-new-surgical-risk")
-  .post(createSurgicalRiskController);
-patientRouter
-  .route("/patient-update-surgical-risk")
-  .patch(updateSurgicalRiskController);
+patientRouter.route("/surgical-risk").post(findOrCreateSurgicalRiskController);
 
 //* heart failure classification
 patientRouter
@@ -242,10 +235,7 @@ patientRouter
   .patch(updateHeartFailureClassificationController);
 
 //* hp risk classification
-patientRouter
-  .route("/patient-new-hp-risk")
-  .post(createPulmonaryHypertensionRiskController);
-patientRouter.route("/patient-update-hp-risk").patch(updateHpRiskController);
+patientRouter.route("/hp-risk").post(createPulmonaryHypertensionRiskController);
 
 //* pulmonary hypertension group
 patientRouter
@@ -283,7 +273,6 @@ getPatientsRouter.get("/patients", getPatientsController);
 getPatientsFilterRouter.get("/patientsfilter", getPatientsFilterController);
 
 //*physician
-physicianRouter.get("/physician-info", getPhysicianInformationController);
 physicianRouter.get("/all-physicians", getAllPhysiciansController);
 physicianRouter.get(
   "/find-physician-like-name",
@@ -353,6 +342,14 @@ physicianRouter
   .post(createNewOrderPhysicianCtrl)
   .get(getPhysicianOrderById);
 
+physicianRouter
+  .route("/physician/files")
+  .get(getPhysicianFilesController)
+  .patch(patchPhysicianFilesController)
+  .delete(deletePhysicianFileController);
+
+physicianRouter.route("/physician/token").post(tokenController);
+
 //* Catalogs
 catalogsRouter.get("/catalog/get-catalog", getCatalogController);
 
@@ -373,66 +370,46 @@ schedulingRouter
 
 //* Medical Event
 medicalEventRouter
-  .route("/medical-event/create-event")
-  .post(createMedicalEventController);
+  .route("/general-consultation")
+  .get(getGeneralConsultationController)
+  .post(postGeneralConsultationTabController);
 medicalEventRouter
-  .route("/medical-event/update-event")
-  .patch(updateMedicalEventController);
+  .route("/consultation")
+  .get(getConsultationTabController)
+  .post(postConsultationTabController);
 medicalEventRouter
-  .route("/medical-event/get-medical-event-history")
-  .get(getMedicalEventHistoryController);
-medicalEventRouter.route("/medical-event/get-medical-event-history-evolution");
+  .route("/preconsultation")
+  .get(getPreConsultationTabController);
+medicalEventRouter.route("/studies").get(getStudiesConsultationTabController);
 medicalEventRouter
-  .route("/medical-event/get-medical-event-detail")
-  .get(getMedicalEventDetailController);
+  .route("/background")
+  .get(getBackgroundTabController)
+  .post(postBackgroundTabController);
+medicalEventRouter.route("/update-event").patch(updateMedicalEventController);
+medicalEventRouter
+  .route("/last-consultation")
+  .get(getLastMedicalEventController);
+medicalEventRouter.route("/history").get(getMedicalHistoryController);
 
 //* Vital Signs
+vitalSignsRouter.route("/").patch(createVitalSignsController);
+vitalSignsRouter.route("/glycemia").post(postGlycemiaRecordsController);
 vitalSignsRouter
-  .route("/vital-signs/create-vital-sign")
-  .post(createVitalSignsController);
-vitalSignsRouter
-  .route("/vital-signs/update-vital-sign")
-  .patch(updateVitalSignsController);
-
-//* Anthropometric Details
-anthropometricDetailsRouter
-  .route("/anthropometric-details/create-anthropometric-detail")
-  .post(createAnthropometricDetailController);
-anthropometricDetailsRouter
-  .route("/anthropometric-details/update-anthropometric-detail")
-  .patch(updateAnthropometricDetailController);
+  .route("/medical-event")
+  .get(getVitalSignsByMedicalEventController);
 
 //* Sociodemographic Details
 sociodemographicDetailsRouter
-  .route("/sociodemographic-details/create-sociodemographic-detail")
+  .route("/create-sociodemographic-detail")
   .post(createSociodemographicDetailsController);
 sociodemographicDetailsRouter
-  .route("/sociodemographic-details/update-sociodemographic-detail")
+  .route("/update-sociodemographic-detail")
   .patch(updateSociodemographicDetailsController);
-
-//* Medical Backgrounds
-medicalBackgroundsRouter
-  .route("/medical-backgrounds/create-medical-background")
-  .post(createMedicalBackgroundsController);
-medicalBackgroundsRouter
-  .route("/medical-backgrounds/update-medical-background")
-  .patch(updateMedicalBackgroundsController);
-
+sociodemographicDetailsRouter
+  .route("/health-care-search")
+  .get(searchHealthCarePlanController);
 //*Backgrounds
-backgroundsRouter
-  .route("/backgrounds/create-backgrounds")
-  .post(createBackgroundsController);
-backgroundsRouter
-  .route("/backgrounds/update-backgrounds")
-  .patch(updateBackgroundsController);
-
-//* Diagnostic test
-diagnosticTestRouter
-  .route("/diagnostic-test/create-diagnostic-test")
-  .post(createDiagnosticTestController);
-diagnosticTestRouter
-  .route("/diagnostic-test/update-diagnostic-test")
-  .patch(patchDiagnosticTestController);
+backgroundsRouter.route("/background").post(createBackgroundsController);
 
 //* Drug Prescription
 drugPrescriptionRouter
@@ -466,15 +443,6 @@ medicalReferralRouter
   .post(createRegisterCie10Ctrl)
   .get(searchCIEController)
   .get(getCatAndSubCatCtrl);
-
-//* Therapy Prescription
-therapyPrescriptionRouter
-  .route("/therapy/create-therapy-prescription")
-  .post(createTherapyPrescriptionController);
-therapyPrescriptionRouter
-  .route("/therapy/update-therapy-prescription")
-  .patch(updateTherapyPrescriptionController);
-
 // *Medical Indications
 medicalIndicationsRouter
   .route("/medical-indications/new-indication")
@@ -493,16 +461,13 @@ alarmRouter.route("/edit-alarm-event/:id").patch(patchAlarmEventController);
 
 //*Provisional Pre Consultation
 preConsultationRouter
-  .route("/pre-consultation")
-  .post(createPreConsultationController);
-preConsultationRouter
   .route("/get-all-pateint-preconsultation")
   .get(getAllProvisionaPreConsultationPatientController);
 preConsultationRouter
   .route("/get-preconsultation")
   .get(getPreConsultationByScheduleIdController);
 preConsultationRouter
-  .route("/update-pre-consultation")
+  .route("/pre-consultation")
   .patch(patchProvisionalPreConsultationController);
 
 //* Statistical center
@@ -562,22 +527,37 @@ notificationsRouter.patch("/notification-seen", patchNotificationsController);
 //* Medical History
 medicalHistoryRouter.get("/consultation", getConsultationController);
 medicalHistoryRouter.get("/patient-detail", getNewPatientDetailsController);
-medicalHistoryRouter.get("/vital-signs-detail", getVitalSignsDetailController);
 medicalHistoryRouter.get("/vital-signs", getVitalSignsController);
 medicalHistoryRouter.get(
   "/evolution",
   getMedicalEventHistoryEvolutionController
 );
 medicalHistoryRouter.get("/anamnesis", getAnamnesisCtrl);
-medicalHistoryRouter.get("/physical-examination", getPatientPhysicianExamCtrl)
-medicalHistoryRouter.get("/diagnostics", getDiagnosticController)
-
+medicalHistoryRouter.get("/physical-examination", getPatientPhysicianExamCtrl);
+medicalHistoryRouter.get("/diagnostics", getDiagnosticController);
 
 //* Self Evaluation
 selfEvaluationEventRouter
   .route("/pain-map")
   .get(getPainMapController)
   .post(physicalSelfEvaluationController);
+selfEvaluationEventRouter
+  .route("/vital-signs")
+  .post(createSelfEvaluationVitalSignController);
+
+//* Comorbidities
+comorbiditiesRouter.route("/comorbidities").get(searchComorbiditiesController);
+
+//* Treating Physician Request
+treatingPhysicianRouter
+  .route("/request")
+  .get(getRequestController)
+  .post(createRequestController)
+  .patch(updateTreatingPhysicianController)
+  .delete(deleteRequestController);
+
+//* Admin Routes
+adminRouter.route("/physician-verification").post(verificationDataPhysicians);
 
 export {
   getPatientsRouter,
@@ -589,14 +569,11 @@ export {
   schedulingRouter,
   medicalEventRouter,
   vitalSignsRouter,
-  anthropometricDetailsRouter,
   medicalBackgroundsRouter,
-  diagnosticTestRouter,
   statisticsRouter,
   drugPrescriptionRouter,
   procedurePrescriptionRouter,
   medicalReferralRouter,
-  therapyPrescriptionRouter,
   medicalIndicationsRouter,
   sociodemographicDetailsRouter,
   alarmRouter,
@@ -611,4 +588,8 @@ export {
   interconsultationDetailsRouter,
   medicalHistoryRouter,
   selfEvaluationEventRouter,
+  comorbiditiesRouter,
+  treatingPhysicianRouter,
+  profileRouter,
+  adminRouter,
 };

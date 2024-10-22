@@ -7,7 +7,7 @@ const getNewPatientDetailsHandler = async (id) => {
         role: 3,
         id,
       },
-      attributes: ["name", "lastname", "treatingPhysician"],
+      attributes: ["name", "lastname", "avatar"],
       include: [
         {
           model: models.SociodemographicDetails,
@@ -19,7 +19,7 @@ const getNewPatientDetailsHandler = async (id) => {
           as: "userHpGroups",
           attributes: ["id"],
           include: {
-            model: models.CatPulmonaryHypertensionGroup,
+            model: models.CatRisk,
             as: "catHpGroup",
             attributes: ["name"],
           },
@@ -29,7 +29,7 @@ const getNewPatientDetailsHandler = async (id) => {
           as: "ptCvRsks",
           attributes: ["risk"],
           include: {
-            model: models.CatCardiovascularRisk,
+            model: models.CatRisk,
             as: "catCvRisk",
             attributes: ["name"],
           },
@@ -39,7 +39,7 @@ const getNewPatientDetailsHandler = async (id) => {
           as: "patSgRisks",
           attributes: ["timestamp"],
           include: {
-            model: models.CatSurgicalRisk,
+            model: models.CatRisk,
             as: "catSurgicalRisk",
             attributes: ["name"],
           },

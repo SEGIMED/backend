@@ -6,6 +6,15 @@ const model = (sequelize) => {
   sequelize.define(
     "AttendentPlace",
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+        unique: true,
+        field: "id",
+      },
+
       idPhysician: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -19,7 +28,7 @@ const model = (sequelize) => {
         type: DataTypes.BIGINT,
         allowNull: false,
         references: {
-          model: "center_attention",
+          model: "cat_center_attention",
           key: "id",
         },
         field: "id_center_attention",

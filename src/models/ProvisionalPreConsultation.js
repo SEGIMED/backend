@@ -137,16 +137,6 @@ const model = (sequelize) => {
         allowNull: true,
         field: "exercise_status",
       },
-      abnormalGlycemia: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-        field: "abnormal_glycemia",
-      },
-      lastAbnormalGlycemia: {
-        type: DataTypes.ARRAY(DataTypes.DECIMAL),
-        allowNull: true,
-        field: "last_abnormal_glycemia",
-      },
       physicalExamination: {
         type: DataTypes.BIGINT,
         allowNull: true,
@@ -155,72 +145,6 @@ const model = (sequelize) => {
           model: "patient_pain_map",
           key: "id",
         },
-      },
-      laboratoryResults: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "laboratory_results",
-      },
-      laboratoryResultsDescription: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "laboratory_results_description",
-      },
-      electrocardiogram: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "electrocardiogram",
-      },
-      electrocardiogramDescription: {
-        type: DataTypes.STRING(500),
-        allowNull: true,
-        field: "electrocardiogram_description",
-      },
-      rxThorax: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "rx_thorax",
-      },
-      echocardiogram: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      walkTest: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "walk_test",
-      },
-      respiratoryFunctional: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "respiratory_functional",
-      },
-      tomographies: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      rightHeartCatheterization: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "right_heart_catheterization",
-      },
-      ccg: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      resonance: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      leftHeartCatheterization: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "left_heart_catheterization",
-      },
-      otherStudies: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "other_studies",
       },
       pendingStudies: {
         type: DataTypes.STRING(500),
@@ -239,14 +163,24 @@ const model = (sequelize) => {
       },
       currentMedications: {
         type: DataTypes.ARRAY(DataTypes.STRING),
-        allowNull: true,//TODO CAMBIAR A FALSE
+        allowNull: true, //TODO CAMBIAR A FALSE
         field: "current_medications",
       },
-      status:{
-        type: DataTypes.ENUM('pending','sent'),
-        allowNull:true,
-        defaultValue:'pending'
-      }
+      status: {
+        type: DataTypes.ENUM("pending", "sent"),
+        allowNull: true,
+        defaultValue: "pending",
+      },
+      abnormalGlycemia: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        field: "abnormal_glycemia",
+      },
+      respiratoryFunctional: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        field: "respiratory_functional",
+      },
     },
     {
       tableName: "provisional_pre_consultation",
@@ -256,13 +190,11 @@ const model = (sequelize) => {
         {
           name: "provisonal_pre_consultation_id_pk",
           unique: true,
-          fields: [
-            { name: "id" },
-          ]
+          fields: [{ name: "id" }],
         },
-      ]
+      ],
     }
   );
 };
 
-export default model
+export default model;

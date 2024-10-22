@@ -70,7 +70,7 @@ export const createDrugPrescriptions = async (prescriptions, transaction) => {
         );
       }
     }
-    return "Medicamentos creados con éxito";
+    return true;
   } catch (error) {
     throw new Error(error);
   }

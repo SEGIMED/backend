@@ -1,5 +1,5 @@
 import models, {
-  CatPulmonaryArterialHypertensionRisk,
+  CatRisk,
   PatientPulmonaryHypertensionRisk,
 } from "../../databaseConfig.js";
 import { mapPatientsSchedule } from "../../mapper/patient/patientMapper.js";
@@ -32,9 +32,9 @@ const getAllSchedulesByUserHandler = async (userId, userRole) => {
           include: [
             {
               model: PatientPulmonaryHypertensionRisk,
-              as: "patientPulmonaryHypertensionRisks",
+              as: "patPHRisks",
               include: {
-                model: CatPulmonaryArterialHypertensionRisk,
+                model: CatRisk,
                 as: "catHpRisk",
                 attributes: ["name"],
               },

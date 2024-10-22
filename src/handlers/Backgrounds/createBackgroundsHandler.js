@@ -1,12 +1,17 @@
 import { Op } from "sequelize";
-import { Backgrounds } from "../../databaseConfig.js";
-import SegimedAPIError from "../../error/SegimedAPIError.js";
+import { Backgrounds, sequelize } from "../../databaseConfig.js";
 import moment from "moment-timezone";
+import createComorbiditiesHandler from "../Comorbidities/createComorbiditiesHandler.js";
 
-const createBackgroundsHandler = async (body) => {
+const createBackgroundsHandler = async ({
+  id,
+  appointmentSchedule,
+  patientId,
+  background,
+  transaction,
+}) => {
   const now = moment();
   const {
-    patientId,
     surgicalBackground,
     pathologicBackground,
     nonPathologicBackground,
@@ -15,10 +20,10 @@ const createBackgroundsHandler = async (body) => {
     pharmacologicalBackground,
     allergicBackground,
     vaccinationBackground,
-    medicalEventId,
-    schedulingId,
-  } = body;
-  const query = {
+    comorbidities,
+    comorbiditiesList,
+  } = background;
+  const queryOptions = {
     where: {
       [Op.or]: [],
     },
@@ -33,41 +38,54 @@ const createBackgroundsHandler = async (body) => {
       allergicBackground,
       vaccinationBackground,
       timestamp: now.format("YYYY-MM-DD HH:mm:ss z"),
-      medicalEvent: medicalEventId,
-      appointmentScheduling: schedulingId,
+      medicalEvent: id,
+      appointmentScheduling: appointmentSchedule,
+      comorbidities,
     },
+    transaction,
   };
   try {
-    if (typeof medicalEventId !== "undefined") {
-      query.where[Op.or].push({ medicalEvent: medicalEventId });
+    if (typeof id !== "undefined") {
+      queryOptions.where[Op.or].push({ medicalEvent: id });
     }
-    if (typeof schedulingId !== "undefined") {
-      query.where[Op.or].push({ appointmentScheduling: schedulingId });
+    if (typeof appointmentSchedule !== "undefined") {
+      queryOptions.where[Op.or].push({ appointmentScheduling: appointmentSchedule });
     }
 
     const [newBackground, createdBackground] = await Backgrounds.findOrCreate(
-      query
+      queryOptions
     );
     if (createdBackground) {
-      return newBackground;
+      return true;
     } else {
-      await newBackground.update({
-        surgicalBackground,
-        pathologicBackground,
-        nonPathologicBackground,
-        familyBackground,
-        pediatricBackground,
-        pharmacologicalBackground,
-        allergicBackground,
-        vaccinationBackground,
-        timestamp: now.format("YYYY-MM-DD HH:mm:ss z"),
-      });
-      return "Se han actualizado los antecedentes del paciente"
+      await newBackground.update(
+        {
+          surgicalBackground,
+          pathologicBackground,
+          nonPathologicBackground,
+          familyBackground,
+          pediatricBackground,
+          pharmacologicalBackground,
+          allergicBackground,
+          vaccinationBackground,
+          timestamp: now.format("YYYY-MM-DD HH:mm:ss z"),
+          comorbidities,
+        },
+        { transaction }
+      );
+      if (comorbidities) {
+        await createComorbiditiesHandler({
+          patientId,
+          comorbiditiesList,
+          transaction,
+        });
+      }
+      return true;
     }
   } catch (error) {
-    throw new SegimedAPIError(
-      "Hubo un error durante el proceso de registro.",
-      500
+    console.log(error)
+    throw new Error(
+      "Hubo un error durante el proceso de registro: " + error.message
     );
   }
 };
