@@ -10,7 +10,7 @@ const postGeneralConsultationTabController = async (req, res) => {
       consultationData,
       backgroundData,
     });
-
+    console.log(response);
     const values = Object.values(response).flatMap(Object.values);
     const allTrue = values.every((value) => value === true || value == null);
     if (allTrue) {

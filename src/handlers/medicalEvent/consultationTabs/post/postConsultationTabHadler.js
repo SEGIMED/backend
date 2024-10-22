@@ -19,7 +19,7 @@ const postConsultationTabHandler = async ({
   medicalEvent,
   physicalExamination,
   medicalProcedure,
-  medication
+  medication,
 }) => {
   const transaction = await sequelize.transaction();
   try {
@@ -43,7 +43,6 @@ const postConsultationTabHandler = async ({
           transaction,
         })
       : null;
-
     const diagnosticResponse = diagnostics
       ? await postDiagnosticsTabHandler({
           id,
@@ -77,9 +76,13 @@ const postConsultationTabHandler = async ({
           transaction,
         })
       : null;
-    
-    const medicationResponse = medication ? await createDrugPrescriptions(medication, transaction): null;
-    medicalEventResponse === "Medicamentos creados con éxito" ? medicalEventResponse = true : null;
+
+    const medicationResponse = medication
+      ? await createDrugPrescriptions(medication, transaction)
+      : null;
+    medicalEventResponse === "Medicamentos creados con éxito"
+      ? (medicalEventResponse = true)
+      : null;
 
     await transaction.commit();
     return {
@@ -90,7 +93,7 @@ const postConsultationTabHandler = async ({
       medicalEventResponse,
       physicalExaminationResponse,
       medicalProcedureResponse,
-      medicationResponse
+      medicationResponse,
     };
   } catch (error) {
     await transaction.rollback();
