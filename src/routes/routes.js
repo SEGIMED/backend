@@ -135,6 +135,7 @@ import deleteRequestController from "../controllers/requestTreatingPhysician/del
 import getRequestController from "../controllers/requestTreatingPhysician/getTreatingPhysicianController.js";
 import tokenController from "../controllers/requestTreatingPhysician/tokenController.js";
 import verificationDataPhysicians from "../utils/verificationDataPhysicians.js";
+import deletePatientStudiesController from "../controllers/patient/patientStudies/deletePatientStudiesController.js";
 
 const patientRouter = Router();
 const userRouter = Router();
@@ -214,7 +215,8 @@ patientRouter
   .route("/patient-studies")
   .get(getFilesController)
   .post(postPatientStudiesController)
-  .patch(patchPatientStudiesController);
+  .patch(patchPatientStudiesController)
+  .delete(deletePatientStudiesController);
 
 //* cardiovascular risk
 patientRouter
