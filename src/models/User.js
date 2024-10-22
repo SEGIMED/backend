@@ -56,7 +56,7 @@ const model = (sequelize) => {
         allowNull: true,
       },
       areaCode: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
         allowNull: true,
         field: "area_code",
       },
@@ -71,12 +71,8 @@ const model = (sequelize) => {
         unique: "user_email_key",
       },
       nationality: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-          model: "cat_country",
-          key: "id",
-        },
+        type: DataTypes.STRING,
+        allowNull:false,
       },
       lastLogin: {
         type: DataTypes.DATE,
