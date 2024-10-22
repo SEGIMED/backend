@@ -42,9 +42,7 @@ const updateMedicalEventHandler = async ({
         consultationReason.description;
       await appointmentSchedule.save({ transaction });
     } else {
-      throw new Error(
-        "No se encontró el agendamiento de la cita."
-      );
+      throw new Error("No se encontró el agendamiento de la cita.");
     }
 
     return true;
