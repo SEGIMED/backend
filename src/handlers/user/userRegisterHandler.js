@@ -68,7 +68,7 @@ const userRegisterHandler = async (body, frontendUrl) => {
     // Enviar correo dentro de la transacción
     await sendMail(newUser.email, emailSent, "Link de verificación");
 
-    if (role === "3") {
+    if (role == "3") {
       const validateToken = await PhysicianOnboarding.findOne({
         where: { token },
         transaction, // Aseguramos que sea dentro de la transacción
