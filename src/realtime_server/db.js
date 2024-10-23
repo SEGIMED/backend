@@ -42,10 +42,6 @@ class Database {
                 model: CatIdType,
                 as: "userIdType",
               },
-              {
-                model: CatCountry,
-                as: "userNationality",
-              },
             ],
           });
           

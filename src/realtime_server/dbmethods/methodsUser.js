@@ -54,10 +54,6 @@ export async function getUserSQL(userId) {
           model: CatIdType,
           as: "userIdType",
         },
-        {
-          model: CatCountry,
-          as: "userNationality",
-        },
       ],
     });
     if (!getUser) throw new Error("Id del usuario no encontrada en la base de datos.");
