@@ -1,5 +1,4 @@
 import {
-  CatCountry,
   CatIdType,
   CatRole,
   User,
@@ -39,10 +38,6 @@ const userLoginHandler = async (body) => {
             model: CatIdType,
             as: "userIdType",
           },
-          {
-            model: CatCountry,
-            as: "userNationality",
-          },
         ],
       });
     }
@@ -60,10 +55,6 @@ const userLoginHandler = async (body) => {
           {
             model: CatIdType,
             as: "userIdType",
-          },
-          {
-            model: CatCountry,
-            as: "userNationality",
           },
         ],
       });

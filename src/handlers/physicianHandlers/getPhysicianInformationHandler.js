@@ -43,10 +43,6 @@ const getPhysicianInformationHandler = async (id) => {
                         as: 'currentLocationUser'
                     },
                     {
-                        model: CatCountry,
-                        as: 'userNationality'
-                    },
-                    {
                         model: PhysicianMedicalRegistry,
                         as: 'physicianMedicalRegistries',
                         include: {

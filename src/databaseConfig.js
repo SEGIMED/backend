@@ -523,10 +523,6 @@ CatPhysicianExpertiseLevel.hasMany(PhysicianDetails, {
 });
 CatCity.belongsTo(CatProvince, { as: "provinces", foreignKey: "province" });
 CatCountry.hasMany(CatProvince, { as: "catProvinces", foreignKey: "country" });
-User.belongsTo(CatCountry, {
-  as: "userNationality",
-  foreignKey: "nationality",
-});
 // CatCountry.hasMany(User, {as: "users", foreignKey: "nationality"});
 PhysicianMedicalRegistry.belongsTo(CatMedicalRegistrationType, {
   as: "medicalRegistrationType",
