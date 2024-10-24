@@ -192,7 +192,7 @@ export const physicianInformationHtml = ({ onboarding, user, link }) => {
             </p>
             <p><strong>DNI:</strong> ${user?.idNumber}</p>
             <p>
-              <strong>Teléfono:</strong> ${user.areaCode} ${user?.cellphone}
+              <strong>Teléfono:</strong> ${JSON.parse(user.areaCode).secondary} ${user?.cellphone}
             </p>
             <p><strong>Correo:</strong> ${user?.email}</p>
             <p>
@@ -229,7 +229,7 @@ export const physicianInformationHtml = ({ onboarding, user, link }) => {
 <table width="100%" cellspacing="0" cellpadding="0">
   <tr>
     <td align="left">
-      <a href="https://wa.me/${user.areaCode}${user?.cellphone}" 
+      <a href="https://wa.me/${JSON.parse(user.areaCode).secondary}${user?.cellphone}" 
          style="background-color: #70c247; color: white; padding: 15px 20px; border-radius: 10px; text-decoration: none; font-weight: 700; text-align: center;"
          class="button whatsapp-button">
         Contactar por WhatsApp
