@@ -5,6 +5,7 @@ import { sendMail } from "../../utils/sendMail.js";
 import { User } from "../../databaseConfig.js";
 import { physicianInformationHtml } from "../../utils/emailTemplates/physicianInformationHtml.js";
 
+const email = process.env.PHYSICIAN_REVISION_EMAIL
 const createOnboardingController = async (req, res) => {
   const user = contextService.get("request:user");
   if (user.role === "Médico") {
@@ -18,7 +19,7 @@ const createOnboardingController = async (req, res) => {
         const frontendUrl = req.headers.referer;
         const link = `${frontendUrl}/physician-verification/${user.userId}`
         await sendMail(
-          "gramajoeugenia@gmail.com",
+          email,
           physicianInformationHtml({ onboarding: onbording, user: userData, link }),
           "Nuevo médico registrado"
         );
